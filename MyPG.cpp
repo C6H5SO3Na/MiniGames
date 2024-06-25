@@ -392,8 +392,8 @@ ge->debugRect(me, DEBUGRECTMODE::RED ,- ge->camera2D.x, -ge->camera2D.y);
 	MyGameEngine::MyGameEngine()
 		:GameEngine(
 			//	環境情報
-			1280,//640,							//	画面サイズX
-			720,//360,							//	画面サイズY
+			1920,//640,							//	画面サイズX
+			1080,//360,							//	画面サイズY
 			1,								//	表示倍率
 			1,								//	マルチサンプル(1or2or4)
 			false,							//	フルスクリーンモード

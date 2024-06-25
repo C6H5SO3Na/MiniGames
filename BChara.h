@@ -36,4 +36,15 @@ public:
 
 protected:
 	ML::Vec2 MoveSet(int key);
+
+	//Žó‚¯g‚Ìˆ—
+	virtual void Recieved() = 0;
+	//“–‚½‚è”»’èŽæ“¾
+	ML::Box2D GetHitBase() const { return hitBase; }
+	//À•WŽæ“¾
+	ML::Vec2 GetPos() const { return pos; }
+
+	//“–‚½‚è”»’è
+	bool  CheckHit(BChara::SP ptr);//ge->GetTask<>()
+	bool  CheckHit(shared_ptr<vector<BChara::SP>> ptr);//ge->GetTasks<>()
 };

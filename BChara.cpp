@@ -23,4 +23,33 @@ ML::Vec2 BChara::MoveSet(int key)
 	}
 	return est;
 }
-
+//-------------------------------------------------------------------
+//“–‚½‚è”»’è(’P‘Ì)
+bool  BChara::CheckHit(BChara::SP ptr)
+{
+	if (ptr == nullptr) { return false; }
+	ML::Box2D me = this->GetHitBase().OffsetCopy(this->GetPos());
+	ML::Box2D you = ptr->GetHitBase().OffsetCopy(ptr->GetPos());
+	if (you.Hit(me)) {
+		ptr->Recieved();
+		return true;
+	}
+	return false;
+}
+//-------------------------------------------------------------------
+//“–‚½‚è”»’è(•¡”)
+bool  BChara::CheckHit(shared_ptr<vector<BChara::SP>> iters)
+{
+	bool rtv = false;
+	for_each(iters->begin(), iters->end(),
+		[&](auto iter) {
+			ML::Box2D me = this->GetHitBase().OffsetCopy(this->GetPos());
+			ML::Box2D you = iter->GetHitBase().OffsetCopy(iter->GetPos());
+			if (you.Hit(me)) {
+				iter->Recieved();
+				rtv = true;
+				return;
+			}
+		});
+	return rtv;
+}
