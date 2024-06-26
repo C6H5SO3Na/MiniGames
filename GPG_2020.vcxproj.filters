@@ -115,7 +115,10 @@
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
-    <ClCompile Include="Task_BlanceGame.cpp">
+    <ClCompile Include="BlanceGame\Task_BlanceGame.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClCompile>
+    <ClCompile Include="BlanceGame\Task_BlanceGamePlayer.cpp">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClCompile>
   </ItemGroup>
@@ -196,7 +199,10 @@
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
-    <ClInclude Include="Task_BlanceGame.h">
+    <ClInclude Include="BlanceGame\Task_BlanceGame.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClInclude>
+    <ClInclude Include="BlanceGame\Task_BlanceGamePlayer.h">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClInclude>
   </ItemGroup>

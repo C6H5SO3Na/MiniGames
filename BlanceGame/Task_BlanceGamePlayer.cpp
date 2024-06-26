@@ -1,22 +1,24 @@
 //-------------------------------------------------------------------
-//
+//バランスゲームのプレイヤー
 //-------------------------------------------------------------------
-#include  "MyPG.h"
-#include  "Task_BlanceGame.h"
+#include  "../MyPG.h"
+#include  "Task_BlanceGamePlayer.h"
 
-namespace  BlanceGame
+namespace  BGPlayer
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		playerImg = DG::Image::Create("./data/image/chara02.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		playerImg.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -29,7 +31,7 @@ namespace  BlanceGame
 		this->res = Resource::Create();
 
 		//★データ初期化
-		
+		direction = 0;
 		//★タスクの生成
 
 		return  true;
@@ -51,11 +53,22 @@ namespace  BlanceGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		auto in1 = ge->in1->GetState();
+		if (in1.LStick.BL.down) {
+			direction -= 1;
+		}
+		if (in1.LStick.BR.down) {
+			direction += 1;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		ML::Box2D src(0, 0, 32, 80);
+		ML::Box2D draw(20, 20, 32, 80);
+		res->playerImg->Rotation(ML::ToRadian(direction * 30), ML::Vec2(16, 80));
+		res->playerImg->Draw(draw,src);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
