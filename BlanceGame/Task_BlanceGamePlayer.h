@@ -3,7 +3,7 @@
 //-------------------------------------------------------------------
 //バランスゲームのプレイヤー
 //-------------------------------------------------------------------
-#include "../BChara.h"
+#include "BGBChara.h"
 
 namespace  BGPlayer
 {
@@ -27,7 +27,7 @@ namespace  BGPlayer
 		DG::Image::SP playerImg;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public  BChara
+	class  Object : public  BGBChara
 	{
 	public:
 		virtual  ~Object();
@@ -51,5 +51,6 @@ namespace  BGPlayer
 		//BCharaに含まれないモノのみここに追加する
 		void Recieved() {};
 		int direction;
+		XI::GamePad::SP controller;
 	};
 }

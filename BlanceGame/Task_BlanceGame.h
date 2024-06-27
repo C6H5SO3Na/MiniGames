@@ -1,9 +1,10 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//
+//バランスゲーム
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
+#include "Task_BlanceGamePlayer.h"
 
 namespace  BlanceGame
 {
@@ -47,6 +48,8 @@ namespace  BlanceGame
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-
+		int gameCnt;
+		vector<BGPlayer::Object::SP> pList;
+		vector<XI::GamePad::SP> cList;
 	};
 }

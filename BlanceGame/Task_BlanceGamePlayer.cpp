@@ -32,6 +32,7 @@ namespace  BGPlayer
 
 		//★データ初期化
 		direction = 0;
+		SetBGState(BGstate::BStart);
 		//★タスクの生成
 
 		return  true;
@@ -53,22 +54,39 @@ namespace  BGPlayer
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto in1 = ge->in1->GetState();
-		if (in1.LStick.BL.down) {
-			direction -= 1;
-		}
-		if (in1.LStick.BR.down) {
+		auto in = controller->GetState();
+		switch (GetBGState())
+		{
+		case BGstate::Playing:
+			break;
+		case BGstate::PlayR:
 			direction += 1;
+			if (in.LStick.BL.down) { SetBGState(BGstate::PlayL); }
+			if (direction > 40) { SetBGState(BGstate::Fail); }
+			if (direction == 0) { SetBGState(BGstate::Playing); }
+			break;
+		case BGstate::PlayL:
+			direction -= 1;
+			if (in.LStick.BR.down) { SetBGState(BGstate::PlayR); }
+			if (direction < -40) { SetBGState(BGstate::Fail); }
+			if (direction == 0) { SetBGState(BGstate::Playing); }
+			break;
+		case BGstate::Fail:
+			pos.y = 600;
+			direction = 90;
+			break;
 		}
+		
+		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D src(0, 0, 32, 80);
-		ML::Box2D draw(20, 20, 32, 80);
-		res->playerImg->Rotation(ML::ToRadian(direction * 30), ML::Vec2(16, 80));
-		res->playerImg->Draw(draw,src);
+		ML::Box2D draw(0, 0, 32, 80);
+		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(16, 80));
+		res->playerImg->Draw(draw.OffsetCopy(pos), src);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

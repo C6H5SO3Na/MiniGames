@@ -109,9 +109,6 @@
     <ClCompile Include="easing.cpp">
       <Filter>Lib</Filter>
     </ClCompile>
-    <ClCompile Include="Task_Game.cpp">
-      <Filter>MyPG\Task\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Task_Ending.cpp">
       <Filter>MyPG\Task\ending</Filter>
     </ClCompile>
@@ -124,8 +121,11 @@
     <ClCompile Include="BlanceGame\Task_BlanceGamePlayer.cpp">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClCompile>
-    <ClCompile Include="Task_TaxiGame.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
+    <ClCompile Include="Task_Game.cpp">
+      <Filter>MyPG\Task\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BlanceGame\BGBChara.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,9 +195,6 @@
     <ClInclude Include="easing.h">
       <Filter>Lib</Filter>
     </ClInclude>
-    <ClInclude Include="Task_Game.h">
-      <Filter>MyPG\Task\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Task_Ending.h">
       <Filter>MyPG\Task\ending</Filter>
     </ClInclude>
@@ -211,8 +208,11 @@
     <ClInclude Include="BlanceGame\Task_BlanceGamePlayer.h">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClInclude>
-    <ClInclude Include="Task_TaxiGame.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
+    <ClInclude Include="Task_Game.h">
+      <Filter>MyPG\Task\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BlanceGame\BGBChara.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
