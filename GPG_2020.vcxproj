@@ -140,6 +140,8 @@
     <ClCompile Include="GameEngine_Ver3_83.cpp" />
     <ClCompile Include="myLib.cpp" />
     <ClCompile Include="MyPG.cpp" />
+    <ClCompile Include="Ohara\Task_SaboriGame.cpp" />
+    <ClCompile Include="Ohara\Task_SaboriPlayer.cpp" />
     <ClCompile Include="randomLib.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="Task_Effect00.cpp" />
@@ -168,6 +170,8 @@
     <ClInclude Include="GameEngine_Ver3_83.h" />
     <ClInclude Include="myLib.h" />
     <ClInclude Include="MyPG.h" />
+    <ClInclude Include="Ohara\Task_SaboriGame.h" />
+    <ClInclude Include="Ohara\Task_SaboriPlayer.h" />
     <ClInclude Include="randomLib.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="sound.h" />
