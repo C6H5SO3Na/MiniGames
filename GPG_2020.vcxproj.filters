@@ -29,13 +29,11 @@
     <Filter Include="MyPG\Task\ending">
       <UniqueIdentifier>{5995aebb-b88d-4733-b1a0-1ef6a853acdd}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
     <Filter Include="MyPG\Task\Game\BlacneGame">
       <UniqueIdentifier>{10f1580f-f92a-4d66-8bf6-4e311dd72559}</UniqueIdentifier>
-=======
+    </Filter>
     <Filter Include="MyPG\Task\Miyagawa">
       <UniqueIdentifier>{11e26480-e4df-49fd-80e0-0699a3270252}</UniqueIdentifier>
->>>>>>> aea0f073cd45133f1e878af5247be011363666c6
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,16 +118,14 @@
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="BlanceGame\Task_BlanceGame.cpp">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClCompile>
     <ClCompile Include="BlanceGame\Task_BlanceGamePlayer.cpp">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="Task_TaxiGame.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
->>>>>>> aea0f073cd45133f1e878af5247be011363666c6
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,16 +205,14 @@
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="BlanceGame\Task_BlanceGame.h">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClInclude>
     <ClInclude Include="BlanceGame\Task_BlanceGamePlayer.h">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="Task_TaxiGame.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
->>>>>>> aea0f073cd45133f1e878af5247be011363666c6
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
