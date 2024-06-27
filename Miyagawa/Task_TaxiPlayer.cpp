@@ -1,14 +1,11 @@
 //-------------------------------------------------------------------
-//ゲーム本編
+//
 //-------------------------------------------------------------------
-#include  "MyPG.h"
-#include  "Task_Game.h"
+#include  "../MyPG.h"
+#include  "Task_TaxiPlayer.h"
+#include "../randomLib.h"
 
-#include "randomLib.h"
-
-#include  "Task_Ending.h"
-
-namespace  Game
+namespace TaxiPlayer
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -33,12 +30,9 @@ namespace  Game
 		res = Resource::Create();
 
 		//★データ初期化
-		
-		//デバッグ用フォントの準備
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
-
 		//★タスクの生成
-
+		nowBtn = GetRandom(0, 3);
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -46,12 +40,10 @@ namespace  Game
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
 
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = Ending::Object::Create(true);
 		}
 
 		return  true;
@@ -60,28 +52,110 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = ge->in1->GetState( );
-		if (inp.ST.down) {
-			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-			ge->CreateEffect(99, ML::Vec2(0, 0));
-		}
-		if (ge->getCounterFlag("test") == ge->LIMIT) {
-			Kill();
-		}
+		input = controller->GetState();
+		Think();
+		Move();
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		int x = GetRandom(-10, 10);
-		int y = GetRandom(-10, 10);
-
-		TestFont->Draw(ML::Box2D(100+x, 100+y, ge->screen2DWidth, ge->screen2DHeight),
-			"Game"
+		state->render();
+	}
+	//-------------------------------------------------------------------
+	//思考
+	void  Object::Think()
+	{
+		state->think();
+	}
+	//-------------------------------------------------------------------
+	//行動
+	void  Object::Move()
+	{
+		state->move();
+	}
+	//-------------------------------------------------------------------
+	//受け身
+	void  Object::Recieved()
+	{
+	}
+	//-------------------------------------------------------------------
+	//受け身
+	void  Object::MatchButton()
+	{
+		++matchCnt;
+		nowBtn = GetRandom(0, 3);
+	}
+	//-------------------------------------------------------------------
+	//思考
+	void  Object::NormalState::think()
+	{
+		if (owner_->matchCnt >= 10) {
+			owner_->ChangeState(new ClearState(owner_));
+		}
+	}
+	//-------------------------------------------------------------------
+	//行動
+	void  Object::NormalState::move()
+	{
+		if (owner_->input.B1.down) {
+			if (owner_->nowBtn == 0) {
+				owner_->MatchButton();
+			}
+		}
+		if (owner_->input.B2.down) {
+			if (owner_->nowBtn == 1) {
+				owner_->MatchButton();
+			}
+		}
+		if (owner_->input.B3.down) {
+			if (owner_->nowBtn == 2) {
+				owner_->MatchButton();
+			}
+		}
+		if (owner_->input.B4.down) {
+			if (owner_->nowBtn == 3) {
+				owner_->MatchButton();
+			}
+		}
+	}
+	//-------------------------------------------------------------------
+	//描画
+	void  Object::NormalState::render()
+	{
+		owner_->TestFont->Draw(ML::Box2D(owner_->pos.x, owner_->pos.y, ge->screen2DWidth, ge->screen2DHeight),
+			owner_->btn[owner_->nowBtn]
+		);
+	}
+	//-------------------------------------------------------------------
+	//思考
+	void  Object::ClearState::think()
+	{
+	}
+	//-------------------------------------------------------------------
+	//行動
+	void  Object::ClearState::move()
+	{
+	}
+	//-------------------------------------------------------------------
+	//描画
+	void  Object::ClearState::render()
+	{
+		owner_->TestFont->Draw(ML::Box2D(owner_->pos.x, owner_->pos.y, ge->screen2DWidth, ge->screen2DHeight),
+			owner_->btn[owner_->nowBtn]
 		);
 
+		owner_->TestFont->Draw(ML::Box2D(owner_->pos.x - 100.f, owner_->pos.y - 100.f, ge->screen2DWidth, ge->screen2DHeight),
+			"CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f)
+		);
 	}
-
+	//段階を変更
+	void  Object::ChangeState(StateBase* state_)
+	{
+		delete state;
+		state = state_;
+		moveCnt = 0;
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -94,6 +168,7 @@ namespace  Game
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -115,7 +190,14 @@ namespace  Game
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object():state(new NormalState(this)) {	}
+	//-------------------------------------------------------------------
+	void Object::Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_)
+	{
+		auto player = Create(true);
+		player->pos = pos_;
+		player->controller = controller_;
+	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()

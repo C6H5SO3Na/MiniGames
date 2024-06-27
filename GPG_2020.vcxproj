@@ -138,6 +138,8 @@
     <ClCompile Include="easing.cpp" />
     <ClCompile Include="fpscounter.cpp" />
     <ClCompile Include="GameEngine_Ver3_83.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGame.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiPlayer.cpp" />
     <ClCompile Include="myLib.cpp" />
     <ClCompile Include="MyPG.cpp" />
     <ClCompile Include="randomLib.cpp" />
@@ -145,7 +147,6 @@
     <ClCompile Include="Task_Effect00.cpp" />
     <ClCompile Include="Task_Ending.cpp" />
     <ClCompile Include="Task_Game.cpp" />
-    <ClCompile Include="Task_TaxiGame.cpp" />
     <ClCompile Include="Task_Title.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="XI2018_Ver1_0.cpp" />
@@ -167,6 +168,8 @@
     <ClInclude Include="easing.h" />
     <ClInclude Include="fpscounter.h" />
     <ClInclude Include="GameEngine_Ver3_83.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGame.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiPlayer.h" />
     <ClInclude Include="myLib.h" />
     <ClInclude Include="MyPG.h" />
     <ClInclude Include="randomLib.h" />
@@ -175,7 +178,6 @@
     <ClInclude Include="Task_Effect00.h" />
     <ClInclude Include="Task_Ending.h" />
     <ClInclude Include="Task_Game.h" />
-    <ClInclude Include="Task_TaxiGame.h" />
     <ClInclude Include="Task_Title.h" />
     <ClInclude Include="XI2018_Ver1_0.h" />
   </ItemGroup>

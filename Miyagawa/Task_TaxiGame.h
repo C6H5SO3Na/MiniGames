@@ -3,9 +3,9 @@
 //-------------------------------------------------------------------
 //ゲーム本編
 //-------------------------------------------------------------------
-#include "GameEngine_Ver3_83.h"
+#include "../GameEngine_Ver3_83.h"
 
-namespace  Game
+namespace  TaxiGame
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("本編");	//グループ名
