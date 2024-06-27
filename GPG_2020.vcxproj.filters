@@ -29,6 +29,9 @@
     <Filter Include="MyPG\Task\ending">
       <UniqueIdentifier>{5995aebb-b88d-4733-b1a0-1ef6a853acdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Ohara">
+      <UniqueIdentifier>{48770eeb-ac88-408c-b84c-9ac1bc2e69ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -112,6 +115,12 @@
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriGame.cpp">
+      <Filter>MyPG\Task\Ohara</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriPlayer.cpp">
+      <Filter>MyPG\Task\Ohara</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -189,6 +198,12 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriGame.h">
+      <Filter>MyPG\Task\Ohara</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriPlayer.h">
+      <Filter>MyPG\Task\Ohara</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
