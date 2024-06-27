@@ -29,6 +29,18 @@
     <Filter Include="MyPG\Task\ending">
       <UniqueIdentifier>{5995aebb-b88d-4733-b1a0-1ef6a853acdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\StageAlarmClock">
+      <UniqueIdentifier>{967bffd2-e311-4efe-9967-e3eaea3e4c3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageAlarmClock\hand">
+      <UniqueIdentifier>{4ef9124b-1768-4585-9aff-ef06cca7c7a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageAlarmClock\StageTask">
+      <UniqueIdentifier>{fdaa59fb-7f82-4335-8609-2177627a31ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageAlarmClock\Clock">
+      <UniqueIdentifier>{5e147f02-3f61-4c5f-81c8-40d980f9ccdb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -112,6 +124,15 @@
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_hand.cpp">
+      <Filter>MyPG\Task\StageAlarmClock\hand</Filter>
+    </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_Clock.cpp">
+      <Filter>MyPG\Task\StageAlarmClock\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp">
+      <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -189,6 +210,15 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_hand.h">
+      <Filter>MyPG\Task\StageAlarmClock\hand</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_Clock.h">
+      <Filter>MyPG\Task\StageAlarmClock\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h">
+      <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
