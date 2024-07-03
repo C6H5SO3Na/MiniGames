@@ -41,6 +41,9 @@
     <Filter Include="MyPG\Task\StageAlarmClock\Clock">
       <UniqueIdentifier>{5e147f02-3f61-4c5f-81c8-40d980f9ccdb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Ohara">
+      <UniqueIdentifier>{48770eeb-ac88-408c-b84c-9ac1bc2e69ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -133,6 +136,12 @@
     <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp">
       <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
     </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriGame.cpp">
+      <Filter>MyPG\Task\Ohara</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriPlayer.cpp">
+      <Filter>MyPG\Task\Ohara</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -219,6 +228,12 @@
     </ClInclude>
     <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h">
       <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriGame.h">
+      <Filter>MyPG\Task\Ohara</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriPlayer.h">
+      <Filter>MyPG\Task\Ohara</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
