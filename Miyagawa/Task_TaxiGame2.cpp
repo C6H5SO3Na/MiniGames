@@ -2,14 +2,15 @@
 //ゲーム本編
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiGame.h"
+#include  "Task_TaxiGame2.h"
 
 #include "../randomLib.h"
 
 #include  "../Task_Ending.h"
-#include  "Task_TaxiGamePlayer.h"
+#include  "Task_TaxiGamePlayer2.h"
+#include  "Task_TaxiGameTaxi.h"
 
-namespace  TaxiGame
+namespace  TaxiGame2
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -37,10 +38,14 @@ namespace  TaxiGame
 
 
 		//★タスクの生成
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth / 4.f, ge->screenHeight / 4.f), ge->in1);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth * 3.f / 4.f, ge->screenHeight / 4.f), ge->in2);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth / 4.f, ge->screenHeight * 3.f / 4.f), ge->in3);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth * 3.f / 4.f, ge->screenHeight * 3.f / 4.f), ge->in4);
+		TaxiGamePlayer2::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 1 / 5.f), ge->in1);
+		TaxiGamePlayer2::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 2 / 5.f), ge->in2);
+		TaxiGamePlayer2::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 3 / 5.f), ge->in3);
+		TaxiGamePlayer2::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 4 / 5.f), ge->in4);
+
+		for (int i = 0; i < 4; ++i) {
+			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (1 + i) / 5.f));
+		}
 		return  true;
 	}
 	//-------------------------------------------------------------------

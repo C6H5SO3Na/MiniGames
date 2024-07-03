@@ -139,7 +139,10 @@
     <ClCompile Include="fpscounter.cpp" />
     <ClCompile Include="GameEngine_Ver3_83.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp" />
-    <ClCompile Include="Miyagawa\Task_TaxiPlayer.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGame2.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer2.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp" />
     <ClCompile Include="myLib.cpp" />
     <ClCompile Include="MyPG.cpp" />
     <ClCompile Include="randomLib.cpp" />
@@ -169,7 +172,10 @@
     <ClInclude Include="fpscounter.h" />
     <ClInclude Include="GameEngine_Ver3_83.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGame.h" />
-    <ClInclude Include="Miyagawa\Task_TaxiPlayer.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGame2.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer2.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h" />
     <ClInclude Include="myLib.h" />
     <ClInclude Include="MyPG.h" />
     <ClInclude Include="randomLib.h" />

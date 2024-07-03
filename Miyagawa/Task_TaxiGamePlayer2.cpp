@@ -2,16 +2,17 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiPlayer.h"
+#include  "Task_TaxiGamePlayer2.h"
 #include "../randomLib.h"
 
-namespace TaxiPlayer
+namespace TaxiGamePlayer2
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		img = DG::Image::Create("./data/image/chara02.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -30,7 +31,9 @@ namespace TaxiPlayer
 		res = Resource::Create();
 
 		//★データ初期化
+		render2D_Priority[1] = 0.5f;
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
+
 		//★タスクの生成
 		nowBtn = GetRandom(0, 3);
 		return  true;
@@ -80,17 +83,22 @@ namespace TaxiPlayer
 	{
 	}
 	//-------------------------------------------------------------------
-	//受け身
+	//ボタンが一致したときの処理
 	void  Object::MatchButton()
 	{
 		++matchCnt;
+		pos.y -= 150.f;
+		if (matchCnt >= 10) {
+			isClear = true;
+			return;
+		}
 		nowBtn = GetRandom(0, 3);
 	}
 	//-------------------------------------------------------------------
 	//思考
 	void  Object::NormalState::think()
 	{
-		if (owner_->matchCnt >= 10) {
+		if (owner_->isClear) {
 			owner_->ChangeState(new ClearState(owner_));
 		}
 	}
@@ -99,22 +107,22 @@ namespace TaxiPlayer
 	void  Object::NormalState::move()
 	{
 		if (owner_->input.B1.down) {
-			if (owner_->nowBtn == 0) {
+			if (owner_->nowBtn == A) {
 				owner_->MatchButton();
 			}
 		}
 		if (owner_->input.B2.down) {
-			if (owner_->nowBtn == 1) {
+			if (owner_->nowBtn == B) {
 				owner_->MatchButton();
 			}
 		}
 		if (owner_->input.B3.down) {
-			if (owner_->nowBtn == 2) {
+			if (owner_->nowBtn == X) {
 				owner_->MatchButton();
 			}
 		}
 		if (owner_->input.B4.down) {
-			if (owner_->nowBtn == 3) {
+			if (owner_->nowBtn == Y) {
 				owner_->MatchButton();
 			}
 		}
@@ -123,9 +131,33 @@ namespace TaxiPlayer
 	//描画
 	void  Object::NormalState::render()
 	{
-		owner_->TestFont->Draw(ML::Box2D(owner_->pos.x, owner_->pos.y, ge->screen2DWidth, ge->screen2DHeight),
-			owner_->btn[owner_->nowBtn]
-		);
+		{
+			//描画矩形
+			ML::Box2D src(0, 0, 32, 80);
+
+			ML::Box2D draw(
+				-src.w,
+				-src.h,
+				-src.w * 2,
+				src.h * 2
+			);
+
+			draw.Offset(owner_->pos);
+
+			owner_->res->img->Draw(draw, src);
+		}
+
+		{
+			//描画矩形
+			ML::Box2D draw(
+				static_cast<int>(owner_->pos.x),
+				static_cast<int>(owner_->pos.y),
+				ge->screen2DWidth,
+				ge->screen2DHeight
+			);
+
+			owner_->TestFont->Draw(draw, owner_->btn[owner_->nowBtn]);
+		}
 	}
 	//-------------------------------------------------------------------
 	//思考
@@ -141,12 +173,31 @@ namespace TaxiPlayer
 	//描画
 	void  Object::ClearState::render()
 	{
-		owner_->TestFont->Draw(ML::Box2D(owner_->pos.x, owner_->pos.y, ge->screen2DWidth, ge->screen2DHeight),
-			owner_->btn[owner_->nowBtn]
+		{
+			//描画矩形
+			ML::Box2D src(0, 0, 32, 80);
+
+			ML::Box2D draw(
+				-src.w,
+				-src.h,
+				-src.w * 2,
+				src.h * 2
+			);
+
+			draw.Offset(owner_->pos);
+
+			owner_->res->img->Draw(draw, src);
+		}
+
+		//描画矩形
+		ML::Box2D draw(
+			static_cast<int>(owner_->pos.x) - 100,
+			static_cast<int>(owner_->pos.y) - 100,
+			ge->screen2DWidth,
+			ge->screen2DHeight
 		);
 
-		owner_->TestFont->Draw(ML::Box2D(owner_->pos.x - 100.f, owner_->pos.y - 100.f, ge->screen2DWidth, ge->screen2DHeight),
-			"CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f)
+		owner_->TestFont->Draw(draw, "CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f)
 		);
 	}
 	//段階を変更
@@ -190,7 +241,7 @@ namespace TaxiPlayer
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object():state(new NormalState(this)) {	}
+	Object::Object() :state(new NormalState(this)), isClear(false) {	}
 	//-------------------------------------------------------------------
 	void Object::Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_)
 	{

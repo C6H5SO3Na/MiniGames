@@ -1,21 +1,18 @@
 //-------------------------------------------------------------------
-//ゲーム本編
+//
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiGame.h"
-
+#include  "Task_TaxiGameTaxi.h"
 #include "../randomLib.h"
 
-#include  "../Task_Ending.h"
-#include  "Task_TaxiGamePlayer.h"
-
-namespace  TaxiGame
+namespace TaxiGameTaxi
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		img = DG::Image::Create("./data/image/Taxi.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -34,13 +31,9 @@ namespace  TaxiGame
 		res = Resource::Create();
 
 		//★データ初期化
-
+		render2D_Priority[1] = 0.7f;
 
 		//★タスクの生成
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth / 4.f, ge->screenHeight / 4.f), ge->in1);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth * 3.f / 4.f, ge->screenHeight / 4.f), ge->in2);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth / 4.f, ge->screenHeight * 3.f / 4.f), ge->in3);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth * 3.f / 4.f, ge->screenHeight * 3.f / 4.f), ge->in4);
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -48,12 +41,10 @@ namespace  TaxiGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-		ge->KillAll_G("プレイヤー");
+
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = Ending::Object::Create(true);
 		}
 
 		return  true;
@@ -62,21 +53,33 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		//auto inp = ge->in1->GetState( );
-		//if (inp.ST.down) {
-		//	ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-		//	ge->CreateEffect(99, ML::Vec2(0, 0));
-		//}
-		//if (ge->getCounterFlag("test") == ge->LIMIT) {
-		//	Kill();
-		//}
+		Think();
+		Move();
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		ML::Box2D src(0, 0, 128, 128);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
+		draw.Offset(pos);
+		res->img->Draw(draw, src);
 	}
-
+	//-------------------------------------------------------------------
+	//思考
+	void  Object::Think()
+	{
+	}
+	//-------------------------------------------------------------------
+	//行動
+	void  Object::Move()
+	{
+	}
+	//-------------------------------------------------------------------
+	//受け身
+	void  Object::Recieved()
+	{
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -89,6 +92,7 @@ namespace  TaxiGame
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -110,7 +114,13 @@ namespace  TaxiGame
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object() {}
+	//-------------------------------------------------------------------
+	void Object::Spawn(const ML::Vec2& pos_)
+	{
+		auto taxi = Create(true);
+		taxi->pos = pos_;
+	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
