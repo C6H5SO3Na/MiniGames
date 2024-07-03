@@ -2,10 +2,11 @@
 //バランスゲーム
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_BlanceGame.h"
-#include  "Task_BlanceGamePM.h"
+#include  "Task_ClassifyGame.h"
+#include  "Task_ClassifyGamePlayer.h"
+#include  "CGBChara.h"
 
-namespace  BlanceGame
+namespace  ClassifyGame
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -31,12 +32,18 @@ namespace  BlanceGame
 
 		//★データ初期化
 		gameCnt = 0;
-		shake = false;
-		for (int i = 0; i < 4; ++i) {
-			Playing[i] = true;
-		}
+		cList.push_back(ge->in1);
+		cList.push_back(ge->in2);
+		cList.push_back(ge->in3);
+		cList.push_back(ge->in4);
 		//★タスクの生成
-		auto bgpm = BlanceGamePM::Object::Create(true); //プレイヤマネージャーを生成
+
+		for (int i = 0; i < 4; ++i) {
+			auto p = CGPlayer::Object::Create(true);
+			pList.push_back(p);
+			pList[i]->pos=ML::Vec2(200 + 400*i, 500);
+			pList[i]->controller = cList[i];
+		}
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -44,7 +51,7 @@ namespace  BlanceGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("バランスゲームPM");
+		ge->KillAll_G("BGPlayer");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -57,15 +64,40 @@ namespace  BlanceGame
 	void  Object::UpDate()
 	{
 		gameCnt++;
-		if (gameCnt % 240 == 0)
-			shake = true;
-		else
-			shake = false;
+		if (gameCnt % 300 == 0) {
+			auto p = ge->GetTasks<CGPlayer::Object>("BGPlayer");
+			int r = rand() % 3;
+			switch (r)
+			{
+			case 0:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+						pList[i]->SetCGState(CGBChara::CGstate::PlayR);
+					}
+				}
+				break;
+			case 1:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+						pList[i]->SetCGState(CGBChara::CGstate::PlayG);
+					}
+				}
+				break;
+			case 2:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+						pList[i]->SetCGState(CGBChara::CGstate::PlayB);
+					}
+				}
+				break;
+			}
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

@@ -1,11 +1,13 @@
 //-------------------------------------------------------------------
-//バランスゲーム
+//バランスゲームプレイヤマネージャー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_BlanceGame.h"
 #include  "Task_BlanceGamePM.h"
+#include  "Task_BlanceGamePlayer.h"
+#include  "BGBChara.h"
 
-namespace  BlanceGame
+namespace  BlanceGamePM
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -30,13 +32,18 @@ namespace  BlanceGame
 		this->res = Resource::Create();
 
 		//★データ初期化
-		gameCnt = 0;
-		shake = false;
-		for (int i = 0; i < 4; ++i) {
-			Playing[i] = true;
-		}
+		cList.push_back(ge->in1);
+		cList.push_back(ge->in2);
+		cList.push_back(ge->in3);
+		cList.push_back(ge->in4);
 		//★タスクの生成
-		auto bgpm = BlanceGamePM::Object::Create(true); //プレイヤマネージャーを生成
+
+		for (int i = 0; i < 4; ++i) {
+			auto p = BGPlayer::Object::Create(true);
+			pList.push_back(p);
+			pList[i]->pos=ML::Vec2(200 + 400*i, 500);
+			pList[i]->controller = cList[i];
+		}
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -44,7 +51,7 @@ namespace  BlanceGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("バランスゲームPM");
+		ge->KillAll_G("BGPlayer");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -56,16 +63,44 @@ namespace  BlanceGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		gameCnt++;
-		if (gameCnt % 240 == 0)
-			shake = true;
-		else
-			shake = false;
+		auto bg = ge->GetTask<BlanceGame::Object>("バランスゲーム");
+		if (bg->shake) {
+			auto p = ge->GetTasks<BGPlayer::Object>("BGPlayer");
+			int r = rand() % 2;
+			switch (r)
+			{
+			case 0:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
+						pList[i]->SetBGState(BGBChara::BGstate::PlayL);
+					}
+					else
+					{
+						bg->Playing[i] = false;
+					}
+				}
+				break;
+			case 1:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
+						pList[i]->SetBGState(BGBChara::BGstate::PlayR);
+					}
+					else
+					{
+						bg->Playing[i] = false;
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

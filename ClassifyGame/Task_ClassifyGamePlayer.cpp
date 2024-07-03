@@ -1,23 +1,24 @@
 //-------------------------------------------------------------------
-//バランスゲーム
+//バランスゲームのプレイヤー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_BlanceGame.h"
-#include  "Task_BlanceGamePM.h"
+#include  "Task_ClassifyGamePlayer.h"
 
-namespace  BlanceGame
+namespace  CGPlayer
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		playerImg = DG::Image::Create("./data/image/chara02.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		playerImg.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -30,13 +31,10 @@ namespace  BlanceGame
 		this->res = Resource::Create();
 
 		//★データ初期化
-		gameCnt = 0;
-		shake = false;
-		for (int i = 0; i < 4; ++i) {
-			Playing[i] = true;
-		}
+		direction = 0;
+		SetCGState(CGstate::CStart);
 		//★タスクの生成
-		auto bgpm = BlanceGamePM::Object::Create(true); //プレイヤマネージャーを生成
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -44,7 +42,7 @@ namespace  BlanceGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("バランスゲームPM");
+
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -56,16 +54,34 @@ namespace  BlanceGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		gameCnt++;
-		if (gameCnt % 240 == 0)
-			shake = true;
-		else
-			shake = false;
+		auto in = controller->GetState();
+		switch (GetCGState())
+		{
+		case CGstate::Playing:
+			break;
+		case CGstate::PlayR:
+			
+			break;
+		case CGstate::PlayG:
+			
+			break;
+		case CGstate::PlayB:
+			break;
+		case CGstate::Fail:
+			
+			break;
+		}
+		
+		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		ML::Box2D src(0, 0, 32, 80);
+		ML::Box2D draw(0, 0, 32, 80);
+		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(16, 80));
+		res->playerImg->Draw(draw.OffsetCopy(pos), src);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

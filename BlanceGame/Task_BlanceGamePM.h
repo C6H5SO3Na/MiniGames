@@ -1,14 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//バランスゲーム
+//バランスゲームプレイヤマネージャー
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
+#include "Task_BlanceGamePlayer.h"
 
-namespace  BlanceGame
+namespace  BlanceGamePM
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("バランスゲーム");	//グループ名
+	const  string  defGroupName("バランスゲームPM");	//グループ名
 	const  string  defName("NoName");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
@@ -23,7 +24,7 @@ namespace  BlanceGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
-		
+	
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -47,8 +48,7 @@ namespace  BlanceGame
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		bool Playing[4];	//プレイヤのスコア
-		int gameCnt;
-		bool shake;	//電車が揺れる
+		vector<BGPlayer::Object::SP> pList;	//プレイヤリスト
+		vector<XI::GamePad::SP> cList;		//コントローラリスト
 	};
 }

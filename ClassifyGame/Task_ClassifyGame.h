@@ -4,11 +4,12 @@
 //バランスゲーム
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
+#include "Task_ClassifyGamePlayer.h"
 
-namespace  BlanceGame
+namespace  ClassifyGame
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("バランスゲーム");	//グループ名
+	const  string  defGroupName("書類分類ゲーム");	//グループ名
 	const  string  defName("NoName");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
@@ -23,7 +24,7 @@ namespace  BlanceGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
-		
+	
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -47,8 +48,8 @@ namespace  BlanceGame
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		bool Playing[4];	//プレイヤのスコア
 		int gameCnt;
-		bool shake;	//電車が揺れる
+		vector<CGPlayer::Object::SP> pList;	//プレイヤリスト
+		vector<XI::GamePad::SP> cList;		//コントローラリスト
 	};
 }
