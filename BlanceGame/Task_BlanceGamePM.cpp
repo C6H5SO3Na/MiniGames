@@ -64,6 +64,9 @@ namespace  BlanceGamePM
 	void  Object::UpDate()
 	{
 		auto bg = ge->GetTask<BlanceGame::Object>("バランスゲーム");
+		if (!bg) {
+			return;
+		}
 		if (bg->shake) {
 			auto p = ge->GetTasks<BGPlayer::Object>("BGPlayer");
 			int r = rand() % 2;
@@ -74,10 +77,6 @@ namespace  BlanceGamePM
 					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayL);
 					}
-					else
-					{
-						bg->Playing[i] = false;
-					}
 				}
 				break;
 			case 1:
@@ -85,16 +84,13 @@ namespace  BlanceGamePM
 					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayR);
 					}
-					else
-					{
-						bg->Playing[i] = false;
-					}
 				}
 				break;
 			default:
 				break;
 			}
 		}
+
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

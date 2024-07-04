@@ -60,6 +60,9 @@ namespace  BlanceGUIM
 	void  Object::UpDate()
 	{
 		auto bg = ge->GetTask<BlanceGame::Object>("ƒoƒ‰ƒ“ƒXƒQ[ƒ€");
+		if (!bg) {
+			return;
+		}
 		if (bg->shake) {
 			pos.x += 239;
 		}

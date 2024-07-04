@@ -33,9 +33,6 @@ namespace  BlanceGame
 		//★データ初期化
 		gameCnt = 0;
 		shake = false;
-		for (int i = 0; i < 4; ++i) {
-			Playing[i] = true;
-		}
 		//★タスクの生成
 		auto bgpm = BlanceGamePM::Object::Create(true); //プレイヤマネージャーを生成
 		auto bguim = BlanceGUIM::Object::Create(true);
@@ -47,7 +44,7 @@ namespace  BlanceGame
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("バランスゲームPM");
-
+		ge->KillAll_G("バランスゲームＵＩマネージャー");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}
@@ -63,6 +60,9 @@ namespace  BlanceGame
 			shake = true;
 		else
 			shake = false;
+		if (gameCnt > 120) {
+			this->Kill();
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

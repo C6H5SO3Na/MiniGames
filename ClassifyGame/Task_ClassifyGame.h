@@ -4,12 +4,11 @@
 //バランスゲーム
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
-#include "Task_ClassifyGamePlayer.h"
 
-namespace  ClassifyGamePM
+namespace  ClassifyGame
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("書類分類ゲームPM");	//グループ名
+	const  string  defGroupName("書類分類ゲーム");	//グループ名
 	const  string  defName("NoName");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
@@ -24,7 +23,7 @@ namespace  ClassifyGamePM
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
-	
+		
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -49,8 +48,5 @@ namespace  ClassifyGamePM
 	public:
 		//追加したい変数・メソッドはここに追加する
 		int gameCnt;
-
-		vector<CGPlayer::Object::SP> pList;	//プレイヤリスト
-		vector<XI::GamePad::SP> cList;		//コントローラリスト
 	};
 }

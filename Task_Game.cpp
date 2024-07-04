@@ -8,6 +8,7 @@
 
 #include  "Task_Ending.h"
 #include  "BlanceGame/Task_BlanceGame.h"
+#include  "ClassifyGame/Task_ClassifyGame.h"
 
 namespace  Game
 {
@@ -39,7 +40,8 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		auto bg = BlanceGame::Object::Create(true);//バランスゲームテスト用
+		//auto bg = BlanceGame::Object::Create(true);//バランスゲームテスト用
+		auto cg = ClassifyGame::Object::Create(true);//分類ゲームテスト用
 		return  true;
 	}
 	//-------------------------------------------------------------------

@@ -25,6 +25,7 @@ namespace  CGPlayer
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP playerImg;
+		DG::Image::SP bookImg[10];
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  CGBChara
@@ -45,12 +46,24 @@ namespace  CGPlayer
 		void  UpDate()		override;	//「実行」１フレーム毎に行う処理
 		void  Render2D_AF()	override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
+		
 	public:
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//追加したい変数・メソッドはここに追加する
 		//BCharaに含まれないモノのみここに追加する
 		void Recieved() {};
-		int direction;
+		int workTime;//分類の回数
 		XI::GamePad::SP controller;
+		struct book
+		{
+			int color;
+			ML::Vec2 bpos;
+			book():
+				color(3),
+				bpos(ML::Vec2(0, 0))
+			{}
+		};
+		book books[10];
+		void toAnotherState(int workT);
 	};
 }

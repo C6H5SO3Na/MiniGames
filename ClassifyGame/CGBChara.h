@@ -5,7 +5,8 @@ class CGBChara :public BChara
 	
 public:
 	CGBChara() :
-		cgState(CGstate::BStart)
+		cgState(CGstate::BStart),
+		firstFrameIntoState(false)
 	{}
 	enum CGstate {
 		BStart, //BeforeStart
@@ -22,7 +23,18 @@ public:
 	}
 	void SetCGState(CGstate c) {
 		this->cgState = c;
+		this->firstFrameIntoState = true;
 	}
+	bool FirstIntoState() {//始めてこのSTATEに入ることをチェック
+		if (this->firstFrameIntoState == true)
+		{
+			this->firstFrameIntoState = false;
+			return true;
+		}
+		return false;
+	}
+	
 private:
 	CGstate cgState;
+	bool firstFrameIntoState;
 };

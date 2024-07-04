@@ -47,7 +47,6 @@ namespace  BlanceGame
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		bool Playing[4];	//プレイヤのスコア
 		int gameCnt;
 		bool shake;	//電車が揺れる
 	};

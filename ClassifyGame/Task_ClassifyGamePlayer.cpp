@@ -12,6 +12,10 @@ namespace  CGPlayer
 	bool  Resource::Initialize()
 	{
 		playerImg = DG::Image::Create("./data/image/chara02.png");
+		for (int i = 0; i < 10; ++i) {
+			bookImg[i] = DG::Image::Create("./data/image/debugrect.png");
+		}
+	
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,8 +35,11 @@ namespace  CGPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
-		direction = 0;
+		workTime = 0;
 		SetCGState(CGstate::BStart);
+		for (int i = 0; i < 10; ++i) {
+			books[i].bpos = pos + ML::Vec2(0, -40);
+		}
 		//★タスクの生成
 
 		return  true;
@@ -60,12 +67,49 @@ namespace  CGPlayer
 		case CGstate::Playing:
 			break;
 		case CGstate::PlayR:
-			
+			if (FirstIntoState()) {
+				books[workTime].color = 0;
+				workTime++;
+			}
+			if (in.LStick.BL.down) {
+				moveCnt = 0;
+				books[workTime].bpos += ML::Vec2(-30, -100);
+				SetCGState(CGstate::Playing);
+			}
+			moveCnt++;
+			if (moveCnt = 119) {
+				toAnotherState(workTime);
+			}
 			break;
 		case CGstate::PlayG:
-			
+			if (FirstIntoState()) {
+				books[workTime].color = 2;
+				workTime++;
+			}
+			if (in.LStick.BU.down) {
+				moveCnt = 0;
+				books[workTime].bpos += ML::Vec2(0, -100);
+				SetCGState(CGstate::Playing);
+			}
+			moveCnt++;
+			if (moveCnt = 119) {
+				toAnotherState(workTime);
+			}
 			break;
 		case CGstate::PlayB:
+			if (FirstIntoState()) {
+				books[workTime].color = 1;
+				workTime++;
+			}
+			if (in.LStick.BR.down) {
+				moveCnt = 0;
+				books[workTime].bpos += ML::Vec2(30, 100);
+				SetCGState(CGstate::Playing);
+			}
+			moveCnt++;
+			if (moveCnt = 119) {
+				toAnotherState(workTime);
+			}
 			break;
 		case CGstate::Fail:
 			
@@ -74,14 +118,28 @@ namespace  CGPlayer
 		
 		
 	}
+	void  Object::toAnotherState(int workT) {
+		books[workT].color = 3;
+		moveCnt = 0;
+		books[workT].bpos += ML::Vec2(0, -200);
+	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D src(0, 0, 32, 80);
 		ML::Box2D draw(0, 0, 32, 80);
-		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(16, 80));
+		
 		res->playerImg->Draw(draw.OffsetCopy(pos), src);
+		src = ML::Box2D(0, 0, 32, 32);
+		draw = ML::Box2D(0, 0, 32, 32);
+		for (int i = 0; i < 10; ++i) {
+			if (workTime > i) {
+				src.x = books[i].color * 32;
+				ML::Box2D draw0 = draw.OffsetCopy(books[i].bpos);
+				res->bookImg[i]->Draw(draw0, src);
+			}
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
