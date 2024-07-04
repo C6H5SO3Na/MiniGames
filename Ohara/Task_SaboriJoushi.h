@@ -1,15 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//サボりミニゲームのプレイヤー
+//サボりミニゲームの上司
 //-------------------------------------------------------------------
 #include "OharaCharacterBase.h"
 
-namespace  SaboriPlayer
+namespace  SaboriJoushi
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("プレイヤー");	//グループ名
-	const  string  defName("サボりプレイヤー");		//タスク名
+	const  string  defGroupName("ギミック");	//グループ名
+	const  string  defName("上司");				//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -27,7 +27,7 @@ namespace  SaboriPlayer
 		DG::Image::SP image;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public OCharaBase
+	class  Object : public  OCharaBase
 	{
 	public:
 		virtual  ~Object();
@@ -43,7 +43,7 @@ namespace  SaboriPlayer
 		bool  B_Finalize();
 		bool  Initialize();	//「初期化」タスク生成時に１回だけ行う処理
 		void  UpDate()		override;	//「実行」１フレーム毎に行う処理
-		void  Render2D_AF()	override;	//「2D描画」１フレーム毎に行う処理
+		void  Render2D_AF()	override;	//「2D描画」１フレーム毎に知らせ行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 	public:
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
@@ -51,9 +51,9 @@ namespace  SaboriPlayer
 		//BCharaに含まれないモノのみここに追加する
 
 		//☆変数
-		XI::GamePad::SP controller;			//入力情報を受け取りたいコントローラーのデータを格納
-		float			totalSaboriTime;	//サボった時間の合計を保存しておく
-		bool			noticedToSabori;	//上司にさぼりを気づかれたらtrue
+		int  changeStateTime;			//状態を変更するタイミングを格納する
+		int	 changeStateKinds;			//変更する状態の種類を決める数字を格納する
+		bool hasFoundPlayerSabori;	//プレイヤーがさぼっていたらtrue
 
 		//☆メソッド
 		virtual void Think() override;
@@ -61,5 +61,6 @@ namespace  SaboriPlayer
 		virtual DrawInformation GetDrawImage() override;
 		virtual void Recieved() override {}
 
+		void CheckPlayerSabori(); //プレイヤーがさぼり状態かどうか判定する
 	};
 }

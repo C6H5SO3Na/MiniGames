@@ -140,8 +140,11 @@
     <ClCompile Include="GameEngine_Ver3_83.cpp" />
     <ClCompile Include="myLib.cpp" />
     <ClCompile Include="MyPG.cpp" />
+    <ClCompile Include="Ohara\OharaCharacterBase.cpp" />
     <ClCompile Include="Ohara\Task_SaboriGame.cpp" />
+    <ClCompile Include="Ohara\Task_SaboriJoushi.cpp" />
     <ClCompile Include="Ohara\Task_SaboriPlayer.cpp" />
+    <ClCompile Include="Ohara\Task_SaboriUIManager.cpp" />
     <ClCompile Include="randomLib.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="StageAlarmClock\Task_Clock.cpp" />
@@ -173,8 +176,12 @@
     <ClInclude Include="GameEngine_Ver3_83.h" />
     <ClInclude Include="myLib.h" />
     <ClInclude Include="MyPG.h" />
+    <ClInclude Include="Ohara\OharaCharacterBase.h" />
+    <ClInclude Include="Ohara\OharaPlayerNumber.h" />
     <ClInclude Include="Ohara\Task_SaboriGame.h" />
+    <ClInclude Include="Ohara\Task_SaboriJoushi.h" />
     <ClInclude Include="Ohara\Task_SaboriPlayer.h" />
+    <ClInclude Include="Ohara\Task_SaboriUIManager.h" />
     <ClInclude Include="randomLib.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="sound.h" />
