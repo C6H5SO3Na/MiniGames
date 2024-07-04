@@ -41,6 +41,21 @@
     <Filter Include="MyPG\Task\StageAlarmClock\Clock">
       <UniqueIdentifier>{5e147f02-3f61-4c5f-81c8-40d980f9ccdb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\StageBrushTeeth">
+      <UniqueIdentifier>{afd79d68-3f64-46d7-9904-8d92bce0e58b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageBrushTeeth\StageTask">
+      <UniqueIdentifier>{72370768-54d8-4e2f-a7d1-90e80dccf95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageBrushTeeth\brush">
+      <UniqueIdentifier>{a5d3f1a1-9ccd-42dd-8f9b-238931e480a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageBrushTeeth\Stain">
+      <UniqueIdentifier>{b1b67d59-eac9-442b-be66-b25610c897c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageBrushTeeth\CommonItemManager">
+      <UniqueIdentifier>{3bc82fd8-486a-426a-9ad9-4e1a07fb408e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -133,6 +148,21 @@
     <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp">
       <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
     </ClCompile>
+    <ClCompile Include="StageBrushTeeth\Task_StageBrushTeeth.cpp">
+      <Filter>MyPG\Task\StageBrushTeeth\StageTask</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBrushTeeth\Task_brush.cpp">
+      <Filter>MyPG\Task\StageBrushTeeth\brush</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBrushTeeth\Task_stain.cpp">
+      <Filter>MyPG\Task\StageBrushTeeth\Stain</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBrushTeeth\Task_StainManager.cpp">
+      <Filter>MyPG\Task\StageBrushTeeth\Stain</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBrushTeeth\Task_CommonItemManager02.cpp">
+      <Filter>MyPG\Task\StageBrushTeeth\CommonItemManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -219,6 +249,21 @@
     </ClInclude>
     <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h">
       <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBrushTeeth\Task_StageBrushTeeth.h">
+      <Filter>MyPG\Task\StageBrushTeeth\StageTask</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBrushTeeth\Task_brush.h">
+      <Filter>MyPG\Task\StageBrushTeeth\brush</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBrushTeeth\Task_stain.h">
+      <Filter>MyPG\Task\StageBrushTeeth\Stain</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBrushTeeth\Task_StainManager.h">
+      <Filter>MyPG\Task\StageBrushTeeth\Stain</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBrushTeeth\Task_CommonItemManager02.h">
+      <Filter>MyPG\Task\StageBrushTeeth\CommonItemManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

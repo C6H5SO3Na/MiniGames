@@ -2,24 +2,26 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_hand.h"
-#include  "Task_Clock.h"
+#include  "Task_StageBrushTeeth.h"
+#include  "Task_brush.h"
+#include  "Task_StainManager.h"
+#include  "Task_CommonItemManager02.h"
 
-namespace  hand
+namespace  StageBrushTeeth
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/hand.png");
+		this->bgImg = DG::Image::Create("./data/image/lunch50.png");
+		this->teethImg = DG::Image::Create("./data/image/teeth.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -32,15 +34,12 @@ namespace  hand
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->render2D_Priority[1] = -0.6f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
-		this->pos.x = 200;
-		this->pos.y = 200;
-		this->speed = 10.0f;
-		this->controller = ge->in1;
-		this->state = State::Right;
+		this->render2D_Priority[1] = 0.9f;
 
 		//★タスクの生成
+		/*auto brush = brush::Object::Create(true);*/
+		auto stainmanager = StainManager::Object::Create(true);
+		auto commonmanager = CommonItemManager02::Object::Create(true);
 
 		return  true;
 	}
@@ -49,7 +48,9 @@ namespace  hand
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
+		ge->KillAll_G("ブラシュ");
+		ge->KillAll_G("よごれマネージャー");
+		ge->KillAll_G("よごれ");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -61,60 +62,18 @@ namespace  hand
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (this->state)
-		{
-		case State::Left:
-			this->moveVec = ML::Vec2(-2 * this->speed, 0);
-			if (this->pos.x < 100)
-			{
-				this->state = State::Right;
-			}
-			break;
-		case State::Right:
-			this->moveVec = ML::Vec2(2 * this->speed, 0);
-			if (this->pos.x >1800)
-			{
-				this->state = State::Left;
-			}
-			break;
-		case State::Down:
-			this->moveVec = ML::Vec2(0, 2 * this->speed);
-			if (this->pos.y > 550)
-			{
-				this->state = State::Up;
-			}
-			break;
-		case State::Up:
-			this->moveVec = ML::Vec2(0, -2 * this->speed);
-			if (this->pos.y < 200)
-			{
-				this->state = State::Right;
-			}
-			break;
-		}
-
-		this->pos += this->moveVec;
-
-		if (this->controller) {
-			auto inp = this->controller->GetState();
-			if (inp.LStick.BD.down) { state = State::Down; }
-		}
-		
-		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
-		auto t = ge->GetTask<Clock::Object>("目覚まし時計");
-		auto you = t->hitBase.OffsetCopy(t->pos);
-			if (you.Hit(me))
-			{
-				this->speed = 0;
-			}		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 256, 256);
-		this->res->img->Draw(draw, src);
+		ML::Box2D draw(0, 0, 1920, 1080);
+		ML::Box2D src(0, 0, 1920, 1080);
+		this->res->bgImg->Draw(draw, src);
+
+		ML::Box2D draw2(300, 50, 1280, 1080);
+		ML::Box2D src2(0, 0, 1280, 1080);
+		this->res->teethImg->Draw(draw2, src2);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

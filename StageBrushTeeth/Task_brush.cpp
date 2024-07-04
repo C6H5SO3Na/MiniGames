@@ -2,17 +2,17 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_hand.h"
-#include  "Task_Clock.h"
+#include  "Task_brush.h"
+#include  "Task_stain.h"
 
-namespace  hand
+namespace  brush
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/hand.png");
+		this->img = DG::Image::Create("./data/image/brush.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -33,12 +33,12 @@ namespace  hand
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
-		this->pos.x = 200;
-		this->pos.y = 200;
-		this->speed = 10.0f;
-		this->controller = ge->in1;
-		this->state = State::Right;
+		this->hitBase = ML::Box2D(-250, -50, 500, 100);
+		this->pos.x = 0;
+		this->pos.y = 0;
+		this->speed = 6.0f;
+		/*this->controller = ge->in1;*/
+		
 
 		//★タスクの生成
 
@@ -61,59 +61,39 @@ namespace  hand
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (this->state)
+		auto inp = this->controller->GetState();
+		if (inp.LStick.volume > 0)
 		{
-		case State::Left:
-			this->moveVec = ML::Vec2(-2 * this->speed, 0);
-			if (this->pos.x < 100)
-			{
-				this->state = State::Right;
-			}
-			break;
-		case State::Right:
-			this->moveVec = ML::Vec2(2 * this->speed, 0);
-			if (this->pos.x >1800)
-			{
-				this->state = State::Left;
-			}
-			break;
-		case State::Down:
-			this->moveVec = ML::Vec2(0, 2 * this->speed);
-			if (this->pos.y > 550)
-			{
-				this->state = State::Up;
-			}
-			break;
-		case State::Up:
-			this->moveVec = ML::Vec2(0, -2 * this->speed);
-			if (this->pos.y < 200)
-			{
-				this->state = State::Right;
-			}
-			break;
+			float x = cos(inp.LStick.angleDYP) * this->speed;
+			float y = sin(inp.LStick.angleDYP) * this->speed;
+			this->moveVec = ML::Vec2(x, y);
+
+		}
+		else
+		{
+			this->moveVec = ML::Vec2(0, 0);
 		}
 
 		this->pos += this->moveVec;
 
-		if (this->controller) {
-			auto inp = this->controller->GetState();
-			if (inp.LStick.BD.down) { state = State::Down; }
-		}
-		
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
-		auto t = ge->GetTask<Clock::Object>("目覚まし時計");
-		auto you = t->hitBase.OffsetCopy(t->pos);
+		auto stains = ge->GetTasks<stain::Object>("よごれ");
+		for (auto s = stains->begin(); s != stains->end(); s++)
+		{
+			auto you = (*s)->hitBase.OffsetCopy((*s)->pos);
 			if (you.Hit(me))
 			{
-				this->speed = 0;
-			}		
+				(*s)->Kill();
+			}
+		}
+		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 256, 256);
+		ML::Box2D src(0, 0, 1000, 200);
 		this->res->img->Draw(draw, src);
 	}
 
