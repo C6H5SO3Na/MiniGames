@@ -32,6 +32,9 @@
     <Filter Include="MyPG\Task\Ohara">
       <UniqueIdentifier>{48770eeb-ac88-408c-b84c-9ac1bc2e69ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Ohara\SaboriGame">
+      <UniqueIdentifier>{847f6113-3667-437e-b7f5-fbe871622022}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -115,11 +118,20 @@
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
-    <ClCompile Include="Ohara\Task_SaboriGame.cpp">
+    <ClCompile Include="Ohara\OharaCharacterBase.cpp">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriGame.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriJoushi.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
     <ClCompile Include="Ohara\Task_SaboriPlayer.cpp">
-      <Filter>MyPG\Task\Ohara</Filter>
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriUIManager.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,11 +211,23 @@
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
-    <ClInclude Include="Ohara\Task_SaboriGame.h">
+    <ClInclude Include="Ohara\OharaCharacterBase.h">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClInclude>
-    <ClInclude Include="Ohara\Task_SaboriPlayer.h">
+    <ClInclude Include="Ohara\OharaPlayerNumber.h">
       <Filter>MyPG\Task\Ohara</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriGame.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriJoushi.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriPlayer.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriUIManager.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

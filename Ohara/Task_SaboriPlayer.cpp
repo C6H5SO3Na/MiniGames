@@ -1,8 +1,10 @@
 //-------------------------------------------------------------------
-//サボりミニゲーム用プレイヤー
+//サボりミニゲームのプレイヤー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_SaboriPlayer.h"
+
+#include  "../fpscounter.h"
 
 namespace  SaboriPlayer
 {
@@ -11,7 +13,7 @@ namespace  SaboriPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/testImage/testCircle.png");
+		this->image = DG::Image::Create("./data/image/Ohara/testImage/testCircle.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,7 +33,7 @@ namespace  SaboriPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->pos = ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f);
+		this->state = State::PWork;
 		
 		//★タスクの生成
 
@@ -54,7 +56,7 @@ namespace  SaboriPlayer
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		this->moveCount++;
+		this->moveCnt++;
 
 		//状態判断
 		this->Think();
@@ -65,8 +67,8 @@ namespace  SaboriPlayer
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		//☆描画処理
-		DrawInformation drawImage = this->DrawImage();
+		//☆描画
+		DrawInformation drawImage = this->GetDrawImage();
 		drawImage.draw.Offset(this->pos);
 		
 		this->res->image->Draw(drawImage.draw, drawImage.src);
@@ -75,22 +77,23 @@ namespace  SaboriPlayer
 	//現在のプレイヤーの状態制御
 	void Object::Think()
 	{
+		auto input = this->controller->GetState();
 		State nowState = this->state;	//とりあえず現在の状態を代入
 
 		//モーションの切り替え
 		switch (nowState)
 		{
-		case State::Work:		//仕事状態
-			//ボタン入力でサボり状態へ
+		case State::PWork:		//仕事中状態
+			if (input.B1.on) { nowState = State::PSabori; } //サボり状態へ
 			break;
 
-		case State::Break:		//サボり状態
-			//ボタン入力をやめたら仕事状態へ
-			//上司に発見されたらサボりばれ状態へ
+		case State::PSabori:		//サボり状態
+			if (input.B1.up) { nowState = State::PWork; } //仕事中状態へ
+			if (noticedToSabori) { nowState = State::PNoticed; } //サボりばれ状態へ
 			break;
 
-		case State::Noticed:	//サボりばれ状態
-			//一定時間たったら仕事状態へ
+		case State::PNoticed:	//サボりばれ状態
+			if (this->moveCnt >= this->gameFps * 6) { nowState = State::PWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps する
 			break;
 		}
 
@@ -98,29 +101,25 @@ namespace  SaboriPlayer
 		this->UpdateState(nowState);
 	}
 	//-------------------------------------------------------------------
-	//状態更新時の処理
-	void Object::UpdateState(State nowState)
-	{
-		if (nowState != this->state)
-		{
-			this->state = nowState;
-			this->moveCount = 0;
-		}
-	}
-	//-------------------------------------------------------------------
 	//状態毎の行動処理
 	void Object::Move()
 	{
+		//fpscounterをインスタンス化する
+
 		switch (this->state)
 		{
-		case State::Break:
-			//サボった時間を加算
+		case State::PSabori:	//サボり状態
+			this->totalSaboriTime += 1.f / gameFps; // / gameFps を / GetFps() をに変更してモニターFPSにゲームが依存しないようにする
+			break;
+
+		case State::PNoticed:
+			this->noticedToSabori = false;
 			break;
 		}
 	}
 	//-------------------------------------------------------------------
 	//アニメーション制御
-	Object::DrawInformation Object::DrawImage()
+	Object::DrawInformation Object::GetDrawImage()
 	{
 		DrawInformation imageTable[] = {
 			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//仕事状態
@@ -131,15 +130,15 @@ namespace  SaboriPlayer
 		DrawInformation rtv;
 		switch (this->state)
 		{
-		case State::Work:		//仕事状態
+		case State::PWork:		//仕事中状態
 			rtv = imageTable[0];
 			break;
 
-		case State::Break:		//サボり状態
+		case State::PSabori:		//サボり状態
 			rtv = imageTable[1];
 			break;
 
-		case State::Noticed:	//サボりばれ状態
+		case State::PNoticed:	//サボりばれ状態
 			rtv = imageTable[2];
 			break;
 		}
@@ -183,8 +182,8 @@ namespace  SaboriPlayer
 	//-------------------------------------------------------------------
 	Object::Object()
 		: 
-		state(State::Work),
-		moveCount(0)
+		totalSaboriTime(0.f),
+		noticedToSabori(false)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
