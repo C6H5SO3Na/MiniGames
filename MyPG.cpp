@@ -5,7 +5,7 @@
 #define MYDEBUG
 #define	REFRESHRATE  60
 
-#include "./Miyagawa/Task_TaxiGame2.h"
+#include "./Miyagawa/Task_PayOffGame.h"
 
 namespace MyPG
 {
@@ -509,7 +509,7 @@ ge->debugRect(me, DEBUGRECTMODE::RED ,- ge->camera2D.x, -ge->camera2D.y);
 		this->dgi->EffectState().param.bgColor = ML::Color(0, 0.0f, 0.0f, 0.0f);
 
 		//初期実行タスク生成＆ゲームエンジンに登録
-		auto  ft = TaxiGame2::Object::Create(true);
+		auto  ft = PayOffGame::Object::Create(true);
 
 		//------------------------------------------------------------------------------------
 		//レイヤー毎の描画のON/OFF

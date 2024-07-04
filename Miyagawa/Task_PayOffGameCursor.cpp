@@ -2,17 +2,18 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiGamePlayer2.h"
+#include  "Task_PayOffGameCursor.h"
+#include  "Task_PayOffGameMoney.h"
 #include "../randomLib.h"
 
-namespace TaxiGamePlayer2
+namespace PayOffGameCursor
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/chara02.png");
+		img = DG::Image::Create("./data/image/debugRect.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -33,9 +34,10 @@ namespace TaxiGamePlayer2
 		//★データ初期化
 		render2D_Priority[1] = 0.5f;
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
-
+		speed = 5.f;
+		src = ML::Box2D(0, 0, 32, 32);
 		//★タスクの生成
-		nowBtn = GetRandom(0, 3);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -83,18 +85,6 @@ namespace TaxiGamePlayer2
 	{
 	}
 	//-------------------------------------------------------------------
-	//ボタンが一致したときの処理
-	void  Object::MatchButton()
-	{
-		++matchCnt;
-		pos.x -= 150.f;
-		if (matchCnt >= 10) {
-			isClear = true;
-			return;
-		}
-		nowBtn = GetRandom(0, 3);
-	}
-	//-------------------------------------------------------------------
 	//思考
 	void  Object::NormalState::think()
 	{
@@ -106,58 +96,32 @@ namespace TaxiGamePlayer2
 	//行動
 	void  Object::NormalState::move()
 	{
-		if (owner_->input.B1.down) {
-			if (owner_->nowBtn == A) {
-				owner_->MatchButton();
-			}
+		owner_->input = owner_->controller->GetState();
+		if (owner_->input.LStick.volume > 0) {
+			owner_->moveVec = ML::Vec2(cos(owner_->input.LStick.angleDYP),
+				sin(owner_->input.LStick.angleDYP)) * owner_->speed;
 		}
-		if (owner_->input.B2.down) {
-			if (owner_->nowBtn == B) {
-				owner_->MatchButton();
-			}
+		else {
+			owner_->moveVec *= 0.9f;
 		}
-		if (owner_->input.B3.down) {
-			if (owner_->nowBtn == X) {
-				owner_->MatchButton();
-			}
-		}
-		if (owner_->input.B4.down) {
-			if (owner_->nowBtn == Y) {
-				owner_->MatchButton();
-			}
-		}
+		owner_->pos += owner_->moveVec;
+		owner_->CheckHit(ge->GetTask<PayOffGameMoney::Object>(PayOffGameMoney::defGroupName));
 	}
 	//-------------------------------------------------------------------
 	//描画
 	void  Object::NormalState::render()
 	{
-		{
-			//描画矩形
-			ML::Box2D src(0, 0, 32, 80);
+		//描画矩形
+		ML::Box2D draw(
+			-owner_->src.w,
+			-owner_->src.h,
+			owner_->src.w * 2,
+			owner_->src.h * 2
+		);
 
-			ML::Box2D draw(
-				-src.w,
-				-src.h,
-				-src.w * 2,
-				src.h * 2
-			);
+		draw.Offset(owner_->pos);
 
-			draw.Offset(owner_->pos);
-
-			owner_->res->img->Draw(draw, src);
-		}
-
-		{
-			//描画矩形
-			ML::Box2D draw(
-				static_cast<int>(owner_->pos.x),
-				static_cast<int>(owner_->pos.y),
-				ge->screen2DWidth,
-				ge->screen2DHeight
-			);
-
-			owner_->TestFont->Draw(draw, owner_->btn[owner_->nowBtn]);
-		}
+		owner_->res->img->Draw(draw, owner_->src);
 	}
 	//-------------------------------------------------------------------
 	//思考
@@ -173,32 +137,6 @@ namespace TaxiGamePlayer2
 	//描画
 	void  Object::ClearState::render()
 	{
-		{
-			//描画矩形
-			ML::Box2D src(0, 0, 32, 80);
-
-			ML::Box2D draw(
-				-src.w,
-				-src.h,
-				-src.w * 2,
-				src.h * 2
-			);
-
-			draw.Offset(owner_->pos);
-
-			owner_->res->img->Draw(draw, src);
-		}
-
-		//描画矩形
-		ML::Box2D draw(
-			static_cast<int>(owner_->pos.x) - 100,
-			static_cast<int>(owner_->pos.y) - 100,
-			ge->screen2DWidth,
-			ge->screen2DHeight
-		);
-
-		owner_->TestFont->Draw(draw, "CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f)
-		);
 	}
 	//段階を変更
 	void  Object::ChangeState(StateBase* state_)
