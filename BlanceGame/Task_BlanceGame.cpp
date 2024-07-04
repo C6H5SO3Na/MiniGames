@@ -4,6 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_BlanceGame.h"
 #include  "Task_BlanceGamePM.h"
+#include  "Task_BlanceUIManager.h"
 
 namespace  BlanceGame
 {
@@ -37,6 +38,7 @@ namespace  BlanceGame
 		}
 		//★タスクの生成
 		auto bgpm = BlanceGamePM::Object::Create(true); //プレイヤマネージャーを生成
+		auto bguim = BlanceGUIM::Object::Create(true);
 		return  true;
 	}
 	//-------------------------------------------------------------------

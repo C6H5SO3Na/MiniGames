@@ -1,24 +1,25 @@
 //-------------------------------------------------------------------
-//バランスゲームのプレイヤー
+//バランスゲームＵＩマネージャー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_ClassifyGamePlayer.h"
+#include  "Task_BlanceUIManager.h"
+#include  "Task_BlanceGame.h"
+#include  "Task_BlanceGamePM.h"
 
-namespace  CGPlayer
+namespace  BlanceGUIM
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		playerImg = DG::Image::Create("./data/image/chara02.png");
+		backImg = DG::Image::Create("./data/image/train.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		playerImg.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,8 +32,12 @@ namespace  CGPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
-		direction = 0;
-		SetCGState(CGstate::BStart);
+		render2D_Priority[1] = 0.5;
+		pos = ML::Vec2{ 0,0 };
+		SetBGState(BGstate::Start);
+		for (int i = 0; i < 4; ++i) {
+			failFlag[i] = false;
+		}
 		//★タスクの生成
 
 		return  true;
@@ -54,34 +59,29 @@ namespace  CGPlayer
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto in = controller->GetState();
-		switch (GetCGState())
-		{
-		case CGstate::Playing:
-			break;
-		case CGstate::PlayR:
-			
-			break;
-		case CGstate::PlayG:
-			
-			break;
-		case CGstate::PlayB:
-			break;
-		case CGstate::Fail:
-			
-			break;
+		auto bg = ge->GetTask<BlanceGame::Object>("バランスゲーム");
+		if (bg->shake) {
+			pos.x += 239;
 		}
-		
-		
+		else
+		{
+			pos.x -= 1;
+		}
+		auto pm = ge->GetTask<BlanceGamePM::Object>("バランスゲームPM");
+		for (int i = 0; i < 4; ++i) {
+			if (pm->pList[i]->GetBGState() == BGstate::Fail) {
+				failFlag[i] = true;
+			}
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D src(0, 0, 32, 80);
-		ML::Box2D draw(0, 0, 32, 80);
-		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(16, 80));
-		res->playerImg->Draw(draw.OffsetCopy(pos), src);
+		ML::Box2D src = ML::Box2D(0, 0, 1255, 1058);
+		ML::Box2D draw = ML::Box2D(0, 0, 1255, 1058);
+		draw = draw.OffsetCopy(pos);
+		res->backImg->Draw(src, draw);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

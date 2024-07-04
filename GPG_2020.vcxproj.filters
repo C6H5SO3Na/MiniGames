@@ -142,6 +142,9 @@
     <ClCompile Include="BlanceGame\Task_BlanceGame.cpp">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClCompile>
+    <ClCompile Include="BlanceGame\Task_BlanceUIManager.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -239,6 +242,9 @@
       <Filter>MyPG\Task\Game\ClassifyGame</Filter>
     </ClInclude>
     <ClInclude Include="BlanceGame\Task_BlanceGame.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClInclude>
+    <ClInclude Include="BlanceGame\Task_BlanceUIManager.h">
       <Filter>MyPG\Task\Game\BlacneGame</Filter>
     </ClInclude>
   </ItemGroup>

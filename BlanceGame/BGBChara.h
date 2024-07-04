@@ -4,14 +4,17 @@ class BGBChara :public BChara
 {
 	
 public:
+	BGBChara():
+		bgState(BGstate::BStart)
+	{}
 	enum BGstate {
-		BStart,
-		Start,
-		Playing,
-		PlayR,
-		PlayL,
-		Fail,
-		GameOver
+		BStart, //BeforeStart
+		Start,	//Žn‚Ü‚é
+		Playing,//ƒvƒŒƒC’†
+		PlayR,	//‰E‚É“|‚·
+		PlayL,	//¶‚É“|‚·
+		Fail,	//Ž¸”s
+		GameOver//ƒQ[ƒ€I—¹
 	};
 	BGstate GetBGState() {
 		return this->bgState;
