@@ -147,6 +147,9 @@
     <ClCompile Include="Ohara\Task_SaboriUIManager.cpp" />
     <ClCompile Include="randomLib.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="StageAlarmClock\Task_Clock.cpp" />
+    <ClCompile Include="StageAlarmClock\Task_hand.cpp" />
+    <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp" />
     <ClCompile Include="Task_Effect00.cpp" />
     <ClCompile Include="Task_Ending.cpp" />
     <ClCompile Include="Task_Game.cpp" />
@@ -182,6 +185,9 @@
     <ClInclude Include="randomLib.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="sound.h" />
+    <ClInclude Include="StageAlarmClock\Task_Clock.h" />
+    <ClInclude Include="StageAlarmClock\Task_hand.h" />
+    <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h" />
     <ClInclude Include="Task_Effect00.h" />
     <ClInclude Include="Task_Ending.h" />
     <ClInclude Include="Task_Game.h" />
