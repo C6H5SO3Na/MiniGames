@@ -1,14 +1,13 @@
 //-------------------------------------------------------------------
-//ゲーム本編
+//
 //-------------------------------------------------------------------
-#include  "MyPG.h"
-#include  "Task_Game.h"
-#include  "StageAlarmClock/Task_StageAlarmClock.h"
-#include  "randomLib.h"
+#include  "../MyPG.h"
+#include  "Task_OguiFoodManager.h"
+#include  "Task_OguiFood.h"
+#include  "Task_OguiPlayer.h"
+#include  "Task_OguiGame.h"
 
-#include  "Task_Ending.h"
-
-namespace  Game
+namespace  OguiFoodManager
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -30,15 +29,11 @@ namespace  Game
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		res = Resource::Create();
+		this->res = Resource::Create();
 
 		//★データ初期化
-
-		//デバッグ用フォントの準備
-		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
-
+		
 		//★タスクの生成
-		auto stagealarmclock = StageAlarmClock::Object::Create(true);
 
 		return  true;
 	}
@@ -47,13 +42,10 @@ namespace  Game
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-		ge->KillAll_G("ステージ目覚まし時計");
 
 
-		if (!ge->QuitFlag() && nextTaskCreate) {
+		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = Ending::Object::Create(true);
 		}
 
 		return  true;
@@ -62,26 +54,75 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = ge->in1->GetState( );
-		if (inp.ST.down) {
-			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-			ge->CreateEffect(99, ML::Vec2(0, 0));
+		auto game = ge->GetTask<OguiGame::Object>("本編");
+
+		//大食いミニゲームタスクが取得できているか確認
+		if (game == nullptr)
+		{
+			return;
 		}
-		if (ge->getCounterFlag("test") == ge->LIMIT) {
-			Kill();
+
+		//ミニゲーム中の処理
+		if (game->isGameOver == false)
+		{
+			//☆料理の生成
+			//料理があるか確認
+			for (int i = 0; i < size(hasExistFoods); ++i)
+			{
+				//料理が無かったら30フレーム待った後、料理が無いプレイヤーの場所に料理を配置
+				if (this->hasExistFoods[i] == false)
+				{
+					this->createCount[i]++;
+					if (this->createCount[i] >= 10) //モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
+					{
+						this->createCount[i] = 0; //生成カウントをゼロクリアする
+						CreateFood((PlayerNum)(i + 1)); //i+1でどのプレイヤーの料理を生成するか示す
+						this->hasExistFoods[i] = true;
+					}
+				}
+			}
 		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		int x = GetRandom(-10, 10);
-		int y = GetRandom(-10, 10);
+	}
+	//-------------------------------------------------------------------
+	//料理の生成
+	void Object::CreateFood(PlayerNum food_PlayerNum)
+	{
+		//☆料理の生成
+		auto f = OguiFood::Object::Create(true);
+		f->hp = f->maxHP;
+		f->playerNum = food_PlayerNum;
+		f->pos = this->foodPositions[(int)food_PlayerNum - 1]; //受け取ったプレイヤー識別番号-1でどのプレイヤーの位置に料理を出現させるか示す
 
-		TestFont->Draw(ML::Box2D(100+x, 100+y, ge->screen2DWidth, ge->screen2DHeight),
-			"Game"
-		);
-
+		//☆料理が生成された情報を送る
+		SendCreateFoodInformation(food_PlayerNum);
+	}
+	//-------------------------------------------------------------------
+	//料理がなくなった情報を取得
+	void Object::NotExistFood(PlayerNum food_PlayerNum)
+	{
+		this->hasExistFoods[(int)food_PlayerNum - 1] = false; //受け取ったプレイヤー識別番号-1でどのプレイヤーに料理が無いかを示す
+	}
+	//-------------------------------------------------------------------
+	//料理を生成した情報を他タスクに送る
+	void Object::SendCreateFoodInformation(PlayerNum food_PlayerNum)
+	{
+		//☆プレイヤーに情報を送る
+		//プレイヤーを全て取得
+		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
+		for (auto p = players->begin(); p != players->end(); ++p)
+		{
+			//料理が生成されたプレイヤーか判定
+			if ((*p)->playerNum == food_PlayerNum)
+			{
+				//料理が生成されたのでtrueを送る
+				(*p)->SetExistFood(true);
+			}
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -96,6 +137,7 @@ namespace  Game
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+				
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -107,17 +149,21 @@ namespace  Game
 	//-------------------------------------------------------------------
 	bool  Object::B_Initialize()
 	{
-		return  Initialize();
+		return  this->Initialize();
 	}
 	//-------------------------------------------------------------------
-	Object::~Object() { B_Finalize(); }
+	Object::~Object() { this->B_Finalize(); }
 	bool  Object::B_Finalize()
 	{
-		auto  rtv = Finalize();
+		auto  rtv = this->Finalize();
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object()
+		:
+		createCount{30, 30, 30, 30},
+		hasExistFoods{false, false, false, false}
+	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
@@ -137,5 +183,5 @@ namespace  Game
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
 	//-------------------------------------------------------------------
-	Resource::~Resource() { Finalize(); }
+	Resource::~Resource() { this->Finalize(); }
 }

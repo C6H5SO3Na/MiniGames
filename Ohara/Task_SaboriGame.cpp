@@ -1,14 +1,17 @@
 //-------------------------------------------------------------------
-//ゲーム本編
+//サボりミニゲーム本編
 //-------------------------------------------------------------------
-#include  "MyPG.h"
-#include  "Task_Game.h"
-#include  "StageAlarmClock/Task_StageAlarmClock.h"
-#include  "randomLib.h"
+#include  "../MyPG.h"
+#include  "Task_SaboriGame.h"
+#include  "Task_SaboriPlayer.h"
+#include  "Task_SaboriJoushi.h"
+#include  "Task_SaboriUIManager.h"
 
-#include  "Task_Ending.h"
+#include  "../randomLib.h"
 
-namespace  Game
+#include  "Task_OguiGame.h"
+
+namespace  SaboriGame
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -34,11 +37,22 @@ namespace  Game
 
 		//★データ初期化
 
-		//デバッグ用フォントの準備
-		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
-
 		//★タスクの生成
-		auto stagealarmclock = StageAlarmClock::Object::Create(true);
+		//プレイヤー
+		for (int i = 0; i < size(controllers); ++i)
+		{
+			auto p = SaboriPlayer::Object::Create(true);
+			p->pos = this->playerFirstPos[i];
+			p->controller = this->controllers[i];
+			p->playerNum = playersNum[i];
+		}
+
+		//上司
+		auto j = SaboriJoushi::Object::Create(true);
+		j->pos = joushiFirstPos;
+
+		//UI管理
+		SaboriUIManager::Object::Create(true);
 
 		return  true;
 	}
@@ -48,12 +62,13 @@ namespace  Game
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("本編");
-		ge->KillAll_G("ステージ目覚まし時計");
-
+		ge->KillAll_G("プレイヤー");
+		ge->KillAll_G("ギミック");
+		ge->KillAll_G("管理");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = Ending::Object::Create(true);
+			auto next = OguiGame::Object::Create(true);
 		}
 
 		return  true;
@@ -62,10 +77,37 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = ge->in1->GetState( );
-		if (inp.ST.down) {
-			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-			ge->CreateEffect(99, ML::Vec2(0, 0));
+		//☆制限時間を減らす
+		if (this->isGameOver == false)
+		{
+			this->timeLimit -= 1.f / 60; // / 60 を / GetFps()に変更してモニターFPSにゲームが依存しないようにする
+
+			//制限時間が0未満だったら0にする
+			if (this->timeLimit < 0.f)
+			{
+				this->timeLimit = 0.f;
+			}
+		}
+
+		//☆制限時間が0になったらミニゲームを終了させる
+		if (this->timeLimit == 0.f)
+		{
+			//ミニゲームを終了させる
+			this->isGameOver = true;
+
+			//次のタスクへ行けるようにする
+			this->nextTaskToGoIs = true;
+		}
+
+		//☆次のタスクに行くまでのカウント
+		if (this->nextTaskToGoIs == true)
+		{
+			this->countToNextTask++;
+		}
+
+		//☆統括タスク消滅申請
+		if (this->countToNextTask == 60 * 10) { //60に * GetFps() / GameFps をする 
+			ge->StartCounter("test", 0); 
 		}
 		if (ge->getCounterFlag("test") == ge->LIMIT) {
 			Kill();
@@ -75,13 +117,6 @@ namespace  Game
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		int x = GetRandom(-10, 10);
-		int y = GetRandom(-10, 10);
-
-		TestFont->Draw(ML::Box2D(100+x, 100+y, ge->screen2DWidth, ge->screen2DHeight),
-			"Game"
-		);
-
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -117,7 +152,13 @@ namespace  Game
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object()
+		:
+		timeLimit(30.f), //制限時間を設定
+		isGameOver(false),
+		nextTaskToGoIs(false),
+		countToNextTask(0)
+	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
