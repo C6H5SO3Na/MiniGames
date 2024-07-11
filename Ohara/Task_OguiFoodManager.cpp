@@ -1,17 +1,13 @@
 //-------------------------------------------------------------------
-//サボりミニゲーム本編
+//
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_SaboriGame.h"
-#include  "Task_SaboriPlayer.h"
-#include  "Task_SaboriJoushi.h"
-#include  "Task_SaboriUIManager.h"
-
-#include  "../randomLib.h"
-
+#include  "Task_OguiFoodManager.h"
+#include  "Task_OguiFood.h"
+#include  "Task_OguiPlayer.h"
 #include  "Task_OguiGame.h"
 
-namespace  SaboriGame
+namespace  OguiFoodManager
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -33,26 +29,11 @@ namespace  SaboriGame
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		res = Resource::Create();
+		this->res = Resource::Create();
 
 		//★データ初期化
-
+		
 		//★タスクの生成
-		//プレイヤー
-		for (int i = 0; i < size(controllers); ++i)
-		{
-			auto p = SaboriPlayer::Object::Create(true);
-			p->pos = this->playerFirstPos[i];
-			p->controller = this->controllers[i];
-			p->playerNum = playersNum[i];
-		}
-
-		//上司
-		auto j = SaboriJoushi::Object::Create(true);
-		j->pos = joushiFirstPos;
-
-		//UI管理
-		SaboriUIManager::Object::Create(true);
 
 		return  true;
 	}
@@ -61,14 +42,10 @@ namespace  SaboriGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-		ge->KillAll_G("プレイヤー");
-		ge->KillAll_G("ギミック");
-		ge->KillAll_G("管理");
 
-		if (!ge->QuitFlag() && nextTaskCreate) {
+
+		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = OguiGame::Object::Create(true);
 		}
 
 		return  true;
@@ -77,46 +54,75 @@ namespace  SaboriGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		//☆制限時間を減らす
-		if (this->isGameOver == false)
-		{
-			this->timeLimit -= 1.f / 60; // / 60 を / GetFps()に変更してモニターFPSにゲームが依存しないようにする
+		auto game = ge->GetTask<OguiGame::Object>("本編");
 
-			//制限時間が0未満だったら0にする
-			if (this->timeLimit < 0.f)
+		//大食いミニゲームタスクが取得できているか確認
+		if (game == nullptr)
+		{
+			return;
+		}
+
+		//ミニゲーム中の処理
+		if (game->isGameOver == false)
+		{
+			//☆料理の生成
+			//料理があるか確認
+			for (int i = 0; i < size(hasExistFoods); ++i)
 			{
-				this->timeLimit = 0.f;
+				//料理が無かったら30フレーム待った後、料理が無いプレイヤーの場所に料理を配置
+				if (this->hasExistFoods[i] == false)
+				{
+					this->createCount[i]++;
+					if (this->createCount[i] >= 10) //モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
+					{
+						this->createCount[i] = 0; //生成カウントをゼロクリアする
+						CreateFood((PlayerNum)(i + 1)); //i+1でどのプレイヤーの料理を生成するか示す
+						this->hasExistFoods[i] = true;
+					}
+				}
 			}
-		}
-
-		//☆制限時間が0になったらミニゲームを終了させる
-		if (this->timeLimit == 0.f)
-		{
-			//ミニゲームを終了させる
-			this->isGameOver = true;
-
-			//次のタスクへ行けるようにする
-			this->nextTaskToGoIs = true;
-		}
-
-		//☆次のタスクに行くまでのカウント
-		if (this->nextTaskToGoIs == true)
-		{
-			this->countToNextTask++;
-		}
-
-		//☆統括タスク消滅申請
-		if (this->countToNextTask == 60 * 10) { //60に * GetFps() / GameFps をする 
-			ge->StartCounter("test", 0); 
-		}
-		if (ge->getCounterFlag("test") == ge->LIMIT) {
-			Kill();
 		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+	}
+	//-------------------------------------------------------------------
+	//料理の生成
+	void Object::CreateFood(PlayerNum food_PlayerNum)
+	{
+		//☆料理の生成
+		auto f = OguiFood::Object::Create(true);
+		f->hp = f->maxHP;
+		f->playerNum = food_PlayerNum;
+		f->pos = this->foodPositions[(int)food_PlayerNum - 1]; //受け取ったプレイヤー識別番号-1でどのプレイヤーの位置に料理を出現させるか示す
+
+		//☆料理が生成された情報を送る
+		SendCreateFoodInformation(food_PlayerNum);
+	}
+	//-------------------------------------------------------------------
+	//料理がなくなった情報を取得
+	void Object::NotExistFood(PlayerNum food_PlayerNum)
+	{
+		this->hasExistFoods[(int)food_PlayerNum - 1] = false; //受け取ったプレイヤー識別番号-1でどのプレイヤーに料理が無いかを示す
+	}
+	//-------------------------------------------------------------------
+	//料理を生成した情報を他タスクに送る
+	void Object::SendCreateFoodInformation(PlayerNum food_PlayerNum)
+	{
+		//☆プレイヤーに情報を送る
+		//プレイヤーを全て取得
+		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
+		for (auto p = players->begin(); p != players->end(); ++p)
+		{
+			//料理が生成されたプレイヤーか判定
+			if ((*p)->playerNum == food_PlayerNum)
+			{
+				//料理が生成されたのでtrueを送る
+				(*p)->SetExistFood(true);
+			}
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -131,6 +137,7 @@ namespace  SaboriGame
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+				
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -142,22 +149,20 @@ namespace  SaboriGame
 	//-------------------------------------------------------------------
 	bool  Object::B_Initialize()
 	{
-		return  Initialize();
+		return  this->Initialize();
 	}
 	//-------------------------------------------------------------------
-	Object::~Object() { B_Finalize(); }
+	Object::~Object() { this->B_Finalize(); }
 	bool  Object::B_Finalize()
 	{
-		auto  rtv = Finalize();
+		auto  rtv = this->Finalize();
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
 	Object::Object()
 		:
-		timeLimit(30.f), //制限時間を設定
-		isGameOver(false),
-		nextTaskToGoIs(false),
-		countToNextTask(0)
+		createCount{30, 30, 30, 30},
+		hasExistFoods{false, false, false, false}
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
@@ -178,5 +183,5 @@ namespace  SaboriGame
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
 	//-------------------------------------------------------------------
-	Resource::~Resource() { Finalize(); }
+	Resource::~Resource() { this->Finalize(); }
 }

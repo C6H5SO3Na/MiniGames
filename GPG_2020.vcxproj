@@ -141,6 +141,11 @@
     <ClCompile Include="myLib.cpp" />
     <ClCompile Include="MyPG.cpp" />
     <ClCompile Include="Ohara\OharaCharacterBase.cpp" />
+    <ClCompile Include="Ohara\Task_OguiFood.cpp" />
+    <ClCompile Include="Ohara\Task_OguiFoodManager.cpp" />
+    <ClCompile Include="Ohara\Task_OguiGame.cpp" />
+    <ClCompile Include="Ohara\Task_OguiPlayer.cpp" />
+    <ClCompile Include="Ohara\Task_OguiUIManager.cpp" />
     <ClCompile Include="Ohara\Task_SaboriGame.cpp" />
     <ClCompile Include="Ohara\Task_SaboriJoushi.cpp" />
     <ClCompile Include="Ohara\Task_SaboriPlayer.cpp" />
@@ -178,6 +183,11 @@
     <ClInclude Include="MyPG.h" />
     <ClInclude Include="Ohara\OharaCharacterBase.h" />
     <ClInclude Include="Ohara\OharaPlayerNumber.h" />
+    <ClInclude Include="Ohara\Task_OguiFood.h" />
+    <ClInclude Include="Ohara\Task_OguiFoodManager.h" />
+    <ClInclude Include="Ohara\Task_OguiGame.h" />
+    <ClInclude Include="Ohara\Task_OguiPlayer.h" />
+    <ClInclude Include="Ohara\Task_OguiUIManager.h" />
     <ClInclude Include="Ohara\Task_SaboriGame.h" />
     <ClInclude Include="Ohara\Task_SaboriJoushi.h" />
     <ClInclude Include="Ohara\Task_SaboriPlayer.h" />

@@ -1,15 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//サボりミニゲームの上司
+//大食いミニゲームのプレイヤー
 //-------------------------------------------------------------------
 #include "OharaCharacterBase.h"
 
-namespace  SaboriJoushi
+namespace  OguiPlayer
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("ギミック");	//グループ名
-	const  string  defName("上司");				//タスク名
+	const  string  defGroupName("プレイヤー");	//グループ名
+	const  string  defName("大食いプレイヤー");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -43,24 +43,29 @@ namespace  SaboriJoushi
 		bool  B_Finalize();
 		bool  Initialize();	//「初期化」タスク生成時に１回だけ行う処理
 		void  UpDate()		override;	//「実行」１フレーム毎に行う処理
-		void  Render2D_AF()	override;	//「2D描画」１フレーム毎に知らせ行う処理
+		void  Render2D_AF()	override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 	public:
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//追加したい変数・メソッドはここに追加する
 		//BCharaに含まれないモノのみここに追加する
-
 		//☆変数
-		float changeStateTime;			//状態を変更するタイミングを格納する
-		int	  changeStateKinds;			//変更する状態の種類を決める数字を格納する
-		bool  hasFoundPlayerSabori;		//プレイヤーがさぼっていたらtrue
+		XI::GamePad::SP controller;		//入力情報を受け取りたいコントローラーのデータを格納
+		int				eatFoodCount;	//食べた料理の数
+
+		//☆メソッド
+		void SetExistFood(bool FoodExistenceInformation);	//料理の存在しているかの情報を取得
+
+		virtual void Recieved() override {}
+
+	private:
+		//☆変数
+		int	 attack;		//食事量、1回ボタンを押して減る料理の量を表す
+		bool existFood;		//料理があるか判断する、あったらtrue
 
 		//☆メソッド
 		virtual void Think() override;
 		virtual void Move() override;
-		virtual DrawInformation GetDrawImage() override;
-		virtual void Recieved() override {}
-
-		void CheckPlayerSabori(); //プレイヤーがさぼり状態かどうか判定する
+		virtual DrawInformation GetDrawImage();
 	};
 }
