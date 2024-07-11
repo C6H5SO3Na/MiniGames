@@ -25,7 +25,8 @@ namespace  CGPlayer
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP playerImg;
-		DG::Image::SP bookImg[10];
+		DG::Image::SP CountImg;
+		DG::Image::SP bookImg;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  CGBChara
@@ -52,6 +53,7 @@ namespace  CGPlayer
 		//追加したい変数・メソッドはここに追加する
 		//BCharaに含まれないモノのみここに追加する
 		void Recieved() {};
+		void posInitialize(ML::Vec2 ppos);
 		int workTime;//分類の回数
 		XI::GamePad::SP controller;
 		struct book
@@ -63,7 +65,9 @@ namespace  CGPlayer
 				bpos(ML::Vec2(0, 0))
 			{}
 		};
-		book books[10];
-		void toAnotherState(int workT);
+		book books[14];
+		void toFailState(int workT);
+		int Rb, Gb, Bb;//赤、緑、青色の書類の数（分類成功）
+		int Fb;//分類失敗の書類の数
 	};
 }

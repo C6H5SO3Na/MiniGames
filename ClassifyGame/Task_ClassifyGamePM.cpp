@@ -41,7 +41,7 @@ namespace  ClassifyGamePM
 		for (int i = 0; i < 4; ++i) {
 			auto p = CGPlayer::Object::Create(true);
 			pList.push_back(p);
-			pList[i]->pos = ML::Vec2(1410 - 960 * (i % 2), 400 + 540 * (i / 2));
+			pList[i]->posInitialize(ML::Vec2(450 + 960 * (i % 2), 400 + 540 * (i / 2)));
 			pList[i]->controller = cList[i];
 		}
 		return  true;
@@ -64,7 +64,7 @@ namespace  ClassifyGamePM
 	void  Object::UpDate()
 	{
 		gameCnt++;
-		if (gameCnt > 1200) {
+		if (gameCnt > 1319) {
 			this->Kill();
 		}
 		if (gameCnt % 120 == 0) {

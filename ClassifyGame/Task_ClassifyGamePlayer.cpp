@@ -13,8 +13,9 @@ namespace  CGPlayer
 	{
 		playerImg = DG::Image::Create("./data/image/chara02.png");
 		for (int i = 0; i < 10; ++i) {
-			bookImg[i] = DG::Image::Create("./data/image/debugrect.png");
+			bookImg = DG::Image::Create("./data/image/debugrect.png");
 		}
+		CountImg = DG::Image::Create("./data/image/font_number.png");
 	
 		return true;
 	}
@@ -35,14 +36,30 @@ namespace  CGPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
-		workTime = 0;
+		workTime = 4;
 		SetCGState(CGstate::BStart);
-		for (int i = 0; i < 10; ++i) {
-			books[i].bpos = pos + ML::Vec2(0, -40);
-		}
+		Rb = 0;
+		Gb = 0;
+		Bb = 0;
+		Fb = 0;
 		//★タスクの生成
 
 		return  true;
+	}
+	//-------------------------------------------------------------------
+	//「初期化」書類の座標
+	void Object::posInitialize(ML::Vec2 ppos)
+	{
+		pos = ppos;
+		for (int i = 0; i < 14; ++i) {
+			books[i].bpos = pos + ML::Vec2(0, -40);
+		}
+		for (int i = 0; i < 3; ++i) {
+			books[i].bpos += ML::Vec2(-80 + i * 80, -100);
+			books[i].color = i;
+		}
+		books[3].bpos += ML::Vec2(0, -200);
+		books[3].color = 3;
 	}
 	//-------------------------------------------------------------------
 	//「終了」タスク消滅時に１回だけ行う処理
@@ -68,60 +85,70 @@ namespace  CGPlayer
 			break;
 		case CGstate::PlayR:
 			if (FirstIntoState()) {
-				books[workTime].color = 0;
+				books[workTime].color = 0;				
+				moveCnt = 0;
 				workTime++;
 			}
 			if (in.LStick.BL.down) {
 				moveCnt = 0;
-				books[workTime].bpos += ML::Vec2(-30, -100);
+				Rb++;
+				books[workTime - 1].bpos += ML::Vec2(-80, -100 - Rb * 5);
 				SetCGState(CGstate::Playing);
 			}
 			moveCnt++;
-			if (moveCnt = 119) {
-				toAnotherState(workTime);
-			}
-			break;
-		case CGstate::PlayG:
-			if (FirstIntoState()) {
-				books[workTime].color = 2;
-				workTime++;
-			}
-			if (in.LStick.BU.down) {
-				moveCnt = 0;
-				books[workTime].bpos += ML::Vec2(0, -100);
-				SetCGState(CGstate::Playing);
-			}
-			moveCnt++;
-			if (moveCnt = 119) {
-				toAnotherState(workTime);
+			if (moveCnt == 118 || in.LStick.BU.down || in.LStick.BR.down) {//時間切れ、或は間違いボタンを押した
+				toFailState(workTime);
+				SetCGState(CGstate::Fail);
 			}
 			break;
 		case CGstate::PlayB:
 			if (FirstIntoState()) {
 				books[workTime].color = 1;
+				moveCnt = 0;
+				workTime++;
+			}
+			if (in.LStick.BU.down) {
+				moveCnt = 0;
+				Bb++;
+				books[workTime - 1].bpos += ML::Vec2(0, -100 - Bb * 5);
+				SetCGState(CGstate::Playing);
+			}
+			moveCnt++;
+			if (moveCnt == 118 || in.LStick.BL.down || in.LStick.BR.down) {//時間切れ、或は間違いボタンを押した
+				toFailState(workTime);
+				SetCGState(CGstate::Fail);
+			}
+			break;
+		case CGstate::PlayG:
+			if (FirstIntoState()) {
+				books[workTime].color = 2;
+				moveCnt = 0;
 				workTime++;
 			}
 			if (in.LStick.BR.down) {
 				moveCnt = 0;
-				books[workTime].bpos += ML::Vec2(30, 100);
+				Gb++;			
+				books[workTime - 1].bpos += ML::Vec2(80, -100 - Gb * 5);
 				SetCGState(CGstate::Playing);
 			}
 			moveCnt++;
-			if (moveCnt = 119) {
-				toAnotherState(workTime);
+			if (moveCnt == 118 ||in.LStick.BL.down || in.LStick.BU.down) {//時間切れ、或は間違いボタンを押した
+				toFailState(workTime);
+				SetCGState(CGstate::Fail);
 			}
 			break;
-		case CGstate::Fail:
-			
+		case CGstate::Fail:	
+			Fb++;
+			SetCGState(CGstate::Playing);
 			break;
 		}
 		
 		
 	}
-	void  Object::toAnotherState(int workT) {
-		books[workT].color = 3;
+	void  Object::toFailState(int workT) {
+		books[workT - 1].color = 3;
 		moveCnt = 0;
-		books[workT].bpos += ML::Vec2(0, -200);
+		books[workT - 1].bpos += ML::Vec2(0, -200 - Fb * 5);
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -133,13 +160,19 @@ namespace  CGPlayer
 		res->playerImg->Draw(draw.OffsetCopy(pos), src);
 		src = ML::Box2D(0, 0, 32, 32);
 		draw = ML::Box2D(0, 0, 32, 32);
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 14; ++i) {
 			if (workTime > i) {
 				src.x = books[i].color * 32;
 				ML::Box2D draw0 = draw.OffsetCopy(books[i].bpos);
-				res->bookImg[i]->Draw(draw0, src);
+				res->bookImg->Draw(draw0, src);
 			}
 		}
+		src = ML::Box2D(0, 35, 20, 25);
+		draw = ML::Box2D(0, 0, 20, 25);
+		res->CountImg->Draw(draw.OffsetCopy(pos+ML::Vec2(-80, -100)), src.OffsetCopy(20 * Rb, 0));
+		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -100)), src.OffsetCopy(20 * Bb, 0));
+		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(80, -100)), src.OffsetCopy(20 * Gb, 0));
+		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -200)), src.OffsetCopy(20 * Fb, 0));
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
