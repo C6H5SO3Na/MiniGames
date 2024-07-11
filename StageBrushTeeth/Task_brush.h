@@ -56,5 +56,9 @@ namespace  brush
 		float speed;
 
 		XI::GamePad::SP controller;
+
+		float minPosX, minPosY, maxPosX, maxPosY;
+
+		void Positionalise(int PlayerNum);
 	};
 }

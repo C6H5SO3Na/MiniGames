@@ -5,6 +5,7 @@
 #include  "Task_CommonItemManager02.h"
 #include  "Task_StainManager.h"
 #include  "Task_brush.h"
+#include  "Task_stain.h"
 
 namespace  CommonItemManager02
 {
@@ -40,13 +41,15 @@ namespace  CommonItemManager02
 		{
 			auto b = brush::Object::Create(true);
 			PLBrushList.push_back(b);
-			
-			if (i % 2 == 1) { b->pos.x = (1980 / 2); }
-			else { b->pos.x = 10; }
-			if (i > 1) { b->pos.y = (1080 / 2); }
-			else { b->pos.y = 10; }
+
+			auto s = StainManager::Object::Create(true);
+			CreateStatinList.push_back(s);
+
+			b->Positionalise(i);
+			s->Positionalise(i);
 
 			b->controller = CTList[i];
+			s->CreateStain();
 		}
 		
 		//šƒ^ƒXƒN‚Ì¶¬

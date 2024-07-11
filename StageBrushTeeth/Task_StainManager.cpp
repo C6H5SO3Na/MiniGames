@@ -30,18 +30,43 @@ namespace  StainManager
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
 
-		//★データ初期化
-		for (int i = 0; i < 5; ++i)
-		{
-			auto s = stain::Object::Create(true);
-			StainPos.push_back(s);
-			StainPos[i]->pos = GetStainPos();
-		}
 		
+		this->minPosX = 0;
+		this->maxPosX = 0;
+		this->minPosY = 0;
+		this->maxPosY = 0;
+
 		//★タスクの生成
 
 		return  true;
 	}
+
+	void Object::Positionalise(int PlayerNum)
+	{
+		ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
+		minPosX = StainArea.x ;
+		minPosY = StainArea.y;
+		maxPosX = StainArea.x + StainArea.w;
+		maxPosY = StainArea.y + StainArea.h;
+	}
+
+	void Object::CreateStain()
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			auto position = GetStainPos(positions);
+			positions.push_back(position);
+		}
+
+		//★データ初期化
+		for (int i = 0; i < 5; ++i)
+		{
+			auto s = stain::Object::Create(true);
+			s->pos = positions[i];
+			stains.push_back(s);
+		}
+	}
+
 	//-------------------------------------------------------------------
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
@@ -66,12 +91,29 @@ namespace  StainManager
 	{
 	}
 	//-------------------------------------------------------------------
-	ML::Vec2 Object::GetStainPos()
+	ML::Vec2 Object::GetStainPos(vector<ML::Vec2>& positions)
 	{
-		float x = GetRandom(300, 1500);
-		float y = GetRandom(300, 800);
+		float x = GetRandom(this->minPosX, this->maxPosX);
+		float y = GetRandom(this->minPosY, this->maxPosY);
+
+		int w = 64;
+		int h = 64;
+		auto hit = ML::Box2D(-w / 2, -h / 2, w, h);
+
+		// 重なっていないかチェック
+		auto me = hit.OffsetCopy(x, y);
+		for (auto p = positions.begin(); p != positions.end(); p++)
+		{
+			auto you = hit.OffsetCopy((*p));
+			if (you.Hit(me)) {
+				return GetStainPos(positions);
+			}
+		}
+
 		return ML::Vec2(x, y);
 	}
+	//-------------------------------------------------------------------
+	
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

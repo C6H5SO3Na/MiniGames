@@ -47,7 +47,11 @@ namespace  StainManager
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		ML::Vec2 GetStainPos();
-		vector<stain::Object::SP> StainPos;
+		ML::Vec2 GetStainPos(vector<ML::Vec2>& positions);
+		vector<stain::Object::SP> stains;
+		vector<ML::Vec2> positions;
+		float minPosX, minPosY, maxPosX, maxPosY;
+		void CreateStain();
+		void Positionalise(int PlayerNum);
 	};
 }

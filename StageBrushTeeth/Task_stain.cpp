@@ -33,9 +33,9 @@ namespace  stain
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.5f;
-		//this->pos.x = 120;
-		//this->pos.y = 150;
-		this->hitBase = ML::Box2D(-64, -64, 128, 128);
+		this->pos.x = 0;
+		this->pos.y = 0;
+		this->hitBase = ML::Box2D(-32, -32, 64, 64);
 		//★タスクの生成
 
 		return  true;

@@ -38,7 +38,7 @@ namespace  StageBrushTeeth
 
 		//šƒ^ƒXƒN‚Ì¶¬
 		/*auto brush = brush::Object::Create(true);*/
-		auto stainmanager = StainManager::Object::Create(true);
+		/*auto stainmanager = StainManager::Object::Create(true);*/
 		auto commonmanager = CommonItemManager02::Object::Create(true);
 
 		return  true;
@@ -71,9 +71,18 @@ namespace  StageBrushTeeth
 		ML::Box2D src(0, 0, 1920, 1080);
 		this->res->bgImg->Draw(draw, src);
 
-		ML::Box2D draw2(300, 50, 1280, 1080);
+		ML::Box2D draw2(0, 0, 1280/2, 1080/2);
 		ML::Box2D src2(0, 0, 1280, 1080);
 		this->res->teethImg->Draw(draw2, src2);
+
+		ML::Box2D draw3(1980/2, 0, 1280/2, 1080/2);
+		this->res->teethImg->Draw(draw3, src2);
+
+		ML::Box2D draw4(0, 1080/2, 1280/2, 1080/2);
+		this->res->teethImg->Draw(draw4, src2);
+
+		ML::Box2D draw5(1980/2, 1080/2, 1280/2, 1080/2);
+		this->res->teethImg->Draw(draw5, src2);
 	}
 
 	//šššššššššššššššššššššššššššššššššššššššššš
