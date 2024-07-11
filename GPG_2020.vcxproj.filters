@@ -29,6 +29,9 @@
     <Filter Include="MyPG\Task\ending">
       <UniqueIdentifier>{5995aebb-b88d-4733-b1a0-1ef6a853acdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Miyagawa">
+      <UniqueIdentifier>{11e26480-e4df-49fd-80e0-0699a3270252}</UniqueIdentifier>
+    </Filter>
     <Filter Include="MyPG\Task\Ohara">
       <UniqueIdentifier>{48770eeb-ac88-408c-b84c-9ac1bc2e69ce}</UniqueIdentifier>
     </Filter>
@@ -120,6 +123,24 @@
     </ClCompile>
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGame.cpp">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_PayOffGame.cpp">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_PayOffGameCursor.cpp">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_PayOffGameMoney.cpp">
+      <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
     <ClCompile Include="StageAlarmClock\Task_Clock.cpp" />
     <ClCompile Include="StageAlarmClock\Task_hand.cpp" />
@@ -231,6 +252,25 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
+    </ClInclude>
+
+    <ClInclude Include="Miyagawa\Task_TaxiGame.h">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_PayOffGame.h">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_PayOffGameCursor.h">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_PayOffGameMoney.h">
+      <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
     <ClInclude Include="StageAlarmClock\Task_Clock.h" />
     <ClInclude Include="StageAlarmClock\Task_hand.h" />

@@ -138,6 +138,12 @@
     <ClCompile Include="easing.cpp" />
     <ClCompile Include="fpscounter.cpp" />
     <ClCompile Include="GameEngine_Ver3_83.cpp" />
+    <ClCompile Include="Miyagawa\Task_PayOffGame.cpp" />
+    <ClCompile Include="Miyagawa\Task_PayOffGameCursor.cpp" />
+    <ClCompile Include="Miyagawa\Task_PayOffGameMoney.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGame.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp" />
     <ClCompile Include="myLib.cpp" />
     <ClCompile Include="MyPG.cpp" />
     <ClCompile Include="Ohara\OharaCharacterBase.cpp" />
@@ -179,6 +185,12 @@
     <ClInclude Include="easing.h" />
     <ClInclude Include="fpscounter.h" />
     <ClInclude Include="GameEngine_Ver3_83.h" />
+    <ClInclude Include="Miyagawa\Task_PayOffGame.h" />
+    <ClInclude Include="Miyagawa\Task_PayOffGameCursor.h" />
+    <ClInclude Include="Miyagawa\Task_PayOffGameMoney.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGame.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h" />
     <ClInclude Include="myLib.h" />
     <ClInclude Include="MyPG.h" />
     <ClInclude Include="Ohara\OharaCharacterBase.h" />
