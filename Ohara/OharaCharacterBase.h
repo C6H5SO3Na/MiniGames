@@ -11,7 +11,7 @@ public:
 	//コンストラクタ
 	OCharaBase()
 		:
-		state(State::None),
+		state(State::Default),
 		playerNum(PlayerNum::Player1),
 		gameFps(60)
 	{}
@@ -35,7 +35,7 @@ public:
 	enum class State
 	{
 		//☆共通
-		None,						//初期状態、何もしない
+		Default,						//初期状態、何もしない
 
 		//☆サボりミニゲームのプレイヤー用
 		PWork,						//仕事中状態
@@ -48,10 +48,13 @@ public:
 		JCheckForSabori,			//サボり確認状態
 		JFoundSabori,				//サボり発見状態
 
-
 		//☆大食いミニゲームのプレイヤー用
 		PWait,						//待機状態
 		PEat,						//食事中状態
+
+		//☆大食いミニゲームの料理用
+		FExist,						//料理が残っている状態
+		FNotExist,					//料理が残っていない状態
 	};
 
 	//☆変数

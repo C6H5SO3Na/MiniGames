@@ -1,14 +1,13 @@
 //-------------------------------------------------------------------
-//サボりミニゲームの上司
+//大食いミニゲームの料理
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_SaboriJoushi.h"
-#include  "Task_SaboriPlayer.h"
-#include  "Task_SaboriGame.h"
+#include  "Task_OguiFood.h"
+#include  "Task_OguiFoodManager.h"
+#include  "Task_OguiPlayer.h"
+#include  "Task_OguiGame.h"
 
-#include  "../randomLib.h"
-
-namespace  SaboriJoushi
+namespace  OguiFood
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -35,8 +34,7 @@ namespace  SaboriJoushi
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->state = State::JWork;
-		this->changeStateTime = GetRandom(2.f, 4.f); //仕事中状態からサボり確認の予備動作状態に変更するまでの時間の設定
+		this->state = State::FExist;
 		
 		//★タスクの生成
 
@@ -48,7 +46,6 @@ namespace  SaboriJoushi
 	{
 		//★データ＆タスク解放
 
-
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}
@@ -59,14 +56,14 @@ namespace  SaboriJoushi
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto game = ge->GetTask<SaboriGame::Object>("本編");
+		auto game = ge->GetTask<OguiGame::Object>("本編");
 
-		//さぼりミニゲームタスクが取得できているか確認
+		//大食いミニゲームタスクが取得できているか確認
 		if (game == nullptr)
 		{
 			return;
 		}
-
+		
 		//ミニゲーム中の処理
 		if (game->isGameOver == false)
 		{
@@ -89,7 +86,7 @@ namespace  SaboriJoushi
 		this->res->image->Draw(drawImage.draw, drawImage.src);
 	}
 	//-------------------------------------------------------------------
-	//上司の状態制御
+	//現在の料理の状態制御
 	void Object::Think()
 	{
 		State nowState = this->state; //とりあえず現在の状態を代入
@@ -97,30 +94,8 @@ namespace  SaboriJoushi
 		//モーションの切り替え
 		switch (nowState)
 		{
-		case State::JWork:						//仕事中状態
-			if (this->moveCnt >= (int)(this->changeStateTime * this->gameFps)) { nowState = State::JBeforeCheckingForSabori; } //サボり確認の予備動作状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
-			break;
-
-		case State::JBeforeCheckingForSabori:	//サボり確認の予備動作状態
-			if (this->moveCnt >= (int)(this->changeStateTime * this->gameFps)) //モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
-			{
-				//☆ランダムで遷移する状態を変更する
-				//遷移する状態を決定
-				this->changeStateKinds = GetRandom(0, 2);
-
-				//1/3で仕事中状態、2/3でサボり確認状態へ
-				if (this->changeStateKinds == 0) { nowState = State::JWork; } //仕事中状態へ
-				else{ nowState = State::JCheckForSabori; } //サボり確認状態へ
-			}
-			break;
-
-		case State::JCheckForSabori:			//サボり確認状態
-			if (this->moveCnt >= (int)(this->changeStateTime * this->gameFps)) { nowState = State::JWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
-			if (this->hasFoundPlayerSabori) { nowState = State::JFoundSabori; } //サボり発見状態へ
-			break;
-
-		case State::JFoundSabori:				//サボり発見状態
-			if (this->moveCnt >= 2 * this->gameFps) { nowState = State::JWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
+		case State::FExist:
+			if (this->hp <= 0) { nowState = State::FNotExist; }
 			break;
 		}
 
@@ -133,44 +108,14 @@ namespace  SaboriJoushi
 	{
 		switch (this->state)
 		{
-		case State::JWork:						//仕事中状態
-			//☆仕事中状態からサボり確認の予備動作状態に変更するまでの時間の設定
-			if (this->moveCnt == 0) //状態が切り替わった時のみ処理する
+		case State::FNotExist:
+			//☆料理が無くなった時、30フレーム目にオブジェクトを消す申請を出す
+			if (this->moveCnt >= 30) //モニターFPSにゲームが依存しないようにするために条件式を (int)(30 * GetFps() / (float)gameFps) に変更する
 			{
-				//時間設定
-				this->changeStateTime = GetRandom(2.f, 4.f); //2～4秒
+				//料理が無くなった情報を他タスクに送る
+				SendNotExistInformation();
+				this->Kill();
 			}
-			break;
-
-		case State::JBeforeCheckingForSabori:	//サボり確認の予備動作状態
-			//☆サボり確認の予備動作状態からサボり確認状態または仕事中状態に変更するまでの時間の設定
-			if (this->moveCnt == 0) //状態が切り替わった時のみ処理する
-			{
-				//時間設定
-				this->changeStateTime = GetRandom(1.f, 2.f); //1～2秒
-			}
-			break;
-
-		case State::JCheckForSabori:			//サボり確認状態
-			//☆サボり確認状態から仕事中状態に変更するまでの時間の設定
-			if (this->moveCnt == 0) //状態が切り替わった時のみ処理する
-			{
-				//時間設定
-				this->changeStateTime = GetRandom(1.f, 2.f); //1～3秒
-			}
-
-			//☆プレイヤーがさぼり状態かどうか判定する
-			CheckPlayerSabori();
-			break;
-
-		case State::JFoundSabori:				//サボり発見状態
-			//☆状態変化時に一度だけ音を鳴らす
-			if (this->hasFoundPlayerSabori)
-			{
-				//ここに音を鳴らす処理を書く
-				this->hasFoundPlayerSabori = false;
-			}
-			break;
 		}
 	}
 	//-------------------------------------------------------------------
@@ -178,48 +123,59 @@ namespace  SaboriJoushi
 	Object::DrawInformation Object::GetDrawImage()
 	{
 		DrawInformation imageTable[] = {
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//仕事状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//サボり確認の予備動作状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(300, 0, 100, 100) },	//サボり確認状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(0, 0, 100, 100)},	//サボり発見状態
+			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//残りが半分より多い
+			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//残り半分以下
+			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(300, 0, 100, 100) },	//残り1/3以下
+			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(0, 0, 100, 100)},	//完食
 		};
 
 		DrawInformation rtv;
-		switch (this->state)
+
+		if (hp <= 0)				//完食
 		{
-		case State::JWork:						//仕事中状態
-			rtv = imageTable[0];
-			break;
-
-		case State::JBeforeCheckingForSabori:	//サボり確認の予備動作状態
-			rtv = imageTable[1];
-			break;
-
-		case State::JCheckForSabori:			//サボり確認状態
-			rtv = imageTable[2];
-			break;
-
-		case State::JFoundSabori:				//サボり発見状態
 			rtv = imageTable[3];
-			break;
+		}
+		else if (hp <= maxHP / 3)	//残り1/3以下
+		{
+			rtv = imageTable[2];
+		}
+		else if (hp <= maxHP / 2)	//残り半分以下
+		{
+			rtv = imageTable[1];
+		}
+		else						//残りが半分より多い
+		{
+			rtv = imageTable[0];
 		}
 
 		return rtv;
 	}
 	//-------------------------------------------------------------------
-	//プレイヤーがさぼり状態かどうか判定する
-	void Object::CheckPlayerSabori()
+	////料理の減少(受け身の処理)
+	void Object::ReduceHP(int damage)
 	{
-		//プレイヤー全てを抽出する
-		auto players = ge->GetTasks<SaboriPlayer::Object>("プレイヤー");
+		hp -= damage;
+	}
+	//-------------------------------------------------------------------
+	//料理が無くなった情報を料理管理タスクに送る
+	void Object::SendNotExistInformation()
+	{
+		//☆料理管理タスクに情報を送る
+		auto foodManager = ge->GetTask<OguiFoodManager::Object>("管理");
+		foodManager->NotExistFood(this->playerNum);
+
+		//☆プレイヤーに情報を送る
+		//全てのプレイヤーを取得
+		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
 		for (auto p = players->begin(); p != players->end(); ++p)
 		{
-			if ((*p)->state == State::PSabori)
+			//この料理を食べたプレイヤーか判定
+			if ((*p)->playerNum == this->playerNum)
 			{
-				//上司がさぼりを発見
-				this->hasFoundPlayerSabori = true;
-				//プレイヤーがさぼりに気づかれる
-				(*p)->noticedToSabori = true;
+				//プレイヤーの食べた料理数のカウントを増やす
+				(*p)->eatFoodCount++;
+				//料理が無くなったのでfalseを送る
+				(*p)->SetExistFood(false);
 			}
 		}
 	}
@@ -258,11 +214,9 @@ namespace  SaboriJoushi
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() 
+	Object::Object()
 		:
-		changeStateTime(0),
-		changeStateKinds(0),
-		hasFoundPlayerSabori(false)
+		hp(0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

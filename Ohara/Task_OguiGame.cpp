@@ -1,17 +1,17 @@
 //-------------------------------------------------------------------
-//サボりミニゲーム本編
+//大食いミニゲーム本編
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_SaboriGame.h"
-#include  "Task_SaboriPlayer.h"
-#include  "Task_SaboriJoushi.h"
-#include  "Task_SaboriUIManager.h"
+#include  "Task_OguiGame.h"
+#include  "Task_OguiPlayer.h"
+#include  "Task_OguiFoodManager.h"
+#include  "Task_OguiUIManager.h"
 
 #include  "../randomLib.h"
 
-#include  "Task_OguiGame.h"
+#include  "../Task_Ending.h"
 
-namespace  SaboriGame
+namespace  OguiGame
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -41,18 +41,17 @@ namespace  SaboriGame
 		//プレイヤー
 		for (int i = 0; i < size(controllers); ++i)
 		{
-			auto p = SaboriPlayer::Object::Create(true);
+			auto p = OguiPlayer::Object::Create(true);
 			p->pos = this->playerFirstPos[i];
 			p->controller = this->controllers[i];
 			p->playerNum = playersNum[i];
 		}
 
-		//上司
-		auto j = SaboriJoushi::Object::Create(true);
-		j->pos = joushiFirstPos;
+		//料理管理
+		OguiFoodManager::Object::Create(true);
 
 		//UI管理
-		SaboriUIManager::Object::Create(true);
+		OguiUIManager::Object::Create(true);
 
 		return  true;
 	}
@@ -68,7 +67,7 @@ namespace  SaboriGame
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = OguiGame::Object::Create(true);
+			auto next = Ending::Object::Create(true);
 		}
 
 		return  true;
@@ -107,7 +106,7 @@ namespace  SaboriGame
 
 		//☆統括タスク消滅申請
 		if (this->countToNextTask == 60 * 10) { //60に * GetFps() / GameFps をする 
-			ge->StartCounter("test", 0); 
+			ge->StartCounter("test", 0);
 		}
 		if (ge->getCounterFlag("test") == ge->LIMIT) {
 			Kill();

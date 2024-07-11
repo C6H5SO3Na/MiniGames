@@ -1,17 +1,12 @@
 //-------------------------------------------------------------------
-//サボりミニゲーム本編
+//大食いミニゲームのUI管理
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_SaboriGame.h"
-#include  "Task_SaboriPlayer.h"
-#include  "Task_SaboriJoushi.h"
-#include  "Task_SaboriUIManager.h"
-
-#include  "../randomLib.h"
-
+#include  "Task_OguiUIManager.h"
 #include  "Task_OguiGame.h"
+#include  "Task_OguiPlayer.h"
 
-namespace  SaboriGame
+namespace  OguiUIManager
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -33,26 +28,12 @@ namespace  SaboriGame
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		res = Resource::Create();
+		this->res = Resource::Create();
 
 		//★データ初期化
-
+		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
+		
 		//★タスクの生成
-		//プレイヤー
-		for (int i = 0; i < size(controllers); ++i)
-		{
-			auto p = SaboriPlayer::Object::Create(true);
-			p->pos = this->playerFirstPos[i];
-			p->controller = this->controllers[i];
-			p->playerNum = playersNum[i];
-		}
-
-		//上司
-		auto j = SaboriJoushi::Object::Create(true);
-		j->pos = joushiFirstPos;
-
-		//UI管理
-		SaboriUIManager::Object::Create(true);
 
 		return  true;
 	}
@@ -61,14 +42,10 @@ namespace  SaboriGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-		ge->KillAll_G("プレイヤー");
-		ge->KillAll_G("ギミック");
-		ge->KillAll_G("管理");
 
-		if (!ge->QuitFlag() && nextTaskCreate) {
+
+		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = OguiGame::Object::Create(true);
 		}
 
 		return  true;
@@ -77,46 +54,33 @@ namespace  SaboriGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		//☆制限時間を減らす
-		if (this->isGameOver == false)
-		{
-			this->timeLimit -= 1.f / 60; // / 60 を / GetFps()に変更してモニターFPSにゲームが依存しないようにする
-
-			//制限時間が0未満だったら0にする
-			if (this->timeLimit < 0.f)
-			{
-				this->timeLimit = 0.f;
-			}
-		}
-
-		//☆制限時間が0になったらミニゲームを終了させる
-		if (this->timeLimit == 0.f)
-		{
-			//ミニゲームを終了させる
-			this->isGameOver = true;
-
-			//次のタスクへ行けるようにする
-			this->nextTaskToGoIs = true;
-		}
-
-		//☆次のタスクに行くまでのカウント
-		if (this->nextTaskToGoIs == true)
-		{
-			this->countToNextTask++;
-		}
-
-		//☆統括タスク消滅申請
-		if (this->countToNextTask == 60 * 10) { //60に * GetFps() / GameFps をする 
-			ge->StartCounter("test", 0); 
-		}
-		if (ge->getCounterFlag("test") == ge->LIMIT) {
-			Kill();
-		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		//☆食べた料理数の描画
+		//プレイヤー全てを抽出する
+		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
+		//プレイヤーの数だけループを回す
+		int loopCount = 0; //ループした回数のカウント
+		for (auto p = players->begin(); p != players->end(); ++p)
+		{
+			//描画
+			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 65, ge->screen2DWidth, ge->screen2DHeight),
+				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->eatFoodCount)
+			);
+			//ループ回数のカウント
+			++loopCount;
+		}
+
+		//☆制限時間の描画
+		//サボりゲームの統括の情報を取得
+		auto game = ge->GetTask<OguiGame::Object>("本編");
+		//描画
+		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2, 0, ge->screen2DWidth, ge->screen2DHeight),
+			to_string(game->timeLimit)
+		);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -131,6 +95,7 @@ namespace  SaboriGame
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+				
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -142,23 +107,17 @@ namespace  SaboriGame
 	//-------------------------------------------------------------------
 	bool  Object::B_Initialize()
 	{
-		return  Initialize();
+		return  this->Initialize();
 	}
 	//-------------------------------------------------------------------
-	Object::~Object() { B_Finalize(); }
+	Object::~Object() { this->B_Finalize(); }
 	bool  Object::B_Finalize()
 	{
-		auto  rtv = Finalize();
+		auto  rtv = this->Finalize();
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object()
-		:
-		timeLimit(30.f), //制限時間を設定
-		isGameOver(false),
-		nextTaskToGoIs(false),
-		countToNextTask(0)
-	{	}
+	Object::Object() {	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
@@ -178,5 +137,5 @@ namespace  SaboriGame
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
 	//-------------------------------------------------------------------
-	Resource::~Resource() { Finalize(); }
+	Resource::~Resource() { this->Finalize(); }
 }

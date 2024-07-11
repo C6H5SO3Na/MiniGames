@@ -1,13 +1,12 @@
 //-------------------------------------------------------------------
-//サボりミニゲームのプレイヤー
+//大食いミニゲームのプレイヤー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_SaboriPlayer.h"
-#include  "Task_SaboriGame.h"
+#include  "Task_OguiPlayer.h"
+#include  "Task_OguiFood.h"
+#include  "Task_OguiGame.h"
 
-#include  "../fpscounter.h"
-
-namespace  SaboriPlayer
+namespace  OguiPlayer
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
@@ -34,7 +33,7 @@ namespace  SaboriPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->state = State::PWork;
+		this->state = State::PWait;
 		
 		//★タスクの生成
 
@@ -57,9 +56,9 @@ namespace  SaboriPlayer
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto game = ge->GetTask<SaboriGame::Object>("本編");
+		auto game = ge->GetTask<OguiGame::Object>("本編");
 
-		//さぼりミニゲームタスクが取得できているか確認
+		//大食いミニゲームタスクが取得できているか確認
 		if (game == nullptr)
 		{
 			return;
@@ -83,7 +82,7 @@ namespace  SaboriPlayer
 		//☆描画
 		DrawInformation drawImage = this->GetDrawImage();
 		drawImage.draw.Offset(this->pos);
-		
+
 		this->res->image->Draw(drawImage.draw, drawImage.src);
 	}
 	//-------------------------------------------------------------------
@@ -91,22 +90,17 @@ namespace  SaboriPlayer
 	void Object::Think()
 	{
 		auto input = this->controller->GetState();
-		State nowState = this->state;	//とりあえず現在の状態を代入
+		State nowState = this->state; //とりあえず現在の状態を代入
 
 		//モーションの切り替え
 		switch (nowState)
 		{
-		case State::PWork:		//仕事中状態
-			if (input.B1.on) { nowState = State::PSabori; } //サボり状態へ
+		case State::PWait:	//待機状態
+			if (input.B1.down && this->existFood == true) { nowState = State::PEat; }
 			break;
 
-		case State::PSabori:		//サボり状態
-			if (input.B1.up) { nowState = State::PWork; } //仕事中状態へ
-			if (noticedToSabori) { nowState = State::PNoticed; } //サボりばれ状態へ
-			break;
-
-		case State::PNoticed:	//サボりばれ状態
-			if (this->moveCnt >= this->gameFps * 6) { nowState = State::PWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps する
+		case State::PEat:	//食事中状態
+			if (this->moveCnt == 30 || this->existFood == false) { nowState = State::PWait; }
 			break;
 		}
 
@@ -117,16 +111,28 @@ namespace  SaboriPlayer
 	//状態毎の行動処理
 	void Object::Move()
 	{
-		//fpscounterをインスタンス化する
+		auto input = this->controller->GetState();
 
 		switch (this->state)
 		{
-		case State::PSabori:	//サボり状態
-			this->totalSaboriTime += 1.f / gameFps; // / gameFps を / GetFps() をに変更してモニターFPSにゲームが依存しないようにする
-			break;
-
-		case State::PNoticed:
-			this->noticedToSabori = false;
+		case State::PEat:	//食事中状態
+			if (input.B1.down)
+			{
+				//☆料理の残量を減らす
+				//全ての料理を取得
+				auto foods = ge->GetTasks<OguiFood::Object>("ギミック");
+				for (auto f = foods->begin(); f != foods->end(); ++f)
+				{
+					if (this->playerNum == (*f)->playerNum)
+					{
+						//料理の量を減らす
+						(*f)->ReduceHP(this->attack);
+						//料理の量を減らしたら食事中状態を継続するようにする
+						this->moveCnt = 0;
+						return;
+					}
+				}
+			}
 			break;
 		}
 	}
@@ -135,28 +141,29 @@ namespace  SaboriPlayer
 	Object::DrawInformation Object::GetDrawImage()
 	{
 		DrawInformation imageTable[] = {
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//仕事状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//サボり状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(0, 0, 100, 100) },	//サボりばれ状態
+			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//待機状態
+			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//食事中状態
 		};
 
 		DrawInformation rtv;
 		switch (this->state)
 		{
-		case State::PWork:		//仕事中状態
+		case State::PWait:		//待機状態
 			rtv = imageTable[0];
 			break;
 
-		case State::PSabori:		//サボり状態
+		case State::PEat:		//食事中状態
 			rtv = imageTable[1];
-			break;
-
-		case State::PNoticed:	//サボりばれ状態
-			rtv = imageTable[2];
 			break;
 		}
 
 		return rtv;
+	}
+	//-------------------------------------------------------------------
+	//料理の存在しているかの情報を取得
+	void Object::SetExistFood(bool foodExistenceInformation)
+	{
+		this->existFood = foodExistenceInformation;
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -194,9 +201,10 @@ namespace  SaboriPlayer
 	}
 	//-------------------------------------------------------------------
 	Object::Object()
-		: 
-		totalSaboriTime(0.f),
-		noticedToSabori(false)
+		:
+		attack(1),
+		eatFoodCount(0),
+		existFood(false)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

@@ -35,6 +35,9 @@
     <Filter Include="MyPG\Task\Ohara\SaboriGame">
       <UniqueIdentifier>{847f6113-3667-437e-b7f5-fbe871622022}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Ohara\OguiGame">
+      <UniqueIdentifier>{a01f8e2c-17d7-497a-a0ce-6c8b803d07cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -118,6 +121,9 @@
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_Clock.cpp" />
+    <ClCompile Include="StageAlarmClock\Task_hand.cpp" />
+    <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp" />
     <ClCompile Include="Ohara\OharaCharacterBase.cpp">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClCompile>
@@ -132,6 +138,21 @@
     </ClCompile>
     <ClCompile Include="Ohara\Task_SaboriUIManager.cpp">
       <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_OguiFood.cpp">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_OguiFoodManager.cpp">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_OguiGame.cpp">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_OguiPlayer.cpp">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_OguiUIManager.cpp">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +232,9 @@
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_Clock.h" />
+    <ClInclude Include="StageAlarmClock\Task_hand.h" />
+    <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h" />
     <ClInclude Include="Ohara\OharaCharacterBase.h">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClInclude>
@@ -228,6 +252,21 @@
     </ClInclude>
     <ClInclude Include="Ohara\Task_SaboriUIManager.h">
       <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_OguiFood.h">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_OguiFoodManager.h">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_OguiGame.h">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_OguiPlayer.h">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_OguiUIManager.h">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

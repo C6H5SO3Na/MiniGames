@@ -1,11 +1,11 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//サボりミニゲームのUI管理
+//大食いミニゲームのUI管理
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
 
-namespace  SaboriUIManager
+namespace  OguiUIManager
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("管理");	//グループ名
@@ -23,6 +23,7 @@ namespace  SaboriUIManager
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
+		
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -46,7 +47,7 @@ namespace  SaboriUIManager
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-
+		
 	private:
 		//☆変数
 		DG::Font::SP testFont;

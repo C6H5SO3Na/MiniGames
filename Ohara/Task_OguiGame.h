@@ -1,16 +1,16 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//サボりミニゲーム本編
+//大食いミニゲーム本編
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
 #include "OharaPlayerNumber.h"
 
-namespace  SaboriGame
+namespace  OguiGame
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("本編");		//グループ名
-	const  string  defName("サボりゲーム統括");	//タスク名
+	const  string  defName("大食いゲーム統括");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -48,17 +48,21 @@ namespace  SaboriGame
 		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
+		DG::Font::SP TestFont;
+
+		//☆変数
+		float timeLimit;	//制限時間
+		bool  isGameOver;	//ミニゲーム終了(制限時間が0になった)時、trueにする
+
+	private:
 		//☆変数
 		ML::Vec2 playerFirstPos[4] = {	//プレイヤーの初期位置
-			{ ge->screen2DWidth / 4.f, ge->screen2DHeight / 2.f }, { ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight / 2.f },
-			{ ge->screen2DWidth / 4.f, ge->screen2DHeight * 3.f / 4.f }, { ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight * 3.f / 4.f }
+			{ ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f }, { ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f },
+			{ ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f }, { ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f }
 		};
-		ML::Vec2 joushiFirstPos = { ge->screen2DWidth / 2.f, ge->screen2DHeight / 4.f };	//上司の初期位置
-		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };			//取得するコントローラー
+		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };	//取得するコントローラー
 		PlayerNum playersNum[4] = { PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }; //プレイヤーの識別番号設定用
 
-		float timeLimit;		//制限時間
-		bool  isGameOver;		//ミニゲームが終了したことを判断する。ミニゲーム終了(制限時間が0になった)時、trueにする
 		bool  nextTaskToGoIs;	//次のタスクにするかを判断。isGameOverがtrueになった後一定時間後、trueにする
 		int   countToNextTask;	//次のタスクにするまでのカウント
 	};

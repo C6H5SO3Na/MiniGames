@@ -1,15 +1,16 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//サボりミニゲームのUI管理
+//大食いミニゲームの料理管理
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
+#include "OharaPlayerNumber.h"
 
-namespace  SaboriUIManager
+namespace  OguiFoodManager
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("管理");	//グループ名
-	const  string  defName("UI管理");	//タスク名
+	const  string  defGroupName("管理");		//グループ名
+	const  string  defName("大食い料理管理");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -46,9 +47,20 @@ namespace  SaboriUIManager
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
+		//☆メソッド
+		void NotExistFood(PlayerNum food_PlayerNum);	//料理がなくなった情報を取得
 
 	private:
 		//☆変数
-		DG::Font::SP testFont;
+		int  createCount[4];			//料理が完成するまでのカウント、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
+		bool hasExistFoods[4];			//料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
+		ML::Vec2 foodPositions[4] = {	//料理の出現位置
+			{ ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f + 100 }, { ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f + 100 },
+			{ ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f + 100 }, { ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f + 100 }
+		};
+
+		//☆メソッド
+		void CreateFood(PlayerNum food_PlayerNum);	//料理の生成
+		void SendCreateFoodInformation(PlayerNum food_PlayerNum);			//料理を生成した情報を他タスクに送る
 	};
 }
