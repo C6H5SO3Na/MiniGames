@@ -5,7 +5,7 @@
 //-------------------------------------------------------------------
 #include "../BChara.h"
 
-namespace TaxiPlayer
+namespace TaxiGamePlayer
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("プレイヤ");	//グループ名
@@ -22,6 +22,9 @@ namespace TaxiPlayer
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
 		static  Resource::SP  Create();
+
+		DG::Image::SP img;
+		DG::Image::SP imgBtn[2][4];//[0,1][A,B,X,Y]
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -51,7 +54,13 @@ namespace TaxiPlayer
 		void Recieved() override;
 		DG::Font::SP TestFont;
 		string str;
-		enum class Button {
+		bool isClear;
+
+		enum Button {
+			A = 0b00010000,
+			B = 0b00100000,
+			X = 0b01000000,
+			Y = 0b10000000
 		};
 		string btn[4] = {
 			"A","B","X","Y"
@@ -59,6 +68,7 @@ namespace TaxiPlayer
 		int nowBtn = 0;
 		void MatchButton();
 		int matchCnt = 0;
+		static int clearNum;//順位
 
 		//ポリモーフィズム
 		//状態の抽象インターフェース
@@ -83,7 +93,7 @@ namespace TaxiPlayer
 			Object* owner_;
 		};
 
-		//通常
+		//クリア
 		class ClearState :public StateBase {
 		public:
 			ClearState(Object* ptr) :owner_(ptr) {}
@@ -94,8 +104,24 @@ namespace TaxiPlayer
 			Object* owner_;
 		};
 
+		//ミス
+		class MissState :public StateBase {
+		public:
+			MissState(Object* ptr) :owner_(ptr) {}
+			void think() override;
+			void move() override;
+			void render() override;
+		private:
+			Object* owner_;
+		};
+
 		StateBase* state;
 
 		void ChangeState(StateBase* state_);//状態変更
+
+		//段階を変更
+		int BUTTON(int state);
+		
+		void PullClear(int& n, XI::GamePad::SP con);
 	};
 }

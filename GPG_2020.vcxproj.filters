@@ -124,13 +124,7 @@
     <ClCompile Include="Miyagawa\Task_PayOffGameCursor.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TaxiGame2.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
     <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer2.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
     <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp">
@@ -226,13 +220,7 @@
     <ClInclude Include="Miyagawa\Task_PayOffGameCursor.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TaxiGame2.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
     <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer2.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h">

@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------
-//ゲーム本編
+//タクシーゲーム
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_TaxiGame.h"
@@ -8,6 +8,7 @@
 
 #include  "../Task_Ending.h"
 #include  "Task_TaxiGamePlayer.h"
+#include  "Task_TaxiGameTaxi.h"
 
 namespace  TaxiGame
 {
@@ -37,10 +38,14 @@ namespace  TaxiGame
 
 
 		//★タスクの生成
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth / 4.f, ge->screenHeight / 4.f), ge->in1);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth * 3.f / 4.f, ge->screenHeight / 4.f), ge->in2);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth / 4.f, ge->screenHeight * 3.f / 4.f), ge->in3);
-		TaxiPlayer::Object::Spawn(ML::Vec2(ge->screenWidth * 3.f / 4.f, ge->screenHeight * 3.f / 4.f), ge->in4);
+		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 1 / 5.f), ge->in1);
+		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 2 / 5.f), ge->in2);
+		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 3 / 5.f), ge->in3);
+		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 4 / 5.f), ge->in4);
+
+		for (int i = 0; i < 4; ++i) {
+			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (1 + i) / 5.f));
+		}
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -62,14 +67,13 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		//auto inp = ge->in1->GetState( );
-		//if (inp.ST.down) {
-		//	ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-		//	ge->CreateEffect(99, ML::Vec2(0, 0));
-		//}
-		//if (ge->getCounterFlag("test") == ge->LIMIT) {
-		//	Kill();
-		//}
+		int n = 0;
+		for (int i : playerRank) {
+			n += i;
+		}
+		if (n > size(playerRank)) {
+			Kill();
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
