@@ -60,7 +60,7 @@ namespace  BlanceGame
 			shake = true;
 		else
 			shake = false;
-		if (gameCnt > 120) {
+		if (gameCnt > 1320) {
 			this->Kill();
 		}
 	}

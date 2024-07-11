@@ -40,8 +40,8 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		//auto bg = BlanceGame::Object::Create(true);//バランスゲームテスト用
-		auto cg = ClassifyGame::Object::Create(true);//分類ゲームテスト用
+		auto bg = BlanceGame::Object::Create(true);//バランスゲームテスト用
+		//auto cg = ClassifyGame::Object::Create(true);//分類ゲームテスト用
 		return  true;
 	}
 	//-------------------------------------------------------------------
