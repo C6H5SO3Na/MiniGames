@@ -55,7 +55,9 @@ namespace TaxiGamePlayer
 		DG::Font::SP TestFont;
 		string str;
 		bool isClear;
+		ML::Vec2 prePos;
 
+		//ボタンのビット
 		enum Button {
 			A = 0b00010000,
 			B = 0b00100000,
@@ -82,10 +84,21 @@ namespace TaxiGamePlayer
 			ML::Box2D animTable_;
 		};
 
-		//通常
-		class NormalState :public StateBase {
+		//静止
+		class IdleState :public StateBase {
 		public:
-			NormalState(Object* ptr) :owner_(ptr) {}
+			IdleState(Object* ptr) :owner_(ptr) {}
+			void think() override;
+			void move() override;
+			void render() override;
+		private:
+			Object* owner_;
+		};
+
+		//動いている
+		class MoveState :public StateBase {
+		public:
+			MoveState(Object* ptr) :owner_(ptr) {}
 			void think() override;
 			void move() override;
 			void render() override;
