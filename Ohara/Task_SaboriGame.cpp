@@ -77,9 +77,66 @@ namespace  SaboriGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		//☆制限時間を減らす
-		if (this->isGameOver == false)
+		this->gameStateChangeCount++;
+
+		//ゲームの状態遷移
+		this->GameStateTransition();
+		//状態に対応する行動処理
+		this->Work();
+	}
+	//-------------------------------------------------------------------
+	//「２Ｄ描画」１フレーム毎に行う処理
+	void  Object::Render2D_AF()
+	{
+	}
+	//-------------------------------------------------------------------
+	//ゲームの状態遷移
+	void Object::GameStateTransition()
+	{
+		GameState nowState = this->gameState;	//とりあえず現在の状態を代入
+
+		//モーションの切り替え
+		switch (nowState)
 		{
+		case GameState::BeforeGameStart:	//ゲーム開始前
+			if (gameStateChangeCount >= 60 * 5) { nowState = GameState::Game; } //ゲーム中へ
+			break;
+
+		case GameState::Game:				//ゲーム中
+			if (timeLimit == 0) { nowState = GameState::Result; } //制限時間が0になったらリザルトへ
+			break;
+		}
+
+		//状態更新
+		this->UpdateGameState(nowState);
+	}
+	//-------------------------------------------------------------------
+	//ゲームの状態変更時処理
+	void Object::UpdateGameState(GameState nowState)
+	{
+		if (nowState != this->gameState)
+		{
+			this->gameState = nowState;
+			this->gameStateChangeCount = 0;
+		}
+	}
+	//-------------------------------------------------------------------
+	//状態毎の処理
+	void Object::Work()
+	{
+		switch (this->gameState)
+		{
+		case GameState::BeforeGameStart:	//ゲーム開始前
+			break;
+
+		case GameState::Game:				//ゲーム中
+			//☆ゲームを開始する
+			if (this->isInGame == false)
+			{
+				this->isInGame = true;
+			}
+
+			//☆制限時間を減らす
 			this->timeLimit -= 1.f / 60; // / 60 を / GetFps()に変更してモニターFPSにゲームが依存しないようにする
 
 			//制限時間が0未満だったら0にする
@@ -87,36 +144,27 @@ namespace  SaboriGame
 			{
 				this->timeLimit = 0.f;
 			}
-		}
+			break;
 
-		//☆制限時間が0になったらミニゲームを終了させる
-		if (this->timeLimit == 0.f)
-		{
-			//ミニゲームを終了させる
-			this->isGameOver = true;
+		case GameState::Result:
+			//☆ゲームを終了させる
+			if (this->isInGame == true)
+			{
+				this->isInGame = false;
+			}
 
-			//次のタスクへ行けるようにする
-			this->nextTaskToGoIs = true;
-		}
-
-		//☆次のタスクに行くまでのカウント
-		if (this->nextTaskToGoIs == true)
-		{
+			//☆次のタスクに行くまでのカウント
 			this->countToNextTask++;
-		}
 
-		//☆統括タスク消滅申請
-		if (this->countToNextTask == 60 * 10) { //60に * GetFps() / GameFps をする 
-			ge->StartCounter("test", 0); 
+			//☆統括タスク消滅申請
+			if (this->countToNextTask == 60 * 10) { //60をGetFps()にする 
+				ge->StartCounter("test", 0);
+			}
+			if (ge->getCounterFlag("test") == ge->LIMIT) {
+				Kill();
+			}
+			break;
 		}
-		if (ge->getCounterFlag("test") == ge->LIMIT) {
-			Kill();
-		}
-	}
-	//-------------------------------------------------------------------
-	//「２Ｄ描画」１フレーム毎に行う処理
-	void  Object::Render2D_AF()
-	{
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -154,10 +202,11 @@ namespace  SaboriGame
 	//-------------------------------------------------------------------
 	Object::Object()
 		:
+		gameStateChangeCount(0),
 		timeLimit(30.f), //制限時間を設定
-		isGameOver(false),
-		nextTaskToGoIs(false),
-		countToNextTask(0)
+		isInGame(false),
+		countToNextTask(0),
+		gameState(GameState::BeforeGameStart)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

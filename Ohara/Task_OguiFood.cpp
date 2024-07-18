@@ -65,7 +65,7 @@ namespace  OguiFood
 		}
 		
 		//ƒ~ƒjƒQ[ƒ€’†‚Ìˆ—
-		if (game->isGameOver == false)
+		if (game->isInGame == true)
 		{
 			this->moveCnt++;
 
