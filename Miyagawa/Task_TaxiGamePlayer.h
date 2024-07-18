@@ -57,6 +57,9 @@ namespace TaxiGamePlayer
 		bool isClear;
 		ML::Vec2 prePos;
 
+		ML::Box2D src;
+		ML::Box2D drawBase;
+
 		//ボタンのビット
 		enum Button {
 			A = 0b00010000,
