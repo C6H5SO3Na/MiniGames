@@ -63,7 +63,7 @@ namespace  OguiFoodManager
 		}
 
 		//ミニゲーム中の処理
-		if (game->isGameOver == false)
+		if (game->isInGame == true)
 		{
 			//☆料理の生成
 			//料理があるか確認

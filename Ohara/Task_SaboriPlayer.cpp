@@ -66,7 +66,7 @@ namespace  SaboriPlayer
 		}
 
 		//ミニゲーム中の処理
-		if (game->isGameOver == false)
+		if (game->isInGame == true)
 		{
 			this->moveCnt++;
 
@@ -100,13 +100,13 @@ namespace  SaboriPlayer
 			if (input.B1.on) { nowState = State::PSabori; } //サボり状態へ
 			break;
 
-		case State::PSabori:		//サボり状態
+		case State::PSabori:	//サボり状態
 			if (input.B1.up) { nowState = State::PWork; } //仕事中状態へ
 			if (noticedToSabori) { nowState = State::PNoticed; } //サボりばれ状態へ
 			break;
 
 		case State::PNoticed:	//サボりばれ状態
-			if (this->moveCnt >= this->gameFps * 6) { nowState = State::PWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps する
+			if (this->moveCnt >= this->gameFps * 3) { nowState = State::PWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps する
 			break;
 		}
 
