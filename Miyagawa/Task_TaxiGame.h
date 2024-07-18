@@ -46,9 +46,13 @@ namespace  TaxiGame
 		bool  Finalize();	//「終了」タスク消滅時に１回だけ行う処理
 
 		enum class Phase {
-			Game, Clear, 
+			None, Game, Clear, 
 		};
 
+		Phase phase = Phase::None;
+
+		void Game();
+		void Clear();
 	public:
 		int playerRank[4] = {};
 	};

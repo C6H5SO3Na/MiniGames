@@ -42,6 +42,9 @@ namespace TaxiGamePlayer
 		res = Resource::Create();
 
 		//šƒf[ƒ^‰Šú‰»
+		src = ML::Box2D(0, 0, 32, 80);
+		drawBase = ML::Box2D(-src.w, -src.h, -src.w * 2, src.h * 2);
+		hitBase = src;
 		render2D_Priority[1] = 0.5f;
 		TestFont = DG::Font::Create("‚l‚r ƒSƒVƒbƒN", 30, 30);
 		nowBtn = GetRandom(0, static_cast<int>(size(btn)) - 1);
@@ -130,18 +133,8 @@ namespace TaxiGamePlayer
 	{
 		{
 			//•`‰æ‹éŒ`
-			ML::Box2D src(0, 0, 32, 80);
-
-			ML::Box2D draw(
-				-src.w,
-				-src.h,
-				-src.w * 2,
-				src.h * 2
-			);
-
-			draw.Offset(owner_->pos);
-
-			owner_->res->img->Draw(draw, src);
+			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
+			owner_->res->img->Draw(draw, owner_->src);
 		}
 
 		{
@@ -183,18 +176,9 @@ namespace TaxiGamePlayer
 	{
 		{
 			//•`‰æ‹éŒ`
-			ML::Box2D src(0, 0, 32, 80);
-
-			ML::Box2D draw(
-				-src.w,
-				-src.h,
-				-src.w * 2,
-				src.h * 2
-			);
-
-			draw.Offset(owner_->pos);
-
-			owner_->res->img->Draw(draw, src);
+			owner_->src = ML::Box2D(0, 0, 48, 80);
+			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
+			owner_->res->img->Draw(draw, owner_->src);
 		}
 	}
 	//-------------------------------------------------------------------
@@ -213,18 +197,9 @@ namespace TaxiGamePlayer
 	{
 		{
 			//•`‰æ‹éŒ`
-			ML::Box2D src(0, 0, 32, 80);
-
-			ML::Box2D draw(
-				-src.w,
-				-src.h,
-				-src.w * 2,
-				src.h * 2
-			);
-
-			draw.Offset(owner_->pos);
-
-			owner_->res->img->Draw(draw, src);
+			owner_->src = ML::Box2D(0, 0, 48, 80);
+			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
+			owner_->res->img->Draw(draw, owner_->src);
 		}
 
 		//•`‰æ‹éŒ`
@@ -258,18 +233,9 @@ namespace TaxiGamePlayer
 	{
 		{
 			//•`‰æ‹éŒ`
-			ML::Box2D src(176, 0, 48, 80);
-
-			ML::Box2D draw(
-				-src.w,
-				-src.h,
-				-src.w * 2,
-				src.h * 2
-			);
-
-			draw.Offset(owner_->pos);
-
-			owner_->res->img->Draw(draw, src);
+			owner_->src = ML::Box2D(176, 0, 48, 80);
+			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
+			owner_->res->img->Draw(draw, owner_->src);
 		}
 
 		{

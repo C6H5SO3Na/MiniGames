@@ -49,6 +49,7 @@ namespace TaxiGameTaxi
 		void Think();
 		void Move();
 		void Recieved() override;
-
+		ML::Box2D src;
+		ML::Box2D drawBase;
 	};
 }
