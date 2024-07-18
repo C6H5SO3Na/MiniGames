@@ -5,7 +5,7 @@
 #define MYDEBUG
 #define	REFRESHRATE  60
 
-#include "Task_Title.h"
+#include "./Miyagawa/Task_TaxiGame.h"
 
 namespace MyPG
 {
@@ -193,7 +193,7 @@ namespace MyPG
 			}
 			break;
 	
-		case 99://フェードアウトしてからフェードイン 90フレーム
+		case 99://フェードアウトしてからフェードイン 90フレーム　黒
 			if (auto e = Effect00::Object::Create(true)) {
 				e->filename = "data/effect/black.png";
 				e->resSizeX = e->resSizeY = 256;
@@ -207,7 +207,7 @@ namespace MyPG
 				e->alpha = 0.f;
 			}
 			break;
-		case 98://フェードアウトしてからフェードイン　90フレーム
+		case 98://フェードアウトしてからフェードイン　90フレーム　白
 			if (auto e = Effect00::Object::Create(true)) {
 				e->filename = "data/effect/white.png";
 				e->resSizeX = e->resSizeY = 256;
@@ -509,7 +509,7 @@ ge->debugRect(me, DEBUGRECTMODE::RED ,- ge->camera2D.x, -ge->camera2D.y);
 		this->dgi->EffectState().param.bgColor = ML::Color(0, 0.0f, 0.0f, 0.0f);
 
 		//初期実行タスク生成＆ゲームエンジンに登録
-		auto  ft = Title::Object::Create(true);
+		auto  ft = TaxiGame::Object::Create(true);
 
 		//------------------------------------------------------------------------------------
 		//レイヤー毎の描画のON/OFF

@@ -1,0 +1,9 @@
+diff a/ClassifyGame/Task_ClassifyGamePM.cpp b/ClassifyGame/Task_ClassifyGamePM.cpp	(rejected hunks)
+@@ -66,6 +66,7 @@
+ 		gameCnt++;
+ 		if (gameCnt == 1320) {
+ 			int winner = 0;
++			for (int i = 0; i < 3; ++i) {
+ 					if(pList[i+1]->Fb> pList[i]->Fb){
+ 						winner = i + 1;
+ 				}

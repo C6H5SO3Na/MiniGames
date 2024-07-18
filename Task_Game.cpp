@@ -3,12 +3,10 @@
 //-------------------------------------------------------------------
 #include  "MyPG.h"
 #include  "Task_Game.h"
-
-#include "randomLib.h"
+#include  "StageAlarmClock/Task_StageAlarmClock.h"
+#include  "randomLib.h"
 
 #include  "Task_Ending.h"
-#include  "BlanceGame/Task_BlanceGame.h"
-#include  "ClassifyGame/Task_ClassifyGame.h"
 
 namespace  Game
 {
@@ -35,13 +33,13 @@ namespace  Game
 		res = Resource::Create();
 
 		//★データ初期化
-		
+
 		//デバッグ用フォントの準備
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		auto bg = BlanceGame::Object::Create(true);//バランスゲームテスト用
-		//auto cg = ClassifyGame::Object::Create(true);//分類ゲームテスト用
+		auto stagealarmclock = StageAlarmClock::Object::Create(true);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -50,6 +48,7 @@ namespace  Game
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("本編");
+		ge->KillAll_G("ステージ目覚まし時計");
 
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
