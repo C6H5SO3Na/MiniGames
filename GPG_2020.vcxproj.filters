@@ -29,6 +29,15 @@
     <Filter Include="MyPG\Task\ending">
       <UniqueIdentifier>{5995aebb-b88d-4733-b1a0-1ef6a853acdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Game\BlacneGame">
+      <UniqueIdentifier>{10f1580f-f92a-4d66-8bf6-4e311dd72559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\Miyagawa">
+      <UniqueIdentifier>{11e26480-e4df-49fd-80e0-0699a3270252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\Game\ClassifyGame">
+      <UniqueIdentifier>{bcd8035e-e151-408a-96b3-540ba54045c0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="MyPG\Task\Miyagawa">
       <UniqueIdentifier>{11e26480-e4df-49fd-80e0-0699a3270252}</UniqueIdentifier>
     </Filter>
@@ -115,15 +124,42 @@
     <ClCompile Include="easing.cpp">
       <Filter>Lib</Filter>
     </ClCompile>
-    <ClCompile Include="Task_Game.cpp">
-      <Filter>MyPG\Task\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Task_Ending.cpp">
       <Filter>MyPG\Task\ending</Filter>
     </ClCompile>
     <ClCompile Include="BChara.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
+    <ClCompile Include="BlanceGame\Task_BlanceGamePM.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClCompile>
+    <ClCompile Include="BlanceGame\Task_BlanceGamePlayer.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Task_Game.cpp">
+      <Filter>MyPG\Task\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BlanceGame\BGBChara.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassifyGame\Task_ClassifyGamePlayer.cpp">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassifyGame\CGBChara.cpp">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassifyGame\Task_ClassifyGamePM.cpp">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="BlanceGame\Task_BlanceGame.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClCompile>
+    <ClCompile Include="BlanceGame\Task_BlanceUIManager.cpp">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassifyGame\Task_ClassifyGame.cpp">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </Filter>
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
@@ -148,18 +184,6 @@
     <ClCompile Include="Ohara\OharaCharacterBase.cpp">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClCompile>
-    <ClCompile Include="Ohara\Task_SaboriGame.cpp">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Ohara\Task_SaboriJoushi.cpp">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Ohara\Task_SaboriPlayer.cpp">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Ohara\Task_SaboriUIManager.cpp">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClCompile>
     <ClCompile Include="Ohara\Task_OguiFood.cpp">
       <Filter>MyPG\Task\Ohara\OguiGame</Filter>
     </ClCompile>
@@ -174,6 +198,18 @@
     </ClCompile>
     <ClCompile Include="Ohara\Task_OguiUIManager.cpp">
       <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriGame.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriJoushi.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriPlayer.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriUIManager.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,9 +279,6 @@
     <ClInclude Include="easing.h">
       <Filter>Lib</Filter>
     </ClInclude>
-    <ClInclude Include="Task_Game.h">
-      <Filter>MyPG\Task\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Task_Ending.h">
       <Filter>MyPG\Task\ending</Filter>
     </ClInclude>
@@ -253,7 +286,36 @@
     <ClInclude Include="BChara.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
-
+    <ClInclude Include="BlanceGame\Task_BlanceGamePM.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClInclude>
+    <ClInclude Include="BlanceGame\Task_BlanceGamePlayer.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Task_Game.h">
+      <Filter>MyPG\Task\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BlanceGame\BGBChara.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassifyGame\Task_ClassifyGamePM.h">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassifyGame\Task_ClassifyGamePlayer.h">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassifyGame\CGBChara.h">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="BlanceGame\Task_BlanceGame.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClInclude>
+    <ClInclude Include="BlanceGame\Task_BlanceUIManager.h">
+      <Filter>MyPG\Task\Game\BlacneGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassifyGame\Task_ClassifyGame.h">
+      <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </Filter>
     <ClInclude Include="Miyagawa\Task_TaxiGame.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
@@ -281,18 +343,6 @@
     <ClInclude Include="Ohara\OharaPlayerNumber.h">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClInclude>
-    <ClInclude Include="Ohara\Task_SaboriGame.h">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Ohara\Task_SaboriJoushi.h">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Ohara\Task_SaboriPlayer.h">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Ohara\Task_SaboriUIManager.h">
-      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClInclude>
     <ClInclude Include="Ohara\Task_OguiFood.h">
       <Filter>MyPG\Task\Ohara\OguiGame</Filter>
     </ClInclude>
@@ -307,6 +357,18 @@
     </ClInclude>
     <ClInclude Include="Ohara\Task_OguiUIManager.h">
       <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriGame.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriJoushi.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriPlayer.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriUIManager.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

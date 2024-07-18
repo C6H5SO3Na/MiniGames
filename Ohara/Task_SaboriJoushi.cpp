@@ -68,7 +68,7 @@ namespace  SaboriJoushi
 		}
 
 		//ミニゲーム中の処理
-		if (game->isGameOver == false)
+		if (game->isInGame == true)
 		{
 			this->moveCnt++;
 
@@ -106,9 +106,9 @@ namespace  SaboriJoushi
 			{
 				//☆ランダムで遷移する状態を変更する
 				//遷移する状態を決定
-				this->changeStateKinds = GetRandom(0, 2);
+				this->changeStateKinds = GetRandom(0, 3);
 
-				//1/3で仕事中状態、2/3でサボり確認状態へ
+				//1/4で仕事中状態、3/4でサボり確認状態へ
 				if (this->changeStateKinds == 0) { nowState = State::JWork; } //仕事中状態へ
 				else{ nowState = State::JCheckForSabori; } //サボり確認状態へ
 			}
@@ -120,7 +120,7 @@ namespace  SaboriJoushi
 			break;
 
 		case State::JFoundSabori:				//サボり発見状態
-			if (this->moveCnt >= 2 * this->gameFps) { nowState = State::JWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
+			if (this->moveCnt >= 1 * this->gameFps) { nowState = State::JWork; } //仕事中状態へ モニターFPSにゲームが依存しないようにするために条件式に * GetFps() / (float)gameFps を追加する
 			break;
 		}
 

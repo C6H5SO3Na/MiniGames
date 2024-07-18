@@ -122,6 +122,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BChara.cpp" />
+    <ClCompile Include="BlanceGame\BGBChara.cpp" />
+    <ClCompile Include="BlanceGame\Task_BlanceGame.cpp" />
+    <ClCompile Include="BlanceGame\Task_BlanceGamePM.cpp" />
+    <ClCompile Include="BlanceGame\Task_BlanceGamePlayer.cpp" />
+    <ClCompile Include="BlanceGame\Task_BlanceUIManager.cpp" />
+    <ClCompile Include="ClassifyGame\CGBChara.cpp" />
+    <ClCompile Include="ClassifyGame\Task_ClassifyGame.cpp" />
+    <ClCompile Include="ClassifyGame\Task_ClassifyGamePM.cpp" />
+    <ClCompile Include="ClassifyGame\Task_ClassifyGamePlayer.cpp" />
     <ClCompile Include="DG2014\DG2014_DGObject.cpp" />
     <ClCompile Include="DG2014\DG2014_Effect.cpp" />
     <ClCompile Include="DG2014\DG2014_Font.cpp" />
@@ -170,6 +179,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BChara.h" />
+    <ClInclude Include="BlanceGame\BGBChara.h" />
+    <ClInclude Include="BlanceGame\Task_BlanceGame.h" />
+    <ClInclude Include="BlanceGame\Task_BlanceGamePM.h" />
+    <ClInclude Include="BlanceGame\Task_BlanceGamePlayer.h" />
+    <ClInclude Include="BlanceGame\Task_BlanceUIManager.h" />
+    <ClInclude Include="ClassifyGame\CGBChara.h" />
+    <ClInclude Include="ClassifyGame\Task_ClassifyGame.h" />
+    <ClInclude Include="ClassifyGame\Task_ClassifyGamePM.h" />
+    <ClInclude Include="ClassifyGame\Task_ClassifyGamePlayer.h" />
     <ClInclude Include="DG2014\DG2014_DGObject.h" />
     <ClInclude Include="DG2014\DG2014_Effect.h" />
     <ClInclude Include="DG2014\DG2014_Font.h" />

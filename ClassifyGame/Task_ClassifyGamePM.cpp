@@ -1,26 +1,24 @@
 //-------------------------------------------------------------------
-//大食いミニゲームのプレイヤー
+//バランスゲーム
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_OguiPlayer.h"
-#include  "Task_OguiFood.h"
-#include  "Task_OguiGame.h"
+#include  "Task_ClassifyGamePM.h"
+#include  "Task_ClassifyGamePlayer.h"
+#include  "CGBChara.h"
 
-namespace  OguiPlayer
+namespace  ClassifyGamePM
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/Ohara/testImage/testCircle.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->image.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -33,10 +31,19 @@ namespace  OguiPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->state = State::PWait;
-		
+		gameCnt = 0;
+		cList.push_back(ge->in1);
+		cList.push_back(ge->in2);
+		cList.push_back(ge->in3);
+		cList.push_back(ge->in4);
 		//★タスクの生成
 
+		for (int i = 0; i < 4; ++i) {
+			auto p = CGPlayer::Object::Create(true);
+			pList.push_back(p);
+			pList[i]->posInitialize(ML::Vec2(450 + 960 * (i % 2), 400 + 540 * (i / 2)));
+			pList[i]->controller = cList[i];
+		}
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -44,7 +51,7 @@ namespace  OguiPlayer
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
+		ge->KillAll_G("CGPlayer");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -56,114 +63,49 @@ namespace  OguiPlayer
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto game = ge->GetTask<OguiGame::Object>("本編");
-
-		//大食いミニゲームタスクが取得できているか確認
-		if (game == nullptr)
-		{
-			return;
+		gameCnt++;
+		if (gameCnt == 1320) {
+			int winner = 0;
+			for (int i = 0; i < 3; ++i) {
+					if(pList[i+1]->Fb> pList[i]->Fb){
+						winner = i + 1;
+				}
+			}
+			this->Kill();
 		}
-
-		//ミニゲーム中の処理
-		if (game->isInGame == true)
-		{
-			this->moveCnt++;
-
-			//状態判断
-			this->Think();
-			//状態に対応する行動処理
-			this->Move();
+		else if (gameCnt % 120 == 0) {
+			int r = rand() % 3;
+			switch (r)
+			{
+			case 0:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+						pList[i]->SetCGState(CGBChara::CGstate::PlayR);
+					}
+				}
+				break;
+			case 1:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+						pList[i]->SetCGState(CGBChara::CGstate::PlayG);
+					}
+				}
+				break;
+			case 2:
+				for (int i = 0; i < 4; ++i) {
+					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+						pList[i]->SetCGState(CGBChara::CGstate::PlayB);
+					}
+				}
+				break;
+			}
 		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		//☆描画
-		DrawInformation drawImage = this->GetDrawImage();
-		drawImage.draw.Offset(this->pos);
 
-		this->res->image->Draw(drawImage.draw, drawImage.src);
-	}
-	//-------------------------------------------------------------------
-	//現在のプレイヤーの状態制御
-	void Object::Think()
-	{
-		auto input = this->controller->GetState();
-		State nowState = this->state; //とりあえず現在の状態を代入
-
-		//モーションの切り替え
-		switch (nowState)
-		{
-		case State::PWait:	//待機状態
-			if (input.B1.down && this->existFood == true) { nowState = State::PEat; }
-			break;
-
-		case State::PEat:	//食事中状態
-			if (this->moveCnt == 30 || this->existFood == false) { nowState = State::PWait; }
-			break;
-		}
-
-		//状態更新
-		this->UpdateState(nowState);
-	}
-	//-------------------------------------------------------------------
-	//状態毎の行動処理
-	void Object::Move()
-	{
-		auto input = this->controller->GetState();
-
-		switch (this->state)
-		{
-		case State::PEat:	//食事中状態
-			if (input.B1.down)
-			{
-				//☆料理の残量を減らす
-				//全ての料理を取得
-				auto foods = ge->GetTasks<OguiFood::Object>("ギミック");
-				for (auto f = foods->begin(); f != foods->end(); ++f)
-				{
-					if (this->playerNum == (*f)->playerNum)
-					{
-						//料理の量を減らす
-						(*f)->ReduceHP(this->attack);
-						//料理の量を減らしたら食事中状態を継続するようにする
-						this->moveCnt = 0;
-						return;
-					}
-				}
-			}
-			break;
-		}
-	}
-	//-------------------------------------------------------------------
-	//アニメーション制御
-	Object::DrawInformation Object::GetDrawImage()
-	{
-		DrawInformation imageTable[] = {
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//待機状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//食事中状態
-		};
-
-		DrawInformation rtv;
-		switch (this->state)
-		{
-		case State::PWait:		//待機状態
-			rtv = imageTable[0];
-			break;
-
-		case State::PEat:		//食事中状態
-			rtv = imageTable[1];
-			break;
-		}
-
-		return rtv;
-	}
-	//-------------------------------------------------------------------
-	//料理の存在しているかの情報を取得
-	void Object::SetExistFood(bool foodExistenceInformation)
-	{
-		this->existFood = foodExistenceInformation;
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -200,12 +142,7 @@ namespace  OguiPlayer
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object()
-		:
-		attack(1),
-		eatFoodCount(0),
-		existFood(false)
-	{	}
+	Object::Object() {	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
