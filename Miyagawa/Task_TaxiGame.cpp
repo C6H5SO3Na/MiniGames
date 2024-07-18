@@ -35,7 +35,7 @@ namespace  TaxiGame
 		res = Resource::Create();
 
 		//★データ初期化
-
+		phase = Phase::Game;
 
 		//★タスクの生成
 		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 1 / 5.f), ge->in1);
@@ -67,23 +67,14 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = ge->in1->GetState();
-		if (inp.B1.down) {
-			ge->CreateEffect(99,{0,0});
-		}
-		if (inp.B2.down) {
-			ge->CreateEffect(98, { 0,0 });
-		}
-		int n = 0;
-		auto players = ge->GetTasks<TaxiGamePlayer::Object>(TaxiGamePlayer::defGroupName);
-		for_each(players->begin(), players->end(),
-			[&](auto iter) {
-				if (iter->IsClear()) {
-					++n;
-				}
-			});
-		if (n >= 4) {
-			Kill();
+		switch (phase) {
+		case Phase::Game:
+			Game();
+			break;
+
+		case Phase::Clear:
+			Clear();
+			break;
 		}
 	}
 	//-------------------------------------------------------------------
@@ -91,7 +82,31 @@ namespace  TaxiGame
 	void  Object::Render2D_AF()
 	{
 	}
-
+	//-------------------------------------------------------------------
+	//ゲーム本編の処理
+	void  Object::Game()
+	{
+		int clearNum = 0;
+		auto players = ge->GetTasks<TaxiGamePlayer::Object>(TaxiGamePlayer::defGroupName, TaxiGamePlayer::defName);
+		for_each(players->begin(), players->end(),
+			[&](auto iter) {
+				if (iter->IsClear()) {
+					++clearNum;
+				}
+			});
+		if (clearNum >= 4) {
+			ge->StartCounter("Clear", 120);
+			phase = Phase::Clear;
+		}
+	}
+	//-------------------------------------------------------------------
+	//全員クリア後の処理
+	void  Object::Clear()
+	{
+		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
+			Kill();
+		}
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

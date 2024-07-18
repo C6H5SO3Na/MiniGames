@@ -159,7 +159,7 @@
     </ClCompile>
     <ClCompile Include="ClassifyGame\Task_ClassifyGame.cpp">
       <Filter>MyPG\Task\Game\ClassifyGame</Filter>
-    </Filter>
+    </ClCompile>
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
@@ -315,7 +315,7 @@
     </ClInclude>
     <ClInclude Include="ClassifyGame\Task_ClassifyGame.h">
       <Filter>MyPG\Task\Game\ClassifyGame</Filter>
-    </Filter>
+    </ClInclude>
     <ClInclude Include="Miyagawa\Task_TaxiGame.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
