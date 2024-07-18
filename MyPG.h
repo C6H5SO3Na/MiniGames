@@ -75,7 +75,7 @@ namespace  MyPG
 		MyPG::Camera::SP		camera[4];		//	カメラ
 
 		XI::Mouse::SP  mouse;
-		XI::GamePad::SP  in1, in2, in3, in4;	//取り合えず４本
+		XI::GamePad::SP  in1, in2, in3, in4;	//取り敢えず４本
 		//２Ｄカメラ矩形
 		ML::Box2D				camera2D;	//  ２Ｄスクロール制御用
 		map<string, float> evFlags;
@@ -83,12 +83,8 @@ namespace  MyPG
 		bool isGameOver = false; //ゲームオーバーフラグ
 		bool isGameClear = false;//クリアフラグ
 		bool unHitEnemy = false;//敵との当たり判定
-		int gameOverCnt = 1;
-		int maxGameOver = 1;
 
-		bool jump2Check = false;		//ジャンプ2判定
-		bool doDestroy = false; //破壊フラグ
-		bool doAttack = false; //攻撃フラグ
+		int score[4] = {};
 
 		bool isTransparent = false; //透明フラグ
 

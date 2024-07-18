@@ -193,7 +193,7 @@ namespace MyPG
 			}
 			break;
 	
-		case 99://フェードアウトしてからフェードイン 90フレーム
+		case 99://フェードアウトしてからフェードイン 90フレーム　黒
 			if (auto e = Effect00::Object::Create(true)) {
 				e->filename = "data/effect/black.png";
 				e->resSizeX = e->resSizeY = 256;
@@ -207,7 +207,7 @@ namespace MyPG
 				e->alpha = 0.f;
 			}
 			break;
-		case 98://フェードアウトしてからフェードイン　90フレーム
+		case 98://フェードアウトしてからフェードイン　90フレーム　白
 			if (auto e = Effect00::Object::Create(true)) {
 				e->filename = "data/effect/white.png";
 				e->resSizeX = e->resSizeY = 256;

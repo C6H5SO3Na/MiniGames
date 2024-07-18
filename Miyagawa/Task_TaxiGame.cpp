@@ -54,7 +54,7 @@ namespace  TaxiGame
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("本編");
-		ge->KillAll_G("プレイヤー");
+		ge->KillAll_G("タクシー");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -67,11 +67,22 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		int n = 0;
-		for (int i : playerRank) {
-			n += i;
+		auto inp = ge->in1->GetState();
+		if (inp.B1.down) {
+			ge->CreateEffect(99,{0,0});
 		}
-		if (n > size(playerRank)) {
+		if (inp.B2.down) {
+			ge->CreateEffect(98, { 0,0 });
+		}
+		int n = 0;
+		auto players = ge->GetTasks<TaxiGamePlayer::Object>(TaxiGamePlayer::defGroupName);
+		for_each(players->begin(), players->end(),
+			[&](auto iter) {
+				if (iter->IsClear()) {
+					++n;
+				}
+			});
+		if (n >= 4) {
 			Kill();
 		}
 	}
