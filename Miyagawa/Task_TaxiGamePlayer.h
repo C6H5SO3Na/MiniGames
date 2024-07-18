@@ -8,8 +8,8 @@
 namespace TaxiGamePlayer
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("プレイヤ");	//グループ名
-	const  string  defName("タクシー");	//タスク名
+	const  string  defGroupName("タクシー");	//グループ名
+	const  string  defName("プレイヤ");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -132,9 +132,11 @@ namespace TaxiGamePlayer
 
 		void ChangeState(StateBase* state_);//状態変更
 
-		//段階を変更
 		int BUTTON(int state);
-		
+
 		void PullClear(int& n, XI::GamePad::SP con);
+
+	public:
+		bool IsClear() const { return isClear; }
 	};
 }

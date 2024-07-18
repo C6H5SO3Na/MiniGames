@@ -235,8 +235,7 @@ namespace TaxiGamePlayer
 			ge->screen2DHeight
 		);
 
-		owner_->TestFont->Draw(draw, "CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f)
-		);
+		owner_->TestFont->Draw(draw, "CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f));
 	}
 
 	//-------------------------------------------------------------------
@@ -330,6 +329,7 @@ namespace TaxiGamePlayer
 	//ƒNƒŠƒA‚ğ’Ê’m
 	void Object::PullClear(int& n, XI::GamePad::SP con)
 	{
+		++n;
 		auto game = ge->GetTask<TaxiGame::Object>(TaxiGame::defGroupName);
 
 		if (con == ge->in1) {
