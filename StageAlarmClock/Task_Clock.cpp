@@ -32,9 +32,9 @@ namespace  Clock
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.5f;
-		this->hitBase = ML::Box2D(-256, -256, 512, 512);
-		this->pos.x = 900;
-		this->pos.y = 800;
+		this->hitBase = ML::Box2D(-128, -128, 256, 256);
+		this->pos.x = 0;
+		this->pos.y = 0;
 		//★タスクの生成
 
 		return  true;
@@ -65,7 +65,14 @@ namespace  Clock
 		ML::Box2D src(0, 0, 512, 512);
 		this->res->img->Draw(draw, src);
 	}
-
+	//-------------------------------------------------------------------
+	void Object::Positionalise(int PlayerNum)
+	{
+		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
+		pos.x = PlayerArea.x + (PlayerArea.w / 2);
+		pos.y = PlayerArea.y + (PlayerArea.h / 4) * 3;
+	}
+	//-------------------------------------------------------------------
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

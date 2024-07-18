@@ -39,7 +39,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		//auto stagealarmclock = StageAlarmClock::Object::Create(true);
+		/*auto stagealarmclock = StageAlarmClock::Object::Create(true);*/
 		auto stagebrushteeth = StageBrushTeeth::Object::Create(true);
 
 		return  true;
@@ -50,7 +50,7 @@ namespace  Game
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("本編");
-		/*ge->KillAll_G("ステージ目覚まし時計");*/
+		ge->KillAll_G("ステージ目覚まし時計");
 		ge->KillAll_G("ステージ歯磨き");
 
 

@@ -5,6 +5,8 @@
 #include  "Task_StageAlarmClock.h"
 #include  "Task_Clock.h"
 #include  "Task_hand.h"
+#include  "Task_CommonItemManager01.h"
+
 
 namespace  StageAlarmClock
 {
@@ -36,8 +38,9 @@ namespace  StageAlarmClock
 		this->render2D_Priority[1] = 0.9f;
 
 		//★タスクの生成
-		auto alarmclock = Clock::Object::Create(true);
-		auto hand = hand::Object::Create(true);
+		/*auto alarmclock = Clock::Object::Create(true);
+		auto hand = hand::Object::Create(true);*/
+		auto commonmanager = CommonItemManager01::Object::Create(true);
 
 		return  true;
 	}
@@ -48,6 +51,7 @@ namespace  StageAlarmClock
 		//★データ＆タスク解放
 		ge->KillAll_G("目覚まし時計");
 		ge->KillAll_G("手");
+		ge->KillAll_G("共通アイテムマネージャー01");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成

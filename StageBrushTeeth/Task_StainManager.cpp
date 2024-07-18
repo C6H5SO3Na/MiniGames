@@ -40,16 +40,16 @@ namespace  StainManager
 
 		return  true;
 	}
-
+	//-------------------------------------------------------------------
 	void Object::Positionalise(int PlayerNum)
 	{
 		ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		minPosX = StainArea.x ;
+		minPosX = StainArea.x;
 		minPosY = StainArea.y;
-		maxPosX = StainArea.x + StainArea.w;
-		maxPosY = StainArea.y + StainArea.h;
+		maxPosX = StainArea.x + StainArea.w -32;
+		maxPosY = StainArea.y + StainArea.h -32;
 	}
-
+	//-------------------------------------------------------------------
 	void Object::CreateStain()
 	{
 		for (int i = 0; i < 5; ++i)

@@ -2,20 +2,17 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_StageBrushTeeth.h"
-#include  "Task_brush.h"
-#include  "Task_StainManager.h"
-#include  "Task_CommonItemManager02.h"
+#include  "Task_CommonItemManager01.h"
+#include "Task_Clock.h"
+#include "Task_hand.h"
 
-namespace  StageBrushTeeth
+namespace  CommonItemManager01
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->bgImg = DG::Image::Create("./data/image/lunch50.png");
-		this->teethImg = DG::Image::Create("./data/image/teeth.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -34,12 +31,26 @@ namespace  StageBrushTeeth
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->render2D_Priority[1] = 0.9f;
+		CTList.push_back(ge->in1);
+		CTList.push_back(ge->in2);
+		CTList.push_back(ge->in3);
+		CTList.push_back(ge->in4);
 
+		for (int i = 0; i < 4; ++i)
+		{
+			auto c = Clock::Object::Create(true);
+			ClockList.push_back(c);
+
+			auto h = hand::Object::Create(true);
+			PLhandList.push_back(h);
+
+			c->Positionalise(i);
+			h->Positionalise(i);
+
+			h->controller = CTList[i];
+		}
+		
 		//★タスクの生成
-		/*auto brush = brush::Object::Create(true);*/
-		/*auto stainmanager = StainManager::Object::Create(true);*/
-		auto commonmanager = CommonItemManager02::Object::Create(true);
 
 		return  true;
 	}
@@ -48,10 +59,7 @@ namespace  StageBrushTeeth
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("ブラシュ");
-		ge->KillAll_G("よごれマネージャー");
-		ge->KillAll_G("よごれ");
-		ge->KillAll_G("共通アイテムマネージャー02");
+
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -68,22 +76,6 @@ namespace  StageBrushTeeth
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw(0, 0, 1920, 1080);
-		ML::Box2D src(0, 0, 1920, 1080);
-		this->res->bgImg->Draw(draw, src);
-
-		ML::Box2D draw2(0, 0, 1280/2, 1080/2);
-		ML::Box2D src2(0, 0, 1280, 1080);
-		this->res->teethImg->Draw(draw2, src2);
-
-		ML::Box2D draw3(1980/2, 0, 1280/2, 1080/2);
-		this->res->teethImg->Draw(draw3, src2);
-
-		ML::Box2D draw4(0, 1080/2, 1280/2, 1080/2);
-		this->res->teethImg->Draw(draw4, src2);
-
-		ML::Box2D draw5(1980/2, 1080/2, 1280/2, 1080/2);
-		this->res->teethImg->Draw(draw5, src2);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
