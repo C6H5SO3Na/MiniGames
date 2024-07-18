@@ -5,6 +5,7 @@
 #include  "Task_TaxiGame.h"
 #include  "Task_TaxiGamePlayer.h"
 #include "../randomLib.h"
+#include "../easing.h"
 
 namespace TaxiGamePlayer
 {
@@ -43,9 +44,9 @@ namespace TaxiGamePlayer
 		//★データ初期化
 		render2D_Priority[1] = 0.5f;
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
+		nowBtn = GetRandom(0, static_cast<int>(size(btn)) - 1);
 
 		//★タスクの生成
-		nowBtn = GetRandom(0, static_cast<int>(size(btn)) - 1);
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -68,6 +69,7 @@ namespace TaxiGamePlayer
 		input = controller->GetState();
 		Think();
 		Move();
+		easing::UpDate();
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -97,7 +99,6 @@ namespace TaxiGamePlayer
 	void  Object::MatchButton()
 	{
 		++matchCnt;
-		pos.x -= 150.f;
 		if (matchCnt >= 10) {
 			isClear = true;
 			return;
@@ -106,29 +107,26 @@ namespace TaxiGamePlayer
 	}
 	//-------------------------------------------------------------------
 	//思考
-	void  Object::NormalState::think()
+	void  Object::IdleState::think()
 	{
-		if (owner_->isClear) {
-			owner_->ChangeState(new ClearState(owner_));
-			owner_->PullClear(clearNum, owner_->controller);
-			return;
-		}
 		if (owner_->BUTTON(0) == 0) { return; }
-		if (owner_->BUTTON(0) != pow(2, 4 + owner_->nowBtn)) {
+		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {
+			owner_->ChangeState(new MoveState(owner_));
+			easing::Set("move", easing::QUADINOUT, 0, -150, 30);
+			easing::Start("move");
+		}
+		else {
 			owner_->ChangeState(new MissState(owner_));
 		}
 	}
 	//-------------------------------------------------------------------
 	//行動
-	void  Object::NormalState::move()
+	void  Object::IdleState::move()
 	{
-		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {
-			owner_->MatchButton();
-		}
 	}
 	//-------------------------------------------------------------------
 	//描画
-	void  Object::NormalState::render()
+	void  Object::IdleState::render()
 	{
 		{
 			//描画矩形
@@ -156,6 +154,47 @@ namespace TaxiGamePlayer
 			);
 
 			owner_->TestFont->Draw(draw, owner_->btn[owner_->nowBtn]);
+		}
+	}
+
+	//-------------------------------------------------------------------
+	//思考
+	void  Object::MoveState::think()
+	{
+		if (easing::GetState("move") == easing::EQ_STATE::EQ_END) {
+			owner_->MatchButton();
+			if (owner_->isClear) {
+				owner_->PullClear(clearNum, owner_->controller);
+				owner_->ChangeState(new ClearState(owner_));
+				return;
+			}
+			owner_->ChangeState(new IdleState(owner_));
+		}
+	}
+	//-------------------------------------------------------------------
+	//行動
+	void  Object::MoveState::move()
+	{
+		owner_->pos.x = easing::GetPos("move") + owner_->prePos.x;
+	}
+	//-------------------------------------------------------------------
+	//描画
+	void  Object::MoveState::render()
+	{
+		{
+			//描画矩形
+			ML::Box2D src(0, 0, 32, 80);
+
+			ML::Box2D draw(
+				-src.w,
+				-src.h,
+				-src.w * 2,
+				src.h * 2
+			);
+
+			draw.Offset(owner_->pos);
+
+			owner_->res->img->Draw(draw, src);
 		}
 	}
 	//-------------------------------------------------------------------
@@ -196,8 +235,7 @@ namespace TaxiGamePlayer
 			ge->screen2DHeight
 		);
 
-		owner_->TestFont->Draw(draw, "CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f)
-		);
+		owner_->TestFont->Draw(draw, "CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f));
 	}
 
 	//-------------------------------------------------------------------
@@ -205,7 +243,7 @@ namespace TaxiGamePlayer
 	void  Object::MissState::think()
 	{
 		if (owner_->moveCnt == 120) {
-			owner_->ChangeState(new NormalState(owner_));
+			owner_->ChangeState(new IdleState(owner_));
 		}
 	}
 	//-------------------------------------------------------------------
@@ -252,6 +290,7 @@ namespace TaxiGamePlayer
 		delete state;
 		state = state_;
 		moveCnt = 0;
+		prePos = pos;
 	}
 
 	//ボタン(入力をビットで入手)
@@ -290,6 +329,7 @@ namespace TaxiGamePlayer
 	//クリアを通知
 	void Object::PullClear(int& n, XI::GamePad::SP con)
 	{
+		++n;
 		auto game = ge->GetTask<TaxiGame::Object>(TaxiGame::defGroupName);
 
 		if (con == ge->in1) {
@@ -340,7 +380,7 @@ namespace TaxiGamePlayer
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() :state(new NormalState(this)), isClear(false) {	}
+	Object::Object() :state(new IdleState(this)), isClear(false) {	}
 	//-------------------------------------------------------------------
 	void Object::Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_)
 	{
