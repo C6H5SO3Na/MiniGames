@@ -1,23 +1,18 @@
 //-------------------------------------------------------------------
-//タクシーゲーム
+//タクシーゲームの背景
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiGame.h"
-
+#include  "Task_TaxiGameBG.h"
 #include "../randomLib.h"
 
-#include  "../Task_Ending.h"
-#include  "Task_TaxiGamePlayer.h"
-#include  "Task_TaxiGameTaxi.h"
-#include  "Task_TaxiGameBG.h"
-
-namespace  TaxiGame
+namespace TaxiGameBG
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		img = DG::Image::Create("./data/image/TaxiGameBG.jpg");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -36,19 +31,9 @@ namespace  TaxiGame
 		res = Resource::Create();
 
 		//★データ初期化
-		phase = Phase::Game;
+		render2D_Priority[1] = 1.f;
 
 		//★タスクの生成
-		TaxiGameBG::Object::Create(true);
-
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 1 / 5.f), ge->in1);
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 2 / 5.f), ge->in2);
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 3 / 5.f), ge->in3);
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 4 / 5.f), ge->in4);
-
-		for (int i = 0; i < 4; ++i) {
-			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (1 + i) / 5.f));
-		}
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -56,12 +41,10 @@ namespace  TaxiGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-		ge->KillAll_G("タクシー");
+
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = Ending::Object::Create(true);
 		}
 
 		return  true;
@@ -70,45 +53,14 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (phase) {
-		case Phase::Game:
-			Game();
-			break;
-
-		case Phase::Clear:
-			Clear();
-			break;
-		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-	}
-	//-------------------------------------------------------------------
-	//ゲーム本編の処理
-	void  Object::Game()
-	{
-		int clearNum = 0;
-		auto players = ge->GetTasks<TaxiGamePlayer::Object>(TaxiGamePlayer::defGroupName, TaxiGamePlayer::defName);
-		for_each(players->begin(), players->end(),
-			[&](auto iter) {
-				if (iter->IsClear()) {
-					++clearNum;
-				}
-			});
-		if (clearNum >= 4) {
-			ge->StartCounter("Clear", 120);
-			phase = Phase::Clear;
-		}
-	}
-	//-------------------------------------------------------------------
-	//全員クリア後の処理
-	void  Object::Clear()
-	{
-		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
-			Kill();
-		}
+		ML::Box2D src(0, 0, 6667, 5000);
+		ML::Box2D draw(0, 0, 1920, 1080);
+		res->img->Draw(draw, src);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -122,6 +74,7 @@ namespace  TaxiGame
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -143,7 +96,7 @@ namespace  TaxiGame
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object() {}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()

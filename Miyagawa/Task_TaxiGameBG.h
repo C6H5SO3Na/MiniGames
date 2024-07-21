@@ -1,15 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//タクシーゲーム
+//タクシーゲームの背景
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
 
-namespace  TaxiGame
+namespace  TaxiGameBG
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("タクシー");	//グループ名
-	const  string  defName("本編統括");	//タスク名
+	const  string  defName("背景");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -44,16 +44,5 @@ namespace  TaxiGame
 		void  UpDate()			override;	//「実行」１フレーム毎に行う処理
 		void  Render2D_AF()		override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();	//「終了」タスク消滅時に１回だけ行う処理
-
-		enum class Phase {
-			None, Game, Clear, 
-		};
-
-		Phase phase = Phase::None;
-
-		void Game();
-		void Clear();
-	public:
-		int playerRank[4] = {};
 	};
 }

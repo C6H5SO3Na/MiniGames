@@ -211,6 +211,9 @@
     <ClCompile Include="Ohara\Task_SaboriUIManager.cpp">
       <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
     </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp">
+      <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -369,6 +372,9 @@
     </ClInclude>
     <ClInclude Include="Ohara\Task_SaboriUIManager.h">
       <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGameBG.h">
+      <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
