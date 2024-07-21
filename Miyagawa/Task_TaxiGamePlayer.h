@@ -47,15 +47,31 @@ namespace TaxiGamePlayer
 		//生成窓口 引数はtrueでタスクシステムへ自動登録
 		static  Object::SP  Create(bool flagGameEnginePushBack_);
 
+		//コントローラーの変数
 		XI::GamePad::SP controller;//in1 in2など
 		XI::VGamePad input;
+
+		//テストフォント
+		DG::Font::SP TestFont;
+
+		//前回の位置(イージング用)
+		ML::Vec2 prePos;
+
+		//クリアフラグ
+		bool isClear;
+
+		int animCnt = 0;
+
+		int nowBtn = 0;
+		int matchCnt = 0;
+		static int clearNum;//順位
+
+		//メソッド
 		void Think();
 		void Move();
 		void Recieved() override;
-		DG::Font::SP TestFont;
-		string str;
-		bool isClear;
-		ML::Vec2 prePos;
+		void DrawButton();
+		void MatchButton();
 
 		//ボタンのビット
 		enum Button {
@@ -64,13 +80,6 @@ namespace TaxiGamePlayer
 			X = 0b01000000,
 			Y = 0b10000000
 		};
-		string btn[4] = {
-			"A","B","X","Y"
-		};
-		int nowBtn = 0;
-		void MatchButton();
-		int matchCnt = 0;
-		static int clearNum;//順位
 
 		//ポリモーフィズム
 		//状態の抽象インターフェース
@@ -131,9 +140,7 @@ namespace TaxiGamePlayer
 		StateBase* state;
 
 		void ChangeState(StateBase* state_);//状態変更
-
 		int BUTTON(int state);
-
 		void PullClear(int& n, XI::GamePad::SP con);
 
 	public:
