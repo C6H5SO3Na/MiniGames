@@ -1,15 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//サボりミニゲーム用プレイヤー
+//サボりミニゲームのプレイヤー
 //-------------------------------------------------------------------
-#include "../BChara.h"
+#include "OharaCharacterBase.h"
 
 namespace  SaboriPlayer
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("プレイヤー");	//グループ名
-	const  string  defName("プレイヤー");		//タスク名
+	const  string  defName("サボりプレイヤー");		//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -27,7 +27,7 @@ namespace  SaboriPlayer
 		DG::Image::SP image;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public  BChara
+	class  Object : public OCharaBase
 	{
 	public:
 		virtual  ~Object();
@@ -49,31 +49,17 @@ namespace  SaboriPlayer
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//追加したい変数・メソッドはここに追加する
 		//BCharaに含まれないモノのみここに追加する
-		//☆クラス・構造体
-		enum class State
-		{
-			Work,		//仕事状態
-			Break,		//サボり状態
-			Noticed,	//サボりばれの状態
-		};
 
-		struct DrawInformation 
-		{
-			//☆メンバ変数
-			ML::Box2D draw, src;
-		};
+		//☆変数
+		XI::GamePad::SP controller;			//入力情報を受け取りたいコントローラーのデータを格納
+		float			totalSaboriTime;	//サボった時間の合計を保存しておく
+		bool			noticedToSabori;	//上司にさぼりを気づかれたらtrue
 
 		//☆メソッド
-		void Think();						//プレイヤーの状態制御
-		void UpdateState(State nowState);	//状態更新時の処理
-		void Move();						//状態毎の行動処理
-		DrawInformation DrawImage();		//描画画像の制御
-
+		virtual void Think() override;
+		virtual void Move() override;
+		virtual DrawInformation GetDrawImage() override;
 		virtual void Recieved() override {}
 
-	private:
-		//☆変数
-		State state;
-		int moveCount;
 	};
 }

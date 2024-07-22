@@ -4,6 +4,7 @@
 //サボりミニゲーム本編
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
+#include "OharaPlayerNumber.h"
 
 namespace  SaboriGame
 {
@@ -47,7 +48,33 @@ namespace  SaboriGame
 		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		DG::Font::SP TestFont;
+		//☆変数
+		ML::Vec2 playerFirstPos[4] = {	//プレイヤーの初期位置
+			{ ge->screen2DWidth / 4.f, ge->screen2DHeight / 2.f }, { ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight / 2.f },
+			{ ge->screen2DWidth / 4.f, ge->screen2DHeight * 3.f / 4.f }, { ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight * 3.f / 4.f }
+		};
+		ML::Vec2 joushiFirstPos = { ge->screen2DWidth / 2.f, ge->screen2DHeight / 4.f };	//上司の初期位置
+		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };			//取得するコントローラー
+		PlayerNum playersNum[4] = { PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }; //プレイヤーの識別番号設定用
+
+		int   gameStateChangeCount;	//GameStateを変更するまでのカウント
+		float timeLimit;			//制限時間
+		bool  isInGame;				//ミニゲーム中か判断する。ミニゲーム中trueにする
+		int   countToNextTask;		//次のタスクにするまでのカウント
+
+		//☆クラス・構造体
+		enum class GameState
+		{
+			BeforeGameStart,	//ゲーム開始前
+			Game,				//ゲーム中
+			Result,				//リザルト
+		};
+		GameState gameState;
+
+		//☆関数
+		void GameStateTransition();					//ゲームの状態遷移
+		void UpdateGameState(GameState nowState);	//ゲームの状態変更時処理
+		void Work();								//状態毎の処理
 
 	};
 }
