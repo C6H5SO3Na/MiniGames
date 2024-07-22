@@ -5,10 +5,10 @@
 //-------------------------------------------------------------------
 #include "../BChara.h"
 
-namespace  Clock
+namespace  brush
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("目覚まし時計");	//グループ名
+	const  string  defGroupName("ブラシュ");	//グループ名
 	const  string  defName("NoName");		//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
@@ -52,6 +52,13 @@ namespace  Clock
 		//「変数宣言を書く」
 		//「追加メソッドを書く」
 		void Recieved() {};
+
+		float speed;
+
+		XI::GamePad::SP controller;
+
+		float minPosX, minPosY, maxPosX, maxPosY;
+
 		void Positionalise(int PlayerNum);
 	};
 }
