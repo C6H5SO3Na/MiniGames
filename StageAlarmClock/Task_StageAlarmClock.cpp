@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_StageAlarmClock.h"
+#include  "../StageBrushTeeth/Task_StageBrushTeeth.h"
 #include  "Task_Clock.h"
 #include  "Task_hand.h"
 #include  "Task_CommonItemManager01.h"
@@ -55,6 +56,7 @@ namespace  StageAlarmClock
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
+			StageBrushTeeth::Object::Create(true);
 		}
 
 		return  true;

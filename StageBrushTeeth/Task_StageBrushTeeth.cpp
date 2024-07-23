@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_StageBrushTeeth.h"
+#include  "../BlanceGame/Task_BlanceGame.h"
 #include  "Task_brush.h"
 #include  "Task_StainManager.h"
 #include  "Task_CommonItemManager02.h"
@@ -55,6 +56,7 @@ namespace  StageBrushTeeth
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
+			BlanceGame::Object::Create(true);
 		}
 
 		return  true;
