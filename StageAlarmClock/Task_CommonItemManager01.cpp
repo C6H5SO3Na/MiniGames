@@ -2,23 +2,23 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_Clock.h"
+#include  "Task_CommonItemManager01.h"
+#include "Task_Clock.h"
+#include "Task_hand.h"
 
-namespace  Clock
+namespace  CommonItemManager01
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/clock.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,10 +31,25 @@ namespace  Clock
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->render2D_Priority[1] = -0.5f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
-		this->pos.x = 0;
-		this->pos.y = 0;
+		CTList.push_back(ge->in1);
+		CTList.push_back(ge->in2);
+		CTList.push_back(ge->in3);
+		CTList.push_back(ge->in4);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			auto c = Clock::Object::Create(true);
+			ClockList.push_back(c);
+
+			auto h = hand::Object::Create(true);
+			PLhandList.push_back(h);
+
+			c->Positionalise(i);
+			h->Positionalise(i);
+
+			h->controller = CTList[i];
+		}
+		
 		//★タスクの生成
 
 		return  true;
@@ -61,18 +76,8 @@ namespace  Clock
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 512, 512);
-		this->res->img->Draw(draw, src);
 	}
-	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
-	{
-		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		pos.x = PlayerArea.x + (PlayerArea.w / 2);
-		pos.y = PlayerArea.y + (PlayerArea.h / 4) * 3;
-	}
-	//-------------------------------------------------------------------
+
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

@@ -16,13 +16,14 @@ namespace  Title
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->img = DG::Image::Create("./data/image/titlepic.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-
+		this->img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -125,6 +126,11 @@ namespace  Title
 		TestFont->Draw(ML::Box2D(0, 0, ge->screen2DWidth, ge->screen2DHeight),
 			"TITLE"
 		);
+
+		ML::Box2D draw (0, 0, 1980, 1080);
+		ML::Box2D src(0, 0, 1980, 1080);
+
+		this->res->img->Draw(draw, src);
 	}
 	
 

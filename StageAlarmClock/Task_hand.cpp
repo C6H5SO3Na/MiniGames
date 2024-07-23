@@ -33,12 +33,13 @@ namespace  hand
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
-		this->pos.x = 200;
-		this->pos.y = 200;
-		this->speed = 5.0f;
+		this->hitBase = ML::Box2D(-64, -64, 128, 128);
+		this->pos.x = 0;
+		this->pos.y = 0;
+		this->speed = 10.0f;
 		this->controller = ge->in1;
 		this->state = State::Right;
+		isright = true;
 
 		//★タスクの生成
 
@@ -61,39 +62,51 @@ namespace  hand
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		this->pos += this->moveVec;
+
 		switch (this->state)
 		{
 		case State::Left:
 			this->moveVec = ML::Vec2(-2 * this->speed, 0);
-			if (this->pos.x < 100)
+			if (this->pos.x < minPosX)
 			{
 				this->state = State::Right;
+				isright = true;
 			}
 			break;
 		case State::Right:
 			this->moveVec = ML::Vec2(2 * this->speed, 0);
-			if (this->pos.x >1800)
+			if (this->pos.x >maxPosX)
 			{
 				this->state = State::Left;
+				isright = false;
 			}
 			break;
 		case State::Down:
 			this->moveVec = ML::Vec2(0, 2 * this->speed);
-			if (this->pos.y > 550)
+			if (this->pos.y > maxPosY)
 			{
 				this->state = State::Up;
 			}
 			break;
 		case State::Up:
 			this->moveVec = ML::Vec2(0, -2 * this->speed);
-			if (this->pos.y < 200)
+			if (this->pos.y < minPosY)
 			{
-				this->state = State::Right;
+				if (isright)
+				{
+					this->state = State::Right;
+				}
+				else
+				{
+					this->state = State::Left;
+				}
+				
 			}
 			break;
 		}
 
-		this->pos += this->moveVec;
+		
 
 		if (this->controller) {
 			auto inp = this->controller->GetState();
@@ -101,12 +114,17 @@ namespace  hand
 		}
 		
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
-		auto t = ge->GetTask<Clock::Object>("目覚まし時計");
-		auto you = t->hitBase.OffsetCopy(t->pos);
+		
+		auto t = ge->GetTasks<Clock::Object>("目覚まし時計");
+		for (auto it = t->begin(); it != t->end(); ++it)
+		{
+			auto you = (*it)->hitBase.OffsetCopy((*it)->pos);
 			if (you.Hit(me))
 			{
 				this->speed = 0;
-			}		
+			}
+		}
+					
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -116,7 +134,17 @@ namespace  hand
 		ML::Box2D src(0, 0, 256, 256);
 		this->res->img->Draw(draw, src);
 	}
-
+	//-------------------------------------------------------------------
+	void Object::Positionalise(int PlayerNum)
+	{
+		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
+		pos.x = PlayerArea.x + (hitBase.w / 2);
+		pos.y = PlayerArea.y + (hitBase.h / 2);
+		minPosX = PlayerArea.x + (hitBase.w / 2);
+		minPosY = PlayerArea.y + (hitBase.h / 4 * 3);
+		maxPosX = PlayerArea.x + PlayerArea.w - hitBase.w;
+		maxPosY = PlayerArea.y + PlayerArea.h / 2 ;
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

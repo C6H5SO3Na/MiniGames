@@ -54,6 +54,8 @@ namespace  hand
 		void Recieved() {};
 
 		float speed;
+		float minPosX, minPosY, maxPosX, maxPosY;
+		bool isright;
 
 		enum class State
 		{
@@ -66,5 +68,7 @@ namespace  hand
 		State state;
 
 		XI::GamePad::SP controller;
+
+		void Positionalise(int PlayerNum);
 	};
 }

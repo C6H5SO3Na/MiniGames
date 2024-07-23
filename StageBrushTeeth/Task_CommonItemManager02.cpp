@@ -2,23 +2,24 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_Clock.h"
+#include  "Task_CommonItemManager02.h"
+#include  "Task_StainManager.h"
+#include  "Task_brush.h"
+#include  "Task_stain.h"
 
-namespace  Clock
+namespace  CommonItemManager02
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/clock.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,10 +32,26 @@ namespace  Clock
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->render2D_Priority[1] = -0.5f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
-		this->pos.x = 0;
-		this->pos.y = 0;
+		CTList.push_back(ge->in1);
+		CTList.push_back(ge->in2);
+		CTList.push_back(ge->in3);
+		CTList.push_back(ge->in4);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			auto b = brush::Object::Create(true);
+			PLBrushList.push_back(b);
+
+			auto s = StainManager::Object::Create(true);
+			CreateStatinList.push_back(s);
+
+			b->Positionalise(i);
+			s->Positionalise(i);
+
+			b->controller = CTList[i];
+			s->CreateStain();
+		}
+		
 		//★タスクの生成
 
 		return  true;
@@ -61,18 +78,8 @@ namespace  Clock
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 512, 512);
-		this->res->img->Draw(draw, src);
 	}
-	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
-	{
-		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		pos.x = PlayerArea.x + (PlayerArea.w / 2);
-		pos.y = PlayerArea.y + (PlayerArea.h / 4) * 3;
-	}
-	//-------------------------------------------------------------------
+
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

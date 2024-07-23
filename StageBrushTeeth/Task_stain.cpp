@@ -2,16 +2,17 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_Clock.h"
+#include  "Task_stain.h"
+#include  "Task_StainManager.h"
 
-namespace  Clock
+namespace  stain
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/clock.png");
+		this->img = DG::Image::Create("./data/image/stain.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -32,9 +33,9 @@ namespace  Clock
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.5f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
 		this->pos.x = 0;
 		this->pos.y = 0;
+		this->hitBase = ML::Box2D(-32, -32, 64, 64);
 		//★タスクの生成
 
 		return  true;
@@ -56,6 +57,7 @@ namespace  Clock
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -63,16 +65,11 @@ namespace  Clock
 	{
 		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
 		ML::Box2D src(0, 0, 512, 512);
+
 		this->res->img->Draw(draw, src);
 	}
-	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
-	{
-		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		pos.x = PlayerArea.x + (PlayerArea.w / 2);
-		pos.y = PlayerArea.y + (PlayerArea.h / 4) * 3;
-	}
-	//-------------------------------------------------------------------
+
+
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

@@ -2,23 +2,23 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_Clock.h"
+#include  "Task_StainManager.h"
+#include  "Task_stain.h"
+#include  "../randomLib.h"
 
-namespace  Clock
+namespace  StainManager
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/clock.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -30,15 +30,43 @@ namespace  Clock
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
 
-		//★データ初期化
-		this->render2D_Priority[1] = -0.5f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
-		this->pos.x = 0;
-		this->pos.y = 0;
+		
+		this->minPosX = 0;
+		this->maxPosX = 0;
+		this->minPosY = 0;
+		this->maxPosY = 0;
+
 		//★タスクの生成
 
 		return  true;
 	}
+	//-------------------------------------------------------------------
+	void Object::Positionalise(int PlayerNum)
+	{
+		ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
+		minPosX = StainArea.x;
+		minPosY = StainArea.y;
+		maxPosX = StainArea.x + StainArea.w -32;
+		maxPosY = StainArea.y + StainArea.h -32;
+	}
+	//-------------------------------------------------------------------
+	void Object::CreateStain()
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			auto position = GetStainPos(positions);
+			positions.push_back(position);
+		}
+
+		//★データ初期化
+		for (int i = 0; i < 5; ++i)
+		{
+			auto s = stain::Object::Create(true);
+			s->pos = positions[i];
+			stains.push_back(s);
+		}
+	}
+
 	//-------------------------------------------------------------------
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
@@ -61,18 +89,31 @@ namespace  Clock
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 512, 512);
-		this->res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
+	ML::Vec2 Object::GetStainPos(vector<ML::Vec2>& positions)
 	{
-		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		pos.x = PlayerArea.x + (PlayerArea.w / 2);
-		pos.y = PlayerArea.y + (PlayerArea.h / 4) * 3;
+		float x = GetRandom(this->minPosX, this->maxPosX);
+		float y = GetRandom(this->minPosY, this->maxPosY);
+
+		int w = 64;
+		int h = 64;
+		auto hit = ML::Box2D(-w / 2, -h / 2, w, h);
+
+		// 重なっていないかチェック
+		auto me = hit.OffsetCopy(x, y);
+		for (auto p = positions.begin(); p != positions.end(); p++)
+		{
+			auto you = hit.OffsetCopy((*p));
+			if (you.Hit(me)) {
+				return GetStainPos(positions);
+			}
+		}
+
+		return ML::Vec2(x, y);
 	}
 	//-------------------------------------------------------------------
+	
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
