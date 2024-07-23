@@ -9,6 +9,7 @@
 #include  "../Task_Ending.h"
 #include  "Task_TaxiGamePlayer.h"
 #include  "Task_TaxiGameTaxi.h"
+#include  "Task_TaxiGameBG.h"
 
 namespace  TaxiGame
 {
@@ -38,6 +39,8 @@ namespace  TaxiGame
 		phase = Phase::Game;
 
 		//šƒ^ƒXƒN‚Ì¶¬
+		TaxiGameBG::Object::Create(true);
+
 		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 1 / 5.f), ge->in1);
 		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 2 / 5.f), ge->in2);
 		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 3 / 5.f), ge->in3);

@@ -16,14 +16,14 @@ namespace TaxiGamePlayer
 	bool  Resource::Initialize()
 	{
 		img = DG::Image::Create("./data/image/chara02.png");
-		imgBtn[0][0] = DG::Image::Create("./data/image/button/default/xbox_button_a.png");
-		imgBtn[1][0] = DG::Image::Create("./data/image/button/default/xbox_button_a_outline.png");
-		imgBtn[0][1] = DG::Image::Create("./data/image/button/default/xbox_button_b.png");
-		imgBtn[1][1] = DG::Image::Create("./data/image/button/default/xbox_button_b_outline.png");
-		imgBtn[0][2] = DG::Image::Create("./data/image/button/default/xbox_button_x.png");
-		imgBtn[1][2] = DG::Image::Create("./data/image/button/default/xbox_button_x_outline.png");
-		imgBtn[0][3] = DG::Image::Create("./data/image/button/default/xbox_button_y.png");
-		imgBtn[1][3] = DG::Image::Create("./data/image/button/default/xbox_button_y_outline.png");
+		imgBtn[0][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a.png");
+		imgBtn[1][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a_outline.png");
+		imgBtn[0][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b.png");
+		imgBtn[1][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b_outline.png");
+		imgBtn[0][2] = DG::Image::Create("./data/image/button/default/xbox_button_color_x.png");
+		imgBtn[1][2] = DG::Image::Create("./data/image/button/default/xbox_button_color_x_outline.png");
+		imgBtn[0][3] = DG::Image::Create("./data/image/button/default/xbox_button_color_y.png");
+		imgBtn[1][3] = DG::Image::Create("./data/image/button/default/xbox_button_color_y_outline.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -42,12 +42,9 @@ namespace TaxiGamePlayer
 		res = Resource::Create();
 
 		//★データ初期化
-		src = ML::Box2D(0, 0, 32, 80);
-		drawBase = ML::Box2D(-src.w, -src.h, -src.w * 2, src.h * 2);
-		hitBase = src;
 		render2D_Priority[1] = 0.5f;
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
-		nowBtn = GetRandom(0, static_cast<int>(size(btn)) - 1);
+		nowBtn = GetRandom(0, 3);
 
 		//★タスクの生成
 		return  true;
@@ -73,6 +70,7 @@ namespace TaxiGamePlayer
 		Think();
 		Move();
 		easing::UpDate();
+		++animCnt;
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -106,14 +104,28 @@ namespace TaxiGamePlayer
 			isClear = true;
 			return;
 		}
-		nowBtn = GetRandom(0, static_cast<int>(size(btn)) - 1);
+		nowBtn = GetRandom(0, 3);
+	}
+	//-------------------------------------------------------------------
+	//ボタンの描画
+	void  Object::DrawButton()
+	{
+		//描画矩形
+		ML::Box2D src(0, 0, 64, 64);
+		ML::Box2D draw(
+			static_cast<int>(pos.x),
+			static_cast<int>(pos.y),
+			src.w,
+			src.h
+		);
+		res->imgBtn[animCnt / 10 % 2][nowBtn]->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
 	//思考
 	void  Object::IdleState::think()
 	{
 		if (owner_->BUTTON(0) == 0) { return; }
-		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {
+		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {//ビット単位のための計算
 			owner_->ChangeState(new MoveState(owner_));
 			easing::Set("move", easing::QUADINOUT, 0, -150, 30);
 			easing::Start("move");
@@ -133,21 +145,13 @@ namespace TaxiGamePlayer
 	{
 		{
 			//描画矩形
-			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
-			owner_->res->img->Draw(draw, owner_->src);
+			ML::Box2D src(0, 0, 32, 80);
+			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+			draw.Offset(owner_->pos);
+			owner_->res->img->Draw(draw, src);
 		}
 
-		{
-			//描画矩形
-			ML::Box2D draw(
-				static_cast<int>(owner_->pos.x),
-				static_cast<int>(owner_->pos.y),
-				ge->screen2DWidth,
-				ge->screen2DHeight
-			);
-
-			owner_->TestFont->Draw(draw, owner_->btn[owner_->nowBtn]);
-		}
+		owner_->DrawButton();
 	}
 
 	//-------------------------------------------------------------------
@@ -176,9 +180,10 @@ namespace TaxiGamePlayer
 	{
 		{
 			//描画矩形
-			owner_->src = ML::Box2D(0, 0, 48, 80);
-			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
-			owner_->res->img->Draw(draw, owner_->src);
+			ML::Box2D src(0, 0, 32, 80);
+			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+			draw.Offset(owner_->pos);
+			owner_->res->img->Draw(draw, src);
 		}
 	}
 	//-------------------------------------------------------------------
@@ -197,9 +202,10 @@ namespace TaxiGamePlayer
 	{
 		{
 			//描画矩形
-			owner_->src = ML::Box2D(0, 0, 48, 80);
-			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
-			owner_->res->img->Draw(draw, owner_->src);
+			ML::Box2D src(0, 0, 32, 80);
+			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+			draw.Offset(owner_->pos);
+			owner_->res->img->Draw(draw, src);
 		}
 
 		//描画矩形
@@ -233,22 +239,13 @@ namespace TaxiGamePlayer
 	{
 		{
 			//描画矩形
-			owner_->src = ML::Box2D(176, 0, 48, 80);
-			ML::Box2D draw = owner_->drawBase.OffsetCopy(owner_->pos);
-			owner_->res->img->Draw(draw, owner_->src);
+			ML::Box2D src(176, 0, 48, 80);
+			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+			draw.Offset(owner_->pos);
+			owner_->res->img->Draw(draw, src);
 		}
 
-		{
-			//描画矩形
-			ML::Box2D draw(
-				static_cast<int>(owner_->pos.x),
-				static_cast<int>(owner_->pos.y),
-				ge->screen2DWidth,
-				ge->screen2DHeight
-			);
-
-			owner_->TestFont->Draw(draw, owner_->btn[owner_->nowBtn]);
-		}
+		owner_->DrawButton();
 	}
 	//段階を変更
 	void  Object::ChangeState(StateBase* state_)
