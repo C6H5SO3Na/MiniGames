@@ -4,6 +4,8 @@
 #include  "../MyPG.h"
 #include  "Task_ClassifyGame.h"
 #include  "Task_ClassifyGamePM.h"
+
+#include  "../Ohara/Task_SaboriGame.h"
 //#include  "Task_ClassifyGUIManager.h"
 
 namespace  ClassifyGame
@@ -46,6 +48,7 @@ namespace  ClassifyGame
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
+			SaboriGame::Object::Create(true);
 		}
 
 		return  true;

@@ -5,6 +5,7 @@
 #include  "Task_BlanceGame.h"
 #include  "Task_BlanceGamePM.h"
 #include  "Task_BlanceUIManager.h"
+#include  "../ClassifyGame/Task_ClassifyGame.h"
 
 namespace  BlanceGame
 {
@@ -47,6 +48,7 @@ namespace  BlanceGame
 		ge->KillAll_G("バランスゲームＵＩマネージャー");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
+			ClassifyGame::Object::Create(true);
 		}
 
 		return  true;
