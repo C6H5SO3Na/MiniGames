@@ -25,6 +25,7 @@ namespace TaxiGamePlayer
 
 		DG::Image::SP img;
 		DG::Image::SP imgBtn[2][4];//[0,1][A,B,X,Y]
+		DG::Image::SP imgClear;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -50,9 +51,6 @@ namespace TaxiGamePlayer
 		//コントローラーの変数
 		XI::GamePad::SP controller;//in1 in2など
 		XI::VGamePad input;
-
-		//テストフォント
-		DG::Font::SP TestFont;
 
 		//前回の位置(イージング用)
 		ML::Vec2 prePos;

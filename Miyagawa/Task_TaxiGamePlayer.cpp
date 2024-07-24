@@ -16,6 +16,7 @@ namespace TaxiGamePlayer
 	bool  Resource::Initialize()
 	{
 		img = DG::Image::Create("./data/image/chara02.png");
+		imgClear = DG::Image::Create("./data/image/clearImage.png");
 		imgBtn[0][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a.png");
 		imgBtn[1][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a_outline.png");
 		imgBtn[0][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b.png");
@@ -43,7 +44,6 @@ namespace TaxiGamePlayer
 
 		//★データ初期化
 		render2D_Priority[1] = 0.5f;
-		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 		nowBtn = GetRandom(0, 3);
 
 		//★タスクの生成
@@ -209,14 +209,10 @@ namespace TaxiGamePlayer
 		}
 
 		//描画矩形
-		ML::Box2D draw(
-			static_cast<int>(owner_->pos.x) - 100,
-			static_cast<int>(owner_->pos.y) - 100,
-			ge->screen2DWidth,
-			ge->screen2DHeight
-		);
-
-		owner_->TestFont->Draw(draw, "CLEAR!", ML::Color(1.f, 1.f, 0.f, 1.f));
+		ML::Box2D src(0, 0, 97, 25);
+		ML::Box2D draw(-src.w / 2, -src.h /2, src.w, src.h);
+		draw.Offset(owner_->pos);
+		owner_->res->imgClear->Draw(draw, src);
 	}
 
 	//-------------------------------------------------------------------
