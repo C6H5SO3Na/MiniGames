@@ -7,7 +7,7 @@
 #include  "Task_Effect00.h"
 #include "sound.h"
 
-#include  "StageAlarmClock/Task_StageAlarmClock.h"
+#include  "Task_Game.h"
 
 namespace  Title
 {
@@ -81,7 +81,7 @@ namespace  Title
 		//★データ＆タスク解放
 		bgm::Stop("bgm1");
 		if (!ge->QuitFlag() && nextTaskCreate) {
-			StageAlarmClock::Object::Create(true);
+			Game::Object::Create(true);
 		}
 
 		return  true;
