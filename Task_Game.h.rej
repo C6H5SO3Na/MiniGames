@@ -1,0 +1,10 @@
+diff a/Task_Game.h b/Task_Game.h	(rejected hunks)
+@@ -48,6 +48,6 @@
+ 	public:
+ 		//�ǉ��������ϐ��E���\�b�h�͂����ɒǉ�����
+ 		DG::Font::SP TestFont;
+-
++		//vector
+ 	};
+ }
+\ No newline at end of file

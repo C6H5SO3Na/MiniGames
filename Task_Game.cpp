@@ -5,11 +5,18 @@
 #include  "Task_Game.h"
 #include  "StageAlarmClock/Task_StageAlarmClock.h"
 #include  "StageBrushTeeth/Task_StageBrushTeeth.h"
-#include  "randomLib.h"
-
-#include  "Task_Ending.h"
 #include  "BlanceGame/Task_BlanceGame.h"
 #include  "ClassifyGame/Task_ClassifyGame.h"
+#include  "Ohara/Task_OguiGame.h"
+#include  "Ohara/Task_SaboriGame.h"
+#include  "Miyagawa/Task_TaxiGame.h"
+
+#include  <chrono>
+#include  <thread>
+
+#include  "randomLib.h"
+#include  "Task_Ending.h"
+
 
 namespace  Game
 {
@@ -41,7 +48,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		auto stagealarmclock = StageAlarmClock::Object::Create(true);
+		CreateTask();
     
 		return  true;
 	}
@@ -54,7 +61,7 @@ namespace  Game
 		ge->KillAll_G("ステージ目覚まし時計");
 		ge->KillAll_G("ステージ歯磨き");
 
-
+		auto next = Ending::Object::Create(true);
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
 			auto next = Ending::Object::Create(true);
@@ -75,6 +82,40 @@ namespace  Game
 			Kill();
 		}
 	}
+	//-------------------------------------------------------------------
+	//タスクの生成
+	//引数なしなら最初のタスクを生成
+	void  Object::CreateTask() {
+		StageAlarmClock::Object::Create(true);
+	}
+	void  Object::CreateTask(int nextTask) {
+		//auto gsUI=gamesetUI::Object::Create(true);  //ゲームセットUI生成用
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		switch (nextTask) {
+		case 1:
+			StageBrushTeeth::Object::Create(true);
+			break;
+		case 2:
+			BlanceGame::Object::Create(true);
+			break;
+		case 3:
+			ClassifyGame::Object::Create(true);
+			break;
+		case 4:
+			OguiGame::Object::Create(true);
+			break;
+		case 5:
+			SaboriGame::Object::Create(true);
+			break;
+		case 6:
+			TaxiGame::Object::Create(true);
+			break;
+		default:
+			return;
+			break;
+		}
+	}
+
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
