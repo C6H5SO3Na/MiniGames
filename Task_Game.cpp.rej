@@ -1,0 +1,9 @@
+diff a/Task_Game.cpp b/Task_Game.cpp	(rejected hunks)
+@@ -55,6 +55,7 @@
+ 	{
+ 		//���f�[�^���^�X�N���
+ 		ge->KillAll_G("�{��");
++		ge->KillAll_G("�X�e�[�W�ڊo�܂����v");
+ 
+ 
+ 		if (!ge->QuitFlag() && nextTaskCreate) {

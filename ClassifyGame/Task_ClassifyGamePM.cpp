@@ -67,11 +67,10 @@ namespace  ClassifyGamePM
 		if (gameCnt == 1320) {
 			int winner = 0;
 			for (int i = 0; i < 3; ++i) {
-					if(pList[i+1]->Fb> pList[i]->Fb){
-						winner = i + 1;
+				if (pList[i + 1]->Fb > pList[i]->Fb) {
+					winner = i + 1;
 				}
 			}
-			this->Kill();
 		}
 		else if (gameCnt % 120 == 0) {
 			int r = rand() % 3;

@@ -61,13 +61,13 @@ namespace  BGPlayer
 			break;
 		case BGstate::PlayR:
 			direction += 1;
-			if (in.LStick.BL.down) { SetBGState(BGstate::PlayL); }
+			if (in.HL.down) { SetBGState(BGstate::PlayL); }
 			if (direction > 40) { SetBGState(BGstate::Fail); }
 			if (direction == 0) { SetBGState(BGstate::Playing); }
 			break;
 		case BGstate::PlayL:
 			direction -= 1;
-			if (in.LStick.BR.down) { SetBGState(BGstate::PlayR); }
+			if (in.HR.down) { SetBGState(BGstate::PlayR); }
 			if (direction < -40) { SetBGState(BGstate::Fail); }
 			if (direction == 0) { SetBGState(BGstate::Playing); }
 			break;
