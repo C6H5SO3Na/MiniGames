@@ -32,7 +32,7 @@ namespace TaxiGameTaxi
 
 		//★データ初期化
 		render2D_Priority[1] = 0.7f;
-		src = ML::Box2D(0, 0, 128, 128);
+		src = ML::Box2D(0, 0, 460, 460);
 
 		//★タスクの生成
 		return  true;
@@ -61,7 +61,7 @@ namespace TaxiGameTaxi
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
+		ML::Box2D draw(-src.w / 4, -src.h / 4, src.w / 2, src.h / 2);
 		draw.Offset(pos);
 		res->img->Draw(draw, src);
 	}

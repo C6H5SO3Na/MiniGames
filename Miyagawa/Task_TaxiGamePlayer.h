@@ -23,7 +23,7 @@ namespace TaxiGamePlayer
 		static   WP  instance;
 		static  Resource::SP  Create();
 
-		DG::Image::SP img;
+		DG::Image::SP imgPlayer;
 		DG::Image::SP imgBtn[2][4];//[0,1][A,B,X,Y]
 		DG::Image::SP imgClear;
 	};

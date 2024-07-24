@@ -6,6 +6,7 @@
 #include  "Task_TaxiGamePlayer.h"
 #include "../randomLib.h"
 #include "../easing.h"
+#include "../sound.h"
 
 namespace TaxiGamePlayer
 {
@@ -15,8 +16,13 @@ namespace TaxiGamePlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/chara02.png");
+		//プレイヤー画像
+		imgPlayer = DG::Image::Create("./data/image/chara02.png");
+
+		//クリア画像
 		imgClear = DG::Image::Create("./data/image/clearImage.png");
+
+		//ボタンの画像(アニメーション込みのため二次元配列)
 		imgBtn[0][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a.png");
 		imgBtn[1][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a_outline.png");
 		imgBtn[0][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b.png");
@@ -45,6 +51,10 @@ namespace TaxiGamePlayer
 		//★データ初期化
 		render2D_Priority[1] = 0.5f;
 		nowBtn = GetRandom(0, 3);
+
+		//SE
+		se::LoadFile("Miss", "./data/sound/se/ClassifyGame/maou_se_onepoint33.wav");
+		se::LoadFile("Clear", "./data/sound/se/TaxiGame/シャキーン1.wav");
 
 		//★タスクの生成
 		return  true;
@@ -132,6 +142,7 @@ namespace TaxiGamePlayer
 		}
 		else {
 			owner_->ChangeState(new MissState(owner_));
+			se::Play("Miss");
 		}
 	}
 	//-------------------------------------------------------------------
@@ -148,7 +159,7 @@ namespace TaxiGamePlayer
 			ML::Box2D src(0, 0, 32, 80);
 			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
 			draw.Offset(owner_->pos);
-			owner_->res->img->Draw(draw, src);
+			owner_->res->imgPlayer->Draw(draw, src);
 		}
 
 		owner_->DrawButton();
@@ -163,6 +174,7 @@ namespace TaxiGamePlayer
 			if (owner_->isClear) {
 				owner_->PullClear(clearNum, owner_->controller);
 				owner_->ChangeState(new ClearState(owner_));
+				se::Play("Clear");
 				return;
 			}
 			owner_->ChangeState(new IdleState(owner_));
@@ -178,13 +190,11 @@ namespace TaxiGamePlayer
 	//描画
 	void  Object::MoveState::render()
 	{
-		{
-			//描画矩形
-			ML::Box2D src(0, 0, 32, 80);
-			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
-			draw.Offset(owner_->pos);
-			owner_->res->img->Draw(draw, src);
-		}
+		//描画矩形
+		ML::Box2D src(0, 0, 32, 80);
+		ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+		draw.Offset(owner_->pos);
+		owner_->res->imgPlayer->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
 	//思考
@@ -205,12 +215,12 @@ namespace TaxiGamePlayer
 			ML::Box2D src(0, 0, 32, 80);
 			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
 			draw.Offset(owner_->pos);
-			owner_->res->img->Draw(draw, src);
+			owner_->res->imgPlayer->Draw(draw, src);
 		}
 
 		//描画矩形
 		ML::Box2D src(0, 0, 97, 25);
-		ML::Box2D draw(-src.w / 2, -src.h /2, src.w, src.h);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
 		draw.Offset(owner_->pos);
 		owner_->res->imgClear->Draw(draw, src);
 	}
@@ -238,7 +248,9 @@ namespace TaxiGamePlayer
 			ML::Box2D src(176, 0, 48, 80);
 			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
 			draw.Offset(owner_->pos);
-			owner_->res->img->Draw(draw, src);
+			//振動
+			draw.Offset(GetRandom(0, 10), GetRandom(0, 10));
+			owner_->res->imgPlayer->Draw(draw, src);
 		}
 
 		owner_->DrawButton();
