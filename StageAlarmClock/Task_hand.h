@@ -56,6 +56,7 @@ namespace  hand
 		float speed;
 		float minPosX, minPosY, maxPosX, maxPosY;
 		bool isright;
+		bool isClear = false;
 
 		enum class State
 		{
@@ -70,5 +71,7 @@ namespace  hand
 		XI::GamePad::SP controller;
 
 		void Positionalise(int PlayerNum);
+
+		bool IsClear() const { return isClear; }
 	};
 }
