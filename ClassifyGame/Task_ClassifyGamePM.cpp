@@ -1,42 +1,46 @@
-//-------------------------------------------------------------------
-//ƒoƒ‰ƒ“ƒXƒQ[ƒ€
+ï»¿//-------------------------------------------------------------------
+//ãƒãƒ©ãƒ³ã‚¹ã‚²ãƒ¼ãƒ 
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_ClassifyGamePM.h"
 #include  "Task_ClassifyGamePlayer.h"
 #include  "CGBChara.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 
 namespace  ClassifyGamePM
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
+	//ãƒªã‚½ãƒ¼ã‚¹ã®åˆæœŸåŒ–
 	bool  Resource::Initialize()
 	{
 		return true;
 	}
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒX‚Ì‰ğ•ú
+	//ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾
 	bool  Resource::Finalize()
 	{
 		return true;
 	}
 	//-------------------------------------------------------------------
-	//u‰Šú‰»vƒ^ƒXƒN¶¬‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
+	//ã€ŒåˆæœŸåŒ–ã€ã‚¿ã‚¹ã‚¯ç”Ÿæˆæ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
 	bool  Object::Initialize()
 	{
-		//ƒX[ƒp[ƒNƒ‰ƒX‰Šú‰»
+		//ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹åˆæœŸåŒ–
 		__super::Initialize(defGroupName, defName, true);
-		//ƒŠƒ\[ƒXƒNƒ‰ƒX¶¬orƒŠƒ\[ƒX‹¤—L
+		//ãƒªã‚½ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ç”Ÿæˆorãƒªã‚½ãƒ¼ã‚¹å…±æœ‰
 		this->res = Resource::Create();
 
-		//šƒf[ƒ^‰Šú‰»
+		//â˜…ãƒ‡ãƒ¼ã‚¿åˆæœŸåŒ–
 		gameCnt = 0;
 		cList.push_back(ge->in1);
 		cList.push_back(ge->in2);
 		cList.push_back(ge->in3);
 		cList.push_back(ge->in4);
-		//šƒ^ƒXƒN‚Ì¶¬
+		//â˜…ã‚¿ã‚¹ã‚¯ã®ç”Ÿæˆ
 
 		for (int i = 0; i < 4; ++i) {
 			auto p = CGPlayer::Object::Create(true);
@@ -47,28 +51,41 @@ namespace  ClassifyGamePM
 		return  true;
 	}
 	//-------------------------------------------------------------------
-	//uI—¹vƒ^ƒXƒNÁ–Å‚É‚P‰ñ‚¾‚¯s‚¤ˆ—
+	//ã€Œçµ‚äº†ã€ã‚¿ã‚¹ã‚¯æ¶ˆæ»…æ™‚ã«ï¼‘å›ã ã‘è¡Œã†å‡¦ç†
 	bool  Object::Finalize()
 	{
-		//šƒf[ƒ^•ƒ^ƒXƒN‰ğ•ú
+		//â˜…ãƒ‡ãƒ¼ã‚¿ï¼†ã‚¿ã‚¹ã‚¯è§£æ”¾
 		ge->KillAll_G("CGPlayer");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
-			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
+			//â˜…å¼•ãç¶™ãã‚¿ã‚¹ã‚¯ã®ç”Ÿæˆ
 		}
 
 		return  true;
 	}
 	//-------------------------------------------------------------------
-	//uXVv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
+	//ã€Œæ›´æ–°ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
 	void  Object::UpDate()
 	{
 		gameCnt++;
-		if (gameCnt == 1320) {
-			int winner = 0;
-			for (int i = 0; i < 3; ++i) {
-				if (pList[i + 1]->Fb > pList[i]->Fb) {
-					winner = i + 1;
+		if (gameCnt == 1319) {
+			vector<int> nums = { pList[0]->Fb, pList[1]->Fb, pList[2]->Fb, pList[3]->Fb }; 
+			vector<int> ranks(nums.size());
+
+			assignRanks(nums, ranks);
+			for (int i = 0; i < 4; i++) {
+				switch (ranks[i]) {
+				case 1:
+					ge->score[i] += 4;
+					break;
+				case 2:
+					ge->score[i] += 2;
+					break;
+				case 3:
+					ge->score[i] += 1;
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -101,28 +118,59 @@ namespace  ClassifyGamePM
 		}
 	}
 	//-------------------------------------------------------------------
-	//u‚Q‚c•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
+	//é †ä½ç¢ºå®šç”¨
+	bool Object::compare(const NumIndex& a, const NumIndex& b) {
+		return a.num < b.num;
+	}
+
+	void Object::assignRanks(vector<int>& nums, vector<int>& ranks) {
+		int n = nums.size();
+		vector<NumIndex> numIndices(n);
+
+		// åˆæœŸåŒ– numIndices
+		for (int i = 0; i < n; ++i) {
+			numIndices[i].num = nums[i];
+			numIndices[i].index = i;
+		}
+
+		// å¤§ãã•ã§ä¸¦ã³æ›¿ãˆ
+		sort(numIndices.begin(), numIndices.end(), compare);
+
+		// é †ä½æŒ¯ã‚Šåˆ†ã‘
+		int rank = 1;
+		for (int i = 0; i < n; ++i) {
+			if (i > 0 && numIndices[i].num == numIndices[i - 1].num) {
+				ranks[numIndices[i].index] = ranks[numIndices[i - 1].index]; // å¦‚æœç›¸åŒï¼Œåˆ™åæ¬¡ç›¸åŒ
+			}
+			else {
+				ranks[numIndices[i].index] = rank;
+			}
+			rank++;
+		}
+	}
+	//-------------------------------------------------------------------
+	//ã€Œï¼’ï¼¤æç”»ã€ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ æ¯ã«è¡Œã†å‡¦ç†
 	void  Object::Render2D_AF()
 	{
 
 	}
 
-	//šššššššššššššššššššššššššššššššššššššššššš
-	//ˆÈ‰º‚ÍŠî–{“I‚É•ÏX•s—v‚Èƒƒ\ƒbƒh
-	//šššššššššššššššššššššššššššššššššššššššššš
+	//â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
+	//ä»¥ä¸‹ã¯åŸºæœ¬çš„ã«å¤‰æ›´ä¸è¦ãªãƒ¡ã‚½ãƒƒãƒ‰
+	//â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
 	//-------------------------------------------------------------------
-	//ƒ^ƒXƒN¶¬‘‹Œû
+	//ã‚¿ã‚¹ã‚¯ç”Ÿæˆçª“å£
 	Object::SP  Object::Create(bool  flagGameEnginePushBack_)
 	{
 		Object::SP  ob = Object::SP(new  Object());
 		if (ob) {
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
-				ge->PushBack(ob);//ƒQ[ƒ€ƒGƒ“ƒWƒ“‚É“o˜^
+				ge->PushBack(ob);//ã‚²ãƒ¼ãƒ ã‚¨ãƒ³ã‚¸ãƒ³ã«ç™»éŒ²
 				
 			}
 			if (!ob->B_Initialize()) {
-				ob->Kill();//ƒCƒjƒVƒƒƒ‰ƒCƒY‚É¸”s‚µ‚½‚çKill
+				ob->Kill();//ã‚¤ãƒ‹ã‚·ãƒ£ãƒ©ã‚¤ã‚ºã«å¤±æ•—ã—ãŸã‚‰Kill
 			}
 			return  ob;
 		}
@@ -143,7 +191,7 @@ namespace  ClassifyGamePM
 	//-------------------------------------------------------------------
 	Object::Object() {	}
 	//-------------------------------------------------------------------
-	//ƒŠƒ\[ƒXƒNƒ‰ƒX‚Ì¶¬
+	//ãƒªã‚½ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ã®ç”Ÿæˆ
 	Resource::SP  Resource::Create()
 	{
 		if (auto sp = instance.lock()) {

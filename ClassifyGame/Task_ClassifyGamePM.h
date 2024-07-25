@@ -52,5 +52,12 @@ namespace  ClassifyGamePM
 
 		vector<CGPlayer::Object::SP> pList;	//プレイヤリスト
 		vector<XI::GamePad::SP> cList;		//コントローラリスト
+		struct NumIndex { //順位決める用
+			int num;
+			int index;
+		};
+		static bool compare(const NumIndex& a, const NumIndex& b);
+		void assignRanks(vector<int>& nums, vector<int>& ranks);
+		NumIndex ni;
 	};
 }
