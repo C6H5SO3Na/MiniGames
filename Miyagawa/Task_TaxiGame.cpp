@@ -6,10 +6,10 @@
 
 #include "../randomLib.h"
 
-#include  "../Task_Ending.h"
 #include  "Task_TaxiGamePlayer.h"
 #include  "Task_TaxiGameTaxi.h"
 #include  "Task_TaxiGameBG.h"
+#include  "../Task_Game.h"
 
 namespace  TaxiGame
 {
@@ -70,7 +70,7 @@ namespace  TaxiGame
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
-			auto next = Ending::Object::Create(true);
+			Game::Object::CreateTask(7);
 		}
 
 		return  true;

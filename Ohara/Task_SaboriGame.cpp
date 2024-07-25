@@ -6,10 +6,8 @@
 #include  "Task_SaboriPlayer.h"
 #include  "Task_SaboriJoushi.h"
 #include  "Task_SaboriUIManager.h"
-
+#include  "../Task_Game.h"
 #include  "../randomLib.h"
-
-#include  "Task_OguiGame.h"
 
 namespace  SaboriGame
 {
@@ -68,7 +66,7 @@ namespace  SaboriGame
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
-			auto next = OguiGame::Object::Create(true);
+			Game::Object::CreateTask(5);
 		}
 
 		return  true;

@@ -3,10 +3,10 @@
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_StageBrushTeeth.h"
-#include  "../BlanceGame/Task_BlanceGame.h"
 #include  "Task_brush.h"
 #include  "Task_StainManager.h"
 #include  "Task_CommonItemManager02.h"
+#include  "../Task_Game.h"
 
 namespace  StageBrushTeeth
 {
@@ -56,7 +56,7 @@ namespace  StageBrushTeeth
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			BlanceGame::Object::Create(true);
+			Game::Object::CreateTask(2);
 		}
 
 		return  true;
@@ -65,6 +65,15 @@ namespace  StageBrushTeeth
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		switch (this->phase) {
+		case Phase::Game:
+			Game();
+			break;
+
+		case Phase::Clear:
+			Clear();
+			break;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -87,7 +96,24 @@ namespace  StageBrushTeeth
 		ML::Box2D draw5(1980/2, 1080/2, 1280/2, 1080/2);
 		this->res->teethImg->Draw(draw5, src2);
 	}
-
+	//-------------------------------------------------------------------
+	//ゲーム本編の処理
+	void  Object::Game()
+	{
+		auto stainManager = ge->GetTask<StainManager::Object>(StainManager::defGroupName, StainManager::defName);
+		if (stainManager == nullptr) {
+			ge->StartCounter("Clear", 180);
+			phase = Phase::Clear;
+		}
+	}
+	//-------------------------------------------------------------------
+	//全員クリア後の処理
+	void  Object::Clear()
+	{
+		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
+			Kill();
+		}
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

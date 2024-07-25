@@ -3,10 +3,10 @@
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_StageAlarmClock.h"
-#include  "../StageBrushTeeth/Task_StageBrushTeeth.h"
 #include  "Task_Clock.h"
 #include  "Task_hand.h"
 #include  "Task_CommonItemManager01.h"
+#include  "../Task_Game.h"
 
 
 namespace  StageAlarmClock
@@ -37,6 +37,7 @@ namespace  StageAlarmClock
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.9f;
+		this->phase = Phase::Game;
 
 		//★タスクの生成
 		/*auto alarmclock = Clock::Object::Create(true);
@@ -56,7 +57,7 @@ namespace  StageAlarmClock
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			StageBrushTeeth::Object::Create(true);
+			Game::Object::CreateTask(1);
 		}
 
 		return  true;
@@ -65,6 +66,15 @@ namespace  StageAlarmClock
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		switch (this->phase) {
+		case Phase::Game:
+			Game();
+			break;
+
+		case Phase::Clear:
+			Clear();
+			break;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -74,7 +84,31 @@ namespace  StageAlarmClock
 		ML::Box2D src (0, 0, 1920, 1080);
 		this->res->bgImg->Draw(draw, src);
 	}
-
+	//-------------------------------------------------------------------
+	//ゲーム本編の処理
+	void  Object::Game()
+	{
+		int clearNum = 0;
+		auto players = ge->GetTasks<hand::Object>(hand::defGroupName, hand::defName);
+		for_each(players->begin(), players->end(),
+			[&](auto iter) {
+				if (iter->IsClear()) {
+					++clearNum;
+				}
+			});
+		if (clearNum >= 4) {
+			ge->StartCounter("Clear", 180);
+			phase = Phase::Clear;
+		}
+	}
+	//-------------------------------------------------------------------
+	//全員クリア後の処理
+	void  Object::Clear()
+	{
+		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
+			Kill();
+		}
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

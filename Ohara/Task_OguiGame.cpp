@@ -6,11 +6,8 @@
 #include  "Task_OguiPlayer.h"
 #include  "Task_OguiFoodManager.h"
 #include  "Task_OguiUIManager.h"
-#include  "../Miyagawa/Task_TaxiGame.h"
-
+#include  "../Task_Game.h"
 #include  "../randomLib.h"
-
-#include  "../Task_Ending.h"
 
 namespace  OguiGame
 {
@@ -68,7 +65,7 @@ namespace  OguiGame
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
-			auto next = TaxiGame::Object::Create(true);
+			Game::Object::CreateTask(6);
 		}
 
 		return  true;
