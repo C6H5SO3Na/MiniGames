@@ -122,6 +122,7 @@ namespace  hand
 			if (you.Hit(me))
 			{
 				this->speed = 0;
+				this->isClear = true;
 			}
 		}
 					

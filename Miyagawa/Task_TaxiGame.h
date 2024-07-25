@@ -53,7 +53,5 @@ namespace  TaxiGame
 
 		void Game();
 		void Clear();
-	public:
-		int playerRank[4] = {};
 	};
 }

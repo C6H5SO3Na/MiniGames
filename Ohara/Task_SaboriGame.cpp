@@ -6,10 +6,8 @@
 #include  "Task_SaboriPlayer.h"
 #include  "Task_SaboriJoushi.h"
 #include  "Task_SaboriUIManager.h"
-
+#include  "../Task_Game.h"
 #include  "../randomLib.h"
-
-#include  "Task_OguiGame.h"
 
 namespace  SaboriGame
 {
@@ -61,14 +59,14 @@ namespace  SaboriGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
+		ge->KillAll_G("サボりゲーム本編");
 		ge->KillAll_G("プレイヤー");
 		ge->KillAll_G("ギミック");
 		ge->KillAll_G("管理");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = OguiGame::Object::Create(true);
+			Game::Object::CreateTask(5);
 		}
 
 		return  true;

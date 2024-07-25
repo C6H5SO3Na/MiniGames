@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_ClassifyGamePlayer.h"
+#include  "../Task_Game.h"
 
 namespace  CGPlayer
 {
@@ -72,6 +73,7 @@ namespace  CGPlayer
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
+			Game::Object::Create(true);
 		}
 
 		return  true;

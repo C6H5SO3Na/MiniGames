@@ -76,7 +76,7 @@ namespace  SaboriUIManager
 
 		//™§ŒÀŠÔ‚Ì•`‰æ
 		//ƒTƒ{‚èƒQ[ƒ€‚Ì“Š‡‚Ìî•ñ‚ğæ“¾
-		auto game = ge->GetTask<SaboriGame::Object>("–{•Ò");
+		auto game = ge->GetTask<SaboriGame::Object>(SaboriGame::defGroupName, SaboriGame::defName);
 		//•`‰æ
 		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2, 0, ge->screen2DWidth, ge->screen2DHeight),
 			to_string(game->timeLimit)

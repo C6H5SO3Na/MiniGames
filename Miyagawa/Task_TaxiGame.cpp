@@ -6,10 +6,10 @@
 
 #include "../randomLib.h"
 
-#include  "../Task_Ending.h"
 #include  "Task_TaxiGamePlayer.h"
 #include  "Task_TaxiGameTaxi.h"
 #include  "Task_TaxiGameBG.h"
+#include  "../Task_Game.h"
 
 namespace  TaxiGame
 {
@@ -37,16 +37,25 @@ namespace  TaxiGame
 
 		//★データ初期化
 		phase = Phase::Game;
+		TaxiGamePlayer::Object::playerScore = 4;
 
 		//★タスクの生成
 		TaxiGameBG::Object::Create(true);
 
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 1 / 5.f), ge->in1);
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 2 / 5.f), ge->in2);
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 3 / 5.f), ge->in3);
-		TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * 4 / 5.f), ge->in4);
+		//プレイヤー毎のコントローラー登録
+		vector<XI::GamePad::SP> players;
+		players.push_back(ge->in1);
+		players.push_back(ge->in2);
+		players.push_back(ge->in3);
+		players.push_back(ge->in4);
 
-		for (int i = 0; i < 4; ++i) {
+		//プレイヤー配置
+		for (int i = 0; i < players.size(); ++i) {
+			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 1) / 5.f), players[i]);
+		}
+
+		//タクシー配置
+		for (int i = 0; i < players.size(); ++i) {
 			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (1 + i) / 5.f));
 		}
 		return  true;
@@ -61,7 +70,7 @@ namespace  TaxiGame
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = Ending::Object::Create(true);
+			Game::Object::CreateTask(7);
 		}
 
 		return  true;
@@ -98,7 +107,7 @@ namespace  TaxiGame
 				}
 			});
 		if (clearNum >= 4) {
-			ge->StartCounter("Clear", 120);
+			ge->StartCounter("Clear", 180);
 			phase = Phase::Clear;
 		}
 	}

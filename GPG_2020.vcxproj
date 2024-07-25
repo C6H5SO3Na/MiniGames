@@ -147,9 +147,6 @@
     <ClCompile Include="easing.cpp" />
     <ClCompile Include="fpscounter.cpp" />
     <ClCompile Include="GameEngine_Ver3_83.cpp" />
-    <ClCompile Include="Miyagawa\Task_PayOffGame.cpp" />
-    <ClCompile Include="Miyagawa\Task_PayOffGameCursor.cpp" />
-    <ClCompile Include="Miyagawa\Task_PayOffGameMoney.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp" />
@@ -210,9 +207,6 @@
     <ClInclude Include="easing.h" />
     <ClInclude Include="fpscounter.h" />
     <ClInclude Include="GameEngine_Ver3_83.h" />
-    <ClInclude Include="Miyagawa\Task_PayOffGame.h" />
-    <ClInclude Include="Miyagawa\Task_PayOffGameCursor.h" />
-    <ClInclude Include="Miyagawa\Task_PayOffGameMoney.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGame.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGameBG.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h" />
