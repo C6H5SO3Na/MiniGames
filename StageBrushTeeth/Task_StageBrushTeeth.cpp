@@ -36,6 +36,7 @@ namespace  StageBrushTeeth
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.9f;
+		this->phase = Phase::Game;
 
 		//★タスクの生成
 		/*auto brush = brush::Object::Create(true);*/
@@ -101,7 +102,7 @@ namespace  StageBrushTeeth
 	void  Object::Game()
 	{
 		auto stainManager = ge->GetTask<StainManager::Object>(StainManager::defGroupName, StainManager::defName);
-		if (stainManager == nullptr) {
+		if (stainManager->IsClear()) {
 			ge->StartCounter("Clear", 180);
 			phase = Phase::Clear;
 		}

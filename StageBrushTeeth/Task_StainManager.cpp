@@ -84,6 +84,8 @@ namespace  StainManager
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		auto stain = ge->GetTask<stain::Object>(stain::defGroupName, stain::defName);
+		if (stain == nullptr) { isClear = true; }
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

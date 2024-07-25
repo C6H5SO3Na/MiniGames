@@ -51,7 +51,10 @@ namespace  StainManager
 		vector<stain::Object::SP> stains;
 		vector<ML::Vec2> positions;
 		float minPosX, minPosY, maxPosX, maxPosY;
+		bool isClear = false;
+
 		void CreateStain();
 		void Positionalise(int PlayerNum);
+		bool IsClear() const { return isClear; }
 	};
 }

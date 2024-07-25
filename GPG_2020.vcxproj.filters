@@ -59,14 +59,14 @@
     <Filter Include="MyPG\Task\StageBrushTeeth\Stain">
       <UniqueIdentifier>{3517ed6a-760a-4b36-897f-40382b4d489a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyPG\Task\StageAlarmClock\CommonManager">
-      <UniqueIdentifier>{ef928842-1c39-419b-91d2-7ee7f85d3ffa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyPG\Task\Ohara\SaboriGame">
       <UniqueIdentifier>{847f6113-3667-437e-b7f5-fbe871622022}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyPG\Task\Ohara\OguiGame">
       <UniqueIdentifier>{a01f8e2c-17d7-497a-a0ce-6c8b803d07cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\StageAlarmClock">
+      <UniqueIdentifier>{6be24092-f3f9-4ba3-a143-29aa7f5ee243}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -181,24 +181,12 @@
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
-    <ClCompile Include="Miyagawa\Task_PayOffGame.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
-    <ClCompile Include="Miyagawa\Task_PayOffGameCursor.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
     <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
     <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
-    <ClCompile Include="Miyagawa\Task_PayOffGameMoney.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
-    <ClCompile Include="StageAlarmClock\Task_Clock.cpp" />
-    <ClCompile Include="StageAlarmClock\Task_hand.cpp" />
-    <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp" />
     <ClCompile Include="Ohara\OharaCharacterBase.cpp">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClCompile>
@@ -247,8 +235,17 @@
     <ClCompile Include="StageBrushTeeth\Task_StainManager.cpp">
       <Filter>MyPG\Task\StageBrushTeeth\Stain</Filter>
     </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_Clock.cpp">
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
+    </ClCompile>
     <ClCompile Include="StageAlarmClock\Task_CommonItemManager01.cpp">
-      <Filter>MyPG\Task\StageAlarmClock\CommonManager</Filter>
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
+    </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_hand.cpp">
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
+    </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp">
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,24 +355,12 @@
     <ClInclude Include="Miyagawa\Task_TaxiGame.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
-    <ClInclude Include="Miyagawa\Task_PayOffGame.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
-    <ClInclude Include="Miyagawa\Task_PayOffGameCursor.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
     <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
     </ClInclude>
-    <ClInclude Include="Miyagawa\Task_PayOffGameMoney.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
-    <ClInclude Include="StageAlarmClock\Task_Clock.h" />
-    <ClInclude Include="StageAlarmClock\Task_hand.h" />
-    <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h" />
     <ClInclude Include="Ohara\OharaCharacterBase.h">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClInclude>
@@ -396,9 +381,6 @@
     </ClInclude>
     <ClInclude Include="StageBrushTeeth\Task_StainManager.h">
       <Filter>MyPG\Task\StageBrushTeeth\Stain</Filter>
-    </ClInclude>
-    <ClInclude Include="StageAlarmClock\Task_CommonItemManager01.h">
-      <Filter>MyPG\Task\StageAlarmClock\CommonManager</Filter>
     </ClInclude>
     <ClInclude Include="Ohara\Task_OguiFood.h">
       <Filter>MyPG\Task\Ohara\OguiGame</Filter>
@@ -429,6 +411,18 @@
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_TaxiGameBG.h">
       <Filter>MyPG\Task\Miyagawa</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_Clock.h">
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_CommonItemManager01.h">
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_hand.h">
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h">
+      <Filter>MyPG\Task\StageAlarmClock</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
