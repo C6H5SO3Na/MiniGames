@@ -12,7 +12,7 @@ namespace  brush
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/brush.png");
+		this->img = DG::Image::Create("./data/image/game_brush.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -33,7 +33,7 @@ namespace  brush
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
-		this->hitBase = ML::Box2D(-125, -25, 250, 50);
+		this->hitBase = ML::Box2D(-158, -35, 316, 70);
 		this->pos.x = 0;
 		this->pos.y = 0;
 		this->speed = 6.0f;
@@ -108,7 +108,7 @@ namespace  brush
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 1000, 200);
+		ML::Box2D src(0, 0, 945, 210);
 		this->res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------

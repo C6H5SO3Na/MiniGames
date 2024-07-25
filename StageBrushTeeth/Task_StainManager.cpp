@@ -43,11 +43,21 @@ namespace  StainManager
 	//-------------------------------------------------------------------
 	void Object::Positionalise(int PlayerNum)
 	{
-		ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		minPosX = StainArea.x;
-		minPosY = StainArea.y;
-		maxPosX = StainArea.x + StainArea.w -32;
-		maxPosY = StainArea.y + StainArea.h -32;
+		const int num = 200;
+		ML::Vec2 pos[][2] = {
+			{ ML::Vec2(0.f, 0.f), ML::Vec2(1980 / 2, 1080 / 2) },
+			{ ML::Vec2(1980 / 2, 0.f), ML::Vec2(1980, 1080 / 2) },
+			{ ML::Vec2(0.f, 1080 / 2), ML::Vec2(1980 / 2, 1080) },
+			{ ML::Vec2(1980 / 2, 1080 / 2), ML::Vec2(1980, 1080) },
+		};
+		const int min = 0;
+		const int max = 1;
+
+		/*ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));*/
+		minPosX = pos[PlayerNum][min].x + num;//StainArea.x;
+		minPosY = pos[PlayerNum][min].y + num;//StainArea.y;
+		maxPosX = pos[PlayerNum][max].x - 16 - num;//StainArea.x + StainArea.w - 32;
+		maxPosY = pos[PlayerNum][max].y - 16 - num;//StainArea.y + StainArea.h - 32;
 	}
 	//-------------------------------------------------------------------
 	void Object::CreateStain()
@@ -98,8 +108,8 @@ namespace  StainManager
 		float x = GetRandom(this->minPosX, this->maxPosX);
 		float y = GetRandom(this->minPosY, this->maxPosY);
 
-		int w = 64;
-		int h = 64;
+		int w = 32;
+		int h = 32;
 		auto hit = ML::Box2D(-w / 2, -h / 2, w, h);
 
 		// 重なっていないかチェック

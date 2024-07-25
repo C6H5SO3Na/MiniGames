@@ -84,7 +84,7 @@ namespace  hand
 			break;
 		case State::Down:
 			this->moveVec = ML::Vec2(0, 2 * this->speed);
-			if (this->pos.y > maxPosY)
+			if (this->pos.y >= maxPosY)
 			{
 				this->state = State::Up;
 			}
@@ -105,8 +105,6 @@ namespace  hand
 			}
 			break;
 		}
-
-		
 
 		if (this->controller) {
 			auto inp = this->controller->GetState();
@@ -142,7 +140,7 @@ namespace  hand
 		pos.x = PlayerArea.x + (hitBase.w / 2);
 		pos.y = PlayerArea.y + (hitBase.h / 2);
 		minPosX = PlayerArea.x + (hitBase.w / 2);
-		minPosY = PlayerArea.y + (hitBase.h / 2);
+		minPosY = PlayerArea.y + (hitBase.h / 2) + 2 * this->speed;
 		maxPosX = PlayerArea.x + PlayerArea.w - hitBase.w;
 		maxPosY = PlayerArea.y + PlayerArea.h / 2 ;
 	}
