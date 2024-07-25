@@ -69,5 +69,6 @@ namespace  CGPlayer
 		void toFailState(int workT);
 		int Rb, Gb, Bb;//赤、緑、青色の書類の数（分類成功）
 		int Fb;//分類失敗の書類の数
+
 	};
 }

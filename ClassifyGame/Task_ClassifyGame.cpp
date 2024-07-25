@@ -5,7 +5,7 @@
 #include  "Task_ClassifyGame.h"
 #include  "Task_ClassifyGamePM.h"
 
-#include  "../Ohara/Task_SaboriGame.h"
+#include  "../Task_Game.h"
 //#include  "Task_ClassifyGUIManager.h"
 
 namespace  ClassifyGame
@@ -44,11 +44,10 @@ namespace  ClassifyGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
+		Game::Object::CreateTask(4);
 		ge->KillAll_G("書類分類ゲームPM");
-
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			SaboriGame::Object::Create(true);
 		}
 
 		return  true;
@@ -58,6 +57,9 @@ namespace  ClassifyGame
 	void  Object::UpDate()
 	{
 		gameCnt++;
+		if (gameCnt == 1319) {
+			Kill();
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

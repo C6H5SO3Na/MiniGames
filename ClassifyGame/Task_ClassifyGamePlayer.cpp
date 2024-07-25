@@ -24,6 +24,8 @@ namespace  CGPlayer
 	bool  Resource::Finalize()
 	{
 		playerImg.reset();
+		bookImg.reset();
+		CountImg.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------

@@ -51,7 +51,6 @@ namespace  BlanceGame
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
 
-			
 		}
 
 		return  true;
@@ -65,7 +64,7 @@ namespace  BlanceGame
 			shake = true;
 		else
 			shake = false;
-		if (gameCnt > 180) {
+		if (gameCnt > 1319) {
 			this->Kill();
 		}
 	}
