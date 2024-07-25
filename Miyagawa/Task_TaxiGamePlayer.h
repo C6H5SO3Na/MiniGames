@@ -62,7 +62,6 @@ namespace TaxiGamePlayer
 
 		int nowBtn = 0;
 		int matchCnt = 0;
-		static int clearNum;//順位
 
 		//メソッド
 		void Think();
@@ -139,9 +138,10 @@ namespace TaxiGamePlayer
 
 		void ChangeState(StateBase* state_);//状態変更
 		int BUTTON(int state);
-		void PullClear(int& n, XI::GamePad::SP con);
+		void AddScore(int& n, XI::GamePad::SP con);
 
 	public:
 		bool IsClear() const { return isClear; }
+		static int playerScore;//順位
 	};
 }

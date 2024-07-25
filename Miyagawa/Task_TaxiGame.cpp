@@ -37,6 +37,7 @@ namespace  TaxiGame
 
 		//★データ初期化
 		phase = Phase::Game;
+		TaxiGamePlayer::Object::playerScore = 4;
 
 		//★タスクの生成
 		TaxiGameBG::Object::Create(true);
@@ -106,7 +107,7 @@ namespace  TaxiGame
 				}
 			});
 		if (clearNum >= 4) {
-			ge->StartCounter("Clear", 120);
+			ge->StartCounter("Clear", 180);
 			phase = Phase::Clear;
 		}
 	}
