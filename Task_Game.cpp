@@ -61,7 +61,6 @@ namespace  Game
 		ge->KillAll_G("ステージ目覚まし時計");
 		ge->KillAll_G("ステージ歯磨き");
 
-		auto next = Ending::Object::Create(true);
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
 			auto next = Ending::Object::Create(true);
@@ -73,14 +72,6 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = ge->in1->GetState( );
-		if (inp.ST.down) {
-			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-			ge->CreateEffect(99, ML::Vec2(0, 0));
-		}
-		if (ge->getCounterFlag("test") == ge->LIMIT) {
-			Kill();
-		}
 	}
 	//-------------------------------------------------------------------
 	//タスクの生成
@@ -102,10 +93,10 @@ namespace  Game
 			ClassifyGame::Object::Create(true);
 			break;
 		case 4:
-			OguiGame::Object::Create(true);
+			SaboriGame::Object::Create(true);
 			break;
 		case 5:
-			SaboriGame::Object::Create(true);
+			OguiGame::Object::Create(true);
 			break;
 		case 6:
 			TaxiGame::Object::Create(true);
@@ -120,13 +111,6 @@ namespace  Game
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		int x = GetRandom(-10, 10);
-		int y = GetRandom(-10, 10);
-
-		TestFont->Draw(ML::Box2D(100+x, 100+y, ge->screen2DWidth, ge->screen2DHeight),
-			"Game"
-		);
-
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

@@ -9,7 +9,7 @@
 namespace  OguiGame
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("本編");		//グループ名
+	const  string  defGroupName("大食いゲーム本編");		//グループ名
 	const  string  defName("大食いゲーム統括");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource

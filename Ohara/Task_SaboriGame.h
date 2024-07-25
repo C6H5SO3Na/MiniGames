@@ -9,7 +9,7 @@
 namespace  SaboriGame
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("本編");		//グループ名
+	const  string  defGroupName("サボりゲーム本編");		//グループ名
 	const  string  defName("サボりゲーム統括");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource

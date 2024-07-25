@@ -76,7 +76,7 @@ namespace  OguiUIManager
 
 		//™§ŒÀŠÔ‚Ì•`‰æ
 		//ƒTƒ{‚èƒQ[ƒ€‚Ì“Š‡‚Ìî•ñ‚ğæ“¾
-		auto game = ge->GetTask<OguiGame::Object>("–{•Ò");
+		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
 		//•`‰æ
 		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2, 0, ge->screen2DWidth, ge->screen2DHeight),
 			to_string(game->timeLimit)

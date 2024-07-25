@@ -59,7 +59,7 @@ namespace  SaboriGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
+		ge->KillAll_G("サボりゲーム本編");
 		ge->KillAll_G("プレイヤー");
 		ge->KillAll_G("ギミック");
 		ge->KillAll_G("管理");

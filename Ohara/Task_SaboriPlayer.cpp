@@ -57,7 +57,7 @@ namespace  SaboriPlayer
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto game = ge->GetTask<SaboriGame::Object>("本編");
+		auto game = ge->GetTask<SaboriGame::Object>(SaboriGame::defGroupName, SaboriGame::defName);
 
 		//さぼりミニゲームタスクが取得できているか確認
 		if (game == nullptr)
