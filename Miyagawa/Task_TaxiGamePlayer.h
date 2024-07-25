@@ -23,8 +23,9 @@ namespace TaxiGamePlayer
 		static   WP  instance;
 		static  Resource::SP  Create();
 
-		DG::Image::SP img;
+		DG::Image::SP imgPlayer;
 		DG::Image::SP imgBtn[2][4];//[0,1][A,B,X,Y]
+		DG::Image::SP imgClear;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -51,9 +52,6 @@ namespace TaxiGamePlayer
 		XI::GamePad::SP controller;//in1 in2など
 		XI::VGamePad input;
 
-		//テストフォント
-		DG::Font::SP TestFont;
-
 		//前回の位置(イージング用)
 		ML::Vec2 prePos;
 
@@ -64,7 +62,6 @@ namespace TaxiGamePlayer
 
 		int nowBtn = 0;
 		int matchCnt = 0;
-		static int clearNum;//順位
 
 		//メソッド
 		void Think();
@@ -141,9 +138,10 @@ namespace TaxiGamePlayer
 
 		void ChangeState(StateBase* state_);//状態変更
 		int BUTTON(int state);
-		void PullClear(int& n, XI::GamePad::SP con);
+		void AddScore(int& n, XI::GamePad::SP con);
 
 	public:
 		bool IsClear() const { return isClear; }
+		static int playerScore;//順位
 	};
 }
