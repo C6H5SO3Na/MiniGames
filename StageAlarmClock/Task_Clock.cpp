@@ -11,7 +11,7 @@ namespace  Clock
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/clock.png");
+		this->img = DG::Image::Create("./data/image/game_clock.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -32,7 +32,7 @@ namespace  Clock
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.5f;
-		this->hitBase = ML::Box2D(-128, -128, 256, 256);
+		this->hitBase = ML::Box2D(-75, -75, 150, 150);
 		this->pos.x = 0;
 		this->pos.y = 0;
 		//★タスクの生成
@@ -62,7 +62,7 @@ namespace  Clock
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 512, 512);
+		ML::Box2D src(0, 0, 764, 764);
 		this->res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------

@@ -12,7 +12,7 @@ namespace  stain
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/stain.png");
+		this->img = DG::Image::Create("./data/image/game_dirt.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -35,7 +35,7 @@ namespace  stain
 		this->render2D_Priority[1] = -0.5f;
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->hitBase = ML::Box2D(-32, -32, 64, 64);
+		this->hitBase = ML::Box2D(-16, -16, 32, 32);
 		//★タスクの生成
 
 		return  true;
@@ -64,7 +64,7 @@ namespace  stain
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 512, 512);
+		ML::Box2D src(0, 0, 256, 256);
 
 		this->res->img->Draw(draw, src);
 	}

@@ -15,8 +15,8 @@ namespace  StageBrushTeeth
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		this->bgImg = DG::Image::Create("./data/image/lunch50.png");
-		this->teethImg = DG::Image::Create("./data/image/teeth.png");
+		this->bgImg = DG::Image::Create("./data/image/mirror.png");
+		this->teethImg = DG::Image::Create("./data/image/mouth.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -81,20 +81,20 @@ namespace  StageBrushTeeth
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw(0, 0, 1920, 1080);
-		ML::Box2D src(0, 0, 1920, 1080);
+		ML::Box2D src(0, 0, 3300, 2550);
 		this->res->bgImg->Draw(draw, src);
 
-		ML::Box2D draw2(0, 0, 1280/2, 1080/2);
-		ML::Box2D src2(0, 0, 1280, 1080);
+		ML::Box2D draw2(1920 / 10, 10, 1280/2, 1080/2 - 10 * 2);
+		ML::Box2D src2(0, 0, 3300, 2550);
 		this->res->teethImg->Draw(draw2, src2);
 
-		ML::Box2D draw3(1980/2, 0, 1280/2, 1080/2);
+		ML::Box2D draw3(1920 / 2 + 1920 / 10, 10, 1280/2, 1080/2 - 10 * 2);
 		this->res->teethImg->Draw(draw3, src2);
 
-		ML::Box2D draw4(0, 1080/2, 1280/2, 1080/2);
+		ML::Box2D draw4(1920 / 10, 1080/2 + 10, 1280/2, 1080/2 - 10 * 2);
 		this->res->teethImg->Draw(draw4, src2);
 
-		ML::Box2D draw5(1980/2, 1080/2, 1280/2, 1080/2);
+		ML::Box2D draw5(1920 / 2 + 1920 / 10, 1080/2 + 10, 1280/2, 1080/2 - 10 * 2);
 		this->res->teethImg->Draw(draw5, src2);
 	}
 	//-------------------------------------------------------------------
