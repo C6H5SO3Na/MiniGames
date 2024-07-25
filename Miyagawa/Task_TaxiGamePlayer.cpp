@@ -17,7 +17,7 @@ namespace TaxiGamePlayer
 	bool  Resource::Initialize()
 	{
 		//プレイヤー画像
-		imgPlayer = DG::Image::Create("./data/image/chara02.png");
+		imgPlayer = DG::Image::Create("./data/image/game_otsan_run.png");
 
 		//クリア画像
 		imgClear = DG::Image::Create("./data/image/clearImage.png");
@@ -157,8 +157,8 @@ namespace TaxiGamePlayer
 	void  Object::IdleState::render()
 	{
 		//プレイヤ描画
-		ML::Box2D src(0, 0, 32, 80);
-		ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+		ML::Box2D src(0, 0, 342, 486);
+		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
 		draw.Offset(owner_->pos);
 		owner_->res->imgPlayer->Draw(draw, src);
 
@@ -191,12 +191,12 @@ namespace TaxiGamePlayer
 	void  Object::MoveState::render()
 	{
 		ML::Box2D animTable[] = {
-			ML::Box2D(32, 0, 32, 80),
-			ML::Box2D(64, 0, 48, 80),
-			ML::Box2D(112, 0, 48, 80),
+			ML::Box2D(342, 0, 342, 486),
+			ML::Box2D(684, 0, 342, 486),
+			ML::Box2D(1026, 0, 342, 486),
 		};
 		ML::Box2D src = animTable[owner_->animCnt / 30 % size(animTable)];
-		ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
 		draw.Offset(owner_->pos);
 		owner_->res->imgPlayer->Draw(draw, src);
 	}
@@ -215,9 +215,9 @@ namespace TaxiGamePlayer
 	void  Object::ClearState::render()
 	{
 		{
-			//描画矩形
-			ML::Box2D src(0, 0, 32, 80);
-			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+			//プレイヤー
+			ML::Box2D src(0, 0, 342, 486);
+			ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
 			draw.Offset(owner_->pos);
 			owner_->res->imgPlayer->Draw(draw, src);
 		}
@@ -249,8 +249,8 @@ namespace TaxiGamePlayer
 	{
 		{
 			//描画矩形
-			ML::Box2D src(176, 0, 48, 80);
-			ML::Box2D draw(-src.w, -src.h, -src.w * 2, src.h * 2);
+			ML::Box2D src(0, 0, 342, 486);
+			ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
 			draw.Offset(owner_->pos);
 			//振動
 			draw.Offset(GetRandom(0, 10), GetRandom(0, 10));
