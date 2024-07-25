@@ -54,7 +54,7 @@ namespace  OguiFoodManager
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto game = ge->GetTask<OguiGame::Object>("本編");
+		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
 
 		//大食いミニゲームタスクが取得できているか確認
 		if (game == nullptr)

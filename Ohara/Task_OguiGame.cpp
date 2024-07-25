@@ -58,7 +58,7 @@ namespace  OguiGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
+		ge->KillAll_G("大食いゲーム本編");
 		ge->KillAll_G("プレイヤー");
 		ge->KillAll_G("ギミック");
 		ge->KillAll_G("管理");
