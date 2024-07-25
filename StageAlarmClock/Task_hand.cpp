@@ -12,7 +12,7 @@ namespace  hand
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/hand.png");
+		this->img = DG::Image::Create("./data/image/hand_1.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -33,10 +33,10 @@ namespace  hand
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
-		this->hitBase = ML::Box2D(-64, -64, 128, 128);
+		this->hitBase = ML::Box2D(-84, -53, 168, 106);
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->speed = 10.0f;
+		this->speed = 40.0f;
 		this->controller = ge->in1;
 		this->state = State::Right;
 		isright = true;
@@ -91,7 +91,7 @@ namespace  hand
 			break;
 		case State::Up:
 			this->moveVec = ML::Vec2(0, -2 * this->speed);
-			if (this->pos.y < minPosY)
+			if (this->pos.y <= minPosY)
 			{
 				if (isright)
 				{
@@ -132,7 +132,7 @@ namespace  hand
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 256, 256);
+		ML::Box2D src(0, 0, 1184, 748);
 		this->res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
@@ -142,7 +142,7 @@ namespace  hand
 		pos.x = PlayerArea.x + (hitBase.w / 2);
 		pos.y = PlayerArea.y + (hitBase.h / 2);
 		minPosX = PlayerArea.x + (hitBase.w / 2);
-		minPosY = PlayerArea.y + (hitBase.h / 4 * 3);
+		minPosY = PlayerArea.y + (hitBase.h / 2);
 		maxPosX = PlayerArea.x + PlayerArea.w - hitBase.w;
 		maxPosY = PlayerArea.y + PlayerArea.h / 2 ;
 	}
