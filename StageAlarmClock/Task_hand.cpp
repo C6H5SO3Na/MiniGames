@@ -34,9 +34,10 @@ namespace  hand
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
 		this->hitBase = ML::Box2D(-84, -53, 168, 106);
+		this->drawBase = ML::Box2D(-84, -53, 168, 106);
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->speed = 40.0f;
+		this->speed = 10.0f;
 		this->controller = ge->in1;
 		this->state = State::Right;
 		isright = true;
@@ -68,7 +69,7 @@ namespace  hand
 		{
 		case State::Left:
 			this->moveVec = ML::Vec2(-2 * this->speed, 0);
-			if (this->pos.x < minPosX)
+			if (this->pos.x <= minPosX)
 			{
 				this->state = State::Right;
 				isright = true;
@@ -76,7 +77,7 @@ namespace  hand
 			break;
 		case State::Right:
 			this->moveVec = ML::Vec2(2 * this->speed, 0);
-			if (this->pos.x >maxPosX)
+			if (this->pos.x >= maxPosX)
 			{
 				this->state = State::Left;
 				isright = false;
@@ -109,6 +110,10 @@ namespace  hand
 		if (this->controller) {
 			auto inp = this->controller->GetState();
 			if (inp.LStick.BD.down) { state = State::Down; }
+			if (inp.B1.down)//z
+			{
+				ge->KillAll_G("ステージ目覚まし時計");
+			}
 		}
 		
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
@@ -120,6 +125,7 @@ namespace  hand
 			if (you.Hit(me))
 			{
 				this->speed = 0;
+				this->moveVec = ML::Vec2(0, 0);
 				this->isClear = true;
 			}
 		}
@@ -129,7 +135,7 @@ namespace  hand
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
+		ML::Box2D draw = this->drawBase.OffsetCopy(this->pos);
 		ML::Box2D src(0, 0, 1184, 748);
 		this->res->img->Draw(draw, src);
 	}
@@ -137,12 +143,12 @@ namespace  hand
 	void Object::Positionalise(int PlayerNum)
 	{
 		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		pos.x = PlayerArea.x + (hitBase.w / 2);
-		pos.y = PlayerArea.y + (hitBase.h / 2);
-		minPosX = PlayerArea.x + (hitBase.w / 2);
-		minPosY = PlayerArea.y + (hitBase.h / 2) + 2 * this->speed;
-		maxPosX = PlayerArea.x + PlayerArea.w - hitBase.w;
-		maxPosY = PlayerArea.y + PlayerArea.h / 2 ;
+		pos.x = PlayerArea.x + (drawBase.w / 2);
+		pos.y = PlayerArea.y + (drawBase.h / 2);
+		minPosX = PlayerArea.x + (drawBase.w / 2);
+		minPosY = PlayerArea.y + (drawBase.h / 2) + 2 * this->speed;
+		maxPosX = PlayerArea.x + PlayerArea.w - drawBase.w;
+		maxPosY = PlayerArea.y + PlayerArea.h / 2;
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
