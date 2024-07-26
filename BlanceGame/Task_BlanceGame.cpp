@@ -44,11 +44,13 @@ namespace  BlanceGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
+		
 		ge->KillAll_G("バランスゲームPM");
 		ge->KillAll_G("バランスゲームＵＩマネージャー");
+		ge->KillAll_G("BGPlayer");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-		  Game::Object::CreateTask(3);
+			Game::Object::CreateTask(3);
 		}
 
 		return  true;
@@ -62,7 +64,7 @@ namespace  BlanceGame
 			shake = true;
 		else
 			shake = false;
-		if (gameCnt > 1319) {
+		if (gameCnt > 180) {
 			this->Kill();
 		}
 	}

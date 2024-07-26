@@ -20,6 +20,7 @@ namespace  BlanceGUIM
 	//ƒŠƒ\[ƒX‚Ì‰ğ•ú
 	bool  Resource::Finalize()
 	{
+		backImg.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
