@@ -57,7 +57,7 @@ namespace  ClassifyGame
 	void  Object::UpDate()
 	{
 		gameCnt++;
-		if (gameCnt == 1319) {
+		if (gameCnt == 120) {
 			Kill();
 		}
 	}

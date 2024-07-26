@@ -11,7 +11,7 @@ namespace  BGPlayer
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		playerImg = DG::Image::Create("./data/image/chara02.png");
+		playerImg = DG::Image::Create("./data/image/game_otsan_train.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -61,14 +61,14 @@ namespace  BGPlayer
 			break;
 		case BGstate::PlayR:
 			direction += 1;
-			if (in.HL.down) { SetBGState(BGstate::PlayL); }
-			if (direction > 40) { SetBGState(BGstate::Fail); }
+			if (in.LStick.BL.down) { SetBGState(BGstate::PlayL); }
+			if (direction > 45) { SetBGState(BGstate::Fail); }
 			if (direction == 0) { SetBGState(BGstate::Playing); }
 			break;
 		case BGstate::PlayL:
 			direction -= 1;
-			if (in.HR.down) { SetBGState(BGstate::PlayR); }
-			if (direction < -40) { SetBGState(BGstate::Fail); }
+			if (in.LStick.BR.down) { SetBGState(BGstate::PlayR); }
+			if (direction < -45) { SetBGState(BGstate::Fail); }
 			if (direction == 0) { SetBGState(BGstate::Playing); }
 			break;
 		case BGstate::Fail:
@@ -83,9 +83,23 @@ namespace  BGPlayer
 	//u‚Q‚c•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D src(0, 0, 32, 80);
-		ML::Box2D draw(0, 0, 32, 80);
-		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(16, 80));
+		ML::Box2D src(0, 0, 446, 542);
+		ML::Box2D draw(0, 0, 180, 216);
+		switch (GetBGState())
+		{
+		case BGstate::Playing:
+			break;
+		case BGstate::PlayR:
+			src = ML::Box2D(2236, 543, 446, 542);
+			break;
+		case BGstate::PlayL:
+			src = ML::Box2D(2236, 1086, 446, 542);
+			break;
+		case BGstate::Fail:
+			
+			break;
+		}
+		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(90, 216));
 		res->playerImg->Draw(draw.OffsetCopy(pos), src);
 	}
 
