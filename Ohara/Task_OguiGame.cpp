@@ -64,8 +64,9 @@ namespace  OguiGame
 		ge->KillAll_G("管理");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
-			//★引き継ぎタスクの生成
-			Game::Object::CreateTask(6);
+			//★引き継ぎタスクの生成			
+			auto g=ge->GetTask<Game::Object>("本編");
+			g->CreateTask(6);
 		}
 
 		return  true;

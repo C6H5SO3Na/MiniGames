@@ -70,7 +70,8 @@ namespace  TaxiGame
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			Game::Object::CreateTask(7);
+			auto g = ge->GetTask<Game::Object>("本編");
+			g->CreateTask(7);
 		}
 
 		return  true;

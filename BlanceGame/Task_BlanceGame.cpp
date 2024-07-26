@@ -45,12 +45,13 @@ namespace  BlanceGame
 	{
 		//★データ＆タスク解放
 		
-		ge->KillAll_G("バランスゲームPM");
-		ge->KillAll_G("バランスゲームＵＩマネージャー");
+		ge->KillAll_G("blanceGamePM");
+		ge->KillAll_G("blanceGameUIManager");
 		ge->KillAll_G("BGPlayer");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			Game::Object::CreateTask(3);
+			auto g=ge->GetTask<Game::Object>("本編");
+			g->CreateTask(3);
 		}
 
 		return  true;

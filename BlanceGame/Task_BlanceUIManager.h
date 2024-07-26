@@ -8,7 +8,7 @@
 namespace  BlanceGUIM
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("バランスゲームＵＩマネージャー");	//グループ名
+	const  string  defGroupName("blanceGameUIManager");	//グループ名
 	const  string  defName("NoName");		//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
