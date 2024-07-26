@@ -58,6 +58,8 @@ namespace  hand
 		bool isright;
 		bool isClear = false;
 
+		ML::Box2D drawBase;
+
 		enum class State
 		{
 			Left,

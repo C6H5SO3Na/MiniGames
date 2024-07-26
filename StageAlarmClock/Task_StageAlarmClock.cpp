@@ -51,6 +51,8 @@ namespace  StageAlarmClock
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
+		//Game::Object::CreateTask(1);
+
 		ge->KillAll_G("目覚まし時計");
 		ge->KillAll_G("手");
 		ge->KillAll_G("共通アイテムマネージャー01");
@@ -80,9 +82,18 @@ namespace  StageAlarmClock
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw (0, 0, 1920, 1080);
+		ML::Box2D draw (0, 0, 1920/2, 1080/2);
 		ML::Box2D src (0, 0, 1920, 1080);
 		this->res->bgImg->Draw(draw, src);
+
+		ML::Box2D draw2(1920 / 2, 0, 1920 / 2, 1080 / 2);
+		this->res->bgImg->Draw(draw2, src);
+
+		ML::Box2D draw3(0, 1080 / 2, 1920 / 2, 1080 / 2);
+		this->res->bgImg->Draw(draw3, src);
+
+		ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
+		this->res->bgImg->Draw(draw4, src);
 	}
 	//-------------------------------------------------------------------
 	//ゲーム本編の処理
