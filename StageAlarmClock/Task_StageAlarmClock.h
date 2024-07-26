@@ -52,7 +52,7 @@ namespace  StageAlarmClock
 
 		Phase phase = Phase::None;
 
-		void Game();
+		void CheckClear();
 		void Clear();
 	};
 }

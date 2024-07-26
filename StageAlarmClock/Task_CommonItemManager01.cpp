@@ -31,6 +31,8 @@ namespace  CommonItemManager01
 		this->res = Resource::Create();
 
 		//šƒf[ƒ^‰Šú‰»
+		this->rank = 0;
+
 		CTList.push_back(ge->in1);
 		CTList.push_back(ge->in2);
 		CTList.push_back(ge->in3);
@@ -40,6 +42,7 @@ namespace  CommonItemManager01
 		{
 			auto c = Clock::Object::Create(true);
 			ClockList.push_back(c);
+			ClockList[i]->id = i;
 
 			auto h = hand::Object::Create(true);
 			PLhandList.push_back(h);

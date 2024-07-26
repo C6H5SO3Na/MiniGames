@@ -4,6 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_hand.h"
 #include  "Task_Clock.h"
+#include  "Task_CommonItemManager01.h"
 
 namespace  hand
 {
@@ -33,11 +34,11 @@ namespace  hand
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
-		this->hitBase = ML::Box2D(-84, -53, 168, 106);
+		this->hitBase = ML::Box2D(-70, -25, 140, 70);
 		this->drawBase = ML::Box2D(-84, -53, 168, 106);
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->speed = 10.0f;
+		this->speed = 40.0f;
 		this->controller = ge->in1;
 		this->state = State::Right;
 		isright = true;
@@ -117,19 +118,28 @@ namespace  hand
 		}
 		
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
-		
+		//ge->debugRect(me, 4);
 		auto t = ge->GetTasks<Clock::Object>("目覚まし時計");
+		auto com = ge->GetTask<CommonItemManager01::Object>("共通アイテムマネージャー01");
 		for (auto it = t->begin(); it != t->end(); ++it)
 		{
 			auto you = (*it)->hitBase.OffsetCopy((*it)->pos);
+			//ge->debugRect(you, 5);
 			if (you.Hit(me))
 			{
 				this->speed = 0;
 				this->moveVec = ML::Vec2(0, 0);
-				this->isClear = true;
+				if (!this->isClear)
+				{
+					this->isClear = true;
+					ge->score[(*it)->id] += com->addscore[com->rank]; //addscore
+					com->rank++;
+				}
+				
 			}
 		}
-					
+		
+		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
