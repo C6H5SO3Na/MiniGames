@@ -53,5 +53,7 @@ namespace  Clock
 		//「追加メソッドを書く」
 		void Recieved() {};
 		void Positionalise(int PlayerNum);
+		ML::Box2D drawBase;
+		int id;
 	};
 }

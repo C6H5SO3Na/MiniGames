@@ -32,7 +32,8 @@ namespace  Clock
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.5f;
-		this->hitBase = ML::Box2D(-75, -75, 150, 150);
+		this->hitBase = ML::Box2D(-65, -70, 130, 140);
+		this->drawBase = ML::Box2D(-75, -75, 150, 150);
 		this->pos.x = 0;
 		this->pos.y = 0;
 		//★タスクの生成
@@ -61,7 +62,7 @@ namespace  Clock
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
+		ML::Box2D draw = this->drawBase.OffsetCopy(this->pos);
 		ML::Box2D src(0, 0, 764, 764);
 		this->res->img->Draw(draw, src);
 	}

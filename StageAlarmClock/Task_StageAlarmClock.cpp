@@ -17,6 +17,7 @@ namespace  StageAlarmClock
 	bool  Resource::Initialize()
 	{
 		this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
+		ge->debugRectLoad();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -70,7 +71,7 @@ namespace  StageAlarmClock
 	{
 		switch (this->phase) {
 		case Phase::Game:
-			Game();
+			CheckClear();
 			break;
 
 		case Phase::Clear:
@@ -94,21 +95,22 @@ namespace  StageAlarmClock
 
 		ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
 		this->res->bgImg->Draw(draw4, src);
+
+		ge->debugRectDraw();
 	}
 	//-------------------------------------------------------------------
 	//ゲーム本編の処理
-	void  Object::Game()
+	void  Object::CheckClear()
 	{
 		int clearNum = 0;
-		auto players = ge->GetTasks<hand::Object>(hand::defGroupName, hand::defName);
-		for_each(players->begin(), players->end(),
-			[&](auto iter) {
+		auto players = ge->GetTasks <hand::Object> ("手");
+		for_each(players->begin(), players->end(), [&](auto iter) {
 				if (iter->IsClear()) {
 					++clearNum;
 				}
 			});
 		if (clearNum >= 4) {
-			ge->StartCounter("Clear", 180);
+			//ge->StartCounter("Clear", 180);
 			phase = Phase::Clear;
 		}
 	}
@@ -116,9 +118,10 @@ namespace  StageAlarmClock
 	//全員クリア後の処理
 	void  Object::Clear()
 	{
-		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
+		Kill();
+	/*	if (ge->getCounterFlag("Clear") == ge->LIMIT) {
 			Kill();
-		}
+		}*/
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

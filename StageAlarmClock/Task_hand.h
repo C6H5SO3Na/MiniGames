@@ -75,5 +75,7 @@ namespace  hand
 		void Positionalise(int PlayerNum);
 
 		bool IsClear() const { return isClear; }
+
+		
 	};
 }
