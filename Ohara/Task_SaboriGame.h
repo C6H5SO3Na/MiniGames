@@ -50,8 +50,10 @@ namespace  SaboriGame
 		//追加したい変数・メソッドはここに追加する
 		//☆変数
 		ML::Vec2 playerFirstPos[4] = {	//プレイヤーの初期位置
-			{ ge->screen2DWidth / 4.f, ge->screen2DHeight / 2.f }, { ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight / 2.f },
-			{ ge->screen2DWidth / 4.f, ge->screen2DHeight * 3.f / 4.f }, { ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight * 3.f / 4.f }
+			{ ge->screen2DWidth / 4.f, ge->screen2DHeight / 2.f }, 
+			{ ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight / 2.f },
+			{ ge->screen2DWidth / 4.f, ge->screen2DHeight * 3.f / 4.f },
+			{ ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight * 3.f / 4.f }
 		};
 		ML::Vec2 joushiFirstPos = { ge->screen2DWidth / 2.f, ge->screen2DHeight / 4.f };	//上司の初期位置
 		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };			//取得するコントローラー
@@ -62,19 +64,36 @@ namespace  SaboriGame
 		bool  isInGame;				//ミニゲーム中か判断する。ミニゲーム中trueにする
 		int   countToNextTask;		//次のタスクにするまでのカウント
 
-		//☆クラス・構造体
+		//☆列挙型
 		enum class GameState
 		{
 			BeforeGameStart,	//ゲーム開始前
 			Game,				//ゲーム中
-			Result,				//リザルト
+			End,				//ゲーム終了
 		};
 		GameState gameState;
 
-		//☆関数
+		//☆メソッド
 		void GameStateTransition();					//ゲームの状態遷移
 		void UpdateGameState(GameState nowState);	//ゲームの状態変更時処理
 		void Work();								//状態毎の処理
 
+		
+
+	private:
+		//☆構造体
+		//順位決めに必要なプレイヤーの情報
+		struct PlayerInformation
+		{
+			PlayerNum playerNum;		//プレイヤー識別用番号
+			float	  totalSaboriTime;	//合計さぼり時間
+			int		  rank;				//順位
+		};
+		PlayerInformation playersInfo[4];
+
+		//☆メソッド
+		void Ranking();		//順位決めの処理
+		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのtotalSaboriTimeで比較し、playerInfoAの方が大きい時trueを返す
+		void SendScore();	//ge->scoreに得点を送る
 	};
 }

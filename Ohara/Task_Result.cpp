@@ -87,7 +87,7 @@ namespace  Result
 			input[i] = this->controllers[i]->GetState();
 		}
 
-		ResultState nowState = this->resultState;	//とりあえず現在の状態を代入
+		ResultState nowState = this->resultState; //とりあえず現在の状態を代入
 
 		//状態の切り替え
 		switch (nowState)
@@ -190,7 +190,7 @@ namespace  Result
 		this->nextStateGoIs = true;
 	}
 	//-------------------------------------------------------------------
-	//順位付けの処理
+	//順位決めの処理
 	void Object::Ranking()
 	{
 		//MyPGからスコアを取得
@@ -200,7 +200,8 @@ namespace  Result
 		}
 
 		//スコアが高い順にplayersInfoを並び替え
-		sort(playersInfo, playersInfo + (sizeof(playersInfo) / sizeof(playersInfo[0])), [this](const PlayerInformation& scoreA, const PlayerInformation& scoreB) { return compare(scoreA, scoreB); }); //ranks + (sizeof(ranks) / sizeof(ranks[0]))はranksのアドレスの一番最後の値
+		sort(playersInfo, playersInfo + (sizeof(playersInfo) / sizeof(playersInfo[0])), 
+			[this](const PlayerInformation& scoreA, const PlayerInformation& scoreB) { return compare(scoreA, scoreB); }); //playersInfo + (sizeof(playersInfo) / sizeof(playersInfo[0]))はranksのアドレスの一番最後の値
 
 		//順位を決める
 		int currentRank = 1; //入れる順位
