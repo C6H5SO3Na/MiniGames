@@ -96,11 +96,11 @@ namespace  OguiGame
 		switch (nowState)
 		{
 		case GameState::BeforeGameStart:	//ゲーム開始前
-			if (gameStateChangeCount >= 60 * 5) { nowState = GameState::Game; } //ゲーム中へ
+			if (gameStateChangeCount >= 60 * 2) { nowState = GameState::Game; } //ゲーム中へ
 			break;
 
 		case GameState::Game:				//ゲーム中
-			if (timeLimit == 0) { nowState = GameState::Result; } //制限時間が0になったらリザルトへ
+			if (timeLimit == 0) { nowState = GameState::End; } //制限時間が0になったらゲーム終了へ
 			break;
 		}
 
@@ -143,11 +143,18 @@ namespace  OguiGame
 			}
 			break;
 
-		case GameState::Result:				//リザルト
-			//☆ゲームを終了させる
+		case GameState::End:				//ゲーム終了
+			//ゲームの状態がEndの時、一度だけ行う処理
 			if (this->isInGame == true)
 			{
+				//☆ゲームを終了させる
 				this->isInGame = false;
+
+				//☆順位を決め、ge->scoreに得点を送る
+				//順位を決める
+				this->Ranking();
+				//ge->scoreに得点を送る
+				this->SendScore();
 			}
 
 			//☆次のタスクに行くまでのカウント
@@ -161,6 +168,161 @@ namespace  OguiGame
 				Kill();
 			}
 			break;
+		}
+	}
+	//-------------------------------------------------------------------
+	//順位決めの処理
+	void Object::Ranking()
+	{
+		//プレイヤーから情報を取得する
+		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
+		for (auto p = players->begin(); p != players->end(); ++p)
+		{
+			switch ((*p)->playerNum)
+			{
+			case PlayerNum::Player1:
+				playersInfo[0].playerNum = (*p)->playerNum;
+				playersInfo[0].eatFoodCount = (*p)->eatFoodCount;
+				break;
+
+			case PlayerNum::Player2:
+				playersInfo[1].playerNum = (*p)->playerNum;
+				playersInfo[1].eatFoodCount = (*p)->eatFoodCount;
+				break;
+
+			case PlayerNum::Player3:
+				playersInfo[2].playerNum = (*p)->playerNum;
+				playersInfo[2].eatFoodCount = (*p)->eatFoodCount;
+				break;
+
+			case PlayerNum::Player4:
+				playersInfo[3].playerNum = (*p)->playerNum;
+				playersInfo[3].eatFoodCount = (*p)->eatFoodCount;
+				break;
+			}
+		}
+
+		//合計さぼり時間が多い順にplayersInfoを並び替え
+		sort(playersInfo, playersInfo + sizeof(playersInfo) / sizeof(playersInfo[0]),
+			[this](const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB) {return compare(playerInfoA, playerInfoB);});
+
+		//順位を決める
+		int currentRank = 1; //入れる順位
+		for (int i = 0; i < sizeof(playersInfo) / sizeof(playersInfo[0]); ++i)
+		{
+			//2回目以降のループで、スコアの値が前のスコアと同じでなければ入れる順位を+1する
+			if (i > 0 && playersInfo[i].eatFoodCount != playersInfo[i - 1].eatFoodCount)
+			{
+				currentRank = i + 1;
+			}
+
+			//順位を決定
+			playersInfo[i].rank = currentRank;
+		}
+	}
+	//-------------------------------------------------------------------
+	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
+	bool Object::compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB)
+	{
+		return playerInfoA.eatFoodCount > playerInfoB.eatFoodCount;
+	}
+	//-------------------------------------------------------------------
+	//ge->scoreに得点を送る
+	void Object::SendScore()
+	{
+		for (int i = 0; i < sizeof(playersInfo) / sizeof(playersInfo[0]); ++i)
+		{
+			//何点送るか決める
+			switch (playersInfo[i].rank)
+			{
+			case 1: //4点
+				//プレイヤー識別用番号でどこに格納するか決める
+				switch (playersInfo[i].playerNum)
+				{
+				case PlayerNum::Player1:	//ge->score[0]
+					ge->score[0] += 4;
+					break;
+
+				case PlayerNum::Player2:	//ge->score[1]
+					ge->score[1] += 4;
+					break;
+
+				case PlayerNum::Player3:	//ge->score[2]
+					ge->score[2] += 4;
+					break;
+
+				case PlayerNum::Player4:	//ge->score[3]
+					ge->score[3] += 4;
+					break;
+				}
+				break;
+
+			case 2:	//3点
+				//プレイヤー識別用番号でどこに格納するか決める
+				switch (playersInfo[i].playerNum)
+				{
+				case PlayerNum::Player1:	//ge->score[0]
+					ge->score[0] += 3;
+					break;
+
+				case PlayerNum::Player2:	//ge->score[1]
+					ge->score[1] += 3;
+					break;
+
+				case PlayerNum::Player3:	//ge->score[2]
+					ge->score[2] += 3;
+					break;
+
+				case PlayerNum::Player4:	//ge->score[3]
+					ge->score[3] += 3;
+					break;
+				}
+				break;
+
+			case 3:	//2点
+				//プレイヤー識別用番号でどこに格納するか決める
+				switch (playersInfo[i].playerNum)
+				{
+				case PlayerNum::Player1:	//ge->score[0]
+					ge->score[0] += 2;
+					break;
+
+				case PlayerNum::Player2:	//ge->score[1]
+					ge->score[1] += 2;
+					break;
+
+				case PlayerNum::Player3:	//ge->score[2]
+					ge->score[2] += 2;
+					break;
+
+				case PlayerNum::Player4:	//ge->score[3]
+					ge->score[3] += 2;
+					break;
+				}
+				break;
+
+			case 4:	//1点
+				//プレイヤー識別用番号でどこに格納するか決める
+				switch (playersInfo[i].playerNum)
+				{
+				case PlayerNum::Player1:	//ge->score[0]
+					ge->score[0] += 1;
+					break;
+
+				case PlayerNum::Player2:	//ge->score[1]
+					ge->score[1] += 1;
+					break;
+
+				case PlayerNum::Player3:	//ge->score[2]
+					ge->score[2] += 1;
+					break;
+
+				case PlayerNum::Player4:	//ge->score[3]
+					ge->score[3] += 1;
+					break;
+				}
+				break;
+			}
 		}
 	}
 
@@ -199,10 +361,12 @@ namespace  OguiGame
 	//-------------------------------------------------------------------
 	Object::Object()
 		:
+		gameState(GameState::BeforeGameStart),
 		gameStateChangeCount(0),
 		timeLimit(30.f), //制限時間を設定
 		isInGame(false),
-		countToNextTask(0)
+		countToNextTask(0),
+		playersInfo{}
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

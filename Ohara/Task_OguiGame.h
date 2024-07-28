@@ -66,18 +66,32 @@ namespace  OguiGame
 		int   gameStateChangeCount;	//GameStateを変更するまでのカウント
 		int   countToNextTask;		//次のタスクにするまでのカウント
 
-		//☆クラス・構造体
+		//☆構造体・列挙型
+		//ゲームの状態
 		enum class GameState
 		{
 			BeforeGameStart,	//ゲーム開始前
 			Game,				//ゲーム中
-			Result,				//リザルト
+			End,				//ゲーム終了
 		};
 		GameState gameState;
+
+		//順位決めに必要なプレイヤーの情報
+		struct PlayerInformation
+		{
+			PlayerNum playerNum;	//プレイヤー識別用番号
+			int		  eatFoodCount;	//食べた料理の数
+			int		  rank;			//順位
+		};
+		PlayerInformation playersInfo[4];
 
 		//☆関数
 		void GameStateTransition();					//ゲームの状態遷移
 		void UpdateGameState(GameState nowState);	//ゲームの状態変更時処理
 		void Work();								//状態毎の処理
+
+		void Ranking();		//順位決めの処理
+		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
+		void SendScore();	//ge->scoreに得点を送る
 	};
 }

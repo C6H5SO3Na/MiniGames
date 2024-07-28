@@ -82,7 +82,7 @@ namespace  Result
 		void UpdateResultState(ResultState nowState);	//リザルトの状態変更時処理
 		void ProcessEachState();						//状態毎の処理
 
-		void Ranking();											//順位付けの処理
+		void Ranking();	//順位決めの処理
 		bool compare(const PlayerInformation& scoreA, const PlayerInformation& scoreB);	//scoreAとscoreBに入れた変数のscoreで比較し、scoreAが大きい時trueを返す
 	};
 }
