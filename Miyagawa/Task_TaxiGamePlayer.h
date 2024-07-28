@@ -67,8 +67,9 @@ namespace TaxiGamePlayer
 		void Think();
 		void Move();
 		void Recieved() override;
-		void DrawButton();
+		void DrawButton() const;
 		void MatchButton();
+		void DrawClearMessage() const;
 
 		//ボタンのビット
 		enum Button {
