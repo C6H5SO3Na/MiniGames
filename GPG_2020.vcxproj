@@ -159,6 +159,9 @@
     <ClCompile Include="Ohara\Task_OguiGame.cpp" />
     <ClCompile Include="Ohara\Task_OguiPlayer.cpp" />
     <ClCompile Include="Ohara\Task_OguiUIManager.cpp" />
+    <ClCompile Include="Ohara\Task_Result.cpp" />
+    <ClCompile Include="Ohara\Task_ResultUIManager.cpp" />
+    <ClCompile Include="Ohara\Task_ResultUIPlayer.cpp" />
     <ClCompile Include="Ohara\Task_SaboriGame.cpp" />
     <ClCompile Include="Ohara\Task_SaboriJoushi.cpp" />
     <ClCompile Include="Ohara\Task_SaboriPlayer.cpp" />
@@ -220,6 +223,9 @@
     <ClInclude Include="Ohara\Task_OguiGame.h" />
     <ClInclude Include="Ohara\Task_OguiPlayer.h" />
     <ClInclude Include="Ohara\Task_OguiUIManager.h" />
+    <ClInclude Include="Ohara\Task_Result.h" />
+    <ClInclude Include="Ohara\Task_ResultUIManager.h" />
+    <ClInclude Include="Ohara\Task_ResultUIPlayer.h" />
     <ClInclude Include="Ohara\Task_SaboriGame.h" />
     <ClInclude Include="Ohara\Task_SaboriJoushi.h" />
     <ClInclude Include="Ohara\Task_SaboriPlayer.h" />

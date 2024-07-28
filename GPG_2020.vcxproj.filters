@@ -80,6 +80,9 @@
     <Filter Include="MyPG\Task\StageAlarmClock\StageTask">
       <UniqueIdentifier>{e419b6f0-3464-41b1-aee7-29b4704cd27f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Ohara\Result">
+      <UniqueIdentifier>{c96743ee-4f3e-43eb-973a-b0fff8382213}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -259,6 +262,15 @@
     <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp">
       <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
     </ClCompile>
+    <ClCompile Include="Ohara\Task_Result.cpp">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_ResultUIManager.cpp">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_ResultUIPlayer.cpp">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -435,6 +447,15 @@
     </ClInclude>
     <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h">
       <Filter>MyPG\Task\StageAlarmClock\StageTask</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_Result.h">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_ResultUIManager.h">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_ResultUIPlayer.h">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
