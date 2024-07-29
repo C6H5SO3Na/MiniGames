@@ -271,6 +271,15 @@
     <ClCompile Include="Ohara\Task_ResultUIPlayer.cpp">
       <Filter>MyPG\Task\Ohara\Result</Filter>
     </ClCompile>
+    <ClCompile Include="Ohara\Task_SaboriGameBG.cpp">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_OguiGameBG.cpp">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Ohara\Task_ResultBG.cpp">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -455,6 +464,15 @@
       <Filter>MyPG\Task\Ohara\Result</Filter>
     </ClInclude>
     <ClInclude Include="Ohara\Task_ResultUIPlayer.h">
+      <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_SaboriGameBG.h">
+      <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_OguiGameBG.h">
+      <Filter>MyPG\Task\Ohara\OguiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Ohara\Task_ResultBG.h">
       <Filter>MyPG\Task\Ohara\Result</Filter>
     </ClInclude>
   </ItemGroup>

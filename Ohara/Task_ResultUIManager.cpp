@@ -11,7 +11,7 @@ namespace  ResultUIManager
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->prefaceImage = DG::Image::Create("./data/Image/Ohara/Result Announcement.png");
+		this->prefaceImage = DG::Image::Create("./data/Image/ResultAnnouncement.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,6 +31,7 @@ namespace  ResultUIManager
 		this->res = Resource::Create();
 
 		//★データ初期化
+		this->render2D_Priority[1] = 0.6f;
 		this->displayPattern = DecideDisplayPattern(); //表示パターン決定
 		
 		//★タスクの生成

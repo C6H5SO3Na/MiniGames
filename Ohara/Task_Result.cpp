@@ -4,6 +4,8 @@
 #include  "../MyPG.h"
 #include  "Task_Result.h"
 #include  "Task_ResultUIManager.h"
+#include  "Task_ResultBG.h"
+
 #include  "../Task_Title.h"
 
 namespace  Result
@@ -36,7 +38,11 @@ namespace  Result
 		Ranking();
 		
 		//šƒ^ƒXƒN‚Ì¶¬
-		auto UImanager = ResultUIManager::Object::Create(true);
+		//UIŠÇ—
+		ResultUIManager::Object::Create(true);
+
+		//”wŒi
+		ResultBG::Object::Create(true);
 
 		return  true;
 	}
