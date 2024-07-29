@@ -14,7 +14,7 @@ namespace  SaboriPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/Ohara/testImage/testCircle.png");
+		this->image = DG::Image::Create("./data/image/game_otsan_working.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -136,9 +136,9 @@ namespace  SaboriPlayer
 	Object::DrawInformation Object::GetDrawImage()
 	{
 		DrawInformation imageTable[] = {
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//仕事状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//サボり状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(0, 0, 100, 100) },	//サボりばれ状態
+			{ ML::Box2D(static_cast<int>(-250 / 1.5f) , static_cast<int>(-230 / 1.5f), static_cast<int>(500 / 1.5f), static_cast<int>(460 / 1.5f)), ML::Box2D(500, 0, 500, 460)},	//仕事状態
+			{ ML::Box2D(static_cast<int>(-250 / 1.5f) , static_cast<int>(-230 / 1.5f), static_cast<int>(500 / 1.5f), static_cast<int>(460 / 1.5f)), ML::Box2D(1000, 0, 500, 460) },	//サボり状態
+			{ ML::Box2D(static_cast<int>(-250 / 1.5f) , static_cast<int>(-230 / 1.5f), static_cast<int>(500 / 1.5f), static_cast<int>(460 / 1.5f)), ML::Box2D(1500, 0, 500, 460) },	//サボりばれ状態
 		};
 
 		DrawInformation rtv;

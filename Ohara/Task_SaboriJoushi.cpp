@@ -15,7 +15,7 @@ namespace  SaboriJoushi
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/Ohara/testImage/testSquare.png");
+		this->image = DG::Image::Create("./data/image/game_boss.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -179,10 +179,10 @@ namespace  SaboriJoushi
 	Object::DrawInformation Object::GetDrawImage()
 	{
 		DrawInformation imageTable[] = {
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//仕事状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//サボり確認の予備動作状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(300, 0, 100, 100) },	//サボり確認状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(0, 0, 100, 100)},	//サボり発見状態
+			{ ML::Box2D(static_cast<int>(-218 / 1.5f), static_cast<int>(-246 / 1.5f), static_cast<int>(436 / 1.5f), static_cast<int>(492 / 1.5f)), ML::Box2D(0, 0, 436, 492)},		//仕事状態
+			{ ML::Box2D(static_cast<int>(-218 / 1.5f), static_cast<int>(-246 / 1.5f), static_cast<int>(436 / 1.5f), static_cast<int>(492 / 1.5f)), ML::Box2D(436, 0,436, 492) },	//サボり確認の予備動作状態
+			{ ML::Box2D(static_cast<int>(-218 / 1.5f), static_cast<int>(-246 / 1.5f), static_cast<int>(436 / 1.5f), static_cast<int>(492 / 1.5f)), ML::Box2D(1308, 0, 436, 492) },	//サボり確認状態
+			{ ML::Box2D(static_cast<int>(-218 / 1.5f), static_cast<int>(-246 / 1.5f), static_cast<int>(436 / 1.5f), static_cast<int>(492 / 1.5f)), ML::Box2D(1744, 0, 436, 492)},	//サボり発見状態
 		};
 
 		DrawInformation rtv;
