@@ -31,6 +31,7 @@ namespace  SaboriUIManager
 		this->res = Resource::Create();
 
 		//★データ初期化
+		this->render2D_Priority[1] = 0.6f;
 		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 		
 		//★タスクの生成

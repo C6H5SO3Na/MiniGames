@@ -6,6 +6,8 @@
 #include  "Task_SaboriPlayer.h"
 #include  "Task_SaboriJoushi.h"
 #include  "Task_SaboriUIManager.h"
+#include  "Task_SaboriGameBG.h"
+
 #include  "../Task_Game.h"
 #include  "../randomLib.h"
 
@@ -52,6 +54,9 @@ namespace  SaboriGame
 		//UI管理
 		SaboriUIManager::Object::Create(true);
 
+		//背景
+		SaboriGameBG::Object::Create(true);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -63,6 +68,7 @@ namespace  SaboriGame
 		ge->KillAll_G("プレイヤー");
 		ge->KillAll_G("ギミック");
 		ge->KillAll_G("管理");
+		ge->KillAll_G("サボりミニゲーム");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成

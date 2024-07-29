@@ -35,6 +35,7 @@ namespace  SaboriJoushi
 		this->res = Resource::Create();
 
 		//★データ初期化
+		this->render2D_Priority[1] = 0.6f;
 		this->state = State::JWork;
 		this->changeStateTime = GetRandom(2.f, 4.f); //仕事中状態からサボり確認の予備動作状態に変更するまでの時間の設定
 		

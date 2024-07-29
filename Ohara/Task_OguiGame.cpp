@@ -6,6 +6,8 @@
 #include  "Task_OguiPlayer.h"
 #include  "Task_OguiFoodManager.h"
 #include  "Task_OguiUIManager.h"
+#include  "Task_OguiGameBG.h"
+
 #include  "../Task_Game.h"
 #include  "../randomLib.h"
 
@@ -51,6 +53,9 @@ namespace  OguiGame
 		//UI管理
 		OguiUIManager::Object::Create(true);
 
+		//背景
+		OguiGameBG::Object::Create(true);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -62,6 +67,7 @@ namespace  OguiGame
 		ge->KillAll_G("プレイヤー");
 		ge->KillAll_G("ギミック");
 		ge->KillAll_G("管理");
+		ge->KillAll_G("大食いミニゲーム");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成

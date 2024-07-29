@@ -31,6 +31,7 @@ namespace  ResultUIPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
+		this->render2D_Priority[1] = 0.6f;
 		
 		//★タスクの生成
 
