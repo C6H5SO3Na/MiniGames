@@ -10,6 +10,7 @@
 #include  "Task_TaxiGameTaxi.h"
 #include  "Task_TaxiGameBG.h"
 #include  "../Task_Game.h"
+#include  "../sound.h"
 
 namespace  TaxiGame
 {
@@ -39,6 +40,9 @@ namespace  TaxiGame
 		phase = Phase::Game;
 		TaxiGamePlayer::Object::playerScore = 4;
 
+		//BGM
+		bgm::LoadFile("TaxiGame", "./data/sound/bgm/タクシー_retrogamecenter3.mp3");
+		bgm::Play("TaxiGame");
 		//★タスクの生成
 		TaxiGameBG::Object::Create(true);
 
@@ -69,6 +73,7 @@ namespace  TaxiGame
 		ge->KillAll_G("タクシー");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
+			bgm::AllStop();
 			//★引き継ぎタスクの生成
 			Game::Object::CreateTask(7);
 		}
