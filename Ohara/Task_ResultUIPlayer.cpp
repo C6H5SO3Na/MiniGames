@@ -11,7 +11,9 @@ namespace  ResultUIPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->playerImage = DG::Image::Create("./data/image/Ohara/testImage/testSquare.png");
+		this->playerImage = DG::Image::Create("./data/image/game_otsan_pose.png");
+		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
+		this->rankImage = DG::Image::Create("./data/image/CompanyRank.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -19,6 +21,8 @@ namespace  ResultUIPlayer
 	bool  Resource::Finalize()
 	{
 		this->playerImage.reset();
+		this->playerNumberImage.reset();
+		this->rankImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -66,8 +70,16 @@ namespace  ResultUIPlayer
 		this->res->playerImage->Draw(drawPlayerImage.draw, drawPlayerImage.src);
 
 		//☆プレイヤー番号の描画
+		DrawInformation drawPlayerNumberImage = this->GetDrawImages(1);
+		drawPlayerNumberImage.draw.Offset(this->drawPos.playerNumPos);
+
+		this->res->playerNumberImage->Draw(drawPlayerNumberImage.draw, drawPlayerNumberImage.src);
 
 		//☆順位画像の描画
+		DrawInformation drawRankImage = this->GetDrawImages(2);
+		drawRankImage.draw.Offset(this->drawPos.rankPos);
+
+		this->res->rankImage->Draw(drawRankImage.draw, drawRankImage.src);
 
 		//☆スコアの描画
 
@@ -78,14 +90,22 @@ namespace  ResultUIPlayer
 	{
 		DrawInformation imageTable[] = {
 			//プレイヤー
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//要素数0 1位プレイヤー
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//要素数1 2位プレイヤー
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(300, 0, 100, 100) },	//要素数2 3位プレイヤー
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(0, 0, 100, 100)},	//要素数3 4位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(0, 0, 436, 542) },		//要素数0 1位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(436, 0, 436, 542) },	//要素数1 2位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(872, 0, 436, 542) },	//要素数2 3位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(1308, 0, 436, 542)},	//要素数3 4位プレイヤー
 
 			//プレイヤーの番号
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105) },	//要素数4 1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105) },	//要素数5 2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105) },	//要素数6 3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105) },	//要素数7 4P
 
 			//順位
+			{ ML::Box2D(-77, -43, 154, 85), ML::Box2D(0, 0, 154, 85) },		//要素数8  1位(社長)
+			{ ML::Box2D(-77, -43, 154, 85), ML::Box2D(154, 0, 154, 85) },	//要素数9  2位(部長)
+			{ ML::Box2D(-78, -43, 155, 85), ML::Box2D(308, 0, 155, 85) },	//要素数10 3位(課長)
+			{ ML::Box2D(-110, -43, 219, 85), ML::Box2D(463, 0, 219, 85) },	//要素数11 4位(平社員)
 
 			//スコア
 		};
@@ -114,25 +134,48 @@ namespace  ResultUIPlayer
 				rtv = imageTable[3];
 				break;
 			}
+			break;
 
 		case 1: //プレイヤー番号
 			switch (this->drawPlayerInfo.PlayerNum)
 			{
 			case 1: //1P
+				rtv = imageTable[4];
 				break;
 
 			case 2: //2P
+				rtv = imageTable[5];
 				break;
 
 			case 3:	//3P
+				rtv = imageTable[6];
 				break;
 
 			case 4: //4P
+				rtv = imageTable[7];
 				break;
 			}
 			break;
 
 		case 2: //順位
+			switch (this->drawPlayerInfo.rank)
+			{
+			case 1:	//1位(社長)
+				rtv = imageTable[8];
+				break;
+
+			case 2:	//2位(部長)
+				rtv = imageTable[9];
+				break;
+
+			case 3:	//3位(課長)
+				rtv = imageTable[10];
+				break;
+
+			case 4:	//4位(平社員)
+				rtv = imageTable[11];
+				break;
+			}
 			break;
 
 		case 3: //スコア
