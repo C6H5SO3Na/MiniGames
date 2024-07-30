@@ -8,7 +8,7 @@
 namespace  ClassifyGame
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("書類分類ゲーム");	//グループ名
+	const  string  defGroupName("ClassifyGame");	//グループ名
 	const  string  defName("NoName");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource

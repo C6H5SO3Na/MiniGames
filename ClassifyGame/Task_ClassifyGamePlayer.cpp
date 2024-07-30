@@ -73,7 +73,6 @@ namespace  CGPlayer
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
-			Game::Object::Create(true);
 		}
 
 		return  true;
