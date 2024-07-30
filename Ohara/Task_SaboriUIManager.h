@@ -23,6 +23,7 @@ namespace  SaboriUIManager
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
+		DG::Image::SP playerNumberImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -48,7 +49,24 @@ namespace  SaboriUIManager
 		//追加したい変数・メソッドはここに追加する
 
 	private:
+		//☆構造体
+		struct PlayerNumberDrawInformation
+		{
+			ML::Box2D draw, src;
+			ML::Vec2 pos;
+		};
+
 		//☆変数
 		DG::Font::SP testFont;
+
+		PlayerNumberDrawInformation playerNumbersDrawInfo[4] = {	//プレイヤー番号の描画情報
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 8.f, ge->screen2DHeight - 480.f) },			//1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 480.f) },	//2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 480.f) },	//3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 480.f) }		//4P
+		};
+
+		//☆メソッド
+		void DrawPlayerNumber();	//プレイヤー番号の描画
 	};
 }

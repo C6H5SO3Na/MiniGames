@@ -13,12 +13,14 @@ namespace  OguiUIManager
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->playerNumberImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -69,7 +71,7 @@ namespace  OguiUIManager
 		{
 			//描画
 			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 65, ge->screen2DWidth, ge->screen2DHeight),
-				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->eatFoodCount)
+				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->eatFoodCount), ML::Color(1, 0, 0, 0)
 			);
 			//ループ回数のカウント
 			++loopCount;
@@ -80,8 +82,25 @@ namespace  OguiUIManager
 		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
 		//描画
 		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2, 0, ge->screen2DWidth, ge->screen2DHeight),
-			to_string(game->timeLimit)
+			to_string(game->timeLimit), ML::Color(1, 0, 0, 0)
 		);
+
+		//☆プレイヤー番号の描画
+		this->DrawPlayerNumber();
+	}
+	//-------------------------------------------------------------------
+	//プレイヤー番号の描画
+	void Object::DrawPlayerNumber()
+	{
+		for (int i = 0; i < sizeof(this->playerNumbersDrawInfo) / sizeof(this->playerNumbersDrawInfo[0]); ++i)
+		{
+			ML::Box2D playerNumberDraw = this->playerNumbersDrawInfo[i].draw;
+			playerNumberDraw.Offset(this->playerNumbersDrawInfo[i].pos);
+			ML::Box2D playerNumberSrc = this->playerNumbersDrawInfo[i].src;
+
+			//描画
+			this->res->playerNumberImage->Draw(playerNumberDraw, playerNumberSrc);
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

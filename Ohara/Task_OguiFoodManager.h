@@ -55,10 +55,10 @@ namespace  OguiFoodManager
 		int  createCount[4];			//料理が完成するまでのカウント、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
 		bool hasExistFoods[4];			//料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
 		ML::Vec2 foodPositions[4] = {	//料理の出現位置
-			{ ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f + 100 }, 
-			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f + 100 },
-			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f + 100 },
-			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 100 }
+			{ ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f + 200 }, 
+			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f + 200 },
+			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f + 200 },
+			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 200 }
 		};
 
 		//☆メソッド
