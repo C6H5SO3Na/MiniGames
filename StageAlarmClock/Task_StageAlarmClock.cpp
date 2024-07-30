@@ -57,8 +57,7 @@ namespace  StageAlarmClock
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto g = ge->GetTask<Game::Object>("本編");
-			g->CreateTask(1);
+			Game::Object::CreateTask(1);
 		}
 
 		return  true;

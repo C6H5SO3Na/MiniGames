@@ -66,8 +66,7 @@ namespace  SaboriGame
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto g = ge->GetTask<Game::Object>("本編");
-			g->CreateTask(5);
+			Game::Object::CreateTask(5);
 		}
 
 		return  true;

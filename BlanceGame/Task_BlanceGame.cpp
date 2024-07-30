@@ -50,8 +50,7 @@ namespace  BlanceGame
 		ge->KillAll_G("BGPlayer");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto g=ge->GetTask<Game::Object>("本編");
-			g->CreateTask(3);
+			Game::Object::CreateTask(3);
 		}
 
 		return  true;

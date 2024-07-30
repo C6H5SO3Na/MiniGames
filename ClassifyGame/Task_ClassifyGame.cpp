@@ -47,8 +47,8 @@ namespace  ClassifyGame
 		ge->KillAll_G("ClassifyGamePM");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto g = ge->GetTask<Game::Object>("本編");
-			g->CreateTask(4);
+			
+			Game::Object::CreateTask(4);
 		}
 
 		return  true;
