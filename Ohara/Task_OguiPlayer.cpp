@@ -13,7 +13,7 @@ namespace  OguiPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/Ohara/testImage/testCircle.png");
+		this->image = DG::Image::Create("./data/image/game_otsan_eat_new.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -69,6 +69,7 @@ namespace  OguiPlayer
 		if (game->isInGame == true)
 		{
 			this->moveCnt++;
+			this->animationCount++;
 
 			//状態判断
 			this->Think();
@@ -142,11 +143,12 @@ namespace  OguiPlayer
 	Object::DrawInformation Object::GetDrawImage()
 	{
 		DrawInformation imageTable[] = {
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//待機状態
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//食事中状態
+			{ ML::Box2D(-374 / 2, -512 / 2, 748 / 2, 1024 / 2), ML::Box2D(0, 0, 748, 1024) },	//待機、食事中2
+			{ ML::Box2D(-374 / 2, -512 / 2, 748 / 2, 1024 / 2), ML::Box2D(748, 0, 748, 1024) },	//食事中1
 		};
 
 		DrawInformation rtv;
+		int animationNum; //アニメーション用
 		switch (this->state)
 		{
 		case State::PWait:		//待機状態
@@ -154,7 +156,9 @@ namespace  OguiPlayer
 			break;
 
 		case State::PEat:		//食事中状態
-			rtv = imageTable[1];
+			animationNum = (8 + this->animationCount) / 8; //食事中1から描画を始める
+			animationNum %= 2;
+			rtv = imageTable[animationNum];
 			break;
 		}
 

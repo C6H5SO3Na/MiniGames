@@ -14,7 +14,7 @@ namespace  OguiFood
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/Ohara/testImage/testSquare.png");
+		this->image = DG::Image::Create("./data/image/otsan_ramen.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -124,30 +124,10 @@ namespace  OguiFood
 	Object::DrawInformation Object::GetDrawImage()
 	{
 		DrawInformation imageTable[] = {
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(200, 0, 100, 100) },	//残りが半分より多い
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(100, 0, 100, 100) },	//残り半分以下
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(300, 0, 100, 100) },	//残り1/3以下
-			{ ML::Box2D(-50, -50, 100, 100), ML::Box2D(0, 0, 100, 100)},	//完食
+			{ ML::Box2D(-367 / 3, -233 / 3, 733 / 3, 466 / 3), ML::Box2D(0, 0, 734, 466) }
 		};
 
-		DrawInformation rtv;
-
-		if (hp <= 0)				//完食
-		{
-			rtv = imageTable[3];
-		}
-		else if (hp <= maxHP / 3)	//残り1/3以下
-		{
-			rtv = imageTable[2];
-		}
-		else if (hp <= maxHP / 2)	//残り半分以下
-		{
-			rtv = imageTable[1];
-		}
-		else						//残りが半分より多い
-		{
-			rtv = imageTable[0];
-		}
+		DrawInformation rtv = imageTable[0];
 
 		return rtv;
 	}

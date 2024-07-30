@@ -168,7 +168,7 @@ namespace  SaboriGame
 			this->countToNextTask++;
 
 			//☆統括タスク消滅申請
-			if (this->countToNextTask == 60 * 10) { //60をGetFps()にする 
+			if (this->countToNextTask == 60 * 2) { //60をGetFps()にする 
 				ge->StartCounter("test", 0);
 			}
 			if (ge->getCounterFlag("test") == ge->LIMIT) {
