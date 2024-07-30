@@ -80,9 +80,11 @@ namespace  Game
 		StageAlarmClock::Object::Create(true);
 	}
 	void  Object::CreateTask(int nextTask) {
+		int i = 0;
+		i = nextTask;
 		//auto gsUI=gamesetUI::Object::Create(true);  //ゲームセットUI生成用
 		std::this_thread::sleep_for(std::chrono::seconds(2));
-		switch (nextTask) {
+		switch (i) {
 		case 1:
 			StageBrushTeeth::Object::Create(true);
 			break;

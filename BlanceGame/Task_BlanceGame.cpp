@@ -45,8 +45,8 @@ namespace  BlanceGame
 	{
 		//★データ＆タスク解放
 		
-		ge->KillAll_G("バランスゲームPM");
-		ge->KillAll_G("バランスゲームＵＩマネージャー");
+		ge->KillAll_G("blanceGamePM");
+		ge->KillAll_G("blanceGameUIManager");
 		ge->KillAll_G("BGPlayer");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成

@@ -70,7 +70,7 @@ namespace  OguiGame
 		ge->KillAll_G("大食いミニゲーム");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
-			//★引き継ぎタスクの生成
+			//★引き継ぎタスクの生成			
 			Game::Object::CreateTask(6);
 		}
 

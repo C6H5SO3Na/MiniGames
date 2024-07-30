@@ -71,7 +71,7 @@ namespace  BlanceGUIM
 		{
 			pos.x -= 1;
 		}
-		auto pm = ge->GetTask<BlanceGamePM::Object>("ƒoƒ‰ƒ“ƒXƒQ[ƒ€PM");
+		auto pm = ge->GetTask<BlanceGamePM::Object>("blanceGamePM");
 		for (int i = 0; i < 4; ++i) {
 			if (pm->pList[i]->GetBGState() == BGstate::Fail) {
 				failFlag[i] = true;

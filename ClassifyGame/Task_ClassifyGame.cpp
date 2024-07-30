@@ -44,9 +44,10 @@ namespace  ClassifyGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("書類分類ゲームPM");
+		ge->KillAll_G("ClassifyGamePM");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
+			
 			Game::Object::CreateTask(4);
 		}
 
