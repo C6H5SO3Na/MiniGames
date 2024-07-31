@@ -80,8 +80,6 @@ namespace  SaboriGame
 		void UpdateGameState(GameState nowState);	//ゲームの状態変更時処理
 		void Work();								//状態毎の処理
 
-		
-
 	private:
 		//☆構造体
 		//順位決めに必要なプレイヤーの情報
