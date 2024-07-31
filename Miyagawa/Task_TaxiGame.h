@@ -53,5 +53,6 @@ namespace  TaxiGame
 
 		void Game();
 		void Clear();
+		int gameCnt;//ゲーム時間のカウンター
 	};
 }

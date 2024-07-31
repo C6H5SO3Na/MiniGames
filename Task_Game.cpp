@@ -104,11 +104,11 @@ namespace  Game
 			TaxiGame::Object::Create(true);
 			break;
 		default:
-			return;
+			auto g = ge->GetTask < Game::Object >("本編");
+			g->Kill();
 			break;
 		}
 	}
-
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
