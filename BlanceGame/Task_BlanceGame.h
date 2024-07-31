@@ -8,7 +8,7 @@
 namespace  BlanceGame
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("バランスゲーム");	//グループ名
+	const  string  defGroupName("BlanceGame");	//グループ名
 	const  string  defName("NoName");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource

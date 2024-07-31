@@ -5,6 +5,7 @@
 #include  "Task_BlanceUIManager.h"
 #include  "Task_BlanceGame.h"
 #include  "Task_BlanceGamePM.h"
+#include  "../sound.h"
 
 namespace  BlanceGUIM
 {
@@ -13,7 +14,7 @@ namespace  BlanceGUIM
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		backImg = DG::Image::Create("./data/image/train.png");
+		backImg = DG::Image::Create("./data/image/game_trainBG.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -48,7 +49,7 @@ namespace  BlanceGUIM
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
+		ge->KillAll_G("BGPlayer");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -60,30 +61,42 @@ namespace  BlanceGUIM
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto bg = ge->GetTask<BlanceGame::Object>("バランスゲーム");
+		auto bg = ge->GetTask<BlanceGame::Object>("BlanceGame");
 		if (!bg) {
 			return;
 		}
 		if (bg->shake) {
-			pos.x += 239;
+			moveCnt++;
+			if (moveCnt % 5 != 0) {
+				pos.x += 3;
+			}
+			else
+			{
+				pos.x -= 12;
+			}
 		}
-		else
-		{
-			pos.x -= 1;
-		}
+		
 		auto pm = ge->GetTask<BlanceGamePM::Object>("blanceGamePM");
 		for (int i = 0; i < 4; ++i) {
-			if (pm->pList[i]->GetBGState() == BGstate::Fail) {
+			if (pm->pList[i]->GetBGState() == BGstate::Fail&& failFlag[i] == false) {
+				se::Play("seBGf");
+				rank.push_back(i);
 				failFlag[i] = true;
 			}
+		}
+		if (failFlag[0]&& failFlag[1]&& failFlag[2]&& failFlag[3]) {
+			for (int i = 0; i < 4; ++i) {
+				ge->score[rank[i]] += (i + 1);
+			}
+			Kill();
 		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D src = ML::Box2D(0, 0, 1255, 1058);
-		ML::Box2D draw = ML::Box2D(0, 0, 1255, 1058);
+		ML::Box2D src = ML::Box2D(0, 0, 1920, 1080);
+		ML::Box2D draw = ML::Box2D(0, 0, 2112, 1188);
 		draw = draw.OffsetCopy(pos);
 		res->backImg->Draw(src, draw);
 	}

@@ -4,6 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_ClassifyGamePlayer.h"
 #include  "../Task_Game.h"
+#include  "../sound.h"
 
 namespace  CGPlayer
 {
@@ -12,21 +13,22 @@ namespace  CGPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		playerImg = DG::Image::Create("./data/image/chara02.png");
 		for (int i = 0; i < 10; ++i) {
-			bookImg = DG::Image::Create("./data/image/debugrect.png");
+			bookImg = DG::Image::Create("./data/image/game_file2.png");
 		}
 		CountImg = DG::Image::Create("./data/image/font_number.png");
-	
+		deskImg= DG::Image::Create("./data/image/game_desk.png");
+		handLImg = DG::Image::Create("./data/image/tsume_hand.png");
+		handRImg = DG::Image::Create("./data/image/tsume_hand_1.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		playerImg.reset();
 		bookImg.reset();
 		CountImg.reset();
+		deskImg.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -45,6 +47,11 @@ namespace  CGPlayer
 		Gb = 0;
 		Bb = 0;
 		Fb = 0;
+
+		//se
+		se::LoadFile("seCGf", "./data/sound/se/ClassifyGame/maou_se_onepoint33.wav");
+		se::LoadFile("seCGc", "./data/sound/se/ClassifyGame/current.wav");
+
 		//★タスクの生成
 
 		return  true;
@@ -91,18 +98,20 @@ namespace  CGPlayer
 				books[workTime].color = 0;				
 				moveCnt = 0;
 				workTime++;
+				se::Play("seBGd");
 			}
 			if (in.LStick.BL.down) {
 				moveCnt = 0;
 				Rb++;
 				books[workTime - 1].bpos += ML::Vec2(-80, -100 - Rb * 5);
+				se::Play("seCGc");
 				SetCGState(CGstate::Playing);
 			}
-			moveCnt++;
 			if (moveCnt == 118 || in.LStick.BU.down || in.LStick.BR.down) {//時間切れ、或は間違いボタンを押した
 				toFailState(workTime);
 				SetCGState(CGstate::Fail);
 			}
+			moveCnt++;
 			break;
 		case CGstate::PlayB:
 			if (FirstIntoState()) {
@@ -114,13 +123,14 @@ namespace  CGPlayer
 				moveCnt = 0;
 				Bb++;
 				books[workTime - 1].bpos += ML::Vec2(0, -100 - Bb * 5);
+				se::Play("seCGc");
 				SetCGState(CGstate::Playing);
 			}
-			moveCnt++;
 			if (moveCnt == 118 || in.LStick.BL.down || in.LStick.BR.down) {//時間切れ、或は間違いボタンを押した
 				toFailState(workTime);
 				SetCGState(CGstate::Fail);
 			}
+			moveCnt++;
 			break;
 		case CGstate::PlayG:
 			if (FirstIntoState()) {
@@ -132,21 +142,21 @@ namespace  CGPlayer
 				moveCnt = 0;
 				Gb++;			
 				books[workTime - 1].bpos += ML::Vec2(80, -100 - Gb * 5);
+				se::Play("seCGc");
 				SetCGState(CGstate::Playing);
 			}
-			moveCnt++;
 			if (moveCnt == 118 ||in.LStick.BL.down || in.LStick.BU.down) {//時間切れ、或は間違いボタンを押した
 				toFailState(workTime);
 				SetCGState(CGstate::Fail);
 			}
+			moveCnt++;
 			break;
 		case CGstate::Fail:	
 			Fb++;
+			se::Play("seCGf");
 			SetCGState(CGstate::Playing);
 			break;
 		}
-		
-		
 	}
 	void  Object::toFailState(int workT) {
 		books[workT - 1].color = 3;
@@ -157,25 +167,35 @@ namespace  CGPlayer
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D src(0, 0, 32, 80);
-		ML::Box2D draw(0, 0, 32, 80);
-		
-		res->playerImg->Draw(draw.OffsetCopy(pos), src);
-		src = ML::Box2D(0, 0, 32, 32);
+		//机
+		ML::Box2D src(0, 0, 1920, 1080);
+		ML::Box2D draw(-450, -300, 960, 540);
+		res->deskImg->Draw(draw.OffsetCopy(pos), src);
+		//手
+		src = ML::Box2D(0, 0, 623, 800);
+		draw = ML::Box2D(-230, 0, 124, 160);
+		res->handLImg->Draw(draw.OffsetCopy(pos), src);
+		src = ML::Box2D(0, 0, 623, 800);
+		draw = ML::Box2D(126, 0, 124, 160);
+		res->handRImg->Draw(draw.OffsetCopy(pos), src);
+		//書類
+		src = ML::Box2D(0, 0, 742, 700);
 		draw = ML::Box2D(0, 0, 32, 32);
 		for (int i = 0; i < 14; ++i) {
 			if (workTime > i) {
-				src.x = books[i].color * 32;
+				src.x = books[i].color * 742;
 				ML::Box2D draw0 = draw.OffsetCopy(books[i].bpos);
 				res->bookImg->Draw(draw0, src);
 			}
 		}
+		//カウンター
 		src = ML::Box2D(0, 35, 20, 25);
 		draw = ML::Box2D(0, 0, 20, 25);
-		res->CountImg->Draw(draw.OffsetCopy(pos+ML::Vec2(-80, -100)), src.OffsetCopy(20 * Rb, 0));
+		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(-80, -100)), src.OffsetCopy(20 * Rb, 0));
 		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -100)), src.OffsetCopy(20 * Bb, 0));
 		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(80, -100)), src.OffsetCopy(20 * Gb, 0));
 		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -200)), src.OffsetCopy(20 * Fb, 0));
+
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

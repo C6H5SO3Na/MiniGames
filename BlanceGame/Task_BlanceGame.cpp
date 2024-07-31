@@ -6,6 +6,7 @@
 #include  "Task_BlanceGamePM.h"
 #include  "Task_BlanceUIManager.h"
 #include  "../Task_Game.h"
+#include  "../sound.h"
 
 namespace  BlanceGame
 {
@@ -34,6 +35,10 @@ namespace  BlanceGame
 		//★データ初期化
 		gameCnt = 0;
 		shake = false;
+		//BGM
+		bgm::LoadFile("bgmBG", "./data/sound/bgm/shichigatsunokomorebi.mp3");
+		bgm::Play("bgmBG");
+	
 		//★タスクの生成
 		auto bgpm = BlanceGamePM::Object::Create(true); //プレイヤマネージャーを生成
 		auto bguim = BlanceGUIM::Object::Create(true);
@@ -44,7 +49,7 @@ namespace  BlanceGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		
+		bgm::Stop("bgmBG");
 		ge->KillAll_G("blanceGamePM");
 		ge->KillAll_G("blanceGameUIManager");
 		ge->KillAll_G("BGPlayer");
@@ -64,7 +69,11 @@ namespace  BlanceGame
 			shake = true;
 		else
 			shake = false;
-		if (gameCnt > 180) {
+		if (gameCnt > 1319) {
+			this->Kill();
+		}
+		auto ui = ge->GetTask<BlanceGUIM::Object>("blanceGameUIManager");
+		if (ui == nullptr) {
 			this->Kill();
 		}
 	}

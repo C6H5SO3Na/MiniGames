@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-
+#include  "../sound.h"
 
 namespace  ClassifyGamePM
 {
@@ -40,12 +40,14 @@ namespace  ClassifyGamePM
 		cList.push_back(ge->in2);
 		cList.push_back(ge->in3);
 		cList.push_back(ge->in4);
+		//se
+		se::LoadFile("seCGd", "./data/sound/se/ClassifyGame/doit.wav");
 		//★タスクの生成
 
 		for (int i = 0; i < 4; ++i) {
 			auto p = CGPlayer::Object::Create(true);
 			pList.push_back(p);
-			pList[i]->posInitialize(ML::Vec2(450 + 960 * (i % 2), 400 + 540 * (i / 2)));
+			pList[i]->posInitialize(ML::Vec2(450 + 960 * (i % 2), 300 + 540 * (i / 2)));
 			pList[i]->controller = cList[i];
 		}
 		return  true;
@@ -79,9 +81,12 @@ namespace  ClassifyGamePM
 					ge->score[i] += 4;
 					break;
 				case 2:
-					ge->score[i] += 2;
+					ge->score[i] += 3;
 					break;
 				case 3:
+					ge->score[i] += 2;
+					break;
+				case 4:
 					ge->score[i] += 1;
 					break;
 				default:
@@ -90,6 +95,7 @@ namespace  ClassifyGamePM
 			}
 		}
 		else if (gameCnt % 120 == 0) {
+			se::Play("seCGd");
 			int r = rand() % 3;
 			switch (r)
 			{
@@ -140,7 +146,7 @@ namespace  ClassifyGamePM
 		int rank = 1;
 		for (int i = 0; i < n; ++i) {
 			if (i > 0 && numIndices[i].num == numIndices[i - 1].num) {
-				ranks[numIndices[i].index] = ranks[numIndices[i - 1].index]; // 如果相同，则名次相同
+				ranks[numIndices[i].index] = ranks[numIndices[i - 1].index]; //
 			}
 			else {
 				ranks[numIndices[i].index] = rank;
