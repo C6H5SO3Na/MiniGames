@@ -25,8 +25,8 @@ namespace  Title
 		//ã§óLÇ∑ÇÈïœêîÇÕÇ±Ç±Ç…í«â¡Ç∑ÇÈ
 		DG::Image::SP	img;
 		DG::Image::SP	TitleLogo01;
-		DG::Image::SP	TitleLogo02;
-		DG::Image::SP	TitleLogo03;
+		//DG::Image::SP	TitleLogo02;
+		//DG::Image::SP	TitleLogo03;
 		DG::Image::SP	StartLogo;
 	};
 	//-------------------------------------------------------------------
@@ -62,5 +62,9 @@ namespace  Title
 		long tVol = 100;
 
 		DG::Font::SP TestFont;
+
+		int Cnt;
+
+		float logoY;
 	};
 }

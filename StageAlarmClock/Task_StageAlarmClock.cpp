@@ -7,6 +7,7 @@
 #include  "Task_hand.h"
 #include  "Task_CommonItemManager01.h"
 #include  "../Task_Game.h"
+#include "../sound.h"
 
 
 namespace  StageAlarmClock
@@ -36,6 +37,10 @@ namespace  StageAlarmClock
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
 
+		//BGM
+		bgm::LoadFile("stage1_bgm", "./data/sound/bgm/stage1_yutarisanbo2.mp3");
+		bgm::Play("stage1_bgm");
+
 		//★データ初期化
 		this->render2D_Priority[1] = 0.9f;
 		this->state = Phase::Game;
@@ -59,6 +64,7 @@ namespace  StageAlarmClock
 		ge->KillAll_G("手");
 		ge->KillAll_G("共通アイテムマネージャー01");
 
+		bgm::Stop("stage1_bgm");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 			Game::Object::CreateTask(1);
@@ -112,6 +118,7 @@ namespace  StageAlarmClock
 		auto players = ge->GetTasks <hand::Object> ("手");
 		for_each(players->begin(), players->end(), [&](auto iter) {
 				if (iter->IsClear()) {
+
 					++clearNum;
 				}
 			});

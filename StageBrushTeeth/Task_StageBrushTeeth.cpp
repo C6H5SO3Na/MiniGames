@@ -32,13 +32,8 @@ namespace  StageBrushTeeth
 	bool  Object::Initialize()
 	{
 		//BGM
-		//bgm::LoadFile("bgm1", "./data/sound/bgm/ryuukihei.mp3");
-		//bgm::Play("bgm1");
-
-		//SE
-		//se::LoadFile("se1", "./data/sound/se/歓声と拍手.wav");
-		//se::LoadFile("se2", "./data/sound/se/試合開始のゴング.wav");
-		//se::LoadFile("se3", "./data/sound/se/試合終了のゴング.wav");
+		bgm::LoadFile("stage2_bgm", "./data/sound/bgm/Stage2_Short60_yuttariDIY_02.mp3");
+		bgm::Play("stage2_bgm");
 
 
 		//スーパークラス初期化
@@ -68,8 +63,7 @@ namespace  StageBrushTeeth
 		ge->KillAll_G("よごれ");
 		ge->KillAll_G("共通アイテムマネージャー02");
 
-		/*bgm::Stop("bgm1");*/
-
+		bgm::Stop("stage2_bgm");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 			Game::Object::CreateTask(2);
