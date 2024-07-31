@@ -75,8 +75,7 @@ namespace  TaxiGame
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			bgm::AllStop();
 			//★引き継ぎタスクの生成
-			auto g = ge->GetTask<Game::Object>("本編");
-			g->CreateTask(7);
+			//最後のゲームから生成しない
 		}
 
 		return  true;
@@ -93,6 +92,11 @@ namespace  TaxiGame
 		case Phase::Clear:
 			Clear();
 			break;
+		}
+		gameCnt++;//ゲーム時間のカウンター（フレーム）
+		if (gameCnt == 1800) {
+			ge->StartCounter("Clear", 180);
+			phase = Phase::Clear;
 		}
 	}
 	//-------------------------------------------------------------------
