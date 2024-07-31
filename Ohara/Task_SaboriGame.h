@@ -24,7 +24,9 @@ namespace  SaboriGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
-		DG::Image::SP	img;
+		DG::Image::SP readyImage;
+		DG::Image::SP fightImage;
+		DG::Image::SP finishImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -59,7 +61,7 @@ namespace  SaboriGame
 		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };			//取得するコントローラー
 		PlayerNum playersNum[4] = { PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }; //プレイヤーの識別番号設定用
 
-		int   gameStateChangeCount;	//GameStateを変更するまでのカウント
+		bool  gameStart;			//ゲーム開始時true	
 		float timeLimit;			//制限時間
 		bool  isInGame;				//ミニゲーム中か判断する。ミニゲーム中trueにする
 		int   countToNextTask;		//次のタスクにするまでのカウント
@@ -89,11 +91,23 @@ namespace  SaboriGame
 			float	  totalSaboriTime;	//合計さぼり時間
 			int		  rank;				//順位
 		};
+
+		//☆変数
 		PlayerInformation playersInfo[4];
+
+		ML::Vec2 readyImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
+		ML::Vec2 fightImagePos = ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f);
+		ML::Vec2 finishImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
+
+		int gameFps = 60;
+		int countToFightDraw;			//「Fight」の文字を描画するまでのカウント
+		int countToChangeGameState;		//GameStateを変更するまでのカウント
 
 		//☆メソッド
 		void Ranking();		//順位決めの処理
 		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのtotalSaboriTimeで比較し、playerInfoAの方が大きい時trueを返す
 		void SendScore();	//ge->scoreに得点を送る
+
+		void Render();		//状態毎の描画
 	};
 }
