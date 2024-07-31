@@ -360,7 +360,7 @@ namespace  ResultUIManager
 			{
 				if (drawUpToCount >= static_cast<int>(4.f * gameFps))
 				{
-					//「?ボタンを押して次へ」と描画
+					//「Aボタンを押して次へ」と描画
 
 					//描画が終わったことを伝える
 					if (this->isChangedFalse_hasEndedDrawing == false) //状態がResultAnnouncementの時、1回だけhasEndedDrawingがtrueになるようにする
@@ -373,7 +373,7 @@ namespace  ResultUIManager
 			{
 				if (drawUpToCount >= static_cast<int>(7.f * gameFps))
 				{
-					//「?ボタンを押して次へ」と描画
+					//「Aボタンを押して次へ」と描画
 
 					//描画が終わったことを伝える
 					if (this->isChangedFalse_hasEndedDrawing == false) //状態がResultAnnouncementの時、1回だけhasEndedDrawingがtrueになるようにする
@@ -386,7 +386,8 @@ namespace  ResultUIManager
 
 		case Result::Object::ResultState::End:
 			//「遊んでくれてありがとう」と描画
-			//「?ボタンを押してタイトルへ」と描画
+			
+			//「Aボタンを押してタイトルへ」と描画
 			
 			//描画が終わったことを伝える
 			if (this->isChangedFalse_hasEndedDrawing == false) //状態がResultAnnouncementの時、1回だけhasEndedDrawingがtrueになるようにする
@@ -401,6 +402,7 @@ namespace  ResultUIManager
 	void Object::DataChangesWhenUpdatingState()
 	{
 		this->isChangedFalse_hasEndedDrawing = false;
+		this->drawUpToCount = 0;
 	}
 	//-------------------------------------------------------------------
 	//結果発表時の表示パターンを決める

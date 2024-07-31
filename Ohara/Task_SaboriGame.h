@@ -50,12 +50,12 @@ namespace  SaboriGame
 		//追加したい変数・メソッドはここに追加する
 		//☆変数
 		ML::Vec2 playerFirstPos[4] = {	//プレイヤーの初期位置
-			{ ge->screen2DWidth / 4.f, ge->screen2DHeight / 2.f }, 
-			{ ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight / 2.f },
-			{ ge->screen2DWidth / 4.f, ge->screen2DHeight * 3.f / 4.f },
-			{ ge->screen2DWidth * 3.f / 4.f, ge->screen2DHeight * 3.f / 4.f }
+			{ ge->screen2DWidth / 8.f, ge->screen2DHeight - 230.f }, 
+			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 230.f }
 		};
-		ML::Vec2 joushiFirstPos = { ge->screen2DWidth / 2.f, ge->screen2DHeight / 4.f };	//上司の初期位置
+		ML::Vec2 joushiFirstPos = { ge->screen2DWidth / 2.f, ge->screen2DHeight / 3.f };	//上司の初期位置
 		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };			//取得するコントローラー
 		PlayerNum playersNum[4] = { PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }; //プレイヤーの識別番号設定用
 

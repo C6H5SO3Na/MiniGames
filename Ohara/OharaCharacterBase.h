@@ -13,7 +13,8 @@ public:
 		:
 		state(State::Default),
 		playerNum(PlayerNum::Player1),
-		gameFps(60)
+		gameFps(60),
+		animationCount(0)
 	{}
 
 	//デストラクタ
@@ -28,7 +29,8 @@ protected:
 	};
 
 	//☆変数
-	int gameFps;	//ゲームプレイする上で想定しているFPS値を設定
+	int gameFps;		//ゲームプレイする上で想定しているFPS値を設定
+	int animationCount;	//画像をアニメーションにするためのカウント
 	
 public:
 	//☆クラス・構造体

@@ -13,12 +13,14 @@ namespace  SaboriUIManager
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->playerNumberImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -60,30 +62,46 @@ namespace  SaboriUIManager
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		//☆制限時間の描画
+		//サボりゲームの統括の情報を取得
+		auto game = ge->GetTask<SaboriGame::Object>(SaboriGame::defGroupName, SaboriGame::defName);
+		//描画
+		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2 - 150, 0, ge->screen2DWidth, ge->screen2DHeight),
+			to_string(game->timeLimit), ML::Color(1, 0, 0, 0)
+		);
+
 		//☆サボり合計時間の描画
 		//プレイヤー全てを抽出する
 		auto players = ge->GetTasks<SaboriPlayer::Object>("プレイヤー");
 		//プレイヤーの数だけループを回す
 		int loopCount = 0; //ループした回数のカウント
-		for(auto p = players->begin(); p != players->end(); ++p)
+		for (auto p = players->begin(); p != players->end(); ++p)
 		{
 			//描画
 			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 65, ge->screen2DWidth, ge->screen2DHeight),
-				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->totalSaboriTime)
+				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->totalSaboriTime), ML::Color(1, 0, 0, 0)
 			);
 			//ループ回数のカウント
 			++loopCount;
 		}
 
-		//☆制限時間の描画
-		//サボりゲームの統括の情報を取得
-		auto game = ge->GetTask<SaboriGame::Object>(SaboriGame::defGroupName, SaboriGame::defName);
-		//描画
-		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2, 0, ge->screen2DWidth, ge->screen2DHeight),
-			to_string(game->timeLimit)
-		);
+		//☆プレイヤー番号の描画
+		this->DrawPlayerNumber();
 	}
 	//-------------------------------------------------------------------
+	//プレイヤー番号の描画
+	void Object::DrawPlayerNumber()
+	{
+		for (int i = 0; i < sizeof(this->playerNumbersDrawInfo) / sizeof(this->playerNumbersDrawInfo[0]); ++i)
+		{
+			ML::Box2D playerNumberDraw = this->playerNumbersDrawInfo[i].draw;
+			playerNumberDraw.Offset(this->playerNumbersDrawInfo[i].pos);
+			ML::Box2D playerNumberSrc = this->playerNumbersDrawInfo[i].src;
+
+			//描画
+			this->res->playerNumberImage->Draw(playerNumberDraw, playerNumberSrc);
+		}
+	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

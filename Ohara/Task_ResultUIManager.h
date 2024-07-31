@@ -62,17 +62,17 @@ namespace  ResultUIManager
 		};
 
 		ML::Vec2 playerNumberPosition[4] = {			//プレイヤー番号の表示位置
-			ML::Vec2(ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f - 100),			//一番左の位置
-			ML::Vec2(ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f - 100),	//左から二番目の位置
-			ML::Vec2(ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f - 100),	//左から三番の位置
-			ML::Vec2(ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f - 100)		//一番右の位置
+			ML::Vec2(ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f - 200),			//一番左の位置
+			ML::Vec2(ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f - 200),	//左から二番目の位置
+			ML::Vec2(ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f - 200),	//左から三番の位置
+			ML::Vec2(ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f - 200)		//一番右の位置
 		};
 
 		ML::Vec2 rankSentencePosition[4] = {			//会社の階級の表示位置
-			ML::Vec2(ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f + 100),			//一番左の位置
-			ML::Vec2(ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f + 100),	//左から二番目の位置
-			ML::Vec2(ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f + 100),	//左から三番の位置
-			ML::Vec2(ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f + 100)		//一番右の位置
+			ML::Vec2(ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f + 200),			//一番左の位置
+			ML::Vec2(ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f + 200),	//左から二番目の位置
+			ML::Vec2(ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f + 200),	//左から三番の位置
+			ML::Vec2(ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f + 200)		//一番右の位置
 		};
 
 		ML::Vec2 scoreDrawPosition[4] = {				//スコアの描画位置
