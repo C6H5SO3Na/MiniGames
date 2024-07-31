@@ -48,7 +48,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		CreateTask();
+		CreateTask(1);
     
 		return  true;
 	}
