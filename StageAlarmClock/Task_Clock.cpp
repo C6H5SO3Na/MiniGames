@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_Clock.h"
+#include  "Task_hand.h"
 
 namespace  Clock
 {
@@ -36,6 +37,8 @@ namespace  Clock
 		this->drawBase = ML::Box2D(-75, -75, 150, 150);
 		this->pos.x = 0;
 		this->pos.y = 0;
+		this->animCnt = 0;
+		this->animLine = 0;
 		//★タスクの生成
 
 		return  true;
@@ -57,13 +60,50 @@ namespace  Clock
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 5)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 5)
+			{
+				this->animIndex = 0;
+			}
+		}
+
+		/*auto players = ge->GetTasks <hand::Object>("手");
+		for_each(players->begin(), players->end(), [&](auto iter) {
+			if (iter->IsClear()) {
+				animLine = 1;
+			}
+			})*/;
+
+		/*auto pl = ge->GetTask<hand::Object>("手");
+		if (pl->isClear)
+		{
+			animLine = 1;
+		}*/
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw = this->drawBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 764, 764);
+
+		int animTable[2][5] =
+		{
+			{ 0, 1, 2, 3, 4},	//ringing 0
+			{ 0, 0, 0, 0, 0},	//stop 1
+		};
+
+		int animNum = animTable[animLine][animIndex];
+
+		int srcX = animNum % 5 * 764;
+		int srcY = animNum / 5 * 764;
+
+
+		ML::Box2D src(srcX, srcY, 764, 764);
 		this->res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------

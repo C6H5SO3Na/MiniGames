@@ -6,6 +6,7 @@
 #include  "Task_ClassifyGamePM.h"
 
 #include  "../Task_Game.h"
+#include  "../sound.h"
 //#include  "Task_ClassifyGUIManager.h"
 
 namespace  ClassifyGame
@@ -34,6 +35,10 @@ namespace  ClassifyGame
 
 		//★データ初期化
 		gameCnt = 0;
+
+		//BGM
+		bgm::LoadFile("bgmCG", "./data/sound/bgm/tanoshiimugibatake.mp3");
+		bgm::Play("bgmCG");
 		//★タスクの生成
 		auto cgpm = ClassifyGamePM::Object::Create(true); //プレイヤマネージャーを生成
 		//auto bguim = ClassifyGUIM::Object::Create(true);
@@ -43,6 +48,7 @@ namespace  ClassifyGame
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
 	{
+		bgm::Stop("bgmCG");
 		//★データ＆タスク解放
 		ge->KillAll_G("ClassifyGamePM");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
@@ -58,7 +64,7 @@ namespace  ClassifyGame
 	void  Object::UpDate()
 	{
 		gameCnt++;
-		if (gameCnt == 120) {
+		if (gameCnt == 1319) {
 			Kill();
 		}
 	}

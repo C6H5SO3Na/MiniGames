@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
 #include  "Task_BlanceGamePlayer.h"
+#include  "../sound.h"
 
 namespace  BGPlayer
 {
@@ -33,6 +34,7 @@ namespace  BGPlayer
 		//★データ初期化
 		direction = 0;
 		SetBGState(BGstate::BStart);
+	
 		//★タスクの生成
 
 		return  true;
@@ -84,7 +86,7 @@ namespace  BGPlayer
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D src(0, 0, 446, 542);
-		ML::Box2D draw(0, 0, 180, 216);
+		ML::Box2D draw(-100, 0, 360, 432);
 		switch (GetBGState())
 		{
 		case BGstate::Playing:
@@ -99,7 +101,7 @@ namespace  BGPlayer
 			
 			break;
 		}
-		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(90, 216));
+		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(180, 432));
 		res->playerImg->Draw(draw.OffsetCopy(pos), src);
 	}
 

@@ -5,6 +5,7 @@
 #include  "Task_hand.h"
 #include  "Task_Clock.h"
 #include  "Task_CommonItemManager01.h"
+#include "../sound.h"
 
 namespace  hand
 {
@@ -32,13 +33,18 @@ namespace  hand
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
 
+		//SE
+		se::LoadFile("Stop", "./data/sound/se/AlarmClockGame/Clock-Alarm05-5(Toggle).wav");
+		se::LoadFile("Ring", "./data/sound/se/AlarmClockGame/Clock-Alarm05-7(Far-Low).wav");
+		se::SetVolume("Stop", 100);
+
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
 		this->hitBase = ML::Box2D(-70, -25, 140, 70);
 		this->drawBase = ML::Box2D(-84, -53, 168, 106);
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->speed = 40.0f;
+		this->speed = 30.0f;
 		this->controller = ge->in1;
 		this->state = State::Right;
 		isright = true;
@@ -53,6 +59,7 @@ namespace  hand
 	{
 		//★データ＆タスク解放
 
+		se::Stop("Ring");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -64,6 +71,7 @@ namespace  hand
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		se::PlayLoop("Ring");
 		this->pos += this->moveVec;
 
 		switch (this->state)
@@ -127,8 +135,11 @@ namespace  hand
 			//ge->debugRect(you, 5);
 			if (you.Hit(me))
 			{
+				se::Stop("Ring");
+				se::Play("Stop");
 				this->speed = 0;
 				this->moveVec = ML::Vec2(0, 0);
+				(*it)->animLine = 1;
 				if (!this->isClear)
 				{
 					this->isClear = true;

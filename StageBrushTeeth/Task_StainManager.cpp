@@ -5,6 +5,7 @@
 #include  "Task_StainManager.h"
 #include  "Task_stain.h"
 #include  "../randomLib.h"
+#include  "Task_CommonItemManager02.h"
 
 namespace  StainManager
 {
@@ -94,8 +95,20 @@ namespace  StainManager
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto stain = ge->GetTask<stain::Object>(stain::defGroupName, stain::defName);
-		if (stain == nullptr) { isClear = true; }
+		auto stains = ge->GetTasks<stain::Object>("よごれ");
+		auto com = ge->GetTask<CommonItemManager02::Object>("共通アイテムマネージャー02");
+		int KillNum = 0;
+		for (auto s = stains->begin(); s != stains->end(); s++)
+		{
+			if ((*s) == nullptr) { KillNum++; }
+			if (KillNum == 5) //チェッククリア
+			{ 
+				isClear = true;
+				ge->score[this->id] += com->addscore[com->rank]; //addscore
+				com->rank++;
+			}
+		}
+		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
