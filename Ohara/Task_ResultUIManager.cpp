@@ -400,7 +400,7 @@ namespace  ResultUIManager
 				{
 					//™Aƒ{ƒ^ƒ“‚ð•`‰æ
 					//•`‰æî•ñÝ’è
-					int animationNum = this->animationCount / 10;
+					int animationNum = this->animationCount / 15;
 					animationNum %= 2;
 					draw = ML::Box2D(this->drawValues[1][0], this->drawValues[1][1], this->drawValues[1][2], this->drawValues[1][3]);
 					src = ML::Box2D(this->srcValues[1][0], this->srcValues[1][1], this->srcValues[1][2], this->srcValues[1][3]);
@@ -427,7 +427,7 @@ namespace  ResultUIManager
 				{
 					//™Aƒ{ƒ^ƒ“•`‰æ
 					//•`‰æî•ñÝ’è
-					int animationNum = this->animationCount / 10;
+					int animationNum = this->animationCount / 15;
 					animationNum %= 2;
 					draw = ML::Box2D(this->drawValues[1][0], this->drawValues[1][1], this->drawValues[1][2], this->drawValues[1][3]);
 					src = ML::Box2D(this->srcValues[1][0], this->srcValues[1][1], this->srcValues[1][2], this->srcValues[1][3]);
@@ -461,7 +461,7 @@ namespace  ResultUIManager
 			//™uAƒ{ƒ^ƒ“‚Åƒ^ƒCƒgƒ‹‚Öv‚Æ•`‰æ
 			//Aƒ{ƒ^ƒ“•`‰æ
 			//•`‰æî•ñÝ’è
-			int animationNum = this->animationCount / 10;
+			int animationNum = this->animationCount / 15;
 			animationNum %= 2;
 			draw = ML::Box2D(this->drawValues[3][0], this->drawValues[3][1], this->drawValues[3][2], this->drawValues[3][3]);
 			src = ML::Box2D(this->srcValues[1][0], this->srcValues[1][1], this->srcValues[1][2], this->srcValues[1][3]);

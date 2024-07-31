@@ -105,7 +105,7 @@ namespace  Result
 				{
 					if (input[i].B1.down) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //Œ‹‰Ê”­•\‚Ö
 				}
-				if (this->countUpToStateChange >= (int)(3.0f * gameFps)) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //Œ‹‰Ê”­•\‚Ö
+				if (this->countUpToStateChange >= (int)(0.5f * gameFps)) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //Œ‹‰Ê”­•\‚Ö
 			}
 			break;
 
