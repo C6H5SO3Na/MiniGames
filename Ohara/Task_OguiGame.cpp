@@ -11,6 +11,7 @@
 #include  "../Task_Game.h"
 #include  "../randomLib.h"
 #include  "../easing.h"
+#include  "../sound.h"
 
 namespace  OguiGame
 {
@@ -73,6 +74,10 @@ namespace  OguiGame
 		easing::Set("FinishStart", easing::CIRCOUT, ge->screen2DWidth + 438.f * 2.f, ge->screen2DWidth / 2.f, this->gameFps, "FinishEnd");
 		easing::Set("FinishEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -438.f * 2.f, this->gameFps);
 
+		//☆BGM
+		bgm::LoadFile("OguiGameBGM", "./data/sound/bgm/大食い_harunopayapaya.mp3");
+		bgm::VolumeControl("OguiGameBGM", 90);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -87,6 +92,7 @@ namespace  OguiGame
 		ge->KillAll_G("大食いミニゲーム");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
+			bgm::Stop("OguiGameBGM");
 			//★引き継ぎタスクの生成			
 			Game::Object::CreateTask(6);
 		}
@@ -179,10 +185,14 @@ namespace  OguiGame
 			break;
 
 		case GameState::Game:				//ゲーム中
-			//☆ゲームを開始する
+			//☆ゲーム本編が始まった瞬間に行う処理
 			if (this->isInGame == false)
 			{
+				//ゲームを開始する
 				this->isInGame = true;
+
+				//BGMスタート
+				bgm::Play("OguiGameBGM");
 			}
 
 			//☆制限時間を減らす

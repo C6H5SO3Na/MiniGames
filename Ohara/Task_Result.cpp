@@ -7,6 +7,7 @@
 #include  "Task_ResultBG.h"
 
 #include  "../Task_Title.h"
+#include  "../sound.h"
 
 namespace  Result
 {
@@ -44,6 +45,11 @@ namespace  Result
 		//背景
 		ResultBG::Object::Create(true);
 
+		//☆BGM
+		bgm::LoadFile("ResultBGM", "./data/sound/bgm/エンディング_tanoshiibouken.mp3");
+		bgm::VolumeControl("ResultBGM", 100);
+		bgm::Play("ResultBGM");
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -55,6 +61,9 @@ namespace  Result
 		ge->KillAll_G("管理");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
+			//☆BGMの終了
+			bgm::Stop("ResultBGM");
+
 			//★引き継ぎタスクの生成
 			auto next = Title::Object::Create(true);
 		}

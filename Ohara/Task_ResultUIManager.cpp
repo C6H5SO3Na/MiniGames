@@ -49,8 +49,8 @@ namespace  ResultUIManager
 		//☆イージング
 		//文字画像移動用
 		//「結果発表」移動用
-		easing::Set("StartMovePrefaceImage", easing::CIRCOUT, static_cast<float>(ge->screen2DWidth + srcValues[0][2]), ge->screen2DWidth / 2.f, this->gameFps, "EndMovePrefaceImage");
-		easing::Set("EndMovePrefaceImage", easing::CIRCIN, ge->screen2DWidth / 2.f, static_cast<float>(-srcValues[0][2]), this->gameFps);
+		easing::Set("StartMovePrefaceImage", easing::CIRCOUT, static_cast<float>(ge->screen2DWidth + srcValues[0][2] * 2), ge->screen2DWidth / 2.f, this->gameFps, "EndMovePrefaceImage");
+		easing::Set("EndMovePrefaceImage", easing::CIRCIN, ge->screen2DWidth / 2.f, static_cast<float>(-srcValues[0][2] * 2), this->gameFps);
 
 		return  true;
 	}

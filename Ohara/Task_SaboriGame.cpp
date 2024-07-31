@@ -11,6 +11,7 @@
 #include  "../Task_Game.h"
 #include  "../randomLib.h"
 #include  "../easing.h"
+#include  "../sound.h"
 
 namespace  SaboriGame
 {
@@ -74,6 +75,10 @@ namespace  SaboriGame
 		easing::Set("FinishStart", easing::CIRCOUT, ge->screen2DWidth + 438.f * 2.f, ge->screen2DWidth / 2.f, this->gameFps, "FinishEnd");
 		easing::Set("FinishEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -438.f * 2.f, this->gameFps);
 
+		//☆BGM
+		bgm::LoadFile("SaboriGameBGM", "./data/sound/bgm/サボる_Short60_ゆったりDIY_01.mp3");
+		bgm::VolumeControl("SaboriGameBGM", 90);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -88,6 +93,9 @@ namespace  SaboriGame
 		ge->KillAll_G("サボりミニゲーム");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
+			//BGM終了
+			bgm::Stop("SaboriGameBGM");
+
 			//★引き継ぎタスクの生成
 			Game::Object::CreateTask(5);
 		}
@@ -181,10 +189,14 @@ namespace  SaboriGame
 			break;
 
 		case GameState::Game:				//ゲーム中
-			//☆ゲームを開始する
+			//☆ゲーム本編が始まった瞬間に行う処理
 			if (this->isInGame == false)
 			{
+				//☆ゲームを開始する
 				this->isInGame = true;
+
+				//☆BGMスタート
+				bgm::Play("SaboriGameBGM");
 			}
 
 			//☆制限時間を減らす
