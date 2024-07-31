@@ -35,7 +35,10 @@ namespace  stain
 		this->render2D_Priority[1] = -0.5f;
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->hitBase = ML::Box2D(-16, -16, 32, 32);
+		this->hitBase = ML::Box2D(-20, -20, 40, 40);
+		this->timeCnt = 0;
+		this->animCnt = 0;
+		this->animIndex = 0;
 		//★タスクの生成
 
 		return  true;
@@ -57,14 +60,25 @@ namespace  stain
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-
+		this->timeCnt++;
+		this->animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 5)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 3)
+			{
+				this->animIndex = 0;
+			}
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
-		ML::Box2D src(0, 0, 256, 256);
+		ML::Box2D src(animIndex * 256, 0, 256, 256);
 
 		this->res->img->Draw(draw, src);
 	}

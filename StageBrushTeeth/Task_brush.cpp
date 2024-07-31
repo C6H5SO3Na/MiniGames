@@ -33,7 +33,8 @@ namespace  brush
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
-		this->hitBase = ML::Box2D(-158, -35, 316, 70);
+		this->hitBase = ML::Box2D(70, -25, 80, 50);
+		this->drawBase = ML::Box2D(-158, -35, 316, 70);
 		this->pos.x = 0;
 		this->pos.y = 0;
 		this->speed = 6.0f;
@@ -92,6 +93,7 @@ namespace  brush
 
 
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
+		//ge->debugRect(me, 5);
 		auto stains = ge->GetTasks<stain::Object>("よごれ");
 		for (auto s = stains->begin(); s != stains->end(); s++)
 		{
@@ -113,7 +115,7 @@ namespace  brush
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw = this->hitBase.OffsetCopy(this->pos);
+		ML::Box2D draw = this->drawBase.OffsetCopy(this->pos);
 		ML::Box2D src(0, 0, 945, 210);
 		this->res->img->Draw(draw, src);
 	}
@@ -121,12 +123,12 @@ namespace  brush
 	void Object::Positionalise(int PlayerNum)
 	{
 		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		pos.x = PlayerArea.x + (hitBase.w/2);
-		pos.y = PlayerArea.y + (hitBase.h/2);
-		minPosX = PlayerArea.x + (hitBase.w / 2);
-		minPosY = PlayerArea.y + (hitBase.h / 2);
-		maxPosX = PlayerArea.x + PlayerArea.w - (hitBase.w / 2);
-		maxPosY = PlayerArea.y + PlayerArea.h - (hitBase.h / 2);
+		pos.x = PlayerArea.x + (drawBase.w/2);
+		pos.y = PlayerArea.y + (drawBase.h/2);
+		minPosX = PlayerArea.x + (drawBase.w / 2) - 100;
+		minPosY = PlayerArea.y + (drawBase.h / 2);
+		maxPosX = PlayerArea.x + PlayerArea.w - (drawBase.w / 2) - 25;
+		maxPosY = PlayerArea.y + PlayerArea.h - (drawBase.h / 2);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

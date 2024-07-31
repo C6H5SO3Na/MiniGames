@@ -55,6 +55,14 @@ namespace  StainManager
 
 		void CreateStain();
 		void Positionalise(int PlayerNum);
-		bool IsClear() const { return isClear; }
+		bool IsClear() const {
+			if (isClear)
+			{
+				return true;
+			}
+			else return false;
+		}
+
+		int id;
 	};
 }

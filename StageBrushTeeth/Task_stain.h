@@ -48,5 +48,9 @@ namespace  stain
 	public:
 		//追加したい変数・メソッドはここに追加する
 		void Recieved() {};
+
+		int timeCnt;
+		int animCnt;
+		int animIndex;
 	};
 }

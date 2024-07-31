@@ -38,7 +38,7 @@ namespace  hand
 		this->drawBase = ML::Box2D(-84, -53, 168, 106);
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->speed = 40.0f;
+		this->speed = 30.0f;
 		this->controller = ge->in1;
 		this->state = State::Right;
 		isright = true;
@@ -129,6 +129,7 @@ namespace  hand
 			{
 				this->speed = 0;
 				this->moveVec = ML::Vec2(0, 0);
+				(*it)->animLine = 1;
 				if (!this->isClear)
 				{
 					this->isClear = true;
