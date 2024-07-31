@@ -48,12 +48,14 @@ namespace  StageBrushTeeth
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
 		enum class Phase {
-			None, Game, Clear,
+			Game, Clear, Max
 		};
 
-		Phase phase = Phase::None;
+		Phase state;
 
-		void Game();
 		void Clear();
+		void CheckClear();
+
+		int timeCnt;
 	};
 }

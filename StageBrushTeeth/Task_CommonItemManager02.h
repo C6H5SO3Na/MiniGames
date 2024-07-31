@@ -54,5 +54,8 @@ namespace  CommonItemManager02
 		vector<StainManager::Object::SP> CreateStatinList;
 		vector<brush::Object::SP> PLBrushList;
 		vector<XI::GamePad::SP> CTList;
+
+		int addscore[4] = { 4, 3, 2, 1 };
+		int rank;
 	};
 }

@@ -44,6 +44,8 @@ namespace  CommonItemManager02
 
 			auto s = StainManager::Object::Create(true);
 			CreateStatinList.push_back(s);
+			CreateStatinList[i]->id = i;
+
 
 			b->Positionalise(i);
 			s->Positionalise(i);

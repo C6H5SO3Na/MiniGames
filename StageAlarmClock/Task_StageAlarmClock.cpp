@@ -38,7 +38,8 @@ namespace  StageAlarmClock
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.9f;
-		this->phase = Phase::Game;
+		this->state = Phase::Game;
+		this->timeCnt = 0;
 
 		//★タスクの生成
 		/*auto alarmclock = Clock::Object::Create(true);
@@ -69,9 +70,14 @@ namespace  StageAlarmClock
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (this->phase) {
+		timeCnt++;
+		switch (this->state) {
 		case Phase::Game:
 			CheckClear();
+			if (timeCnt >= 20 * 60)
+			{
+				this->state = Phase::Clear;
+			}
 			break;
 
 		case Phase::Clear:
@@ -111,7 +117,7 @@ namespace  StageAlarmClock
 			});
 		if (clearNum >= 4) {
 			//ge->StartCounter("Clear", 180);
-			phase = Phase::Clear;
+			state = Phase::Clear;
 		}
 	}
 	//-------------------------------------------------------------------

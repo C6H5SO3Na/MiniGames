@@ -7,6 +7,7 @@
 #include  "Task_StainManager.h"
 #include  "Task_CommonItemManager02.h"
 #include  "../Task_Game.h"
+#include  "../sound.h"
 
 namespace  StageBrushTeeth
 {
@@ -17,6 +18,7 @@ namespace  StageBrushTeeth
 	{
 		this->bgImg = DG::Image::Create("./data/image/mirror.png");
 		this->teethImg = DG::Image::Create("./data/image/mouth.png");
+		ge->debugRectLoad();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -29,6 +31,16 @@ namespace  StageBrushTeeth
 	//「初期化」タスク生成時に１回だけ行う処理
 	bool  Object::Initialize()
 	{
+		//BGM
+		//bgm::LoadFile("bgm1", "./data/sound/bgm/ryuukihei.mp3");
+		//bgm::Play("bgm1");
+
+		//SE
+		//se::LoadFile("se1", "./data/sound/se/歓声と拍手.wav");
+		//se::LoadFile("se2", "./data/sound/se/試合開始のゴング.wav");
+		//se::LoadFile("se3", "./data/sound/se/試合終了のゴング.wav");
+
+
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
@@ -36,7 +48,8 @@ namespace  StageBrushTeeth
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.9f;
-		this->phase = Phase::Game;
+		this->state = Phase::Game;
+		this->timeCnt = 0;
 
 		//★タスクの生成
 		/*auto brush = brush::Object::Create(true);*/
@@ -55,6 +68,8 @@ namespace  StageBrushTeeth
 		ge->KillAll_G("よごれ");
 		ge->KillAll_G("共通アイテムマネージャー02");
 
+		/*bgm::Stop("bgm1");*/
+
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 			Game::Object::CreateTask(2);
@@ -66,9 +81,15 @@ namespace  StageBrushTeeth
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (this->phase) {
+		timeCnt++;
+		switch (this->state) {
 		case Phase::Game:
-			Game();
+			CheckClear();
+			if (timeCnt >= 20 * 60)
+			{
+				this->state = Phase::Clear;
+			}
+
 			break;
 
 		case Phase::Clear:
@@ -106,24 +127,30 @@ namespace  StageBrushTeeth
 
 		ML::Box2D draw5(1920 / 2 + 1920 / 10, 1080/2 + 10, 1280/2, 1080/2 - 10 * 2);
 		this->res->teethImg->Draw(draw5, src2);
+		ge->debugRectDraw();
+
 	}
 	//-------------------------------------------------------------------
 	//ゲーム本編の処理
-	void  Object::Game()
+	void  Object::CheckClear()
 	{
-		auto stainManager = ge->GetTask<StainManager::Object>(StainManager::defGroupName, StainManager::defName);
-		if (stainManager->IsClear()) {
-			ge->StartCounter("Clear", 180);
-			phase = Phase::Clear;
+		auto stainManager = ge->GetTasks<StainManager::Object>("よごれマネージャー");
+		for (auto it = stainManager->begin(); it != stainManager->end(); it++)
+		{
+			if ((*it)->IsClear()) {
+				state = Phase::Clear;
+			}
 		}
+		
 	}
 	//-------------------------------------------------------------------
 	//全員クリア後の処理
 	void  Object::Clear()
 	{
-		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
+		Kill();
+		/*if (ge->getCounterFlag("Clear") == ge->LIMIT) {
 			Kill();
-		}
+		}*/
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

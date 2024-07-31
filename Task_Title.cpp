@@ -6,6 +6,7 @@
 #include "randomLib.h"
 #include  "Task_Effect00.h"
 #include "sound.h"
+#include "easing.h"
 
 #include  "Task_Game.h"
 
@@ -17,6 +18,8 @@ namespace  Title
 	bool  Resource::Initialize()
 	{
 		this->img = DG::Image::Create("./data/image/titlepic.png");
+		/*this->TitleLogo01 = DG::Image::Create("./data/image/title.png");
+		this->TitleLogo02 = DG::Image::Create("./data/image/StartKey.png");*/
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -24,6 +27,9 @@ namespace  Title
 	bool  Resource::Finalize()
 	{
 		this->img.reset();
+		/*this->TitleLogo01.reset();
+		this->TitleLogo02.reset();*/
+
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -35,12 +41,21 @@ namespace  Title
 		//リソースクラス生成orリソース共有
 		res = Resource::Create();
 
+		//BGM
+		/*bgm::LoadFile("bgm2", "./data/sound/bgm/spadenoheitai.mp3");
+		bgm::Play("bgm2");*/
+
+
 		//★データ初期化
 		controller = ge->in1;
 		render2D_Priority[1] = 0.5f;
+		/*this->Cnt = 0;*/
 		int RenderTime = 0;
 
 		ge->stage = 1;
+
+		//easing::Set("titleY", easing::BACKOUT, -200, ge->screen2DHeight / 2, 200);
+		//easing::Start("titleY");
 
 
 		//デバッグ用フォントの準備
@@ -92,6 +107,8 @@ namespace  Title
 	{
 		auto inp = controller->GetState();
 
+		/*this->Cnt++;*/
+
 		int input = 0;
 		//							16進		2進	
 		if (inp.B1.down) input |= 0x0001;	// 0000000001
@@ -115,6 +132,8 @@ namespace  Title
 			se::Play("se2");
 		}
 
+		//easing::UpDate();
+		//logoY = easing::GetPos("titleY");
 
 		return;
 
@@ -131,6 +150,22 @@ namespace  Title
 		ML::Box2D src(0, 0, 1980, 1080);
 
 		this->res->img->Draw(draw, src);
+
+		//ML::Box2D draw2(ge->screen2DWidth / 2 - 330, logoY - 100, 600, 80);
+		//ML::Box2D src2(0, 0, 500, 78);
+		//this->res->TitleLogo01->Draw(draw2, src2);
+
+		//if (this->Cnt > 0)
+		//{
+		//	if ((this->Cnt / 10) % 5 == 0)
+		//	{
+		//		return; //8フレーム中4フレーム画像を表示しない
+		//	}
+		//	ML::Box2D draw3(ge->screen2DWidth / 2 - 280, 530, 500, 60);
+		//	ML::Box2D src3(0, 0, 596, 91);
+		//	this->res->TitleLogo02->Draw(draw3, src3);
+		//}
+
 	}
 	
 
