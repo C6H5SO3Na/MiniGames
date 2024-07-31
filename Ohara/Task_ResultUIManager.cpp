@@ -11,7 +11,11 @@ namespace  ResultUIManager
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->prefaceImage = DG::Image::Create("./data/Image/ResultAnnouncement.png");
+		this->prefaceImage = DG::Image::Create("./data/image/ResultAnnouncement.png");
+		this->buttonImage_A = DG::Image::Create("./data/image/button/double/xbox_button_color_a.png");
+		this->buttonImage_A_Outline = DG::Image::Create("./data/image/button/double/xbox_button_color_a_outline.png");
+		this->thankyouImage = DG::Image::Create("./data/image/ThankyouForPlaying.png");
+		this->directToTitleImage = DG::Image::Create("./data/image/DirectToTitle.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -19,6 +23,10 @@ namespace  ResultUIManager
 	bool  Resource::Finalize()
 	{
 		this->prefaceImage.reset();
+		this->buttonImage_A.reset();
+		this->buttonImage_A_Outline.reset();
+		this->thankyouImage.reset();
+		this->directToTitleImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -99,9 +107,14 @@ namespace  ResultUIManager
 		{
 		case Result::Object::ResultState::ResultAnnouncement:	//結果発表
 			this->drawUpToCount++;
+			this->animationCount++;
 
 			//表示用プレイヤーーの生成
 			this->GenerateDisplayPlayer();
+			break;
+
+		case Result::Object::ResultState::End:
+			this->animationCount++;
 			break;
 		}
 
@@ -326,8 +339,6 @@ namespace  ResultUIManager
 		}
 
 		//描画情報準備
-		int srcValue[4] = {};
-		int drawValue[4] = {};
 		ML::Box2D draw = {};
 		ML::Box2D src = {};
 
@@ -337,13 +348,8 @@ namespace  ResultUIManager
 		case Result::Object::ResultState::Preface:				//前置き
 			//☆描画
 			//描画情報設定
-			for (int i = 0; i < 4; ++i)
-			{
-				srcValue[i] = this->srcValues[0][i];
-				drawValue[i] = this->drawValues[0][i];
-			}
-			draw = { drawValue[0], drawValue[1], drawValue[2], drawValue[3] };
-			src = {srcValue[0], srcValue[1], srcValue[2], srcValue[3]};
+			draw = ML::Box2D(this->drawValues[0][0], this->drawValues[0][1], this->drawValues[0][2], this->drawValues[0][3]);
+			src = ML::Box2D(this->srcValues[0][0], this->srcValues[0][1], this->srcValues[0][2], this->srcValues[0][3]);
 
 			this->res->prefaceImage->Draw(draw, src);
 
@@ -360,7 +366,21 @@ namespace  ResultUIManager
 			{
 				if (drawUpToCount >= static_cast<int>(4.f * gameFps))
 				{
-					//「Aボタンを押して次へ」と描画
+					//☆Aボタンを描画
+					//描画情報設定
+					int animationNum = this->animationCount / 10;
+					animationNum %= 2;
+					draw = ML::Box2D(this->drawValues[1][0], this->drawValues[1][1], this->drawValues[1][2], this->drawValues[1][3]);
+					src = ML::Box2D(this->srcValues[1][0], this->srcValues[1][1], this->srcValues[1][2], this->srcValues[1][3]);
+
+					if (animationNum == 0)	//Aボタンの画像描画
+					{
+						this->res->buttonImage_A->Draw(draw, src);
+					}
+					else					//Aボタン外枠のみの画像描画
+					{
+						this->res->buttonImage_A_Outline->Draw(draw, src);
+					}
 
 					//描画が終わったことを伝える
 					if (this->isChangedFalse_hasEndedDrawing == false) //状態がResultAnnouncementの時、1回だけhasEndedDrawingがtrueになるようにする
@@ -373,7 +393,21 @@ namespace  ResultUIManager
 			{
 				if (drawUpToCount >= static_cast<int>(7.f * gameFps))
 				{
-					//「Aボタンを押して次へ」と描画
+					//☆Aボタン描画
+					//描画情報設定
+					int animationNum = this->animationCount / 10;
+					animationNum %= 2;
+					draw = ML::Box2D(this->drawValues[1][0], this->drawValues[1][1], this->drawValues[1][2], this->drawValues[1][3]);
+					src = ML::Box2D(this->srcValues[1][0], this->srcValues[1][1], this->srcValues[1][2], this->srcValues[1][3]);
+
+					if (animationNum == 0)	//Aボタンの画像描画
+					{
+						this->res->buttonImage_A->Draw(draw, src);
+					}
+					else					//Aボタン外枠のみの画像描画
+					{
+						this->res->buttonImage_A_Outline->Draw(draw, src);
+					}
 
 					//描画が終わったことを伝える
 					if (this->isChangedFalse_hasEndedDrawing == false) //状態がResultAnnouncementの時、1回だけhasEndedDrawingがtrueになるようにする
@@ -385,10 +419,37 @@ namespace  ResultUIManager
 			break;
 
 		case Result::Object::ResultState::End:
-			//「遊んでくれてありがとう」と描画
+			//☆「遊んでくれてありがとう」と描画
+			//描画情報設定
+			draw = ML::Box2D(this->drawValues[2][0], this->drawValues[2][1], this->drawValues[2][2], this->drawValues[2][3]);
+			src = ML::Box2D(this->srcValues[2][0], this->srcValues[2][1], this->srcValues[2][2], this->srcValues[2][3]);
+
+			this->res->thankyouImage->Draw(draw, src);
 			
-			//「Aボタンを押してタイトルへ」と描画
-			
+			//☆「Aボタンでタイトルへ」と描画
+			//Aボタン描画
+			//描画情報設定
+			int animationNum = this->animationCount / 10;
+			animationNum %= 2;
+			draw = ML::Box2D(this->drawValues[3][0], this->drawValues[3][1], this->drawValues[3][2], this->drawValues[3][3]);
+			src = ML::Box2D(this->srcValues[1][0], this->srcValues[1][1], this->srcValues[1][2], this->srcValues[1][3]);
+
+			if (animationNum == 0)	//Aボタンの画像描画
+			{
+				this->res->buttonImage_A->Draw(draw, src);
+			}
+			else					//Aボタン外枠のみの画像描画
+			{
+				this->res->buttonImage_A_Outline->Draw(draw, src);
+			}
+
+			//「ボタンでタイトルへ」描画
+			//描画情報設定
+			draw = ML::Box2D(this->drawValues[4][0], this->drawValues[4][1], this->drawValues[4][2], this->drawValues[4][3]);
+			src = ML::Box2D(this->srcValues[3][0], this->srcValues[3][1], this->srcValues[3][2], this->srcValues[3][3]);
+
+			this->res->directToTitleImage->Draw(draw, src);
+
 			//描画が終わったことを伝える
 			if (this->isChangedFalse_hasEndedDrawing == false) //状態がResultAnnouncementの時、1回だけhasEndedDrawingがtrueになるようにする
 			{
@@ -403,6 +464,7 @@ namespace  ResultUIManager
 	{
 		this->isChangedFalse_hasEndedDrawing = false;
 		this->drawUpToCount = 0;
+		this->animationCount = 0;
 	}
 	//-------------------------------------------------------------------
 	//結果発表時の表示パターンを決める
@@ -519,6 +581,7 @@ namespace  ResultUIManager
 	Object::Object() 
 		:
 		drawUpToCount(0),
+		animationCount(0),
 		gameFps(60),
 		hasEndedDrawing(false),
 		isChangedFalse_hasEndedDrawing(false),

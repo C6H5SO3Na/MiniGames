@@ -171,17 +171,14 @@ namespace  Result
 			//タイトルに戻る
 			if (this->nextStateGoIs == true)
 			{
-				if (this->nextStateGoIs == true)
+				//タイトル画面に遷移
+				for (int i = 0; i < 4; ++i)
 				{
-					//タイトル画面に遷移
-					for (int i = 0; i < 4; ++i)
-					{
-						if (input[i].B1.down) {
-							ge->StartCounter("test", 0);
-						}
-						if (ge->getCounterFlag("test") == ge->LIMIT) {
-							Kill();
-						}
+					if (input[i].B1.down) {
+						ge->StartCounter("test", 0);
+					}
+					if (ge->getCounterFlag("test") == ge->LIMIT) {
+						Kill();
 					}
 				}
 			}

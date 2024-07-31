@@ -26,6 +26,10 @@ namespace  ResultUIManager
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
 		DG::Image::SP prefaceImage;
+		DG::Image::SP buttonImage_A;
+		DG::Image::SP buttonImage_A_Outline;
+		DG::Image::SP thankyouImage;
+		DG::Image::SP directToTitleImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -76,18 +80,28 @@ namespace  ResultUIManager
 		};
 
 		ML::Vec2 scoreDrawPosition[4] = {				//スコアの描画位置
-			ML::Vec2(ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f - 200),			//一番左の位置
-			ML::Vec2(ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f - 200),	//左から二番目の位置
-			ML::Vec2(ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f - 200),	//左から三番の位置
-			ML::Vec2(ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f - 200)		//一番右の位置
+			ML::Vec2(ge->screen2DWidth / 5.f, ge->screen2DHeight / 2.f - 400),			//一番左の位置
+			ML::Vec2(ge->screen2DWidth * 2.f / 5.f, ge->screen2DHeight / 2.f - 400),	//左から二番目の位置
+			ML::Vec2(ge->screen2DWidth * 3.f / 5.f, ge->screen2DHeight / 2.f - 400),	//左から三番の位置
+			ML::Vec2(ge->screen2DWidth * 4.f / 5.f, ge->screen2DHeight / 2.f - 400)		//一番右の位置
 		};
 
-		int  srcValues[1][4] = { { 0, 0, 567, 157 } //結果発表の画像
-		};	//画像の切り取り部分
-		int  drawValues[1][4] = { { static_cast<int>(ge->screen2DWidth) / 2 - srcValues[0][2] / 2, static_cast<int>(ge->screen2DHeight) / 2 - srcValues[0][3] / 2, srcValues[0][2], srcValues[0][3] } //結果発表の画像
-		};	//画像の描画位置
+		int  srcValues[4][4] = {	//画像の切り取り部分
+			{ 0, 0, 567, 157 },		//「結果発表」の画像
+			{ 0, 0, 128, 128},		//Aボタンの画像
+			{ 0, 0, 1120, 101 },	//「遊んでくれてありがとう」の画像
+			{ 0, 0, 635, 82 },		//「ボタンでタイトルへ」と描画
+		};	
+		int  drawValues[5][4] = {	//画像の描画位置
+			{ static_cast<int>(ge->screen2DWidth) / 2 - srcValues[0][2] / 2, static_cast<int>(ge->screen2DHeight) / 2 - srcValues[0][3] / 2, srcValues[0][2], srcValues[0][3] },							//「結果発表」の画像
+			{ static_cast<int>(ge->screen2DWidth) - srcValues[1][2] - 50, static_cast<int>(ge->screen2DHeight) - srcValues[1][3] - 50, srcValues[1][2], srcValues[1][3] },									//ResultState::ResultAnnouncementで使うAボタンの画像
+			{ static_cast<int>(ge->screen2DWidth) / 2 - srcValues[2][2] / 2, static_cast<int>(ge->screen2DHeight) / 2 - srcValues[2][3] / 2 - 150, srcValues[2][2], srcValues[2][3] },						//「遊んでくれてありがとう」の画像
+			{ static_cast<int>(ge->screen2DWidth) / 2 - srcValues[1][2] / 2 - srcValues[3][2] / 2, static_cast<int>(ge->screen2DHeight) / 2 - srcValues[1][3] / 2 + 100, srcValues[1][2], srcValues[1][3]}, //ResultState::Endで使うAボタンの画像
+			{ static_cast<int>(ge->screen2DWidth) / 2 - srcValues[3][2] / 2 + srcValues[1][2] / 2, static_cast<int>(ge->screen2DHeight) / 2 - srcValues[3][3] / 2 + 100, srcValues[3][2], srcValues[3][3]}, //「ボタンでタイトルへ」と描画
+		};	
 
 		int  drawUpToCount;						//描画するまでのカウント
+		int	 animationCount;					//アニメーション用のカウント
 		int  gameFps;							//ゲームプレイする上で想定しているFPS値を設定
 		bool hasEndedDrawing;					//描画が終了したらtrue
 		bool isChangedFalse_hasEndedDrawing;	//hasEndedDrawingをfalseに変えたらtrue
