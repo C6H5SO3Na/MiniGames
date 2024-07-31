@@ -4,6 +4,8 @@
 #include  "../MyPG.h"
 #include  "Task_ResultUIManager.h"
 
+#include  "../easing.h"
+
 namespace  ResultUIManager
 {
 	Resource::WP  Resource::instance;
@@ -44,6 +46,12 @@ namespace  ResultUIManager
 		
 		//★タスクの生成
 
+		//☆イージング
+		//文字画像移動用
+		//「結果発表」移動用
+		easing::Set("StartMovePrefaceImage", easing::CIRCOUT, static_cast<float>(ge->screen2DWidth + srcValues[0][2]), ge->screen2DWidth / 2.f, this->gameFps, "EndMovePrefaceImage");
+		easing::Set("EndMovePrefaceImage", easing::CIRCIN, ge->screen2DWidth / 2.f, static_cast<float>(-srcValues[0][2]), this->gameFps);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -65,6 +73,8 @@ namespace  ResultUIManager
 	{
 		//☆Task_Resultの状態毎の処理を行う
 		ProcessEachResultState();
+		//イージングを動かす
+		easing::UpDate();
 
 		//☆描画が終わったことをTask_Resultに伝える
 		if (hasEndedDrawing == true)
@@ -105,6 +115,25 @@ namespace  ResultUIManager
 		//状態毎の処理
 		switch (result->resultState)
 		{
+		case Result::Object::ResultState::Preface:
+			//☆リザルトが始まった瞬間に行う処理
+			if (this->resultStart == true)
+			{
+				//☆イージング開始
+				easing::Start("StartMovePrefaceImage");
+
+				this->resultStart = false;
+			}
+
+			//☆イージングで座標移動
+			//Readyを動かす
+			this->prefaceImagePos.x = easing::GetPos("StartMovePrefaceImage");
+			if (easing::GetState("StartMovePrefaceImage") == easing::EQ_STATE::EQ_END) //イージング「ReadyStart」が終わったら
+			{
+				this->prefaceImagePos.x = easing::GetPos("EndMovePrefaceImage");
+			}
+			break;
+
 		case Result::Object::ResultState::ResultAnnouncement:	//結果発表
 			this->drawUpToCount++;
 			this->animationCount++;
@@ -350,13 +379,16 @@ namespace  ResultUIManager
 			//描画情報設定
 			draw = ML::Box2D(this->drawValues[0][0], this->drawValues[0][1], this->drawValues[0][2], this->drawValues[0][3]);
 			src = ML::Box2D(this->srcValues[0][0], this->srcValues[0][1], this->srcValues[0][2], this->srcValues[0][3]);
+			draw.Offset(this->prefaceImagePos);
 
 			this->res->prefaceImage->Draw(draw, src);
 
-			//イージングを入れたら、イージングが終わったときにTask_Result側の、「ボタンを押すとこのタスクの、画面外に出ていくイージングが起動する処理」（この処理も新しく作る）を通るようになる変数をtrueにする
-			if (this->isChangedFalse_hasEndedDrawing == false) //状態がPrefaceの時、1回だけhasEndedDrawingがtrueになるようにする
+			if (easing::GetState("EndMovePrefaceImage") == easing::EQ_STATE::EQ_END) //「結果発表」の画像の移動が終わったら
 			{
-				this->hasEndedDrawing = true;
+				if (this->isChangedFalse_hasEndedDrawing == false) //状態がPrefaceの時、1回だけhasEndedDrawingがtrueになるようにする
+				{
+					this->hasEndedDrawing = true;
+				}
 			}
 			break;
 
@@ -585,7 +617,8 @@ namespace  ResultUIManager
 		gameFps(60),
 		hasEndedDrawing(false),
 		isChangedFalse_hasEndedDrawing(false),
-		displayPattern(0)
+		displayPattern(0),
+		resultStart(true)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
