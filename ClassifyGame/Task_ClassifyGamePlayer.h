@@ -24,9 +24,11 @@ namespace  CGPlayer
 		static  Resource::SP  Create();
 	//•ÏX‰Â
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
-		DG::Image::SP playerImg;
 		DG::Image::SP CountImg;
 		DG::Image::SP bookImg;
+		DG::Image::SP deskImg;
+		DG::Image::SP handLImg;
+		DG::Image::SP handRImg;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  CGBChara

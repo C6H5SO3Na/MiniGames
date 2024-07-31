@@ -51,5 +51,6 @@ namespace  BlanceGUIM
 		//BChara‚ÉŠÜ‚Ü‚ê‚È‚¢ƒ‚ƒm‚Ì‚Ý‚±‚±‚É’Ç‰Á‚·‚é
 		void Recieved() {};
 		bool failFlag[4];
+		vector<int> rank;
 	};
 }

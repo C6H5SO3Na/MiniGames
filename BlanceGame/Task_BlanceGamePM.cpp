@@ -6,7 +6,7 @@
 #include  "Task_BlanceGamePM.h"
 #include  "Task_BlanceGamePlayer.h"
 #include  "BGBChara.h"
-
+#include  "../sound.h"
 namespace  BlanceGamePM
 {
 	Resource::WP  Resource::instance;
@@ -36,12 +36,15 @@ namespace  BlanceGamePM
 		cList.push_back(ge->in2);
 		cList.push_back(ge->in3);
 		cList.push_back(ge->in4);
+		//se
+		se::LoadFile("seBGd", "./data/sound/se/BlanceGame/Onoma-Surprise02-1(High).wav");
+		se::LoadFile("seBGf", "./data/sound/se/BlanceGame/Motion-Fall06-3(Long).wav");
 		//★タスクの生成
 
 		for (int i = 0; i < 4; ++i) {
 			auto p = BGPlayer::Object::Create(true);
 			pList.push_back(p);
-			pList[i]->pos=ML::Vec2(200 + 400*i, 500);
+			pList[i]->pos=ML::Vec2(400 + 400*i, 500);
 			pList[i]->controller = cList[i];
 		}
 		return  true;
@@ -63,11 +66,12 @@ namespace  BlanceGamePM
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto bg = ge->GetTask<BlanceGame::Object>("バランスゲーム");
+		auto bg = ge->GetTask<BlanceGame::Object>("BlanceGame");
 		if (!bg) {
 			return;
 		}
 		if (bg->shake) {
+			se::Play("seBGd");
 			auto p = ge->GetTasks<BGPlayer::Object>("BGPlayer");
 			int r = rand() % 2;
 			switch (r)

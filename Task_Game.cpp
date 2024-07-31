@@ -83,7 +83,7 @@ namespace  Game
 		int i = 0;
 		i = nextTask;
 		//auto gsUI=gamesetUI::Object::Create(true);  //ゲームセットUI生成用
-		std::this_thread::sleep_for(std::chrono::seconds(2));
+		/*std::this_thread::sleep_for(std::chrono::seconds(2));*/
 		switch (i) {
 		case 1:
 			StageBrushTeeth::Object::Create(true);
