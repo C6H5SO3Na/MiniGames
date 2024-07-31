@@ -4,6 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_brush.h"
 #include  "Task_stain.h"
+#include "../sound.h"
 
 namespace  brush
 {
@@ -31,6 +32,12 @@ namespace  brush
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
 
+		//SE
+		se::LoadFile("Kirakira", "./data/sound/se/BrushTeethGame/きらきら輝く1.wav");
+		se::LoadFile("brushing", "./data/sound/se/BrushTeethGame/歯磨き.wav");
+		se::SetVolume("Kirakira", 20);
+		se::SetVolume("brushing", 100);
+
 		//★データ初期化
 		this->render2D_Priority[1] = -0.6f;
 		this->hitBase = ML::Box2D(70, -25, 80, 50);
@@ -50,7 +57,6 @@ namespace  brush
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -76,6 +82,14 @@ namespace  brush
 			this->moveVec = ML::Vec2(0, 0);
 		}
 
+		if (inp.LStick.volume != 0)
+		{
+			se::PlayLoop("brushing");
+		}
+		else
+		{
+			se::Stop("brushing");
+		}
 
 		this->pos += this->moveVec;
 		if (this->pos.x + this->moveVec.x <= this->minPosX) {
@@ -100,6 +114,7 @@ namespace  brush
 			auto you = (*s)->hitBase.OffsetCopy((*s)->pos);
 			if (you.Hit(me))
 			{
+				se::Play("Kirakira");
 				(*s)->Kill();
 			}
 		}
