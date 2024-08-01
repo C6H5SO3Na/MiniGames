@@ -128,13 +128,16 @@ namespace  OguiFood
 		switch (this->state)
 		{
 		case State::FNotExist:
+			//料理が無くなった情報を他タスクに送る
+			SendNotExistInformation();
+			this->Kill();
+
+			//もしバグが出たらこの条件式の中に上の処理を入れる
 			//☆料理が無くなった時、30フレーム目にオブジェクトを消す申請を出す
-			if (this->moveCnt >= 30) //モニターFPSにゲームが依存しないようにするために条件式を (int)(30 * GetFps() / (float)gameFps) に変更する
-			{
-				//料理が無くなった情報を他タスクに送る
-				SendNotExistInformation();
-				this->Kill();
-			}
+			//if (this->moveCnt >= 30) //モニターFPSにゲームが依存しないようにするために条件式を (int)(30 * GetFps() / (float)gameFps) に変更する
+			//{
+			//	
+			//}
 		}
 	}
 	//-------------------------------------------------------------------
