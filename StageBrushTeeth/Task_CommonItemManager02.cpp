@@ -33,9 +33,9 @@ namespace  CommonItemManager02
 
 		//šƒf[ƒ^‰Šú‰»
 		CTList.push_back(ge->in1);
-		CTList.push_back(ge->in1);
-		CTList.push_back(ge->in1);
-		CTList.push_back(ge->in1);
+		CTList.push_back(ge->in2);
+		CTList.push_back(ge->in3);
+		CTList.push_back(ge->in4);
 
 		for (int i = 0; i < 4; ++i)
 		{
