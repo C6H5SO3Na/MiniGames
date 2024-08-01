@@ -15,7 +15,7 @@
 #include  <thread>
 
 #include  "randomLib.h"
-#include  "Task_Ending.h"
+#include  "Ohara/Task_Result.h"
 
 
 namespace  Game
@@ -51,7 +51,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		CreateTask(1);
+		CreateTask();
     
 		return  true;
 	}
@@ -66,7 +66,7 @@ namespace  Game
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto next = Ending::Object::Create(true);
+			auto next = Result::Object::Create(true);
 		}
 
 		return  true;
