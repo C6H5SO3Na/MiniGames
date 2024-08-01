@@ -57,5 +57,6 @@ namespace  StageBrushTeeth
 		void CheckClear();
 
 		int timeCnt;
+		int clearCount;//for knew how many player is clear
 	};
 }

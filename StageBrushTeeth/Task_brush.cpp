@@ -57,7 +57,7 @@ namespace  brush
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
+		se::Stop("brushing");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}

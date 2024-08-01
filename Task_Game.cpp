@@ -43,12 +43,15 @@ namespace  Game
 		res = Resource::Create();
 
 		//★データ初期化
-
+		//reset score
+		for (int i = 0; i < 4; ++i) {
+			ge->score[i] = 0;
+		}
 		//デバッグ用フォントの準備
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		CreateTask();
+		CreateTask(1);
     
 		return  true;
 	}

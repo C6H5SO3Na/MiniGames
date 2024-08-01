@@ -48,6 +48,14 @@ namespace  BlanceGUIM
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
 	{
+		for (int i = 0; i < 4; ++i) {
+			if (failFlag[i] == false) {
+				ge->score[i] += 4;
+			}
+		}
+		for (auto i = rank.begin(); i != rank.end(); ++i) {
+			ge->score[(*i)] += ((*i) + 1);
+		}
 		//★データ＆タスク解放
 		ge->KillAll_G("BGPlayer");
 
@@ -84,10 +92,7 @@ namespace  BlanceGUIM
 				failFlag[i] = true;
 			}
 		}
-		if (failFlag[0]&& failFlag[1]&& failFlag[2]&& failFlag[3]) {
-			for (int i = 0; i < 4; ++i) {
-				ge->score[rank[i]] += (i + 1);
-			}
+		if (failFlag[0]&& failFlag[1]&& failFlag[2]&& failFlag[3]) {	
 			Kill();
 		}
 	}
