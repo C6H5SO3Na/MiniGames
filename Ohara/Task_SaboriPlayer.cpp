@@ -6,6 +6,7 @@
 #include  "Task_SaboriGame.h"
 
 #include  "../fpscounter.h"
+#include  "../sound.h"
 
 namespace  SaboriPlayer
 {
@@ -15,6 +16,8 @@ namespace  SaboriPlayer
 	bool  Resource::Initialize()
 	{
 		this->image = DG::Image::Create("./data/image/game_otsan_working.png");
+		this->buttonImage_A = DG::Image::Create("./data/image/button/Double/xbox_button_color_a.png");
+		this->buttonImage_A_Outline = DG::Image::Create("./data/image/button/Double/xbox_button_color_a_outline.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -22,6 +25,8 @@ namespace  SaboriPlayer
 	bool  Resource::Finalize()
 	{
 		this->image.reset();
+		this->buttonImage_A.reset();
+		this->buttonImage_A_Outline.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -86,6 +91,9 @@ namespace  SaboriPlayer
 		drawImage.draw.Offset(this->pos);
 		
 		this->res->image->Draw(drawImage.draw, drawImage.src);
+
+		//☆Aボタン描画
+		this->DrawButton();
 	}
 	//-------------------------------------------------------------------
 	//現在のプレイヤーの状態制御
@@ -122,11 +130,66 @@ namespace  SaboriPlayer
 
 		switch (this->state)
 		{
+		case State::PWork:		//仕事中状態
+			//☆ゲーム本編開始時に一度だけ行う処理
+			if (this->isPlayStartSE == false)
+			{
+				//SEの名前付け
+				this->workSEName = "WorkSE" + to_string((int)this->playerNum);
+				this->saboriSEName = "SaoriSE" + to_string((int)this->playerNum);
+
+				//SE設定
+				//仕事中状態
+				se::LoadFile(workSEName, "./data/sound/se/SaboriGame/PC-Keyboard05-14(Far-Hard).wav");
+				se::SetVolume(workSEName, 100);
+
+				//サボり状態
+				se::LoadFile(saboriSEName, "./data/sound/se/SaboriGame/maou_se_8bit08.wav");
+				se::SetVolume(saboriSEName, 1);
+
+				//SEを鳴らす
+				se::PlayLoop(workSEName);
+
+				//ボタンの描画を開始する
+				this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
+				this->isStartButtonDraw = true;
+
+				this->isPlayStartSE = true;
+			}
+
+			//☆状態変更時に1回だけ行う
+			if (this->moveCnt == 0)
+			{
+				//SEを止める
+				se::Stop(saboriSEName);
+
+				//SEを鳴らす
+				se::PlayLoop(workSEName);
+			}
+
+			break;
+
 		case State::PSabori:	//サボり状態
+			//状態変更時に1回だけ行う処理
+			if (this->moveCnt == 0)
+			{
+				//SEを止める
+				se::Stop(workSEName);
+
+				//SEを鳴らす
+				se::PlayLoop(saboriSEName);
+			}
+			
 			this->totalSaboriTime += 1.f / gameFps; // / gameFps を / GetFps() をに変更してモニターFPSにゲームが依存しないようにする
 			break;
 
 		case State::PNoticed:
+			//状態変更時に1回だけ行う処理
+			if (this->moveCnt == 0)
+			{
+				//SEを止める
+				se::Stop(saboriSEName);
+			}
 			this->noticedToSabori = false;
 			break;
 		}
@@ -158,6 +221,31 @@ namespace  SaboriPlayer
 		}
 
 		return rtv;
+	}
+	//-------------------------------------------------------------------
+	//ボタンの描画処理
+	void Object::DrawButton()
+	{
+		if (this->isStartButtonDraw == true)
+		{
+			DrawInformation drawButtonImage = { ML::Box2D(-64, -64, 128, 128), ML::Box2D(0, 0, 128, 128) };
+			drawButtonImage.draw.Offset(this->buttonDrawPos);
+
+			switch (this->state)
+			{
+			case State::PWork:		//仕事中状態
+				this->res->buttonImage_A_Outline->Draw(drawButtonImage.draw, drawButtonImage.src);
+				break;
+
+			case State::PSabori:	//サボり状態
+				this->res->buttonImage_A->Draw(drawButtonImage.draw, drawButtonImage.src);
+				break;
+
+			case State::PNoticed:
+				this->res->buttonImage_A_Outline->Draw(drawButtonImage.draw, drawButtonImage.src);
+				break;
+			}
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -197,7 +285,12 @@ namespace  SaboriPlayer
 	Object::Object()
 		: 
 		totalSaboriTime(0.f),
-		noticedToSabori(false)
+		noticedToSabori(false),
+		isPlayStartSE(false),
+		saboriSEName(""),
+		workSEName(""),
+		isStartButtonDraw(false),
+		buttonDrawPos(0, 0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

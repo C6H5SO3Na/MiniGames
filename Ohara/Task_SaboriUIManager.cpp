@@ -34,7 +34,7 @@ namespace  SaboriUIManager
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
-		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
+		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 50);
 		
 		//★タスクの生成
 
@@ -67,7 +67,7 @@ namespace  SaboriUIManager
 		auto game = ge->GetTask<SaboriGame::Object>(SaboriGame::defGroupName, SaboriGame::defName);
 		//描画
 		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2 - 150, 0, ge->screen2DWidth, ge->screen2DHeight),
-			to_string(game->timeLimit), ML::Color(1, 0, 0, 0)
+			"残り：" + to_string(static_cast<int>(game->timeLimit)) + "秒", ML::Color(1, 0, 0, 0)
 		);
 
 		//☆サボり合計時間の描画
@@ -78,7 +78,7 @@ namespace  SaboriUIManager
 		for (auto p = players->begin(); p != players->end(); ++p)
 		{
 			//描画
-			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 65, ge->screen2DWidth, ge->screen2DHeight),
+			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 90, ge->screen2DWidth, ge->screen2DHeight),
 				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->totalSaboriTime), ML::Color(1, 0, 0, 0)
 			);
 			//ループ回数のカウント

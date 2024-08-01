@@ -20,7 +20,7 @@ namespace  OguiGame
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->readyImage = DG::Image::Create("./data/image/Ready.gif");
+		this->gameRuleImage = DG::Image::Create("./data/image/OugiGameRuleSentence.png");
 		this->fightImage = DG::Image::Create("./data/image/Fight.gif");
 		this->finishImage = DG::Image::Create("./data/image/Finish.png");
 		return true;
@@ -29,7 +29,7 @@ namespace  OguiGame
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->readyImage.reset();
+		this->gameRuleImage.reset();
 		this->fightImage.reset();
 		this->finishImage.reset();
 		return true;
@@ -67,8 +67,8 @@ namespace  OguiGame
 		//☆イージング
 		//文字画像移動用
 		//Ready移動用
-		easing::Set("ReadyStart", easing::CIRCOUT, ge->screen2DWidth + 275.f * 3.f, ge->screen2DWidth / 2.f, this->gameFps, "ReadyEnd");
-		easing::Set("ReadyEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -275.f * 3.f, this->gameFps);
+		easing::Set("GameRuleStart", easing::CIRCOUT, ge->screen2DWidth + 687.f, ge->screen2DWidth / 2.f, this->gameFps, "GameRuleEnd");
+		easing::Set("GameRuleEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -687.f, this->gameFps);
 
 		//Finish移動用
 		easing::Set("FinishStart", easing::CIRCOUT, ge->screen2DWidth + 438.f * 2.f, ge->screen2DWidth / 2.f, this->gameFps, "FinishEnd");
@@ -77,6 +77,15 @@ namespace  OguiGame
 		//☆BGM
 		bgm::LoadFile("OguiGameBGM", "./data/sound/bgm/大食い_harunopayapaya.mp3");
 		bgm::VolumeControl("OguiGameBGM", 90);
+
+		//☆SE
+		//Fight描画時に鳴らす
+		se::LoadFile("StartSE", "./data/sound/se/Common/試合開始のゴング.wav");
+		se::SetVolume("StartSE", 100);
+
+		//ゲーム終了時に鳴らす
+		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
+		se::SetVolume("FinishSE", 100);
 
 		return  true;
 	}
@@ -127,7 +136,7 @@ namespace  OguiGame
 		switch (nowState)
 		{
 		case GameState::BeforeGameStart:	//ゲーム開始前
-			if (this->countToChangeGameState >= 60 * 2) { nowState = GameState::Game; } //ゲーム中へ
+			if (this->countToChangeGameState >= 60) { nowState = GameState::Game; } //ゲーム中へ
 			break;
 
 		case GameState::Game:				//ゲーム中
@@ -158,23 +167,30 @@ namespace  OguiGame
 			if (this->gameStart == true)
 			{
 				//☆イージング開始
-				easing::Start("ReadyStart");
+				easing::Start("GameRuleStart");
 
 				this->gameStart = false;
 			}
 
 			//☆イージングで座標移動
 			//Readyを動かす
-			this->readyImagePos.x = easing::GetPos("ReadyStart");
-			if (easing::GetState("ReadyStart") == easing::EQ_STATE::EQ_END) //イージング「ReadyStart」が終わったら
+			this->gameRuleImagePos.x = easing::GetPos("GameRuleStart");
+			if (easing::GetState("GameRuleStart") == easing::EQ_STATE::EQ_END) //イージング「GameRuleStart」が終わったら
 			{
-				this->readyImagePos.x = easing::GetPos("ReadyEnd");
+				this->gameRuleImagePos.x = easing::GetPos("GameRuleEnd");
 			}
 
 			//☆Fight描画用処理
-			if (easing::GetState("ReadyEnd") == easing::EQ_STATE::EQ_END) //イージング「ReadyEnd」が終わったら
+			if (easing::GetState("GameRuleEnd") == easing::EQ_STATE::EQ_END) //イージング「GameRuleEnd」が終わったら
 			{
 				this->countToFightDraw++;
+			}
+
+			//☆Fightの描画時に行う処理
+			if (countToFightDraw == this->gameFps)
+			{
+				//ゲーム開始のSEを鳴らす
+				se::Play("StartSE");
 			}
 
 			//☆状態を遷移するための処理
@@ -211,6 +227,12 @@ namespace  OguiGame
 			{
 				//☆ゲームを終了させる
 				this->isInGame = false;
+
+				//☆SEを止める
+				se::AllStop();
+
+				//終了したらSEを鳴らす
+				se::Play("FinishSE");
 
 				//☆順位を決め、ge->scoreに得点を送る
 				//順位を決める
@@ -259,11 +281,11 @@ namespace  OguiGame
 		case GameState::BeforeGameStart:	//ゲーム開始前
 			//☆「Ready」描画
 			//描画情報設定
-			src = ML::Box2D(0, 0, 275, 95);
-			draw = ML::Box2D(-138 * 3, -48 * 3, src.w * 3, src.h * 3);
-			draw.Offset(this->readyImagePos);
+			src = ML::Box2D(0, 0, 687, 88);
+			draw = ML::Box2D(-src.w, -src.h, src.w * 2, src.h * 2);
+			draw.Offset(this->gameRuleImagePos);
 
-			this->res->readyImage->Draw(draw, src);
+			this->res->gameRuleImage->Draw(draw, src);
 
 			//☆「Fight」描画
 			if (this->countToFightDraw >= this->gameFps)

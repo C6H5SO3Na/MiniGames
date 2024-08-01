@@ -34,7 +34,7 @@ namespace  OguiUIManager
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
-		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
+		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 50);
 		
 		//★タスクの生成
 
@@ -70,7 +70,7 @@ namespace  OguiUIManager
 		for (auto p = players->begin(); p != players->end(); ++p)
 		{
 			//描画
-			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 65, ge->screen2DWidth, ge->screen2DHeight),
+			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 90, ge->screen2DWidth, ge->screen2DHeight),
 				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->eatFoodCount), ML::Color(1, 0, 0, 0)
 			);
 			//ループ回数のカウント
@@ -81,8 +81,8 @@ namespace  OguiUIManager
 		//サボりゲームの統括の情報を取得
 		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
 		//描画
-		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2, 0, ge->screen2DWidth, ge->screen2DHeight),
-			to_string(game->timeLimit), ML::Color(1, 0, 0, 0)
+		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2 - 150, 0, ge->screen2DWidth, ge->screen2DHeight),
+			"残り：" + to_string(static_cast<int>(game->timeLimit)) + "秒", ML::Color(1, 0, 0, 0)
 		);
 
 		//☆プレイヤー番号の描画
