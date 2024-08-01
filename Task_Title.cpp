@@ -133,13 +133,6 @@ namespace  Title
 			Kill();
 		}
 
-		if (input & 0x0002) {
-			se::Play("se1");
-		}
-		if (input & 0x0004) {
-			se::Play("se2");
-		}
-
 		easing::UpDate();
 		logoY = easing::GetPos("titleY");
 

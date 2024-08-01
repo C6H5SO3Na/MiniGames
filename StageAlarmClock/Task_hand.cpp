@@ -59,10 +59,9 @@ namespace  hand
 	{
 		//★データ＆タスク解放
 
-		se::Stop("Ring");
-
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
+			se::Stop("Ring");
 		}
 
 		return  true;
@@ -119,10 +118,6 @@ namespace  hand
 		if (this->controller) {
 			auto inp = this->controller->GetState();
 			if (inp.LStick.BD.down) { state = State::Down; }
-			if (inp.B1.down)//z
-			{
-				ge->KillAll_G("ステージ目覚まし時計");
-			}
 		}
 		
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);

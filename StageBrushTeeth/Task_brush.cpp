@@ -57,9 +57,9 @@ namespace  brush
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		se::Stop("brushing");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
+			se::Stop("brushing");
 		}
 
 		return  true;
@@ -118,13 +118,6 @@ namespace  brush
 				(*s)->Kill();
 			}
 		}
-		if (this->controller) {
-			if (inp.B1.down)//z
-			{
-				ge->KillAll_G("ステージ歯磨き");
-			}
-		}
-
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
