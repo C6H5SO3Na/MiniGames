@@ -61,5 +61,8 @@ namespace  OguiFood
 		virtual void Move() override;
 		virtual DrawInformation GetDrawImage() override;
 		virtual void Recieved() override {}
+
+	private:
+		DG::Font::SP testFont;
 	};
 }

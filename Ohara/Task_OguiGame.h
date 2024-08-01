@@ -24,7 +24,7 @@ namespace  OguiGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
-		DG::Image::SP readyImage;
+		DG::Image::SP gameRuleImage;
 		DG::Image::SP fightImage;
 		DG::Image::SP finishImage;
 	};
@@ -50,8 +50,6 @@ namespace  OguiGame
 		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		DG::Font::SP TestFont;
-
 		//☆変数
 		float timeLimit;	//制限時間
 		bool  isInGame;		//ミニゲーム中、trueにする
@@ -67,7 +65,7 @@ namespace  OguiGame
 		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };	//取得するコントローラー
 		PlayerNum playersNum[4] = { PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }; //プレイヤーの識別番号設定用
 
-		ML::Vec2 readyImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
+		ML::Vec2 gameRuleImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
 		ML::Vec2 fightImagePos = ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f);
 		ML::Vec2 finishImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
 

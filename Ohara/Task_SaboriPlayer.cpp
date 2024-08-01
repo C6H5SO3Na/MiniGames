@@ -6,6 +6,7 @@
 #include  "Task_SaboriGame.h"
 
 #include  "../fpscounter.h"
+#include  "../sound.h"
 
 namespace  SaboriPlayer
 {
@@ -122,11 +123,62 @@ namespace  SaboriPlayer
 
 		switch (this->state)
 		{
+		case State::PWork:		//仕事中状態
+			//☆ゲーム開始時の処理
+			if (this->isPlayStartSE == false)
+			{
+				//SEの名前付け
+				this->workSEName = "WorkSE" + to_string((int)this->playerNum);
+				this->saboriSEName = "SaoriSE" + to_string((int)this->playerNum);
+
+				//SE設定
+				//仕事中状態
+				se::LoadFile(workSEName, "./data/sound/se/SaboriGame/PC-Keyboard05-14(Far-Hard).wav");
+				se::SetVolume(workSEName, 100);
+
+				//サボり状態
+				se::LoadFile(saboriSEName, "./data/sound/se/SaboriGame/maou_se_8bit08.wav");
+				se::SetVolume(saboriSEName, 1);
+
+				//SEを鳴らす
+				se::PlayLoop(workSEName);
+
+				this->isPlayStartSE = true;
+			}
+
+			//☆状態変更時に1回だけ行う
+			if (this->moveCnt == 0)
+			{
+				//SEを止める
+				se::Stop(saboriSEName);
+
+				//SEを鳴らす
+				se::PlayLoop(workSEName);
+			}
+
+			break;
+
 		case State::PSabori:	//サボり状態
+			//状態変更時に1回だけ行う処理
+			if (this->moveCnt == 0)
+			{
+				//SEを止める
+				se::Stop(workSEName);
+
+				//SEを鳴らす
+				se::PlayLoop(saboriSEName);
+			}
+			
 			this->totalSaboriTime += 1.f / gameFps; // / gameFps を / GetFps() をに変更してモニターFPSにゲームが依存しないようにする
 			break;
 
 		case State::PNoticed:
+			//状態変更時に1回だけ行う処理
+			if (this->moveCnt == 0)
+			{
+				//SEを止める
+				se::Stop(saboriSEName);
+			}
 			this->noticedToSabori = false;
 			break;
 		}
@@ -197,7 +249,10 @@ namespace  SaboriPlayer
 	Object::Object()
 		: 
 		totalSaboriTime(0.f),
-		noticedToSabori(false)
+		noticedToSabori(false),
+		isPlayStartSE(false),
+		saboriSEName(""),
+		workSEName("")
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

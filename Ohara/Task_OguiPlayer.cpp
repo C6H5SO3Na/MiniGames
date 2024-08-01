@@ -6,6 +6,8 @@
 #include  "Task_OguiFood.h"
 #include  "Task_OguiGame.h"
 
+#include  "../sound.h"
+
 namespace  OguiPlayer
 {
 	Resource::WP  Resource::instance;
@@ -37,6 +39,10 @@ namespace  OguiPlayer
 		this->state = State::PWait;
 		
 		//★タスクの生成
+
+		//☆SE
+		se::LoadFile("eatSE", "./data/sound/se/OguiGame/Motion-Eating01-2.wav");
+		se::SetVolume("eatSE", 50);
 
 		return  true;
 	}
@@ -127,6 +133,8 @@ namespace  OguiPlayer
 				{
 					if (this->playerNum == (*f)->playerNum)
 					{
+						//料理を食べたSEを鳴らす
+						se::Play("eatSE");
 						//料理の量を減らす
 						(*f)->ReduceHP(this->attack);
 						//料理の量を減らしたら食事中状態を継続するようにする

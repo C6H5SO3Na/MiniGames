@@ -7,6 +7,8 @@
 #include  "Task_OguiPlayer.h"
 #include  "Task_OguiGame.h"
 
+#include  "../randomLib.h"
+
 namespace  OguiFood
 {
 	Resource::WP  Resource::instance;
@@ -36,6 +38,7 @@ namespace  OguiFood
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
 		this->state = State::FExist;
+		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 		
 		//★タスクの生成
 
@@ -80,11 +83,26 @@ namespace  OguiFood
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		//☆描画
+		//☆料理描画
 		DrawInformation drawImage = GetDrawImage();
 		drawImage.draw.Offset(this->pos);
 
 		this->res->image->Draw(drawImage.draw, drawImage.src);
+
+		//☆残り料理残量描画
+		//描画
+		if (this->hp > 0)
+		{
+			testFont->Draw(ML::Box2D(static_cast<int>(this->pos.x) - 25, static_cast<int>(this->pos.y) - 25, ge->screen2DWidth, ge->screen2DHeight),
+				to_string(this->hp), ML::Color(1, 0, 0, 0)
+			);
+		}
+		else
+		{
+			testFont->Draw(ML::Box2D(static_cast<int>(this->pos.x) - 25, static_cast<int>(this->pos.y) - 25, ge->screen2DWidth, ge->screen2DHeight),
+				"0", ML::Color(1, 0, 0, 0)
+			);
+		}
 	}
 	//-------------------------------------------------------------------
 	//現在の料理の状態制御

@@ -54,6 +54,9 @@ namespace  SaboriPlayer
 		XI::GamePad::SP controller;			//入力情報を受け取りたいコントローラーのデータを格納
 		float			totalSaboriTime;	//サボった時間の合計を保存しておく
 		bool			noticedToSabori;	//上司にさぼりを気づかれたらtrue
+		bool			isPlayStartSE;		//最初にプレイヤーが鳴らすSEがPlayされたらtrue
+		string			saboriSEName;		//サボり状態のSEの名前
+		string			workSEName;			//仕事中状態のSEの名前
 
 		//☆メソッド
 		virtual void Think() override;

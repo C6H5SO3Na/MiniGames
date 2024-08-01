@@ -7,6 +7,7 @@
 #include  "Task_SaboriGame.h"
 
 #include  "../randomLib.h"
+#include  "../sound.h"
 
 namespace  SaboriJoushi
 {
@@ -40,6 +41,10 @@ namespace  SaboriJoushi
 		this->changeStateTime = GetRandom(2.f, 4.f); //仕事中状態からサボり確認の予備動作状態に変更するまでの時間の設定
 		
 		//★タスクの生成
+
+		//☆SE
+		se::LoadFile("FoundSaboriSE", "./data/sound/se/SaboriGame/ライオンの鳴き声1.wav");
+		se::SetVolume("FoundSaboriSE", 100);
 
 		return  true;
 	}
@@ -165,10 +170,9 @@ namespace  SaboriJoushi
 			break;
 
 		case State::JFoundSabori:				//サボり発見状態
-			//☆状態変化時に一度だけ音を鳴らす
+			//☆サボりを発見したときに行う処理
 			if (this->hasFoundPlayerSabori)
 			{
-				//ここに音を鳴らす処理を書く
 				this->hasFoundPlayerSabori = false;
 			}
 			break;
@@ -217,6 +221,8 @@ namespace  SaboriJoushi
 		{
 			if ((*p)->state == State::PSabori)
 			{
+				//SEを鳴らす
+				se::Play("FoundSaboriSE");
 				//上司がさぼりを発見
 				this->hasFoundPlayerSabori = true;
 				//プレイヤーがさぼりに気づかれる

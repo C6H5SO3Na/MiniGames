@@ -24,7 +24,7 @@ namespace  SaboriGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
-		DG::Image::SP readyImage;
+		DG::Image::SP gameRuleImage;
 		DG::Image::SP fightImage;
 		DG::Image::SP finishImage;
 	};
@@ -93,7 +93,7 @@ namespace  SaboriGame
 		//™•Ï”
 		PlayerInformation playersInfo[4];
 
-		ML::Vec2 readyImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
+		ML::Vec2 gameRuleImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
 		ML::Vec2 fightImagePos = ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f);
 		ML::Vec2 finishImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
 
