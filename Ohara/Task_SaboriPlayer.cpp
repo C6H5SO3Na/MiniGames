@@ -16,6 +16,8 @@ namespace  SaboriPlayer
 	bool  Resource::Initialize()
 	{
 		this->image = DG::Image::Create("./data/image/game_otsan_working.png");
+		this->buttonImage_A = DG::Image::Create("./data/image/button/Double/xbox_button_color_a.png");
+		this->buttonImage_A_Outline = DG::Image::Create("./data/image/button/Double/xbox_button_color_a_outline.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -23,6 +25,8 @@ namespace  SaboriPlayer
 	bool  Resource::Finalize()
 	{
 		this->image.reset();
+		this->buttonImage_A.reset();
+		this->buttonImage_A_Outline.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -87,6 +91,9 @@ namespace  SaboriPlayer
 		drawImage.draw.Offset(this->pos);
 		
 		this->res->image->Draw(drawImage.draw, drawImage.src);
+
+		//☆Aボタン描画
+		this->DrawButton();
 	}
 	//-------------------------------------------------------------------
 	//現在のプレイヤーの状態制御
@@ -124,7 +131,7 @@ namespace  SaboriPlayer
 		switch (this->state)
 		{
 		case State::PWork:		//仕事中状態
-			//☆ゲーム開始時の処理
+			//☆ゲーム本編開始時に一度だけ行う処理
 			if (this->isPlayStartSE == false)
 			{
 				//SEの名前付け
@@ -142,6 +149,10 @@ namespace  SaboriPlayer
 
 				//SEを鳴らす
 				se::PlayLoop(workSEName);
+
+				//ボタンの描画を開始する
+				this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
+				this->isStartButtonDraw = true;
 
 				this->isPlayStartSE = true;
 			}
@@ -211,6 +222,31 @@ namespace  SaboriPlayer
 
 		return rtv;
 	}
+	//-------------------------------------------------------------------
+	//ボタンの描画処理
+	void Object::DrawButton()
+	{
+		if (this->isStartButtonDraw == true)
+		{
+			DrawInformation drawButtonImage = { ML::Box2D(-64, -64, 128, 128), ML::Box2D(0, 0, 128, 128) };
+			drawButtonImage.draw.Offset(this->buttonDrawPos);
+
+			switch (this->state)
+			{
+			case State::PWork:		//仕事中状態
+				this->res->buttonImage_A_Outline->Draw(drawButtonImage.draw, drawButtonImage.src);
+				break;
+
+			case State::PSabori:	//サボり状態
+				this->res->buttonImage_A->Draw(drawButtonImage.draw, drawButtonImage.src);
+				break;
+
+			case State::PNoticed:
+				this->res->buttonImage_A_Outline->Draw(drawButtonImage.draw, drawButtonImage.src);
+				break;
+			}
+		}
+	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -252,7 +288,9 @@ namespace  SaboriPlayer
 		noticedToSabori(false),
 		isPlayStartSE(false),
 		saboriSEName(""),
-		workSEName("")
+		workSEName(""),
+		isStartButtonDraw(false),
+		buttonDrawPos(0, 0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

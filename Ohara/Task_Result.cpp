@@ -47,8 +47,12 @@ namespace  Result
 
 		//☆BGM
 		bgm::LoadFile("ResultBGM", "./data/sound/bgm/エンディング_tanoshiibouken.mp3");
-		bgm::VolumeControl("ResultBGM", 100);
+		bgm::VolumeControl("ResultBGM", 95);
 		bgm::Play("ResultBGM");
+
+		//☆SE
+		se::LoadFile("PushButtonSE", "./data/sound/se/Common/決定ボタンを押す40.wav");
+		se::SetVolume("PushButtonSE", 100);
 
 		return  true;
 	}
@@ -112,7 +116,11 @@ namespace  Result
 			{
 				for (int i = 0; i < 4; ++i)
 				{
-					if (input[i].B1.down) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //結果発表へ
+					//結果発表へ
+					if (input[i].B1.down) 
+					{
+						nowState = ResultState::ResultAnnouncement; nextStateGoIs = false;
+					} 
 				}
 				if (this->countUpToStateChange >= (int)(0.5f * gameFps)) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //結果発表へ
 			}
@@ -123,7 +131,14 @@ namespace  Result
 			{
 				for (int i = 0; i < 4; ++i)
 				{
-					if (input[i].B1.down) { nowState = ResultState::End; nextStateGoIs = false; } //結果発表終了へ
+					//結果発表終了へ
+					if (input[i].B1.down)
+					{
+						//SEを鳴らす
+						se::Play("PushButtonSE");
+
+						nowState = ResultState::End; nextStateGoIs = false; 
+					} 
 				}
 			}
 			break;
@@ -184,6 +199,9 @@ namespace  Result
 				for (int i = 0; i < 4; ++i)
 				{
 					if (input[i].B1.down) {
+						//SEを鳴らす
+						se::Play("PushButtonSE");
+
 						ge->StartCounter("test", 0);
 					}
 					if (ge->getCounterFlag("test") == ge->LIMIT) {

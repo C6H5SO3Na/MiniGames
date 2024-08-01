@@ -25,6 +25,8 @@ namespace  OguiPlayer
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP image;
+		DG::Image::SP buttonImage_A;
+		DG::Image::SP buttonImage_A_Outline;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  OCharaBase
@@ -63,9 +65,16 @@ namespace  OguiPlayer
 		int	 attack;		//食事量、1回ボタンを押して減る料理の量を表す
 		bool existFood;		//料理があるか判断する、あったらtrue
 
+		bool isPlayStart;		//ゲーム本編が開始されたらtrue
+
+		bool isStartButtonDraw;	//ボタンの描画をするときtrue
+		ML::Vec2 buttonDrawPos;	//ボタンの描画位置
+
 		//☆メソッド
 		virtual void Think() override;
 		virtual void Move() override;
 		virtual DrawInformation GetDrawImage();
+
+		void DrawButton();	//ボタンの描画処理
 	};
 }

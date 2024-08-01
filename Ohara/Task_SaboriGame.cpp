@@ -79,6 +79,10 @@ namespace  SaboriGame
 		bgm::LoadFile("SaboriGameBGM", "./data/sound/bgm/サボる_Short60_ゆったりDIY_01.mp3");
 		bgm::VolumeControl("SaboriGameBGM", 90);
 
+		//☆SE
+		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
+		se::SetVolume("FinishSE", 100);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -218,6 +222,9 @@ namespace  SaboriGame
 
 				//全てのSEを消す
 				se::AllStop();
+
+				//終了したらSEを鳴らす
+				se::Play("FinishSE");
 
 				//☆順位を決め、ge->scoreに得点を送る
 				//順位を決める

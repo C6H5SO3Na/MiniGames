@@ -5,6 +5,7 @@
 #include  "Task_ResultUIManager.h"
 
 #include  "../easing.h"
+#include  "../sound.h"
 
 namespace  ResultUIManager
 {
@@ -51,6 +52,15 @@ namespace  ResultUIManager
 		//「結果発表」移動用
 		easing::Set("StartMovePrefaceImage", easing::CIRCOUT, static_cast<float>(ge->screen2DWidth + srcValues[0][2] * 2), ge->screen2DWidth / 2.f, this->gameFps, "EndMovePrefaceImage");
 		easing::Set("EndMovePrefaceImage", easing::CIRCIN, ge->screen2DWidth / 2.f, static_cast<float>(-srcValues[0][2] * 2), this->gameFps);
+
+		//☆SE
+		//キャラクター表示時のSE
+		se::LoadFile("CharacterAppearanceSE", "./data/sound/se/Ending/maou_se_onepoint03.wav");
+		se::SetVolume("CharacterAppearanceSE", 10);
+
+		//1位表示時のSE
+		se::LoadFile("FirstPlayerDisplaySE", "./data/sound/se/Ending/歓声と拍手.wav");
+		se::SetVolume("FirstPlayerDisplaySE", 100);
 
 		return  true;
 	}
@@ -164,9 +174,11 @@ namespace  ResultUIManager
 		{
 		case 0: //1位四人
 			//1位の画像のプレイヤーを四人生成する
-			if (drawUpToCount == static_cast<int>(3.f * gameFps))
+			if (drawUpToCount == static_cast<int>(2.f * gameFps))
 			{
 				//1位の生成
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				for (int i = 0; i < 4; ++i)
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
@@ -178,17 +190,20 @@ namespace  ResultUIManager
 
 		case 1: //1位三人、4位一人
 			//1位の画像のプレイヤーを三人、4位の画像のプレイヤーを一人生成する
-			if (drawUpToCount == static_cast<int>(2.f * gameFps))
+			if (drawUpToCount == static_cast<int>(1.f * gameFps))
 			{
 				//4位の生成
+				se::Play("CharacterAppearanceSE");
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[3]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[3], playerNumberPosition[3], rankSentencePosition[3], scoreDrawPosition[3]);
 
 			}
-			if (drawUpToCount == static_cast<int>(5.f * gameFps))
+			if (drawUpToCount == static_cast<int>(3.f * gameFps))
 			{
 				//1位の生成
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				for (int i = 0; i < 3; ++i)
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
@@ -200,9 +215,10 @@ namespace  ResultUIManager
 
 		case 2: //1位二人、3位二人
 			//1位の画像のプレイヤーを二人、3位の画像のプレイヤーを二人生成する
-			if (drawUpToCount == static_cast<int>(2.f * gameFps))
+			if (drawUpToCount == static_cast<int>(1.f * gameFps))
 			{
 				//3位の生成
+				se::Play("CharacterAppearanceSE");
 				for (int i = 0; i < 2; ++i)
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
@@ -210,9 +226,11 @@ namespace  ResultUIManager
 					displayPlayer->setDrawPos(playerRankEachPlayerPosition[i + 2], playerNumberPosition[i + 2], rankSentencePosition[i + 2], scoreDrawPosition[i + 2]);
 				}
 			}
-			if (drawUpToCount == static_cast<int>(5.f * gameFps))
+			if (drawUpToCount == static_cast<int>(3.f * gameFps))
 			{
 				//1位の生成
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				for (int i = 0; i < 2; ++i)
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
@@ -224,24 +242,28 @@ namespace  ResultUIManager
 
 		case 3: //1位二人、3位一人、4位一人
 			//1位の画像のプレイヤーを二人、3位の画像のプレイヤーを一人、4位の画像のプレイヤーを一人生成する
-			if (drawUpToCount == static_cast<int>(2.f * gameFps))
+			if (drawUpToCount == static_cast<int>(1.f * gameFps))
 			{
 				//4位の生成
+				se::Play("CharacterAppearanceSE");
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[3]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[3], playerNumberPosition[3], rankSentencePosition[3], scoreDrawPosition[3]);
 
 			}
-			if (drawUpToCount == static_cast<int>(4.f * gameFps))
+			if (drawUpToCount == static_cast<int>(2.f * gameFps))
 			{
 				//3位の生成
+				se::Play("CharacterAppearanceSE");
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[2]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[2], playerNumberPosition[2], rankSentencePosition[2], scoreDrawPosition[2]);
 			}
-			if (drawUpToCount == static_cast<int>(6.f * gameFps))
+			if (drawUpToCount == static_cast<int>(4.f * gameFps))
 			{
 				//1位の生成
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				for (int i = 0; i < 2; ++i)
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
@@ -253,9 +275,10 @@ namespace  ResultUIManager
 
 		case 4: //1位一人、2位三人
 			//1位の画像のプレイヤーを一人、2位の画像のプレイヤーを三人生成する
-			if (drawUpToCount == static_cast<int>(2.f * gameFps))
+			if (drawUpToCount == static_cast<int>(1.f * gameFps))
 			{
 				//2位の生成
+				se::Play("CharacterAppearanceSE");
 				for (int i = 0; i < 3; ++i)
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
@@ -263,9 +286,11 @@ namespace  ResultUIManager
 					displayPlayer->setDrawPos(playerRankEachPlayerPosition[i + 1], playerNumberPosition[i + 1], rankSentencePosition[i + 1], scoreDrawPosition[i + 1]);
 				}
 			}
-			if (drawUpToCount == static_cast<int>(5.f * gameFps))
+			if (drawUpToCount == static_cast<int>(3.f * gameFps))
 			{
 				//1位の生成
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[0]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[0], playerNumberPosition[0], rankSentencePosition[0], scoreDrawPosition[0]);
@@ -274,16 +299,19 @@ namespace  ResultUIManager
 
 		case 5: //1位一人、2位二人、4位一人
 			//1位の画像のプレイヤーを一人、2位の画像のプレイヤーを二人、4位の画像のプレイヤーを一人生成する
-			if (drawUpToCount == static_cast<int>(2.f * gameFps))
+			if (drawUpToCount == static_cast<int>(1.f * gameFps))
 			{
 				//4位の生成
+				se::Play("CharacterAppearanceSE");
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[3]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[3], playerNumberPosition[3], rankSentencePosition[3], scoreDrawPosition[3]);
 
 			}
-			if (drawUpToCount == static_cast<int>(5.f * gameFps))
+			if (drawUpToCount == static_cast<int>(3.f * gameFps))
 			{
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				//2位の生成
 				for (int i = 0; i < 2; ++i)
 				{
@@ -297,12 +325,14 @@ namespace  ResultUIManager
 				displayPlayer->setPlayerInformation(result->playersInfo[0]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[0], playerNumberPosition[0], rankSentencePosition[0], scoreDrawPosition[0]);
 			}
+			break;
 
 		case 6: //1位一人、2位一人、3位二人
 			//1位の画像のプレイヤーを一人、2位の画像のプレイヤーを一人、3位の画像のプレイヤーを二人生成する
-			if (drawUpToCount == static_cast<int>(2.f * gameFps))
+			if (drawUpToCount == static_cast<int>(1.f * gameFps))
 			{
 				//3位の生成
+				se::Play("CharacterAppearanceSE");
 				for (int i = 0; i < 2; ++i)
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
@@ -310,8 +340,10 @@ namespace  ResultUIManager
 					displayPlayer->setDrawPos(playerRankEachPlayerPosition[i + 2], playerNumberPosition[i + 2], rankSentencePosition[i + 2], scoreDrawPosition[i + 2]);
 				}
 			}
-			if (drawUpToCount == static_cast<int>(5.f * gameFps))
+			if (drawUpToCount == static_cast<int>(3.f * gameFps))
 			{
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				//2位の生成
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[1]);
@@ -326,23 +358,27 @@ namespace  ResultUIManager
 
 		case 7: //同率なし
 			//1位の画像のプレイヤーを一人、2位の画像のプレイヤーを一人、3位の画像のプレイヤーを一人、4位の画像のプレイヤーを一人生成する
-			if (drawUpToCount == static_cast<int>(2.f * gameFps))
+			if (drawUpToCount == static_cast<int>(1.f * gameFps))
 			{
 				//4位の生成
+				se::Play("CharacterAppearanceSE");
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[3]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[3], playerNumberPosition[3], rankSentencePosition[3], scoreDrawPosition[3]);
 
 			}
-			if (drawUpToCount == static_cast<int>(4.f * gameFps))
+			if (drawUpToCount == static_cast<int>(2.f * gameFps))
 			{
 				//3位の生成
+				se::Play("CharacterAppearanceSE");
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[2]);
 				displayPlayer->setDrawPos(playerRankEachPlayerPosition[2], playerNumberPosition[2], rankSentencePosition[2], scoreDrawPosition[2]);
 			}
-			if (drawUpToCount == static_cast<int>(6.f * gameFps))
+			if (drawUpToCount == static_cast<int>(4.f * gameFps))
 			{
+				se::Play("CharacterAppearanceSE");
+				se::Play("FirstPlayerDisplaySE");
 				//2位の生成
 				auto displayPlayer = ResultUIPlayer::Object::Create(true);
 				displayPlayer->setPlayerInformation(result->playersInfo[1]);
@@ -396,7 +432,7 @@ namespace  ResultUIManager
 			//☆描画
 			if (this->displayPattern == 0)
 			{
-				if (drawUpToCount >= static_cast<int>(4.f * gameFps))
+				if (drawUpToCount >= static_cast<int>(3.f * gameFps))
 				{
 					//☆Aボタンを描画
 					//描画情報設定
@@ -423,7 +459,7 @@ namespace  ResultUIManager
 			}
 			else
 			{
-				if (drawUpToCount >= static_cast<int>(7.f * gameFps))
+				if (drawUpToCount >= static_cast<int>(5.f * gameFps))
 				{
 					//☆Aボタン描画
 					//描画情報設定

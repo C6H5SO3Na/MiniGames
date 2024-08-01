@@ -25,6 +25,8 @@ namespace  SaboriPlayer
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP image;
+		DG::Image::SP buttonImage_A;
+		DG::Image::SP buttonImage_A_Outline;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public OCharaBase
@@ -54,9 +56,7 @@ namespace  SaboriPlayer
 		XI::GamePad::SP controller;			//入力情報を受け取りたいコントローラーのデータを格納
 		float			totalSaboriTime;	//サボった時間の合計を保存しておく
 		bool			noticedToSabori;	//上司にさぼりを気づかれたらtrue
-		bool			isPlayStartSE;		//最初にプレイヤーが鳴らすSEがPlayされたらtrue
-		string			saboriSEName;		//サボり状態のSEの名前
-		string			workSEName;			//仕事中状態のSEの名前
+		
 
 		//☆メソッド
 		virtual void Think() override;
@@ -64,5 +64,16 @@ namespace  SaboriPlayer
 		virtual DrawInformation GetDrawImage() override;
 		virtual void Recieved() override {}
 
+	private:
+		//☆変数
+		bool			isPlayStartSE;		//最初にプレイヤーが鳴らすSEがPlayされたらtrue
+		string			saboriSEName;		//サボり状態のSEの名前
+		string			workSEName;			//仕事中状態のSEの名前
+
+		bool isStartButtonDraw;	//ボタンの描画をするときtrue
+		ML::Vec2 buttonDrawPos;	//ボタンの描画位置
+
+		//☆メソッド
+		void DrawButton();	//ボタンの描画処理
 	};
 }

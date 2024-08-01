@@ -16,6 +16,8 @@ namespace  OguiPlayer
 	bool  Resource::Initialize()
 	{
 		this->image = DG::Image::Create("./data/image/game_otsan_eat_new.png");
+		this->buttonImage_A = DG::Image::Create("./data/image/button/Double/xbox_button_color_a.png");
+		this->buttonImage_A_Outline = DG::Image::Create("./data/image/button/Double/xbox_button_color_a_outline.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -23,6 +25,8 @@ namespace  OguiPlayer
 	bool  Resource::Finalize()
 	{
 		this->image.reset();
+		this->buttonImage_A.reset();
+		this->buttonImage_A_Outline.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -92,6 +96,9 @@ namespace  OguiPlayer
 		drawImage.draw.Offset(this->pos);
 
 		this->res->image->Draw(drawImage.draw, drawImage.src);
+
+		//☆Aボタン描画
+		this->DrawButton();
 	}
 	//-------------------------------------------------------------------
 	//現在のプレイヤーの状態制御
@@ -123,6 +130,18 @@ namespace  OguiPlayer
 
 		switch (this->state)
 		{
+		case State::PWait:
+			//☆ゲーム本編開始時に一度だけ行う処理
+			if (this->isPlayStart == false)
+			{
+				//ボタンの描画を開始する
+				this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
+				this->isStartButtonDraw = true;
+
+				this->isPlayStart = true;
+			}
+			break;
+
 		case State::PEat:	//食事中状態
 			if (input.B1.down)
 			{
@@ -173,6 +192,37 @@ namespace  OguiPlayer
 		return rtv;
 	}
 	//-------------------------------------------------------------------
+	//ボタンの描画処理
+	void Object::DrawButton()
+	{
+		if (this->isStartButtonDraw == true)
+		{
+			DrawInformation drawButtonImage = { ML::Box2D(-64, -64, 128, 128), ML::Box2D(0, 0, 128, 128) };
+			drawButtonImage.draw.Offset(this->buttonDrawPos);
+
+			switch (this->state)
+			{
+			case State::PWait:	//待機状態
+				this->res->buttonImage_A_Outline->Draw(drawButtonImage.draw, drawButtonImage.src);
+				break;
+
+			case State::PEat:	//食事中状態
+				int animationNum = this->animationCount / 5;
+				animationNum %= 2;
+
+				if (animationNum == 0)	//Aボタンの画像描画
+				{
+					this->res->buttonImage_A->Draw(drawButtonImage.draw, drawButtonImage.src);
+				}
+				else					//Aボタン外枠のみの画像描画
+				{
+					this->res->buttonImage_A_Outline->Draw(drawButtonImage.draw, drawButtonImage.src);
+				}
+				break;
+			}
+		}
+	}
+	//-------------------------------------------------------------------
 	//料理の存在しているかの情報を取得
 	void Object::SetExistFood(bool foodExistenceInformation)
 	{
@@ -217,7 +267,10 @@ namespace  OguiPlayer
 		:
 		attack(1),
 		eatFoodCount(0),
-		existFood(false)
+		existFood(false),
+		isPlayStart(false),
+		isStartButtonDraw(false),
+		buttonDrawPos(0, 0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
