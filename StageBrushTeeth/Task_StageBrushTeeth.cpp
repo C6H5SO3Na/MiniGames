@@ -45,6 +45,7 @@ namespace  StageBrushTeeth
 		this->render2D_Priority[1] = 0.9f;
 		this->state = Phase::Game;
 		this->timeCnt = 0;
+		this->clearCount = 0;
 
 		//★タスクの生成
 		/*auto brush = brush::Object::Create(true);*/
@@ -64,6 +65,7 @@ namespace  StageBrushTeeth
 		ge->KillAll_G("共通アイテムマネージャー02");
 
 		bgm::Stop("stage2_bgm");
+		se::Stop("Kirakira");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 			Game::Object::CreateTask(2);
@@ -132,10 +134,16 @@ namespace  StageBrushTeeth
 		for (auto it = stainManager->begin(); it != stainManager->end(); it++)
 		{
 			if ((*it)->IsClear()) {
-				state = Phase::Clear;
+				clearCount++;
 			}
 		}
-		
+		if (clearCount == 4) {// if all players were clear
+			state = Phase::Clear;
+		}
+		else
+		{
+			clearCount = 0;// if not all players were clear this frame, reset clearcount
+		}
 	}
 	//-------------------------------------------------------------------
 	//全員クリア後の処理

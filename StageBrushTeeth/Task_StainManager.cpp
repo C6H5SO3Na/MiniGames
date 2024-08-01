@@ -74,6 +74,7 @@ namespace  StainManager
 		{
 			auto s = stain::Object::Create(true);
 			s->pos = positions[i];
+			s->id = this->id;//GIVE STAIN A ID
 			stains.push_back(s);
 		}
 	}
@@ -100,15 +101,16 @@ namespace  StainManager
 		int KillNum = 0;
 		for (auto s = stains->begin(); s != stains->end(); s++)
 		{
-			if ((*s) == nullptr) { KillNum++; }
-			if (KillNum == 5) //チェッククリア
-			{ 
-				isClear = true;
-				ge->score[this->id] += com->addscore[com->rank]; //addscore
-				com->rank++;
+			if ((*s)->id == this->id) {//if stain and manager have same id
+				KillNum++;
 			}
 		}
-		
+		if (KillNum == 0 ) //チェッククリア //if stain that have same id is null make isClear to true 
+		{
+			isClear = true;
+			ge->score[this->id] += com->addscore[com->rank]; //addscore
+			com->rank++;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

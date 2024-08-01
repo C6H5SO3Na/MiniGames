@@ -52,5 +52,6 @@ namespace  stain
 		int timeCnt;
 		int animCnt;
 		int animIndex;
+		int id;
 	};
 }
