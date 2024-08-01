@@ -117,7 +117,7 @@ namespace  Result
 				for (int i = 0; i < 4; ++i)
 				{
 					//結果発表へ
-					if (input[i].B1.down) 
+					if (input[i].B2.down) 
 					{
 						nowState = ResultState::ResultAnnouncement; nextStateGoIs = false;
 					} 
@@ -132,7 +132,7 @@ namespace  Result
 				for (int i = 0; i < 4; ++i)
 				{
 					//結果発表終了へ
-					if (input[i].B1.down)
+					if (input[i].B2.down)
 					{
 						//SEを鳴らす
 						se::Play("PushButtonSE");
@@ -198,7 +198,7 @@ namespace  Result
 				//タイトル画面に遷移
 				for (int i = 0; i < 4; ++i)
 				{
-					if (input[i].B1.down) {
+					if (input[i].B2.down) {
 						//SEを鳴らす
 						se::Play("PushButtonSE");
 

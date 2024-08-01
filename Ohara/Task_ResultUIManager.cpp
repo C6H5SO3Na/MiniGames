@@ -15,8 +15,8 @@ namespace  ResultUIManager
 	bool  Resource::Initialize()
 	{
 		this->prefaceImage = DG::Image::Create("./data/image/ResultAnnouncement.png");
-		this->buttonImage_A = DG::Image::Create("./data/image/button/double/xbox_button_color_a.png");
-		this->buttonImage_A_Outline = DG::Image::Create("./data/image/button/double/xbox_button_color_a_outline.png");
+		this->buttonImage_A = DG::Image::Create("./data/image/button/double/xbox_button_color_b.png");
+		this->buttonImage_A_Outline = DG::Image::Create("./data/image/button/double/xbox_button_color_b_outline.png");
 		this->thankyouImage = DG::Image::Create("./data/image/ThankyouForPlaying.png");
 		this->directToTitleImage = DG::Image::Create("./data/image/DirectToTitle.png");
 		return true;
