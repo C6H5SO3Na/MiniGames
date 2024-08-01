@@ -7,6 +7,7 @@
 #include  "Task_ResultBG.h"
 
 #include  "../Task_Title.h"
+#include  "../sound.h"
 
 namespace  Result
 {
@@ -44,6 +45,11 @@ namespace  Result
 		//背景
 		ResultBG::Object::Create(true);
 
+		//☆BGM
+		bgm::LoadFile("ResultBGM", "./data/sound/bgm/エンディング_tanoshiibouken.mp3");
+		bgm::VolumeControl("ResultBGM", 100);
+		bgm::Play("ResultBGM");
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -55,6 +61,9 @@ namespace  Result
 		ge->KillAll_G("管理");
 
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
+			//☆BGMの終了
+			bgm::Stop("ResultBGM");
+
 			//★引き継ぎタスクの生成
 			auto next = Title::Object::Create(true);
 		}
@@ -105,7 +114,7 @@ namespace  Result
 				{
 					if (input[i].B1.down) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //結果発表へ
 				}
-				if (this->countUpToStateChange >= (int)(3.0f * gameFps)) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //結果発表へ
+				if (this->countUpToStateChange >= (int)(0.5f * gameFps)) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //結果発表へ
 			}
 			break;
 
@@ -171,17 +180,14 @@ namespace  Result
 			//タイトルに戻る
 			if (this->nextStateGoIs == true)
 			{
-				if (this->nextStateGoIs == true)
+				//タイトル画面に遷移
+				for (int i = 0; i < 4; ++i)
 				{
-					//タイトル画面に遷移
-					for (int i = 0; i < 4; ++i)
-					{
-						if (input[i].B1.down) {
-							ge->StartCounter("test", 0);
-						}
-						if (ge->getCounterFlag("test") == ge->LIMIT) {
-							Kill();
-						}
+					if (input[i].B1.down) {
+						ge->StartCounter("test", 0);
+					}
+					if (ge->getCounterFlag("test") == ge->LIMIT) {
+						Kill();
 					}
 				}
 			}

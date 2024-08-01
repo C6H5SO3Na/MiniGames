@@ -10,6 +10,8 @@
 
 #include  "../Task_Game.h"
 #include  "../randomLib.h"
+#include  "../easing.h"
+#include  "../sound.h"
 
 namespace  OguiGame
 {
@@ -18,12 +20,18 @@ namespace  OguiGame
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->readyImage = DG::Image::Create("./data/image/Ready.gif");
+		this->fightImage = DG::Image::Create("./data/image/Fight.gif");
+		this->finishImage = DG::Image::Create("./data/image/Finish.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->readyImage.reset();
+		this->fightImage.reset();
+		this->finishImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -56,6 +64,20 @@ namespace  OguiGame
 		//背景
 		OguiGameBG::Object::Create(true);
 
+		//☆イージング
+		//文字画像移動用
+		//Ready移動用
+		easing::Set("ReadyStart", easing::CIRCOUT, ge->screen2DWidth + 275.f * 3.f, ge->screen2DWidth / 2.f, this->gameFps, "ReadyEnd");
+		easing::Set("ReadyEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -275.f * 3.f, this->gameFps);
+
+		//Finish移動用
+		easing::Set("FinishStart", easing::CIRCOUT, ge->screen2DWidth + 438.f * 2.f, ge->screen2DWidth / 2.f, this->gameFps, "FinishEnd");
+		easing::Set("FinishEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -438.f * 2.f, this->gameFps);
+
+		//☆BGM
+		bgm::LoadFile("OguiGameBGM", "./data/sound/bgm/大食い_harunopayapaya.mp3");
+		bgm::VolumeControl("OguiGameBGM", 90);
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -70,6 +92,7 @@ namespace  OguiGame
 		ge->KillAll_G("大食いミニゲーム");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
+			bgm::Stop("OguiGameBGM");
 			//★引き継ぎタスクの生成			
 			Game::Object::CreateTask(6);
 		}
@@ -80,17 +103,19 @@ namespace  OguiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		this->gameStateChangeCount++;
-
 		//ゲームの状態遷移
 		this->GameStateTransition();
 		//状態に対応する行動処理
 		this->Work();
+		//イージングを動かす
+		easing::UpDate();
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		//状態に対応する描画処理
+		this->Render();
 	}
 	//-------------------------------------------------------------------
 	//ゲームの状態遷移
@@ -102,7 +127,7 @@ namespace  OguiGame
 		switch (nowState)
 		{
 		case GameState::BeforeGameStart:	//ゲーム開始前
-			if (gameStateChangeCount >= 60 * 2) { nowState = GameState::Game; } //ゲーム中へ
+			if (this->countToChangeGameState >= 60 * 2) { nowState = GameState::Game; } //ゲーム中へ
 			break;
 
 		case GameState::Game:				//ゲーム中
@@ -120,7 +145,6 @@ namespace  OguiGame
 		if (nowState != this->gameState)
 		{
 			this->gameState = nowState;
-			this->gameStateChangeCount = 0;
 		}
 	}
 	//-------------------------------------------------------------------
@@ -130,13 +154,45 @@ namespace  OguiGame
 		switch (this->gameState)
 		{
 		case GameState::BeforeGameStart:	//ゲーム開始前
+			//☆ゲームが始まった瞬間に行う処理
+			if (this->gameStart == true)
+			{
+				//☆イージング開始
+				easing::Start("ReadyStart");
+
+				this->gameStart = false;
+			}
+
+			//☆イージングで座標移動
+			//Readyを動かす
+			this->readyImagePos.x = easing::GetPos("ReadyStart");
+			if (easing::GetState("ReadyStart") == easing::EQ_STATE::EQ_END) //イージング「ReadyStart」が終わったら
+			{
+				this->readyImagePos.x = easing::GetPos("ReadyEnd");
+			}
+
+			//☆Fight描画用処理
+			if (easing::GetState("ReadyEnd") == easing::EQ_STATE::EQ_END) //イージング「ReadyEnd」が終わったら
+			{
+				this->countToFightDraw++;
+			}
+
+			//☆状態を遷移するための処理
+			if (countToFightDraw >= this->gameFps) //Fightの描画と同時に
+			{
+				this->countToChangeGameState++;
+			}
 			break;
 
 		case GameState::Game:				//ゲーム中
-			//☆ゲームを開始する
+			//☆ゲーム本編が始まった瞬間に行う処理
 			if (this->isInGame == false)
 			{
+				//ゲームを開始する
 				this->isInGame = true;
+
+				//BGMスタート
+				bgm::Play("OguiGameBGM");
 			}
 
 			//☆制限時間を減らす
@@ -150,7 +206,7 @@ namespace  OguiGame
 			break;
 
 		case GameState::End:				//ゲーム終了
-			//ゲームの状態がEndの時、一度だけ行う処理
+			//☆ゲームの状態がEndの時、一度だけ行う処理
 			if (this->isInGame == true)
 			{
 				//☆ゲームを終了させる
@@ -161,18 +217,73 @@ namespace  OguiGame
 				this->Ranking();
 				//ge->scoreに得点を送る
 				this->SendScore();
+
+				//☆イージング開始
+				easing::Start("FinishStart");//☆イージング開始
+				easing::Start("FinishStart");
+			}
+
+			//☆イージングで座標移動
+			//Finishを動かす
+			this->finishImagePos.x = easing::GetPos("FinishStart");
+			if (easing::GetState("FinishStart") == easing::EQ_STATE::EQ_END) //イージング「FinishStart」が終わったら
+			{
+				this->finishImagePos.x = easing::GetPos("FinishEnd");
 			}
 
 			//☆次のタスクに行くまでのカウント
-			this->countToNextTask++;
+			if (easing::GetState("FinishEnd") == easing::EQ_STATE::EQ_END)  //イージング「FinishEnd」が終わったら
+			{
+				this->countToNextTask++;
+			}
 
 			//☆統括タスク消滅申請
-			if (this->countToNextTask == 60 * 2) { //60をGetFps()にする 
+			if (this->countToNextTask == 1) {  
 				ge->StartCounter("test", 0);
 			}
 			if (ge->getCounterFlag("test") == ge->LIMIT) {
 				Kill();
 			}
+			break;
+		}
+	}
+	//-------------------------------------------------------------------
+	//状態毎の描画
+	void Object::Render()
+	{
+		ML::Box2D src = {};
+		ML::Box2D draw = {};
+
+		switch (this->gameState)
+		{
+		case GameState::BeforeGameStart:	//ゲーム開始前
+			//☆「Ready」描画
+			//描画情報設定
+			src = ML::Box2D(0, 0, 275, 95);
+			draw = ML::Box2D(-138 * 3, -48 * 3, src.w * 3, src.h * 3);
+			draw.Offset(this->readyImagePos);
+
+			this->res->readyImage->Draw(draw, src);
+
+			//☆「Fight」描画
+			if (this->countToFightDraw >= this->gameFps)
+			{
+				//描画情報設定
+				src = ML::Box2D(0, 0, 219, 95);
+				draw = ML::Box2D(-110 * 3, -48 * 3, src.w * 3, src.h * 3);
+				draw.Offset(this->fightImagePos);
+
+				this->res->fightImage->Draw(draw, src);
+			}
+			break;
+
+		case GameState::End:				//ゲーム終了
+			//☆「Finish」描画
+			src = ML::Box2D(0, 0, 438, 105);
+			draw = ML::Box2D(-src.w, -48, src.w * 2, src.h * 2);
+			draw.Offset(this->finishImagePos);
+
+			this->res->finishImage->Draw(draw, src);
 			break;
 		}
 	}
@@ -368,11 +479,13 @@ namespace  OguiGame
 	Object::Object()
 		:
 		gameState(GameState::BeforeGameStart),
-		gameStateChangeCount(0),
+		countToChangeGameState(0),
 		timeLimit(30.f), //制限時間を設定
 		isInGame(false),
 		countToNextTask(0),
-		playersInfo{}
+		playersInfo{},
+		gameStart(true),
+		countToFightDraw(0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
