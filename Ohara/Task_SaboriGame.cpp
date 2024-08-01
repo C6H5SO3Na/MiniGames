@@ -80,6 +80,11 @@ namespace  SaboriGame
 		bgm::VolumeControl("SaboriGameBGM", 90);
 
 		//☆SE
+		//Fight描画時に鳴らす
+		se::LoadFile("StartSE", "./data/sound/se/Common/試合開始のゴング.wav");
+		se::SetVolume("StartSE", 100);
+
+		//ゲーム終了時に鳴らす
 		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
 		se::SetVolume("FinishSE", 100);
 
@@ -134,7 +139,7 @@ namespace  SaboriGame
 		switch (nowState)
 		{
 		case GameState::BeforeGameStart:	//ゲーム開始前
-			if (this->countToChangeGameState >= 60 * 2) { nowState = GameState::Game; } //ゲーム中へ
+			if (this->countToChangeGameState >= 60) { nowState = GameState::Game; } //ゲーム中へ
 			break;
 
 		case GameState::Game:				//ゲーム中
@@ -182,6 +187,13 @@ namespace  SaboriGame
 			if (easing::GetState("GameRuleEnd") == easing::EQ_STATE::EQ_END) //イージング「GameRuleEnd」が終わったら
 			{
 				this->countToFightDraw++;
+			}
+
+			//☆Fightの描画時に行う処理
+			if (countToFightDraw == this->gameFps)
+			{
+				//ゲーム開始のSEを鳴らす
+				se::Play("StartSE");
 			}
 
 			//☆状態を遷移するための処理
