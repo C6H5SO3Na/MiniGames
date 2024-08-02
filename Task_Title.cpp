@@ -125,7 +125,7 @@ namespace  Title
 		if (inp.B4.down) input |= 0x0008;	// 0000001000
 		if (inp.ST.down) input |= 0x0100;	// 0100000000
 
-		if (input & 0x0100) {
+		if (inp.B2.down) {
 			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
 			ge->CreateEffect(98, ML::Vec2(0, 0));
 		}
