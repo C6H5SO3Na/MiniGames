@@ -126,36 +126,36 @@ namespace  SaboriPlayer
 	//状態毎の行動処理
 	void Object::Move()
 	{
-		//fpscounterをインスタンス化する
+		//☆ゲーム本編開始時に一度だけ行う処理
+
+		if (this->isPlayStartSE == false)
+		{
+			//SEの名前付け
+			this->workSEName = "WorkSE" + to_string((int)this->playerNum);
+			this->saboriSEName = "SaoriSE" + to_string((int)this->playerNum);
+
+			//SE設定
+			//仕事中状態
+			se::LoadFile(workSEName, "./data/sound/se/SaboriGame/PC-Keyboard05-14(Far-Hard).wav");
+			se::SetVolume(workSEName, 100);
+
+			//サボり状態
+			se::LoadFile(saboriSEName, "./data/sound/se/SaboriGame/maou_se_8bit08.wav");
+			se::SetVolume(saboriSEName, 1);
+
+			//SEを鳴らす
+			se::PlayLoop(workSEName);
+
+			//ボタンの描画を開始する
+			this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
+			this->isStartButtonDraw = true;
+
+			this->isPlayStartSE = true;
+		}
 
 		switch (this->state)
 		{
 		case State::PWork:		//仕事中状態
-			//☆ゲーム本編開始時に一度だけ行う処理
-			if (this->isPlayStartSE == false)
-			{
-				//SEの名前付け
-				this->workSEName = "WorkSE" + to_string((int)this->playerNum);
-				this->saboriSEName = "SaoriSE" + to_string((int)this->playerNum);
-
-				//SE設定
-				//仕事中状態
-				se::LoadFile(workSEName, "./data/sound/se/SaboriGame/PC-Keyboard05-14(Far-Hard).wav");
-				se::SetVolume(workSEName, 100);
-
-				//サボり状態
-				se::LoadFile(saboriSEName, "./data/sound/se/SaboriGame/maou_se_8bit08.wav");
-				se::SetVolume(saboriSEName, 1);
-
-				//SEを鳴らす
-				se::PlayLoop(workSEName);
-
-				//ボタンの描画を開始する
-				this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
-				this->isStartButtonDraw = true;
-
-				this->isPlayStartSE = true;
-			}
 
 			//☆状態変更時に1回だけ行う
 			if (this->moveCnt == 0)

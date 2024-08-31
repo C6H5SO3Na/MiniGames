@@ -38,7 +38,7 @@ protected:
 	ML::Vec2 MoveSet(int key);
 
 	//ó‚¯g‚Ìˆ—
-	virtual void Recieved() = 0;
+	virtual void Received() = 0;
 	//“–‚½‚è”»’èæ“¾
 	ML::Box2D GetHitBase() const { return hitBase; }
 	//À•Wæ“¾

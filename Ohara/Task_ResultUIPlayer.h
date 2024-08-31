@@ -79,7 +79,7 @@ namespace  ResultUIPlayer
 		virtual void Think() override {}
 		virtual void Move() override {}
 		virtual DrawInformation GetDrawImage() override { return {}; }
-		virtual void Recieved() override {}
+		virtual void Received() override {}
 
 	public:
 		//™ƒƒ\ƒbƒh

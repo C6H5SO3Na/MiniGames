@@ -59,7 +59,7 @@ namespace  SaboriJoushi
 		virtual void Think() override;
 		virtual void Move() override;
 		virtual DrawInformation GetDrawImage() override;
-		virtual void Recieved() override {}
+		virtual void Received() override {}
 
 		void CheckPlayerSabori(); //ƒvƒŒƒCƒ„[‚ª‚³‚Ú‚èó‘Ô‚©‚Ç‚¤‚©”»’è‚·‚é
 	};

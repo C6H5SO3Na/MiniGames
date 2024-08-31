@@ -31,7 +31,7 @@ bool  BChara::CheckHit(BChara::SP ptr)
 	ML::Box2D me = this->GetHitBase().OffsetCopy(this->GetPos());
 	ML::Box2D you = ptr->GetHitBase().OffsetCopy(ptr->GetPos());
 	if (you.Hit(me)) {
-		ptr->Recieved();
+		ptr->Received();
 		return true;
 	}
 	return false;
@@ -46,7 +46,7 @@ bool  BChara::CheckHit(shared_ptr<vector<BChara::SP>> iters)
 			ML::Box2D me = this->GetHitBase().OffsetCopy(this->GetPos());
 			ML::Box2D you = iter->GetHitBase().OffsetCopy(iter->GetPos());
 			if (you.Hit(me)) {
-				iter->Recieved();
+				iter->Received();
 				rtv = true;
 				return;
 			}

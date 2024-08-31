@@ -63,13 +63,16 @@ namespace TaxiGamePlayer
 		int nowBtn = 0;
 		int matchCnt = 0;
 
+		int controllerNum = 1;
+
 		//メソッド
 		void Think();
 		void Move();
-		void Recieved() override;
+		void Received() override;
 		void DrawButton() const;
 		void MatchButton();
 		void DrawClearMessage() const;
+		int GetControllerNum(XI::GamePad::SP con) const;
 
 		//ボタンのビット
 		enum Button {

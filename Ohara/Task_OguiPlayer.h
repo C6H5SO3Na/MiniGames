@@ -58,7 +58,7 @@ namespace  OguiPlayer
 		//™ƒƒ\ƒbƒh
 		void SetExistFood(bool FoodExistenceInformation);	//—¿—‚Ì‘¶İ‚µ‚Ä‚¢‚é‚©‚Ìî•ñ‚ğæ“¾
 
-		virtual void Recieved() override {}
+		virtual void Received() override {}
 
 	private:
 		//™•Ï”
