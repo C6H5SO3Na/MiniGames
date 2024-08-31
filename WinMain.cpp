@@ -38,7 +38,10 @@ int __stdcall WinMain(	HINSTANCE inst_,	//
 		}
 		else if (GetActiveWindow() == wnd)
 		{
-			ge->B_Step(wnd);		//	ゲーム処理
+			if (ge->c->LoopControl()) {
+				ge->B_Step(wnd);		//	ゲーム処理
+				//ge->c->DrawFps();
+			}
 		}
 	}
 
@@ -57,22 +60,22 @@ HWND MyPG_CreateWindow(HINSTANCE inst_, const TCHAR cName_[], const TCHAR tName_
 	HWND wnd;								//	ウインドウハンドル
 
 //	データ初期化
-	wcex.style			= (CS_HREDRAW | CS_VREDRAW);
+	wcex.style = (CS_HREDRAW | CS_VREDRAW);
 	wcex.hIcon = (HICON)LoadImage(inst_, MAKEINTRESOURCE(IDI_ICON1),
-		IMAGE_ICON, 0, 0,  LR_DEFAULTSIZE | LR_SHARED);
+		IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
 
-	wcex.cbSize			= sizeof(WNDCLASSEX);
-	wcex.hCursor		= LoadCursor(nullptr, IDC_ARROW);
+	wcex.cbSize = sizeof(WNDCLASSEX);
+	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hIconSm = (HICON)LoadImage(inst_, MAKEINTRESOURCE(IDI_ICON1),
-		IMAGE_ICON, 0, 0,  LR_DEFAULTSIZE | LR_SHARED);
-	wcex.hInstance		= inst_;
-	wcex.cbClsExtra		= 0;
-	wcex.cbWndExtra		= 0;
-	wcex.lpfnWndProc	= (WNDPROC)WndProc;
-	wcex.lpszMenuName	= nullptr;
-	wcex.lpszClassName	= cName_;
-	wcex.hbrBackground	= (HBRUSH)GetStockObject(BLACK_BRUSH);
-//	Windowsに登録
+		IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_SHARED);
+	wcex.hInstance = inst_;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.lpfnWndProc = (WNDPROC)WndProc;
+	wcex.lpszMenuName = nullptr;
+	wcex.lpszClassName = cName_;
+	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	//	Windowsに登録
 	if(!RegisterClassEx(&wcex))
 	{
 		MessageBox(nullptr, "ウインドウ登録に失敗", nullptr, MB_OK);
