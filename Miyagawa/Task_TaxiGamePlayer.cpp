@@ -100,6 +100,11 @@ namespace TaxiGamePlayer
 	void  Object::Move()
 	{
 		state->move();
+
+		//強制的にリザルト画面へ(2~3P用)
+		if (input.SE.down) {
+			ge->KillAll_G("タクシー");
+		}
 	}
 	//-------------------------------------------------------------------
 	//受け身
