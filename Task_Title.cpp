@@ -117,14 +117,6 @@ namespace  Title
 
 		this->Cnt++;
 
-		int input = 0;
-		//							16進		2進	
-		if (inp.B1.down) input |= 0x0001;	// 0000000001
-		if (inp.B2.down) input |= 0x0002;	// 0000000010
-		if (inp.B3.down) input |= 0x0004;	// 0000000100
-		if (inp.B4.down) input |= 0x0008;	// 0000001000
-		if (inp.ST.down) input |= 0x0100;	// 0100000000
-
 		if (inp.B2.down) {
 			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
 			ge->CreateEffect(98, ML::Vec2(0, 0));
