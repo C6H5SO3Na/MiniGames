@@ -117,7 +117,7 @@ namespace  Title
 
 		this->Cnt++;
 
-		if (inp.B2.down) {
+		if (inp.B2.down && ge->getCounterFlag("test") != ge->ACTIVE) {
 			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
 			ge->CreateEffect(98, ML::Vec2(0, 0));
 		}
