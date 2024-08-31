@@ -62,7 +62,7 @@ namespace  SaboriPlayer
 		virtual void Think() override;
 		virtual void Move() override;
 		virtual DrawInformation GetDrawImage() override;
-		virtual void Recieved() override {}
+		virtual void Received() override {}
 
 	private:
 		//™•Ï”

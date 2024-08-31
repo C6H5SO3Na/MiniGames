@@ -54,7 +54,7 @@ namespace  CGPlayer
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//追加したい変数・メソッドはここに追加する
 		//BCharaに含まれないモノのみここに追加する
-		void Recieved() {};
+		void Received() {};
 		void posInitialize(ML::Vec2 ppos);
 		int workTime;//分類の回数
 		XI::GamePad::SP controller;

@@ -51,7 +51,7 @@ namespace TaxiGamePlayer
 		//★データ初期化
 		render2D_Priority[1] = 0.5f;
 		nowBtn = GetRandom(0, 3);
-
+		
 		//SE
 		se::LoadFile("Miss", "./data/sound/se/ClassifyGame/maou_se_onepoint33.wav");
 		se::LoadFile("Clear", "./data/sound/se/TaxiGame/clear.wav");
@@ -103,7 +103,7 @@ namespace TaxiGamePlayer
 	}
 	//-------------------------------------------------------------------
 	//受け身
-	void  Object::Recieved()
+	void  Object::Received()
 	{
 	}
 	//-------------------------------------------------------------------
@@ -146,9 +146,9 @@ namespace TaxiGamePlayer
 	{
 		if (owner_->BUTTON(0) == 0) { return; }
 		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {//ビット単位のための計算
+			easing::Set("move" + to_string(owner_->controllerNum), easing::QUADINOUT, 0, -150, 120);
+			easing::Start("move" + to_string(owner_->controllerNum));
 			owner_->ChangeState(new MoveState(owner_));
-			easing::Set("move", easing::QUADINOUT, 0, -150, 120);
-			easing::Start("move");
 			se::Play("Walk");
 		}
 		else {
@@ -178,7 +178,7 @@ namespace TaxiGamePlayer
 	//思考
 	void  Object::MoveState::think()
 	{
-		if (easing::GetState("move") == easing::EQ_STATE::EQ_END) {
+		if (easing::GetState("move" + to_string(owner_->controllerNum)) == easing::EQ_STATE::EQ_END) {
 			owner_->MatchButton();
 			if (owner_->isClear) {
 				owner_->AddScore(playerScore, owner_->controller);
@@ -193,7 +193,7 @@ namespace TaxiGamePlayer
 	//行動
 	void  Object::MoveState::move()
 	{
-		owner_->pos.x = easing::GetPos("move") + owner_->prePos.x;
+		owner_->pos.x = easing::GetPos("move" + to_string(owner_->controllerNum)) + owner_->prePos.x;
 	}
 	//-------------------------------------------------------------------
 	//描画
@@ -321,6 +321,25 @@ namespace TaxiGamePlayer
 		}
 		--score;
 	}
+	//-------------------------------------------------------------------
+	//コントローラー番号を取得
+	int Object::GetControllerNum(XI::GamePad::SP con) const
+	{
+		int rtv = 0;
+		if (con == ge->in1) {
+			rtv = 1;
+		}
+		else if (con == ge->in2) {
+			rtv = 2;
+		}
+		else if (con == ge->in3) {
+			rtv = 3;
+		}
+		else if (con == ge->in4) {
+			rtv = 4;
+		}
+		return rtv;
+	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -362,6 +381,8 @@ namespace TaxiGamePlayer
 		auto player = Create(true);
 		player->pos = pos_;
 		player->controller = controller_;
+		//コントローラーの番号を取得
+		player->controllerNum = player->GetControllerNum(player->controller);
 	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

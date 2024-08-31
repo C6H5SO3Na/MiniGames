@@ -47,7 +47,7 @@ namespace  stain
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		void Recieved() {};
+		void Received() {};
 
 		int timeCnt;
 		int animCnt;

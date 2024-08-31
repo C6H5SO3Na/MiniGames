@@ -51,7 +51,7 @@ namespace  hand
 		//BCharaに含まれないモノのみここに追加する
 		//「変数宣言を書く」
 		//「追加メソッドを書く」
-		void Recieved() {};
+		void Received() {};
 
 		float speed;
 		float minPosX, minPosY, maxPosX, maxPosY;

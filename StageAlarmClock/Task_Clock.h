@@ -51,7 +51,7 @@ namespace  Clock
 		//BCharaに含まれないモノのみここに追加する
 		//「変数宣言を書く」
 		//「追加メソッドを書く」
-		void Recieved() {};
+		void Received() {};
 		void Positionalise(int PlayerNum);
 		ML::Box2D drawBase;
 		int id;
