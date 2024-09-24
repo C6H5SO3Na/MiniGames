@@ -46,7 +46,7 @@ namespace  OguiGame
 		//★データ初期化
 
 		//★タスクの生成
-		//プレイヤー
+		//プレイヤータスク作成
 		for (int i = 0; i < size(controllers); ++i)
 		{
 			auto p = OguiPlayer::Object::Create(true);
@@ -55,13 +55,13 @@ namespace  OguiGame
 			p->playerNum = playersNum[i];
 		}
 
-		//料理管理
+		//料理管理タスク作成
 		OguiFoodManager::Object::Create(true);
 
-		//UI管理
+		//UI管理タスク作成
 		OguiUIManager::Object::Create(true);
 
-		//背景
+		//背景タスク作成
 		OguiGameBG::Object::Create(true);
 
 		//☆イージング
@@ -76,16 +76,16 @@ namespace  OguiGame
 
 		//☆BGM
 		bgm::LoadFile("OguiGameBGM", "./data/sound/bgm/大食い_harunopayapaya.mp3");
-		bgm::VolumeControl("OguiGameBGM", 90);
+		bgm::VolumeControl("OguiGameBGM", 90); // マジックナンバーは音量(0～100の範囲)
 
 		//☆SE
 		//Fight描画時に鳴らす
 		se::LoadFile("StartSE", "./data/sound/se/Common/試合開始のゴング.wav");
-		se::SetVolume("StartSE", 100);
+		se::SetVolume("StartSE", 100); // マジックナンバーは音量(0～100の範囲)
 
 		//ゲーム終了時に鳴らす
 		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
-		se::SetVolume("FinishSE", 100);
+		se::SetVolume("FinishSE", 100); // マジックナンバーは音量(0～100の範囲)
 
 		return  true;
 	}
@@ -136,7 +136,7 @@ namespace  OguiGame
 		switch (nowState)
 		{
 		case GameState::BeforeGameStart:	//ゲーム開始前
-			if (this->countToChangeGameState >= 60) { nowState = GameState::Game; } //ゲーム中へ
+			if (this->countToChangeGameState >= gameFps) { nowState = GameState::Game; } //ゲーム中へ
 			break;
 
 		case GameState::Game:				//ゲーム中
@@ -212,7 +212,7 @@ namespace  OguiGame
 			}
 
 			//☆制限時間を減らす
-			this->timeLimit -= 1.f / 60; // / 60 を / GetFps()に変更してモニターFPSにゲームが依存しないようにする
+			this->timeLimit -= 1.f / gameFps;
 
 			//制限時間が0未満だったら0にする
 			if (this->timeLimit < 0.f)
@@ -315,29 +315,32 @@ namespace  OguiGame
 	{
 		//プレイヤーから情報を取得する
 		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
-		for (auto p = players->begin(); p != players->end(); ++p)
+		if (players) // nullチェック
 		{
-			switch ((*p)->playerNum)
+			for (auto p = players->begin(); p != players->end(); ++p)
 			{
-			case PlayerNum::Player1:
-				playersInfo[0].playerNum = (*p)->playerNum;
-				playersInfo[0].eatFoodCount = (*p)->eatFoodCount;
-				break;
+				switch ((*p)->playerNum)
+				{
+				case PlayerNum::Player1:
+					playersInfo[0].playerNum = (*p)->playerNum;
+					playersInfo[0].eatFoodCount = (*p)->eatFoodCount;
+					break;
 
-			case PlayerNum::Player2:
-				playersInfo[1].playerNum = (*p)->playerNum;
-				playersInfo[1].eatFoodCount = (*p)->eatFoodCount;
-				break;
+				case PlayerNum::Player2:
+					playersInfo[1].playerNum = (*p)->playerNum;
+					playersInfo[1].eatFoodCount = (*p)->eatFoodCount;
+					break;
 
-			case PlayerNum::Player3:
-				playersInfo[2].playerNum = (*p)->playerNum;
-				playersInfo[2].eatFoodCount = (*p)->eatFoodCount;
-				break;
+				case PlayerNum::Player3:
+					playersInfo[2].playerNum = (*p)->playerNum;
+					playersInfo[2].eatFoodCount = (*p)->eatFoodCount;
+					break;
 
-			case PlayerNum::Player4:
-				playersInfo[3].playerNum = (*p)->playerNum;
-				playersInfo[3].eatFoodCount = (*p)->eatFoodCount;
-				break;
+				case PlayerNum::Player4:
+					playersInfo[3].playerNum = (*p)->playerNum;
+					playersInfo[3].eatFoodCount = (*p)->eatFoodCount;
+					break;
+				}
 			}
 		}
 
@@ -502,12 +505,13 @@ namespace  OguiGame
 		:
 		gameState(GameState::BeforeGameStart),
 		countToChangeGameState(0),
-		timeLimit(30.f), //制限時間を設定
+		timeLimit(15.f), //制限時間を設定
 		isInGame(false),
 		countToNextTask(0),
 		playersInfo{},
 		gameStart(true),
-		countToFightDraw(0)
+		countToFightDraw(0),
+		gameFps(60)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

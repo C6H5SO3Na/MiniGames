@@ -72,8 +72,8 @@ namespace  OguiGame
 		int   countToFightDraw;			//「Fight」の文字を描画するまでのカウント
 		int   countToChangeGameState;	//GameStateを変更するまでのカウント
 		int   countToNextTask;			//次のタスクにするまでのカウント
-		int   gameFps = 60;
-		bool  gameStart;				//ゲーム開始時true	
+		int   gameFps;					//想定FPS
+		bool  gameStart;				//ゲーム開始時true
 
 		//☆構造体・列挙型
 		//ゲームの状態
