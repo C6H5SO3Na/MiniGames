@@ -14,7 +14,7 @@ public:
 		//列挙型変数
 		state(State::Default), playerNum(PlayerNum::Player1), playerType(PlayerType::HumanPlayer),
 		//変数
-		gameFps(60), animationCount(0)
+		gameFps(60), animationCount(0), numberDecidePlayerType(0)
 	{}
 
 	//デストラクタ
@@ -29,6 +29,7 @@ protected:
 	};
 
 	//☆列挙型
+	//プレイヤ操作かCPU操作かの判定用(プレイヤは0、CPUは1としても扱える)
 	enum class PlayerType
 	{
 		HumanPlayer,	// プレイヤが操作する場合
@@ -36,9 +37,9 @@ protected:
 	};
 
 	//☆変数
-	int			gameFps;		// ゲームプレイする上で想定しているFPS値を設定
-	int			animationCount;	// 画像をアニメーションにするためのカウント
-	PlayerType	playerType;		// プレイヤが操作するかCPUが処理するかを決める
+	int			gameFps;				// ゲームプレイする上で想定しているFPS値を設定
+	int			animationCount;			// 画像をアニメーションにするためのカウント
+	PlayerType	playerType;				// プレイヤが操作するかCPUが処理するかを決める
 	
 public:
 	//☆列挙型
@@ -68,8 +69,9 @@ public:
 	};
 
 	//☆変数
-	State		 state;		// プレイヤーの状態
-	PlayerNum    playerNum; // プレイヤー識別用番号
+	State		state;					// プレイヤーの状態
+	PlayerNum   playerNum;				// プレイヤー識別用番号
+	int			numberDecidePlayerType;	// PlayerTypeを決める数(0でプレイヤ操作、1でCPU操作)
 
 protected:
 	//☆メソッド

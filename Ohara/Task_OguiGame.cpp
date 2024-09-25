@@ -49,10 +49,22 @@ namespace  OguiGame
 		//プレイヤータスク作成
 		for (int i = 0; i < size(controllers); ++i)
 		{
-			auto p = OguiPlayer::Object::Create(true);
-			p->pos = this->playerFirstPos[i];
-			p->controller = this->controllers[i];
-			p->playerNum = playersNum[i];
+			auto p = OguiPlayer::Object::Create(true);	// タスク生成
+			if (p) // nullチェック
+			{
+				p->pos = this->playerFirstPos[i];		// プレイヤの初期位置設定
+				p->controller = this->controllers[i];	// 使用コントローラ設定(コントローラが接続されていなくても問題ない)
+				//プレイヤ操作かCPU操作かの設定
+				if (i < playerCount)
+				{
+					p->numberDecidePlayerType = 0;	// プレイヤ操作に設定
+				}
+				else
+				{
+					p->numberDecidePlayerType = 1;	// CPU操作に設定
+				}
+				p->playerNum = playersNum[i];	// プレイヤー識別番号設定
+			}
 		}
 
 		//料理管理タスク作成
@@ -511,7 +523,8 @@ namespace  OguiGame
 		playersInfo{},
 		gameStart(true),
 		countToFightDraw(0),
-		gameFps(60)
+		gameFps(60),
+		playerCount(0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

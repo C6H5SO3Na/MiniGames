@@ -69,11 +69,12 @@ namespace  OguiGame
 		ML::Vec2 fightImagePos = ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f);
 		ML::Vec2 finishImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
 
-		int   countToFightDraw;			//「Fight」の文字を描画するまでのカウント
-		int   countToChangeGameState;	//GameStateを変更するまでのカウント
-		int   countToNextTask;			//次のタスクにするまでのカウント
-		int   gameFps;					//想定FPS
-		bool  gameStart;				//ゲーム開始時true
+		int		countToFightDraw;		// 「Fight」の文字を描画するまでのカウント
+		int		countToChangeGameState;	// GameStateを変更するまでのカウント
+		int		countToNextTask;		// 次のタスクにするまでのカウント
+		int		gameFps;				// 想定FPS
+		bool	gameStart;				// ゲーム開始時true
+		int		playerCount;			// プレイヤ数
 
 		//☆構造体・列挙型
 		//ゲームの状態
