@@ -20,6 +20,7 @@ namespace  CGPlayer
 		deskImg= DG::Image::Create("./data/image/game_desk.png");
 		handLImg = DG::Image::Create("./data/image/tsume_hand.png");
 		handRImg = DG::Image::Create("./data/image/tsume_hand_1.png");
+		playerNumImg = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -65,10 +66,10 @@ namespace  CGPlayer
 			books[i].bpos = pos + ML::Vec2(0, -40);
 		}
 		for (int i = 0; i < 3; ++i) {
-			books[i].bpos += ML::Vec2(-80 + i * 80, -100);
+			books[i].bpos += ML::Vec2(-180 + i * 180, -100);
 			books[i].color = i;
 		}
-		books[3].bpos += ML::Vec2(0, -200);
+		books[3].bpos += ML::Vec2(0, -250);
 		books[3].color = 3;
 	}
 	//-------------------------------------------------------------------
@@ -103,7 +104,7 @@ namespace  CGPlayer
 			if (in.LStick.BL.down) {
 				moveCnt = 0;
 				Rb++;
-				books[workTime - 1].bpos += ML::Vec2(-80, -100 - Rb * 5);
+				books[workTime - 1].bpos += ML::Vec2(-180, -100 - Rb * 5);
 				se::Play("seCGc");
 				SetCGState(CGstate::Playing);
 			}
@@ -141,7 +142,7 @@ namespace  CGPlayer
 			if (in.LStick.BR.down) {
 				moveCnt = 0;
 				Gb++;			
-				books[workTime - 1].bpos += ML::Vec2(80, -100 - Gb * 5);
+				books[workTime - 1].bpos += ML::Vec2(180, -100 - Gb * 5);
 				se::Play("seCGc");
 				SetCGState(CGstate::Playing);
 			}
@@ -161,7 +162,7 @@ namespace  CGPlayer
 	void  Object::toFailState(int workT) {
 		books[workT - 1].color = 3;
 		moveCnt = 0;
-		books[workT - 1].bpos += ML::Vec2(0, -200 - Fb * 5);
+		books[workT - 1].bpos += ML::Vec2(0, -250 - Fb * 5);
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -180,7 +181,7 @@ namespace  CGPlayer
 		res->handRImg->Draw(draw.OffsetCopy(pos), src);
 		//書類
 		src = ML::Box2D(0, 0, 742, 700);
-		draw = ML::Box2D(0, 0, 32, 32);
+		draw = ML::Box2D(0, 0, 96, 96);
 		for (int i = 0; i < 14; ++i) {
 			if (workTime > i) {
 				src.x = books[i].color * 742;
@@ -191,11 +192,15 @@ namespace  CGPlayer
 		//カウンター
 		src = ML::Box2D(0, 35, 20, 25);
 		draw = ML::Box2D(0, 0, 20, 25);
-		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(-80, -100)), src.OffsetCopy(20 * Rb, 0));
+		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(-180, -100)), src.OffsetCopy(20 * Rb, 0));
 		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -100)), src.OffsetCopy(20 * Bb, 0));
-		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(80, -100)), src.OffsetCopy(20 * Gb, 0));
-		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -200)), src.OffsetCopy(20 * Fb, 0));
+		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(180, -100)), src.OffsetCopy(20 * Gb, 0));
+		res->CountImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -250)), src.OffsetCopy(20 * Fb, 0));
 
+		//playerNum
+		src = playerNumUIsrc[playerNum];
+		draw = playerNumUIdraw[playerNum];
+		res->playerNumImg->Draw(draw.OffsetCopy(pos+ ML::Vec2(-400, -250)), src);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

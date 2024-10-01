@@ -49,6 +49,7 @@ namespace  ClassifyGamePM
 			pList.push_back(p);
 			pList[i]->posInitialize(ML::Vec2(450 + 960 * (i % 2), 300 + 540 * (i / 2)));
 			pList[i]->controller = cList[i];
+			pList[i]->playerNum = i;
 		}
 		return  true;
 	}
