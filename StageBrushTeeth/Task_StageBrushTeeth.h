@@ -26,6 +26,7 @@ namespace  StageBrushTeeth
 		//「変数宣言を書く」
 		DG::Image::SP bgImg;
 		DG::Image::SP teethImg;
+		DG::Image::SP controllerMark;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -57,6 +58,8 @@ namespace  StageBrushTeeth
 		void CheckClear();
 
 		int timeCnt;
-		int clearCount;//for knew how many player is clear
+		int clearCount;//クリア数
+		int animCnt;
+		int animIndex;
 	};
 }

@@ -51,7 +51,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		CreateTask();
+		CreateTask(3);
     
 		return  true;
 	}
@@ -61,8 +61,6 @@ namespace  Game
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("本編");
-		ge->KillAll_G("ステージ目覚まし時計");
-		ge->KillAll_G("ステージ歯磨き");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
