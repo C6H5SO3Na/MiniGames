@@ -18,6 +18,7 @@ namespace  StageBrushTeeth
 	{
 		this->bgImg = DG::Image::Create("./data/image/mirror.png");
 		this->teethImg = DG::Image::Create("./data/image/mouth.png");
+		this->controllerMark = DG::Image::Create("./data/image/LeftStickAllDirection.png");
 		ge->debugRectLoad();
 		return true;
 	}
@@ -46,6 +47,7 @@ namespace  StageBrushTeeth
 		this->state = Phase::Game;
 		this->timeCnt = 0;
 		this->clearCount = 0;
+		this->animCnt = 0;
 
 		//★タスクの生成
 		/*auto brush = brush::Object::Create(true);*/
@@ -63,6 +65,7 @@ namespace  StageBrushTeeth
 		ge->KillAll_G("よごれマネージャー");
 		ge->KillAll_G("よごれ");
 		ge->KillAll_G("共通アイテムマネージャー02");
+		ge->KillAll_G("ステージ歯磨き");
 
 		bgm::Stop("stage2_bgm");
 		se::Stop("Kirakira");
@@ -78,6 +81,17 @@ namespace  StageBrushTeeth
 	void  Object::UpDate()
 	{
 		timeCnt++;
+		animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 15)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 2)
+			{
+				this->animIndex = 0;
+			}
+		}
 		switch (this->state) {
 		case Phase::Game:
 			CheckClear();
@@ -124,6 +138,12 @@ namespace  StageBrushTeeth
 		ML::Box2D draw5(1920 / 2 + 1920 / 10, 1080/2 + 10, 1280/2, 1080/2 - 10 * 2);
 		this->res->teethImg->Draw(draw5, src2);
 		ge->debugRectDraw();
+
+		ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
+		int srcX = animIndex % 2 * 128;
+		int srcY = animIndex / 2 * 128;
+		ML::Box2D Src(srcX, srcY, 128, 128);
+		this->res->controllerMark->Draw(Draw, Src);
 
 	}
 	//-------------------------------------------------------------------

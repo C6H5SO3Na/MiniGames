@@ -18,6 +18,7 @@ namespace  StageAlarmClock
 	bool  Resource::Initialize()
 	{
 		this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
+		this->controllerMark = DG::Image::Create("./data/image/LeftStickDown.png");
 		ge->debugRectLoad();
 		return true;
 	}
@@ -26,6 +27,7 @@ namespace  StageAlarmClock
 	bool  Resource::Finalize()
 	{
 		this->bgImg.reset();
+		this->controllerMark.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -45,6 +47,7 @@ namespace  StageAlarmClock
 		this->render2D_Priority[1] = 0.9f;
 		this->state = Phase::Game;
 		this->timeCnt = 0;
+		this->animCnt = 0;
 
 		//★タスクの生成
 		/*auto alarmclock = Clock::Object::Create(true);
@@ -63,6 +66,7 @@ namespace  StageAlarmClock
 		ge->KillAll_G("目覚まし時計");
 		ge->KillAll_G("手");
 		ge->KillAll_G("共通アイテムマネージャー01");
+		ge->KillAll_G("ステージ目覚まし時計");
 
 		bgm::Stop("stage1_bgm");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
@@ -77,6 +81,17 @@ namespace  StageAlarmClock
 	void  Object::UpDate()
 	{
 		timeCnt++;
+		animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 15)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 2)
+			{
+				this->animIndex = 0;
+			}
+		}
 		switch (this->state) {
 		case Phase::Game:
 			CheckClear();
@@ -107,6 +122,12 @@ namespace  StageAlarmClock
 
 		ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
 		this->res->bgImg->Draw(draw4, src);
+
+		ML::Box2D Draw(1920/2 - 150/2, 1080/2 - 150/2, 150, 150);
+		int srcX = animIndex % 2 * 128;
+		int srcY = animIndex / 2 * 128;
+		ML::Box2D Src(srcX, srcY, 128, 128);
+		this->res->controllerMark->Draw(Draw, Src);
 
 		ge->debugRectDraw();
 	}
