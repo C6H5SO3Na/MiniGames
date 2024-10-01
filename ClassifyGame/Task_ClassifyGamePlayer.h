@@ -29,6 +29,7 @@ namespace  CGPlayer
 		DG::Image::SP deskImg;
 		DG::Image::SP handLImg;
 		DG::Image::SP handRImg;
+		DG::Image::SP playerNumImg;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  CGBChara
@@ -71,6 +72,12 @@ namespace  CGPlayer
 		void toFailState(int workT);
 		int Rb, Gb, Bb;//赤、緑、青色の書類の数（分類成功）
 		int Fb;//分類失敗の書類の数
-
+		int playerNum = 0;
+		ML::Box2D playerNumUIsrc[4] = {
+			ML::Box2D(0, 0, 155, 105),ML::Box2D(155, 0, 192, 105),ML::Box2D(347, 0, 175, 105), ML::Box2D(522, 0, 193, 105)
+		};
+		ML::Box2D playerNumUIdraw[4] = {
+			ML::Box2D(0, 0, 155, 105),ML::Box2D(0, 0, 192, 105),ML::Box2D(0, 0, 175, 105), ML::Box2D(0, 0, 193, 105)
+		};
 	};
 }
