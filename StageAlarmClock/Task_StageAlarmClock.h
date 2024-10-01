@@ -25,6 +25,7 @@ namespace  StageAlarmClock
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
 		//u•Ï”éŒ¾‚ğ‘‚­v
 		DG::Image::SP bgImg;
+		DG::Image::SP controllerMark;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -55,5 +56,7 @@ namespace  StageAlarmClock
 		void Clear();
 
 		int timeCnt;
+		int animCnt;
+		int animIndex;
 	};
 }
