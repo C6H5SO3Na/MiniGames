@@ -83,6 +83,12 @@
     <Filter Include="MyPG\Task\Ohara\Result">
       <UniqueIdentifier>{c96743ee-4f3e-43eb-973a-b0fff8382213}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Miyagawa\TaxiGame">
+      <UniqueIdentifier>{5126510f-8324-4b99-8f26-8a1888fb23b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyPG\Task\Miyagawa\UIManager">
+      <UniqueIdentifier>{8593b2c4-219d-4819-9163-15a84b967942}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -193,15 +199,6 @@
     <ClCompile Include="ClassifyGame\Task_ClassifyGame.cpp">
       <Filter>MyPG\Task\Game\ClassifyGame</Filter>
     </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TaxiGame.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClCompile>
     <ClCompile Include="Ohara\OharaCharacterBase.cpp">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClCompile>
@@ -231,9 +228,6 @@
     </ClCompile>
     <ClCompile Include="Ohara\Task_SaboriUIManager.cpp">
       <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp">
-      <Filter>MyPG\Task\Miyagawa</Filter>
     </ClCompile>
     <ClCompile Include="StageBrushTeeth\Task_brush.cpp">
       <Filter>MyPG\Task\StageBrushTeeth\brush</Filter>
@@ -279,6 +273,24 @@
     </ClCompile>
     <ClCompile Include="Ohara\Task_ResultBG.cpp">
       <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGame.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_UIManager.cpp">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TimeLimitGauge.cpp">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,15 +397,6 @@
     <ClInclude Include="ClassifyGame\Task_ClassifyGame.h">
       <Filter>MyPG\Task\Game\ClassifyGame</Filter>
     </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TaxiGame.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
     <ClInclude Include="Ohara\OharaCharacterBase.h">
       <Filter>MyPG\Task\Ohara</Filter>
     </ClInclude>
@@ -442,9 +445,6 @@
     <ClInclude Include="Ohara\Task_SaboriUIManager.h">
       <Filter>MyPG\Task\Ohara\SaboriGame</Filter>
     </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TaxiGameBG.h">
-      <Filter>MyPG\Task\Miyagawa</Filter>
-    </ClInclude>
     <ClInclude Include="StageAlarmClock\Task_Clock.h">
       <Filter>MyPG\Task\StageAlarmClock\Clock</Filter>
     </ClInclude>
@@ -474,6 +474,24 @@
     </ClInclude>
     <ClInclude Include="Ohara\Task_ResultBG.h">
       <Filter>MyPG\Task\Ohara\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGame.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGameBG.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_UIManager.h">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TimeLimitGauge.h">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

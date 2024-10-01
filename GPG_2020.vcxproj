@@ -151,6 +151,8 @@
     <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp" />
+    <ClCompile Include="Miyagawa\Task_TimeLimitGauge.cpp" />
+    <ClCompile Include="Miyagawa\Task_UIManager.cpp" />
     <ClCompile Include="myLib.cpp" />
     <ClCompile Include="MyPG.cpp" />
     <ClCompile Include="Ohara\OharaCharacterBase.cpp" />
@@ -217,6 +219,8 @@
     <ClInclude Include="Miyagawa\Task_TaxiGameBG.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h" />
+    <ClInclude Include="Miyagawa\Task_TimeLimitGauge.h" />
+    <ClInclude Include="Miyagawa\Task_UIManager.h" />
     <ClInclude Include="myLib.h" />
     <ClInclude Include="MyPG.h" />
     <ClInclude Include="Ohara\OharaCharacterBase.h" />

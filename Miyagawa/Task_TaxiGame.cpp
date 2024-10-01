@@ -50,8 +50,8 @@ namespace  TaxiGame
 		vector<XI::GamePad::SP> players;
 		players.push_back(ge->in1);
 		players.push_back(ge->in2);
-		players.push_back(ge->in3);
-		players.push_back(ge->in4);
+		//players.push_back(ge->in3);
+		//players.push_back(ge->in4);
 
 		//プレイヤー配置
 		for (int i = 0; i < players.size(); ++i) {
@@ -93,11 +93,11 @@ namespace  TaxiGame
 			Clear();
 			break;
 		}
-		gameCnt++;//ゲーム時間のカウンター（フレーム）
-		if (gameCnt == 1800) {
-			ge->StartCounter("Clear", 180);
-			phase = Phase::Clear;
-		}
+		//gameCnt++;//ゲーム時間のカウンター（フレーム）
+		//if (gameCnt == 1800) {
+		//	ge->StartCounter("Clear", 180);
+		//	phase = Phase::Clear;
+		//}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -116,7 +116,8 @@ namespace  TaxiGame
 					++clearNum;
 				}
 			});
-		if (clearNum >= 4) {
+		//クリア
+		if (clearNum >= players->size()) {
 			ge->StartCounter("Clear", 180);
 			phase = Phase::Clear;
 		}
