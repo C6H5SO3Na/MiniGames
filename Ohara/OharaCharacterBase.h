@@ -39,7 +39,6 @@ protected:
 	//☆変数
 	int			gameFps;				// ゲームプレイする上で想定しているFPS値を設定
 	int			animationCount;			// 画像をアニメーションにするためのカウント
-	PlayerType	playerType;				// プレイヤが操作するかCPUが処理するかを決める
 	
 public:
 	//☆列挙型
@@ -71,6 +70,7 @@ public:
 	//☆変数
 	State		state;					// プレイヤーの状態
 	PlayerNum   playerNum;				// プレイヤー識別用番号
+	PlayerType	playerType;				// プレイヤが操作するかCPUが処理するかを決める
 	int			numberDecidePlayerType;	// PlayerTypeを決める数(0でプレイヤ操作、1でCPU操作)
 
 protected:

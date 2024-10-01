@@ -137,7 +137,16 @@ namespace  OguiUIManager
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object()
+		: 
+		//プレイヤー識別番号関係
+		playerNumbersDrawInfo{
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f - 200.f) },			//1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f - 200.f) },	//2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f - 200.f) },	//3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f - 200.f) }	//4P
+		}
+	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
@@ -159,3 +168,6 @@ namespace  OguiUIManager
 	//-------------------------------------------------------------------
 	Resource::~Resource() { this->Finalize(); }
 }
+
+/*メモ*/
+/*次はInitializeでゲームを遊ぶプレイヤーの人数をTask_OguiGameのgetter関数で取得する*/

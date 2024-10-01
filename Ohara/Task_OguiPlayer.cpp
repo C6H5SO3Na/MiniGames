@@ -41,7 +41,9 @@ namespace  OguiPlayer
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f; 
 		this->state = State::PWait;	// 初期状態設定
-		playerType = static_cast<PlayerType>(numberDecidePlayerType); // プレイヤ操作かCPU操作か決定(Initializeでは不可能、タスク生成処理でPlayerTypeを変更しなければいけない？)
+
+		/*メモ*/
+		/*プレイヤー操作かCPU操作かを決めるとき、TasK_OguiGameのgetter関数から情報を取得すると簡単にできる*/
 		
 		//★タスクの生成
 
