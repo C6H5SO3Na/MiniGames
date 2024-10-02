@@ -44,6 +44,8 @@ namespace  brush
 		this->drawBase = ML::Box2D(-158, -35, 316, 70);
 		this->pos.x = 0;
 		this->pos.y = 0;
+		this->LStick_x = 0;
+		this->LStick_y = 0;
 		this->speed = 6.0f;
 		/*this->controller = ge->in1;*/
 		
@@ -73,9 +75,9 @@ namespace  brush
 		if (inp.LStick.volume > 0)
 		{
 
-			float x = cos(inp.LStick.angleDYP) * this->speed;
-			float y = sin(inp.LStick.angleDYP) * this->speed;
-			this->moveVec = ML::Vec2(x, y);
+			LStick_x = cos(inp.LStick.angleDYP) * this->speed;
+			LStick_y = sin(inp.LStick.angleDYP) * this->speed;
+			this->moveVec = ML::Vec2(LStick_x, LStick_y);
 		}
 		else
 		{
@@ -130,7 +132,20 @@ namespace  brush
 	{
 		ML::Box2D draw = this->drawBase.OffsetCopy(this->pos);
 		ML::Box2D src(0, 0, 945, 210);
-		this->res->img->Draw(draw, src);
+		ML::Box2D src1(945, 0, 945, 210);
+		ML::Box2D src2(945 * 2, 0, 945, 210);
+		if (LStick_y < 0)
+		{
+			this->res->img->Draw(draw, src2);
+		}
+		else if (LStick_y > 0)
+		{
+			this->res->img->Draw(draw, src1);
+		}
+		else
+		{
+			this->res->img->Draw(draw, src);
+		}	
 	}
 	//-------------------------------------------------------------------
 	void Object::Positionalise(int PlayerNum)

@@ -35,7 +35,7 @@ namespace  hand
 
 		//SE
 		se::LoadFile("Stop", "./data/sound/se/AlarmClockGame/Clock-Alarm05-5(Toggle).wav");
-		se::LoadFile("Ring", "./data/sound/se/AlarmClockGame/Clock-Alarm05-7(Far-Low).wav");
+		se::LoadFile("Ring", "./data/sound/se/AlarmClockGame/alarmRing.wav");
 		se::SetVolume("Stop", 100);
 
 		//★データ初期化
@@ -163,12 +163,12 @@ namespace  hand
 	void Object::Positionalise(int PlayerNum)
 	{
 		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
-		pos.x = PlayerArea.x + (drawBase.w / 2);
-		pos.y = PlayerArea.y + (drawBase.h / 2);
-		minPosX = PlayerArea.x + (drawBase.w / 2);
-		minPosY = PlayerArea.y + (drawBase.h / 2) + 2 * this->speed;
-		maxPosX = PlayerArea.x + PlayerArea.w - drawBase.w;
-		maxPosY = PlayerArea.y + PlayerArea.h / 2;
+		pos.x = (float)PlayerArea.x + (drawBase.w / 2);
+		pos.y = (float)PlayerArea.y + (drawBase.h / 2);
+		minPosX = (float)PlayerArea.x + (drawBase.w / 2);
+		minPosY = (float)PlayerArea.y + (drawBase.h / 2) + 2 * this->speed;
+		maxPosX = (float)PlayerArea.x + PlayerArea.w - drawBase.w;
+		maxPosY = (float)PlayerArea.y + PlayerArea.h / 2;
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

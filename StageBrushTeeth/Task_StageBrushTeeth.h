@@ -27,6 +27,7 @@ namespace  StageBrushTeeth
 		DG::Image::SP bgImg;
 		DG::Image::SP teethImg;
 		DG::Image::SP controllerMark;
+		DG::Image::SP PlayerNum;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
