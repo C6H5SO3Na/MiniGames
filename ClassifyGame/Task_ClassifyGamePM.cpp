@@ -31,6 +31,7 @@ namespace  ClassifyGamePM
 	{
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
+
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
 
@@ -82,13 +83,13 @@ namespace  ClassifyGamePM
 					ge->AddScore(i, 4);
 					break;
 				case 2:
-					ge->AddScore(i, 3);
-					break;
-				case 3:
 					ge->AddScore(i, 2);
 					break;
-				case 4:
+				case 3:
 					ge->AddScore(i, 1);
+					break;
+				case 4:
+					ge->AddScore(i, 0);
 					break;
 				default:
 					break;

@@ -84,6 +84,8 @@ namespace  MyPG
 		bool isGameClear = false;//クリアフラグ
 		bool unHitEnemy = false;//敵との当たり判定
 
+		int nowStage = 0;
+
 		bool isTransparent = false; //透明フラグ
 
 

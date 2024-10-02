@@ -35,7 +35,7 @@ namespace  ClassifyGame
 
 		//★データ初期化
 		gameCnt = 0;
-
+		
 		//BGM
 		bgm::LoadFile("bgmCG", "./data/sound/bgm/tanoshiimugibatake.mp3");
 		bgm::Play("bgmCG");
@@ -53,7 +53,7 @@ namespace  ClassifyGame
 		ge->KillAll_G("ClassifyGamePM");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			
+			ge->GetScore(0);
 			Game::Object::CreateTask(4);
 		}
 

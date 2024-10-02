@@ -79,14 +79,14 @@ namespace  BlanceGamePM
 			{
 			case 0:
 				for (int i = 0; i < 4; ++i) {
-					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
+					if (pList[i]->GetBGState() == BGBChara::BGstate::Playing) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayL);
 					}
 				}
 				break;
 			case 1:
 				for (int i = 0; i < 4; ++i) {
-					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
+					if (pList[i]->GetBGState() == BGBChara::BGstate::Playing) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayR);
 					}
 				}

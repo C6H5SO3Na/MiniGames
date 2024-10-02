@@ -39,6 +39,7 @@ namespace  CGPlayer
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
+		this->render2D_Priority[1] = 0.5;
 		this->res = Resource::Create();
 
 		//★データ初期化
