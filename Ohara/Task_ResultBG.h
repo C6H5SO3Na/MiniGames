@@ -45,8 +45,11 @@ namespace  ResultBG
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
+	//追加したい変数・メソッドはここに追加する
+		//☆変数
+		ML::Vec2	moveVec;		// 移動ベクトル
+		float		movedDistance;	// 移動した距離
 	public:
-		//追加したい変数・メソッドはここに追加する
-		
+		ML::Vec2	pos;			// 背景の位置
 	};
 }
