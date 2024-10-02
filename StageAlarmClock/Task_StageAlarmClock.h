@@ -54,7 +54,7 @@ namespace  StageAlarmClock
 
 		Phase state;
 		void CheckClear();
-		void Clear();
+		void MarkCount();
 
 		int timeCnt;
 		int animCnt;

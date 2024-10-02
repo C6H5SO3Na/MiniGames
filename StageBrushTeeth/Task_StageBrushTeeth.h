@@ -40,6 +40,7 @@ namespace  StageBrushTeeth
 		//生成窓口 引数はtrueでタスクシステムへ自動登録
 		static  Object::SP  Create(bool flagGameEnginePushBack_);
 		Resource::SP	res;
+
 	private:
 		Object();
 		bool  B_Initialize();
@@ -55,12 +56,16 @@ namespace  StageBrushTeeth
 
 		Phase state;
 
-		void Clear();
+		void MarkCount();
 		void CheckClear();
 
 		int timeCnt;
 		int clearCount;//クリア数
 		int animCnt;
 		int animIndex;
+
+	public:
+		bool isEnd = false;
 	};
+
 }

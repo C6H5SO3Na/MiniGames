@@ -99,12 +99,13 @@ namespace  StageAlarmClock
 			CheckClear();
 			if (timeCnt >= 20 * 60)
 			{
+				MarkCount();
 				this->state = Phase::Clear;
 			}
 			break;
 
 		case Phase::Clear:
-			Clear();
+			Kill();
 			break;
 		}
 	}
@@ -158,25 +159,40 @@ namespace  StageAlarmClock
 	{
 		int clearNum = 0;
 		auto players = ge->GetTasks <hand::Object> ("手");
+		auto com = ge->GetTask<CommonItemManager01::Object>("共通アイテムマネージャー01");
+		auto c = ge->GetTasks<Clock::Object>("目覚まし時計");
 		for_each(players->begin(), players->end(), [&](auto iter) {
-				if (iter->IsClear()) {
-
-					++clearNum;
+			if (iter->IsClear()) {
+				++clearNum;
+				if (!iter->isScoreAdd) {
+					ge->AddScore(iter->id, com->addscore[com->rank]);
+					com->rank++;
+					iter->isScoreAdd = true;
 				}
-			});
-		if (clearNum >= 4) {
-			//ge->StartCounter("Clear", 180);
+			}
+		});
+		if (clearNum == 4) {
 			state = Phase::Clear;
+		}
+		else
+		{
+			clearNum = 0;// if not all players were clear this frame, reset clearcount
 		}
 	}
 	//-------------------------------------------------------------------
 	//全員クリア後の処理
-	void  Object::Clear()
+	void  Object::MarkCount()
 	{
-		Kill();
-	/*	if (ge->getCounterFlag("Clear") == ge->LIMIT) {
-			Kill();
-		}*/
+		auto players = ge->GetTasks <hand::Object>("手");
+		auto com = ge->GetTask<CommonItemManager01::Object>("共通アイテムマネージャー01");
+		auto c = ge->GetTasks<Clock::Object>("目覚まし時計");
+		for_each(players->begin(), players->end(), [&](auto iter) {
+				if (iter->isScoreAdd == false) {
+					ge->AddScore(iter->id, com->addscore[com->rank]);
+					iter->isScoreAdd = true;
+				}
+			}
+		);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
