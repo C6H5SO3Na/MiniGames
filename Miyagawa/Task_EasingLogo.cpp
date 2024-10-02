@@ -1,24 +1,34 @@
 //-------------------------------------------------------------------
-//UIマネージャー
+//ゲームの最初に出る指示
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_UIManager.h"
 #include  "Task_EasingLogo.h"
-#include  "Task_TimeLimitGauge.h"
+#include  "Task_GameMessage.h"
 
-namespace UIManager
+namespace EasingLogo
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		img.push_back(DG::Image::Create("./data/image/SaboriGameRuleSentence.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/SaboriGameRuleSentence.png"));
+		img.push_back(DG::Image::Create("./data/image/OugiGameRuleSentence.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/Finish.png"));
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		for (auto& i : img) {
+			i.reset();
+		}
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,9 +41,10 @@ namespace UIManager
 		res = Resource::Create();
 
 		//★データ初期化
+		render2D_Priority[1] = 0.01f;
 
 		//★タスクの生成
-		TimeLimitBar::Object::Create(ML::Vec2(1000.f, 1000.f));
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -42,33 +53,33 @@ namespace UIManager
 	{
 		//★データ＆タスク解放
 
-
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		if (logo.lock() == nullptr) {
+			Kill();
+		}
+		if (!isCreated) {
+			if (isFinish) {
+				logo = GameMessage::Object::Create(res->img[7], srcTable[7], "FinishSE");
+			}
+			else {
+				logo = GameMessage::Object::Create(res->img[ge->nowStage], srcTable[ge->nowStage]);
+			}
+			isCreated = true;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-	}
-	//-------------------------------------------------------------------
-	//ステージ説明を描画
-	EasingLogo::Object::SP Object::ShowRule()
-	{
-		return EasingLogo::Object::Spawn(false);
-	}
-	//-------------------------------------------------------------------
-	//Finishを描画
-	EasingLogo::Object::SP  Object::ShowFinish()
-	{
-		return EasingLogo::Object::Spawn(true);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -104,7 +115,14 @@ namespace UIManager
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {}
+	Object::Object():isFinish(false) {}
+	//-------------------------------------------------------------------
+	Object::SP Object::Spawn(const bool& isFinish)
+	{
+		auto logo = Create(true);
+		logo->isFinish = isFinish;
+		return logo;
+	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()

@@ -18,6 +18,7 @@ namespace TimeLimitBar
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -56,11 +57,11 @@ namespace TimeLimitBar
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		remainingCnt--;
+		--remainingCnt;
 		remainingCnt = max(remainingCnt, 0);
 		gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
 		if (remainingCnt <= 0) {
-			//
+			//ゲーム終了
 		}
 	}
 	//-------------------------------------------------------------------
@@ -71,21 +72,21 @@ namespace TimeLimitBar
 		DrawGauge();
 	}
 	//-------------------------------------------------------------------
-	//体力 バーの枠描画
+	//バーの枠描画
 	void Object::DrawFlame() const
 	{
 		ML::Box2D src(0, 0, srcBase.w, srcBase.h);
-		ML::Box2D draw(-srcBase.w / 2, -srcBase.h / 2, srcBase.w, srcBase.h);
+		ML::Box2D draw(-srcBase.w * 6 / 2, -srcBase.h * 2 / 2, srcBase.w * 6, srcBase.h * 2);
 		draw.Offset(pos);
 		res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
-	//体力 バーのゲージ描画
+	//バーのゲージ描画
 	void Object::DrawGauge() const
 	{
 		int gSize = static_cast<int>(srcBase.w * gaugeAmount);
 		ML::Box2D src(0, srcBase.h, gSize, srcBase.h);
-		ML::Box2D draw(-srcBase.w / 2, -src.h / 2, gSize, srcBase.h);
+		ML::Box2D draw(-srcBase.w * 6 / 2, -src.h * 2 / 2, gSize * 6, srcBase.h * 2);
 		draw.Offset(pos);
 		res->img->Draw(draw, src);
 	}

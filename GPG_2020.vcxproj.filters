@@ -292,6 +292,12 @@
     <ClCompile Include="Miyagawa\Task_TimeLimitGauge.cpp">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClCompile>
+    <ClCompile Include="Miyagawa\Task_EasingLogo.cpp">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_GameMessage.cpp">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -491,6 +497,12 @@
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_TimeLimitGauge.h">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_EasingLogo.h">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_GameMessage.h">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
   </ItemGroup>

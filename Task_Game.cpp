@@ -17,6 +17,7 @@
 #include  <thread>
 
 #include  "randomLib.h"
+#include  "easing.h"
 #include  "Ohara/Task_Result.h"
 
 
@@ -53,7 +54,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		CreateTask(6);
+		CreateTask();
 		UIManager::Object::Create(true);
 
 		return  true;
@@ -78,6 +79,7 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		easing::UpDate();
 	}
 	//-------------------------------------------------------------------
 	//タスクの生成
@@ -86,15 +88,14 @@ namespace  Game
 		StageAlarmClock::Object::Create(true);
 	}
 	void  Object::CreateTask(int nextTask) {
-		int i = 0;
-		i = nextTask;
-
+		ge->nowStage = nextTask;
+		
 		int timeLimitTable[] = {
 			1000, 100,10,113,110,100,100,
 		};
 		//auto gsUI=gamesetUI::Object::Create(true);  //ゲームセットUI生成用
 		/*std::this_thread::sleep_for(std::chrono::seconds(2));*/
-		switch (i) {
+		switch (ge->nowStage) {
 		case 1:
 			StageBrushTeeth::Object::Create(true);
 			break;

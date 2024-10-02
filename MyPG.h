@@ -86,6 +86,8 @@ namespace  MyPG
 
 		int score[4] = {};
 
+		int nowStage = 0;
+
 		bool isTransparent = false; //“§–¾ƒtƒ‰ƒO
 
 

@@ -1,16 +1,16 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//タクシー
+//ゲームの最初に出る指示
 //-------------------------------------------------------------------
 #include "../BChara.h"
-#include  "Task_EasingLogo.h"
+#include  "Task_GameMessage.h"
 
-namespace UIManager
+namespace EasingLogo
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("UI");	//グループ名
-	const  string  defName("マネージャー");//タスク名
+	const  string  defName("イージングするロゴ");//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -23,20 +23,20 @@ namespace UIManager
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
 		static  Resource::SP  Create();
+
+		//それぞれのゲームの指示の画像を格納
+		vector<shared_ptr<DG::Image>> img;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public  BChara
+	class  Object : public  BTask
 	{
 		//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	public:
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		//生成窓口 引数はtrueでタスクシステムへ自動登録
-		static  Object::SP  Create(bool flagGameEnginePushBack_);
+		static  Object::SP  Spawn(const bool& isFinish);
 		Resource::SP	res;
-		static EasingLogo::Object::SP ShowRule();
-		static EasingLogo::Object::SP ShowFinish();
 	private:
 		Object();
 		bool  B_Initialize();
@@ -46,6 +46,23 @@ namespace UIManager
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
-		void Received() override {}
+		//生成窓口 引数はtrueでタスクシステムへ自動登録
+		static  Object::SP  Create(bool flagGameEnginePushBack_);
+
+		ML::Vec2 pos;
+		GameMessage::Object::WP logo;//循環参照を防ぐためweak_ptrを使用
+		bool isFinish;
+		bool isCreated = false;
+
+		ML::Box2D srcTable[8] = {
+			ML::Box2D(0, 0, 756, 87),
+			ML::Box2D(0, 0, 438, 105),
+			ML::Box2D(0, 0, 438, 105),
+			ML::Box2D(0, 0, 438, 105),
+			ML::Box2D(0, 0, 756, 87),
+			ML::Box2D(0, 0, 687, 88),
+			ML::Box2D(0, 0, 438, 105),
+			ML::Box2D(0, 0, 438, 105)//Finish
+		};
 	};
 }
