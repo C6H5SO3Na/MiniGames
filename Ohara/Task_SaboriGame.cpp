@@ -44,10 +44,22 @@ namespace  SaboriGame
 		res = Resource::Create();
 
 		//★データ初期化
+		//playerCountに不正な値が入った場合4を入れる
+		if (playerCount < 1 || playerCount > 4)
+		{
+			playerCount = 4;
+		}
+
+		//使用するコントローラーの設定
+		for (int i = 0; i < playerCount; ++i)
+		{
+			useControllers.push_back(controllers[i]);
+		}
 
 		//★タスクの生成
 		//プレイヤー
-		for (int i = 0; i < size(controllers); ++i)
+		//for (int i = 0; i < 4; ++i) // CPU実装時はこっちを使う
+		for (int i = 0; i < useControllers.size(); ++i)
 		{
 			auto p = SaboriPlayer::Object::Create(true);
 			p->pos = this->playerFirstPos[i];
@@ -467,6 +479,12 @@ namespace  SaboriGame
 			}
 		}
 	}
+	//-------------------------------------------------------------------
+	//ゲームを遊ぶプレイヤーの人数の情報を渡す
+	int Object::GetPlayerCount()
+	{
+		return playerCount;
+	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -503,14 +521,22 @@ namespace  SaboriGame
 	//-------------------------------------------------------------------
 	Object::Object()
 		:
-		gameStart(true),
-		timeLimit(30.f), //制限時間を設定
-		isInGame(false),
-		countToNextTask(0),
-		gameState(GameState::BeforeGameStart),
-		playersInfo{},
-		countToFightDraw(0),
-		countToChangeGameState(0)
+		//サボりゲーム関係
+		gameState(GameState::BeforeGameStart), gameStart(true), countToNextTask(0), gameFps(60), countToChangeGameState(0), timeLimit(30.f), isInGame(false),
+		//プレイヤー関係
+		playerFirstPos{
+			{ ge->screen2DWidth / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 230.f } 
+		},
+		controllers{ ge->in1, ge->in2, ge->in3, ge->in4 }, playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playersInfo(),
+		playerCount(4),
+		//上司関係
+		joushiFirstPos(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 3.f)),
+		//文字描画関係
+		gameRuleImagePos(ML::Vec2(0.f, ge->screen2DHeight / 2.f)), fightImagePos(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f)),
+		finishImagePos(ML::Vec2(0.f, ge->screen2DHeight / 2.f)), countToFightDraw(0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

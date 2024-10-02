@@ -48,39 +48,35 @@ namespace  SaboriGame
 		void  Render2D_AF()		override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();	//「終了」タスク消滅時に１回だけ行う処理
 		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
-	public:
 		//追加したい変数・メソッドはここに追加する
-		//☆変数
-		ML::Vec2 playerFirstPos[4] = {	//プレイヤーの初期位置
-			{ ge->screen2DWidth / 8.f, ge->screen2DHeight - 230.f }, 
-			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 230.f },
-			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 230.f },
-			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 230.f }
-		};
-		ML::Vec2 joushiFirstPos = { ge->screen2DWidth / 2.f, ge->screen2DHeight / 3.f };	//上司の初期位置
-		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };			//取得するコントローラー
-		PlayerNum playersNum[4] = { PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }; //プレイヤーの識別番号設定用
-
-		bool  gameStart;			//ゲーム開始時true	
-		float timeLimit;			//制限時間
-		bool  isInGame;				//ミニゲーム中か判断する。ミニゲーム中trueにする
-		int   countToNextTask;		//次のタスクにするまでのカウント
-
+		//サボりゲーム関係--------------------------------------------------------------------------------------------------------------------------------------------
 		//☆列挙型
+		//ゲームの状態
 		enum class GameState
 		{
 			BeforeGameStart,	//ゲーム開始前
 			Game,				//ゲーム中
 			End,				//ゲーム終了
 		};
-		GameState gameState;
+		
+		//☆変数
+		GameState	gameState;				// ゲームの状態
+		bool		gameStart;				// ゲーム開始時true	
+		int			countToNextTask;		// 次のタスクにするまでのカウント
+		int			gameFps; 				// 想定FPS
+		int			countToChangeGameState;	// GameStateを変更するまでのカウント
+	public:
+		float		timeLimit;				// 制限時間
+		bool		isInGame;				// ミニゲーム中か判断する。ミニゲーム中trueにする
 
+	private:
 		//☆メソッド
 		void GameStateTransition();					//ゲームの状態遷移
 		void UpdateGameState(GameState nowState);	//ゲームの状態変更時処理
 		void Work();								//状態毎の処理
-
-	private:
+		void Render();								//状態毎の描画
+	
+		//プレイヤー関係----------------------------------------------------------------------------------------------------------------------------------------------
 		//☆構造体
 		//順位決めに必要なプレイヤーの情報
 		struct PlayerInformation
@@ -91,21 +87,32 @@ namespace  SaboriGame
 		};
 
 		//☆変数
-		PlayerInformation playersInfo[4];
+		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
+		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
+		vector<XI::GamePad::SP> useControllers;		// 実際に使用するコントローラーを格納する
+		PlayerNum				playersNum[4];		// プレイヤーの識別番号設定用
+		PlayerInformation		playersInfo[4];		// 順位決めに必要なプレイヤーの情報
+		int						playerCount;		// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 
-		ML::Vec2 gameRuleImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
-		ML::Vec2 fightImagePos = ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f);
-		ML::Vec2 finishImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
-
-		int gameFps = 60;
-		int countToFightDraw;			//「Fight」の文字を描画するまでのカウント
-		int countToChangeGameState;		//GameStateを変更するまでのカウント
-
-		//☆メソッド
-		void Ranking();		//順位決めの処理
+		//☆関数
+		void Ranking();																				//順位決めの処理
 		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのtotalSaboriTimeで比較し、playerInfoAの方が大きい時trueを返す
-		void SendScore();	//ge->scoreに得点を送る
+		void SendScore();																			//ge->scoreに得点を送る
 
-		void Render();		//状態毎の描画
+		//上司関係----------------------------------------------------------------------------------------------------------------------------------------------------
+		//☆変数
+		ML::Vec2 joushiFirstPos;	//上司の初期位置
+
+		//文字描画関係------------------------------------------------------------------------------------------------------------------------------------------------
+		//☆変数
+		ML::Vec2 gameRuleImagePos;	// ゲームの説明の文章の初期位置
+		ML::Vec2 fightImagePos;		// 「Fight」の文字の初期位置
+		ML::Vec2 finishImagePos;	// 「Finish」の文字の初期位置
+		int countToFightDraw;		// 「Fight」の文字を描画するまでのカウント
+
+	public:
+		//getter関数--------------------------------------------------------------------------------------------------------------------------------------------------
+		int GetPlayerCount();	// ゲームを遊ぶプレイヤーの人数の情報を渡す
+
 	};
 }
