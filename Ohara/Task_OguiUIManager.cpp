@@ -35,6 +35,13 @@ namespace  OguiUIManager
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
 		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 50);
+
+		//ミニゲーム統括タスクからデータを取得する
+		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
+		if (game)
+		{
+			playerCount = game->GetPlayerCount();
+		}
 		
 		//★タスクの生成
 
@@ -92,7 +99,8 @@ namespace  OguiUIManager
 	//プレイヤー番号の描画
 	void Object::DrawPlayerNumber()
 	{
-		for (int i = 0; i < sizeof(this->playerNumbersDrawInfo) / sizeof(this->playerNumbersDrawInfo[0]); ++i)
+		//for (int i = 0; i < size(this->playerNumbersDrawInfo); ++i) // CPU実装時はこっちを使う
+		for (int i = 0; i < playerCount; ++i)
 		{
 			ML::Box2D playerNumberDraw = this->playerNumbersDrawInfo[i].draw;
 			playerNumberDraw.Offset(this->playerNumbersDrawInfo[i].pos);
@@ -137,7 +145,17 @@ namespace  OguiUIManager
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object()
+		: 
+		//プレイヤー識別番号関係
+		playerNumbersDrawInfo{
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f - 200.f) },			//1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f - 200.f) },	//2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f - 200.f) },	//3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f - 200.f) }	//4P
+		},
+		playerCount(1)
+	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
@@ -159,3 +177,6 @@ namespace  OguiUIManager
 	//-------------------------------------------------------------------
 	Resource::~Resource() { this->Finalize(); }
 }
+
+/*メモ*/
+/*次はInitializeでゲームを遊ぶプレイヤーの人数をTask_OguiGameのgetter関数で取得する*/

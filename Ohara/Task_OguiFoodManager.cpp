@@ -32,7 +32,17 @@ namespace  OguiFoodManager
 		this->res = Resource::Create();
 
 		//★データ初期化
+		//ミニゲーム統括タスクからデータを取得する
+		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
+		if (game)
+		{
+			playerCount = game->GetPlayerCount();
+		}
 		
+		for (int i = 0; i < playerCount; ++i)
+		{
+			hasExistFoods.push_back(false);
+		}
 		//★タスクの生成
 
 		return  true;
@@ -67,7 +77,8 @@ namespace  OguiFoodManager
 		{
 			//☆料理の生成
 			//料理があるか確認
-			for (int i = 0; i < size(hasExistFoods); ++i)
+			//for(int i = 0; i < size(hasExistFoods); ++i) // CPU実装時はこっちを使う
+			for (int i = 0; i < hasExistFoods.size(); ++i)
 			{
 				//料理が無かったら30フレーム待った後、料理が無いプレイヤーの場所に料理を配置
 				if (this->hasExistFoods[i] == false)
@@ -161,8 +172,14 @@ namespace  OguiFoodManager
 	//-------------------------------------------------------------------
 	Object::Object()
 		:
-		createCount{30, 30, 30, 30},
-		hasExistFoods{false, false, false, false}
+		//料理生成関係
+		createCount{30, 30, 30, 30}, playerCount(1),
+		foodPositions{
+			{ ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f + 200 },
+			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f + 200 },
+			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f + 200 },
+			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 200 }
+		}
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

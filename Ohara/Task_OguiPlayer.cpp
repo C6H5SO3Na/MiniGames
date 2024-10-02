@@ -39,8 +39,11 @@ namespace  OguiPlayer
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->render2D_Priority[1] = 0.6f;
-		this->state = State::PWait;
+		this->render2D_Priority[1] = 0.6f; 
+		this->state = State::PWait;	// 初期状態設定
+
+		/*メモ*/
+		/*プレイヤー操作かCPU操作かを決めるとき、TasK_OguiGameのgetter関数から情報を取得すると簡単にできる*/
 		
 		//★タスクの生成
 
@@ -68,23 +71,19 @@ namespace  OguiPlayer
 	void  Object::UpDate()
 	{
 		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
-
-		//大食いミニゲームタスクが取得できているか確認
-		if (game == nullptr)
+		if (game) // 大食いミニゲームタスクが取得できているか確認(nullチェック)
 		{
-			return;
-		}
+			//ミニゲーム中の処理
+			if (game->isInGame == true)
+			{
+				this->moveCnt++;
+				this->animationCount++;
 
-		//ミニゲーム中の処理
-		if (game->isInGame == true)
-		{
-			this->moveCnt++;
-			this->animationCount++;
-
-			//状態判断
-			this->Think();
-			//状態に対応する行動処理
-			this->Move();
+				//状態判断
+				this->Think();
+				//状態に対応する行動処理
+				this->Move();
+			}
 		}
 	}
 	//-------------------------------------------------------------------
@@ -104,18 +103,30 @@ namespace  OguiPlayer
 	//現在のプレイヤーの状態制御
 	void Object::Think()
 	{
-		auto input = this->controller->GetState();
-		State nowState = this->state; //とりあえず現在の状態を代入
-
-		//モーションの切り替え
-		switch (nowState)
+		XI::VGamePad input;	// 入力情報を格納する
+		if (controller) // nullチェック
 		{
-		case State::PWait:	//待機状態
-			if (input.B1.down && this->existFood == true) { nowState = State::PEat; }
+			input = this->controller->GetState(); // 入力情報の取得
+		}
+		State nowState = this->state; // とりあえず現在の状態を代入
+
+		switch (playerType) // プレイヤかCPUかの判別
+		{
+		case PlayerType::HumanPlayer:	// プレイヤ操作
+			//モーションの切り替え
+			switch (nowState)
+			{
+			case State::PWait:	// 待機状態
+				if (input.B1.down && this->existFood == true) { nowState = State::PEat; } // 食事中へ
+				break;
+
+			case State::PEat:	// 食事中状態
+				if (this->moveCnt == 30 || this->existFood == false) { nowState = State::PWait; } // 待機へ
+				break;
+			}
 			break;
 
-		case State::PEat:	//食事中状態
-			if (this->moveCnt == 30 || this->existFood == false) { nowState = State::PWait; }
+		case PlayerType::CPUPlayer:		// CPU操作
 			break;
 		}
 
@@ -126,44 +137,60 @@ namespace  OguiPlayer
 	//状態毎の行動処理
 	void Object::Move()
 	{
-		auto input = this->controller->GetState();
-
-		switch (this->state)
+		XI::VGamePad input;	// 入力情報を格納する
+		if (controller) // nullチェック
 		{
-		case State::PWait:
-			//☆ゲーム本編開始時に一度だけ行う処理
-			if (this->isPlayStart == false)
-			{
-				//ボタンの描画を開始する
-				this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
-				this->isStartButtonDraw = true;
+			input = this->controller->GetState(); // 入力情報の取得
+		}
 
-				this->isPlayStart = true;
-			}
-			break;
+		switch (playerType) // プレイヤかCPUかの判別
+		{
+		case PlayerType::HumanPlayer:	//プレイヤ操作
 
-		case State::PEat:	//食事中状態
-			if (input.B1.down)
+			//☆行動処理
+			switch (this->state)
 			{
-				//☆料理の残量を減らす
-				//全ての料理を取得
-				auto foods = ge->GetTasks<OguiFood::Object>("ギミック");
-				for (auto f = foods->begin(); f != foods->end(); ++f)
+			case State::PWait:	//待機状態
+				//☆ゲーム本編開始時に一度だけ行う処理
+				if (this->isPlayStart == false)
 				{
-					if (this->playerNum == (*f)->playerNum)
+					//ボタンの描画を開始する
+					this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
+					this->isStartButtonDraw = true;
+
+					this->isPlayStart = true;
+				}
+				break;
+
+			case State::PEat:	//食事中状態
+				if (input.B1.down)
+				{
+					//☆料理の残量を減らす
+					//全ての料理を取得
+					auto foods = ge->GetTasks<OguiFood::Object>("ギミック");
+					for (auto f = foods->begin(); f != foods->end(); ++f)
 					{
-						//料理を食べたSEを鳴らす
-						se::Play("eatSE");
-						//料理の量を減らす
-						(*f)->ReduceHP(this->attack);
-						//料理の量を減らしたら食事中状態を継続するようにする
-						this->moveCnt = 0;
-						return;
+						if (this->playerNum == (*f)->playerNum)
+						{
+							//料理を食べたSEを鳴らす
+							se::Play("eatSE");
+							//料理の量を減らす
+							(*f)->ReduceHP(this->attack);
+							//料理の量を減らしたら食事中状態を継続するようにする
+							this->moveCnt = 0;
+							return;
+						}
 					}
 				}
+				break;
 			}
 			break;
+
+		case PlayerType::CPUPlayer:		//CPU操作
+			break;
 		}
+
+		
 	}
 	//-------------------------------------------------------------------
 	//アニメーション制御
@@ -293,3 +320,5 @@ namespace  OguiPlayer
 	//-------------------------------------------------------------------
 	Resource::~Resource() { this->Finalize(); }
 }
+/*メモ*/
+/*Releaseで入力情報が取得出来ていない場合、input宣言時に値の初期化を行っていないのが原因かも*/
