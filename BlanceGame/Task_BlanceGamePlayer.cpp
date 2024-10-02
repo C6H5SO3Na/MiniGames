@@ -60,21 +60,32 @@ namespace  BGPlayer
 		auto in = controller->GetState();
 		switch (GetBGState())
 		{
+		case BGstate::BStart:
+			SetBGState(BGstate::Playing);
+			break;
 		case BGstate::Playing:
 			break;
 		case BGstate::PlayR:
 			direction += 1;
-			if (in.LStick.BL.down) { SetBGState(BGstate::PlayL); }
-			if (direction > 45) { SetBGState(BGstate::Fail); }
-			if (direction == 0) { SetBGState(BGstate::Playing); }
+			if (in.LStick.BL.down) { SetBGState(BGstate::returnL); }
+			if (direction > 45) { SetBGState(BGstate::Fail); }		
 			break;
 		case BGstate::PlayL:
 			direction -= 1;
-			if (in.LStick.BR.down) { SetBGState(BGstate::PlayR); }
-			if (direction < -45) { SetBGState(BGstate::Fail); }
+			if (in.LStick.BR.down) { SetBGState(BGstate::returnR); }
+			if (direction < -45) { SetBGState(BGstate::Fail); }			
+			break;
+		case BGstate::returnL:
+			direction -= 1;
+			if (direction == 0) { SetBGState(BGstate::Playing); }
+			break;
+		case BGstate::returnR:
+			direction += 1;
 			if (direction == 0) { SetBGState(BGstate::Playing); }
 			break;
 		case BGstate::Fail:
+			break;
+		case BGstate::GameOver:
 			pos.y = 600;
 			direction = 90;
 			break;
@@ -96,6 +107,12 @@ namespace  BGPlayer
 			src = ML::Box2D(2236, 543, 446, 542);
 			break;
 		case BGstate::PlayL:
+			src = ML::Box2D(2236, 1086, 446, 542);
+			break;
+		case BGstate::returnR:
+			src = ML::Box2D(2236, 543, 446, 542);
+			break;
+		case BGstate::returnL:
 			src = ML::Box2D(2236, 1086, 446, 542);
 			break;
 		case BGstate::Fail:
