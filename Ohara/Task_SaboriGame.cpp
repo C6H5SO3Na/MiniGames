@@ -389,7 +389,7 @@ namespace  SaboriGame
 			//何点送るか決める
 			switch (playersInfo[i].rank)
 			{
-			case 1: //4点
+			case 1: //1位
 				//プレイヤー識別用番号でどこに格納するか決める
 				switch (playersInfo[i].playerNum)
 				{
@@ -411,7 +411,7 @@ namespace  SaboriGame
 				}
 				break;
 
-			case 2:	//3点
+			case 2:	//2位
 				//プレイヤー識別用番号でどこに格納するか決める
 				switch (playersInfo[i].playerNum)
 				{
@@ -433,7 +433,7 @@ namespace  SaboriGame
 				}
 				break;
 
-			case 3:	//2点
+			case 3:	//3位
 				//プレイヤー識別用番号でどこに格納するか決める
 				switch (playersInfo[i].playerNum)
 				{
@@ -455,7 +455,7 @@ namespace  SaboriGame
 				}
 				break;
 
-			case 4:	//1点
+			case 4:	//4位
 				//プレイヤー識別用番号でどこに格納するか決める
 				switch (playersInfo[i].playerNum)
 				{
