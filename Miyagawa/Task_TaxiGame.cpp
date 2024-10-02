@@ -93,11 +93,11 @@ namespace  TaxiGame
 			Clear();
 			break;
 		}
-		//gameCnt++;//ゲーム時間のカウンター（フレーム）
-		//if (gameCnt == 1800) {
-		//	ge->StartCounter("Clear", 180);
-		//	phase = Phase::Clear;
-		//}
+		gameCnt++;//ゲーム時間のカウンター（フレーム）
+		if (gameCnt == 1800) {
+			ge->StartCounter("Clear", 180);
+			phase = Phase::Clear;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
