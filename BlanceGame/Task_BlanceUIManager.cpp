@@ -35,6 +35,7 @@ namespace  BlanceGUIM
 
 		//★データ初期化
 		render2D_Priority[1] = 0.5;
+		failtime = 0;
 		pos = ML::Vec2{ 0,0 };
 		SetBGState(BGstate::Start);
 		for (int i = 0; i < 4; ++i) {
@@ -55,7 +56,11 @@ namespace  BlanceGUIM
 		}
 		int j = 0;
 		for (auto i = rank.begin(); i != rank.end(); ++i) {
-			ge->AddScore(*i, *i + 1);
+			ge->AddScore(*i, failPlayerNum[j]);
+			if (failPlayerNum[j] == 3) {
+				ge->AddScore(*i, 1);
+			}
+			j++;
 			//ge->score[(*i)] += ((*i) + 1);
 		}
 		//★データ＆タスク解放
@@ -87,13 +92,18 @@ namespace  BlanceGUIM
 		}
 		
 		auto pm = ge->GetTask<BlanceGamePM::Object>("blanceGamePM");
+		int j = 0;
 		for (int i = 0; i < 4; ++i) {
 			if (pm->pList[i]->GetBGState() == BGstate::Fail&& failFlag[i] == false) {
 				se::Play("seBGf");
+				failPlayerNum.push_back(failtime);
 				rank.push_back(i);
 				failFlag[i] = true;
+				j++;
+				pm->pList[i]->SetBGState(BGstate::GameOver);
 			}
 		}
+		failtime += j;
 		if (failFlag[0]&& failFlag[1]&& failFlag[2]&& failFlag[3]) {	
 			Kill();
 		}
