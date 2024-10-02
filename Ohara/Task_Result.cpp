@@ -43,8 +43,16 @@ namespace  Result
 		ResultUIManager::Object::Create(true);
 
 		//背景
-		ResultBG::Object::Create(true);
-
+		//2つの画像で横スクロールを作る
+		for (int i = 0; i < 2; ++i)
+		{
+			auto BG = ResultBG::Object::Create(true);
+			if (BG)
+			{
+				BG->pos.x = static_cast<float>(i * ge->screen2DWidth);
+			}
+		}
+		
 		//☆BGM
 		bgm::LoadFile("ResultBGM", "./data/sound/bgm/エンディング_tanoshiibouken.mp3");
 		bgm::VolumeControl("ResultBGM", 95);

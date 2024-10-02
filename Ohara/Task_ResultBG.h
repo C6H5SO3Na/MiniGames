@@ -47,7 +47,9 @@ namespace  ResultBG
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	//追加したい変数・メソッドはここに追加する
 		//☆変数
-
-
+		ML::Vec2	moveVec;		// 移動ベクトル
+		float		movedDistance;	// 移動した距離
+	public:
+		ML::Vec2	pos;			// 背景の位置
 	};
 }
