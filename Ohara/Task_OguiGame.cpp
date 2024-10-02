@@ -44,7 +44,13 @@ namespace  OguiGame
 		res = Resource::Create();
 
 		//★データ初期化
-		// 使用するコントローラーの設定
+		//playerCountに不正な値が入った場合4を入れる
+		if (playerCount < 1 || playerCount > 4)
+		{
+			playerCount = 4;
+		}
+		
+		//使用するコントローラーの設定
 		for (int i = 0; i < playerCount; ++i)
 		{
 			useControllers.push_back(controllers[i]);
@@ -52,6 +58,7 @@ namespace  OguiGame
 
 		//★タスクの生成
 		//プレイヤータスク作成
+		//for(int i = 0; i < 4; ++i) // CPU実装時はこっちを使う
 		for (int i = 0; i < useControllers.size(); ++i)
 		{
 			auto p = OguiPlayer::Object::Create(true);	// タスク生成
@@ -536,7 +543,7 @@ namespace  OguiGame
 			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 100.f } 
 		}, 
 		controllers{ ge->in1, ge->in2, ge->in3, ge->in4 }, playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playerCount(4),
-		playersInfo{},
+		playersInfo(),
 		// 大食いゲーム関係
 		timeLimit(15.f), isInGame(false), gameState(GameState::BeforeGameStart), countToChangeGameState(0), countToNextTask(0), gameFps(60), gameStart(true),
 		// 文字描画関係

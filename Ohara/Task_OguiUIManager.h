@@ -62,7 +62,7 @@ namespace  OguiUIManager
 		
 		//☆変数
 		PlayerNumberDrawInformation playerNumbersDrawInfo[4];	// プレイヤー番号の描画情報
-		int							playerCount;				// ゲームを遊ぶプレイヤーの人数
+		int							playerCount;				// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 
 		//☆関数
 		void DrawPlayerNumber();	//プレイヤー番号の描画

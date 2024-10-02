@@ -79,7 +79,7 @@ namespace  OguiGame
 		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
 		vector<XI::GamePad::SP> useControllers;		// 実際に使用するコントローラーを格納する
 		PlayerNum				playersNum[4];		// プレイヤーの識別番号設定用
-		int						playerCount;		// ゲームを遊ぶプレイヤーの人数
+		int						playerCount;		// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 		PlayerInformation		playersInfo[4];		// 順位決めに必要なプレイヤーの情報
 
 		// 大食いゲーム関係--------------------------------------------------------------------------------------------------------------------------
