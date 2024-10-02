@@ -1,30 +1,34 @@
 //-------------------------------------------------------------------
-//タクシーゲーム
+//ゲームの最初に出る指示
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiGame.h"
+#include  "Task_EasingLogo.h"
+#include  "Task_GameMessage.h"
 
-#include "../randomLib.h"
-
-#include  "Task_TaxiGamePlayer.h"
-#include  "Task_TaxiGameTaxi.h"
-#include  "Task_TaxiGameBG.h"
-#include  "../Task_Game.h"
-#include  "../sound.h"
-
-namespace  TaxiGame
+namespace EasingLogo
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		img.push_back(DG::Image::Create("./data/image/SaboriGameRuleSentence.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/SaboriGameRuleSentence.png"));
+		img.push_back(DG::Image::Create("./data/image/OugiGameRuleSentence.png"));
+		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/Finish.png"));
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		for (auto& i : img) {
+			i.reset();
+		}
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -37,31 +41,10 @@ namespace  TaxiGame
 		res = Resource::Create();
 
 		//★データ初期化
-		phase = Phase::Game;
-		TaxiGamePlayer::Object::playerScore = 4;
+		render2D_Priority[1] = 0.01f;
 
-		//BGM
-		bgm::LoadFile("TaxiGame", "./data/sound/bgm/タクシー_retrogamecenter3.mp3");
-		bgm::Play("TaxiGame");
 		//★タスクの生成
-		TaxiGameBG::Object::Create(true);
 
-		//プレイヤー毎のコントローラー登録
-		vector<XI::GamePad::SP> players;
-		players.push_back(ge->in1);
-		players.push_back(ge->in2);
-		//players.push_back(ge->in3);
-		//players.push_back(ge->in4);
-
-		//プレイヤー配置
-		for (int i = 0; i < players.size(); ++i) {
-			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 1) / 5.f), players[i]);
-		}
-
-		//タクシー配置
-		for (int i = 0; i < players.size(); ++i) {
-			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (1 + i) / 5.f));
-		}
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -69,13 +52,9 @@ namespace  TaxiGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-		ge->KillAll_G("タクシー");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
-			bgm::AllStop();
 			//★引き継ぎタスクの生成
-			//最後のゲームから生成しない
 		}
 
 		return  true;
@@ -84,51 +63,23 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (phase) {
-		case Phase::Game:
-			Game();
-			break;
-
-		case Phase::Clear:
-			Clear();
-			break;
+		if (logo.lock() == nullptr) {
+			Kill();
 		}
-		//gameCnt++;//ゲーム時間のカウンター（フレーム）
-		//if (gameCnt == 1800) {
-		//	ge->StartCounter("Clear", 180);
-		//	phase = Phase::Clear;
-		//}
+		if (!isCreated) {
+			if (isFinish) {
+				logo = GameMessage::Object::Create(res->img[7], srcTable[7], "FinishSE");
+			}
+			else {
+				logo = GameMessage::Object::Create(res->img[ge->nowStage], srcTable[ge->nowStage]);
+			}
+			isCreated = true;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-	}
-	//-------------------------------------------------------------------
-	//ゲーム本編の処理
-	void  Object::Game()
-	{
-		int clearNum = 0;
-		auto players = ge->GetTasks<TaxiGamePlayer::Object>(TaxiGamePlayer::defGroupName, TaxiGamePlayer::defName);
-		for_each(players->begin(), players->end(),
-			[&](auto iter) {
-				if (iter->IsClear()) {
-					++clearNum;
-				}
-			});
-		//クリア
-		if (clearNum >= players->size()) {
-			ge->StartCounter("Clear", 180);
-			phase = Phase::Clear;
-		}
-	}
-	//-------------------------------------------------------------------
-	//全員クリア後の処理
-	void  Object::Clear()
-	{
-		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
-			Kill();
-		}
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -142,6 +93,7 @@ namespace  TaxiGame
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -163,7 +115,14 @@ namespace  TaxiGame
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object():isFinish(false) {}
+	//-------------------------------------------------------------------
+	Object::SP Object::Spawn(const bool& isFinish)
+	{
+		auto logo = Create(true);
+		logo->isFinish = isFinish;
+		return logo;
+	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
