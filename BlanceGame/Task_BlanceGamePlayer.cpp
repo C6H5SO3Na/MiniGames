@@ -13,6 +13,7 @@ namespace  BGPlayer
 	bool  Resource::Initialize()
 	{
 		playerImg = DG::Image::Create("./data/image/game_otsan_train.png");
+		playerNumImg = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -103,6 +104,11 @@ namespace  BGPlayer
 		}
 		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(180, 432));
 		res->playerImg->Draw(draw.OffsetCopy(pos), src);
+		//playerNum
+		src = playerNumUIsrc[playerNum];
+		draw = playerNumUIdraw[playerNum];
+		res->playerNumImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -250)), src);
+
 	}
 
 	//šššššššššššššššššššššššššššššššššššššššššš
