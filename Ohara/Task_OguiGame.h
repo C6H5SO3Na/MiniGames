@@ -74,7 +74,8 @@ namespace  OguiGame
 		};
 
 		//☆変数
-		// プレイヤー関係--------------------------------------------------------------------------------------------------------------------------
+		//プレイヤー関係--------------------------------------------------------------------------------------------------------------------------
+		//☆変数
 		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
 		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
 		vector<XI::GamePad::SP> useControllers;		// 実際に使用するコントローラーを格納する
@@ -82,18 +83,18 @@ namespace  OguiGame
 		int						playerCount;		// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 		PlayerInformation		playersInfo[4];		// 順位決めに必要なプレイヤーの情報
 
-		// 大食いゲーム関係--------------------------------------------------------------------------------------------------------------------------
+		//☆関数
+		void Ranking();																				//順位決めの処理
+		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
+		void SendScore();																			//ge->scoreに得点を送る
+
+		//大食いゲーム関係--------------------------------------------------------------------------------------------------------------------------
+		//☆変数
 		GameState	gameState;				// ゲームの状態
 		int			countToChangeGameState;	// GameStateを変更するまでのカウント
 		int			countToNextTask;		// 次のタスクにするまでのカウント
 		int			gameFps;				// 想定FPS
 		bool		gameStart;				// ゲーム開始時true
-
-		// 文字描画関係-----------------------------------------------------------------------------------------------------------------------------
-		ML::Vec2	gameRuleImagePos;	// ゲームの説明の文章の初期位置
-		ML::Vec2	fightImagePos;		// 「Fight」の文字の初期位置
-		ML::Vec2	finishImagePos;		// 「Finish」の文字の初期位置
-		int			countToFightDraw;	// 「Fight」の文字を描画するまでのカウント
 
 		//☆関数
 		void GameStateTransition();					//ゲームの状態遷移
@@ -101,12 +102,16 @@ namespace  OguiGame
 		void Work();								//状態毎の処理
 		void Render();								//状態毎の描画
 
-		void Ranking();		//順位決めの処理
-		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
-		void SendScore();	//ge->scoreに得点を送る
+		//文字描画関係-----------------------------------------------------------------------------------------------------------------------------
+		//☆変数
+		ML::Vec2	gameRuleImagePos;	// ゲームの説明の文章の初期位置
+		ML::Vec2	fightImagePos;		// 「Fight」の文字の初期位置
+		ML::Vec2	finishImagePos;		// 「Finish」の文字の初期位置
+		int			countToFightDraw;	// 「Fight」の文字を描画するまでのカウント
 
 	public:
-		//getter関数
+		//getter関数------------------------------------------------------------------------------------------------------------------------------
 		int GetPlayerCount();	// ゲームを遊ぶプレイヤーの人数の情報を渡す
+
 	};
 }
