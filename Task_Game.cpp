@@ -84,33 +84,40 @@ namespace  Game
 	//引数なしなら最初のタスクを生成
 	void  Object::CreateTask() {
 		StageAlarmClock::Object::Create(true);
+		UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 	}
 	void  Object::CreateTask(int nextTask) {
 		ge->nowStage = nextTask;
-		
+
 		int timeLimitTable[] = {
-			1000, 100,10,113,110,100,100,
+			20 * 60, 20 * 60, 22 * 60, 22 * 60, 30 * 60, 15 * 60, 30 * 60,
 		};
 		//auto gsUI=gamesetUI::Object::Create(true);  //ゲームセットUI生成用
 		/*std::this_thread::sleep_for(std::chrono::seconds(2));*/
 		switch (ge->nowStage) {
 		case 1:
 			StageBrushTeeth::Object::Create(true);
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		case 2:
 			BlanceGame::Object::Create(true);
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		case 3:
 			ClassifyGame::Object::Create(true);
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		case 4:
 			SaboriGame::Object::Create(true);
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		case 5:
 			OguiGame::Object::Create(true);
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		case 6:
 			TaxiGame::Object::Create(true);
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		default:
 			auto g = ge->GetTask < Game::Object >("本編");

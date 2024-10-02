@@ -80,7 +80,6 @@ namespace TaxiGamePlayer
 		input = controller->GetState();
 		Think();
 		Move();
-		easing::UpDate();
 		++animCnt;
 	}
 	//-------------------------------------------------------------------

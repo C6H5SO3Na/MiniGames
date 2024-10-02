@@ -4,7 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_UIManager.h"
 #include  "Task_EasingLogo.h"
-#include  "Task_TimeLimitGauge.h"
+#include  "Task_TimeLimitBar.h"
 
 namespace UIManager
 {
@@ -33,7 +33,7 @@ namespace UIManager
 		//★データ初期化
 
 		//★タスクの生成
-		TimeLimitBar::Object::Create(ML::Vec2(1000.f, 1000.f));
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -69,6 +69,12 @@ namespace UIManager
 	EasingLogo::Object::SP  Object::ShowFinish()
 	{
 		return EasingLogo::Object::Spawn(true);
+	}
+	//-------------------------------------------------------------------
+	//タイムリミットのゲージを描画
+	TimeLimitBar::Object::SP  Object::CreateTimeLimitBar(const ML::Vec2& pos)
+	{
+		return TimeLimitBar::Object::Create(pos);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

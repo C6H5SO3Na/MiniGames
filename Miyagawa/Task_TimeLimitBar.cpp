@@ -2,7 +2,8 @@
 //残り時間のバー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TimeLimitGauge.h"
+#include  "Task_TimeLimitBar.h"
+#include  "Task_UIManager.h"
 
 namespace TimeLimitBar
 {
@@ -34,7 +35,7 @@ namespace TimeLimitBar
 		render2D_Priority[1] = 0.01f;
 		srcBase = ML::Box2D(0, 0, 96, 32);
 
-		remainingCnt = 1000;
+		remainingCnt = 100;
 		maxCnt = remainingCnt;
 
 		//★タスクの生成
@@ -57,12 +58,25 @@ namespace TimeLimitBar
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		--remainingCnt;
-		remainingCnt = max(remainingCnt, 0);
-		gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
-		if (remainingCnt <= 0) {
-			//ゲーム終了
+		switch (state) {
+		case State::Game:
+			--remainingCnt;
+			remainingCnt = max(remainingCnt, 0);
+			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
+			if (remainingCnt <= 0) {
+				//ゲーム終了
+				finish = UIManager::Object::ShowFinish();
+				state = State::Finish;
+			}
+			break;
+
+		case State::Finish:
+			if (finish.lock() == nullptr) {
+				Kill();
+			}
+			break;
 		}
+
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -124,12 +138,13 @@ namespace TimeLimitBar
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {}
+	Object::Object():gaugeAmount(0.f), maxCnt(0), minPower(0), remainingCnt(0) {}
 	//-------------------------------------------------------------------
-	void Object::Create(const ML::Vec2& pos_)
+	Object::SP Object::Create(const ML::Vec2& pos_)
 	{
 		auto gauge = Create(true);
 		gauge->pos = pos_;
+		return gauge;
 	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

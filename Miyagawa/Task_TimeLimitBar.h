@@ -4,6 +4,7 @@
 //écÇËéûä‘ÇÃÉoÅ[
 //-------------------------------------------------------------------
 #include "../BChara.h"
+#include  "Task_EasingLogo.h"
 
 namespace TimeLimitBar
 {
@@ -33,7 +34,7 @@ namespace TimeLimitBar
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		static  void  Create(const ML::Vec2& pos);
+		static  Object::SP Create(const ML::Vec2& pos);
 		Resource::SP	res;
 	private:
 		Object();
@@ -53,6 +54,8 @@ namespace TimeLimitBar
 		int maxCnt;
 		int minPower;
 		float gaugeAmount;
+		EasingLogo::Object::WP finish;//FinishÉçÉS
+
 		ML::Point barSize = { 96,32 };
 
 		void Received() override{}
@@ -60,5 +63,9 @@ namespace TimeLimitBar
 		void DrawFlame() const;//ògï`âÊ
 		void DrawGauge() const;//ÉQÅ[ÉWï`âÊ
 
+		enum class State {
+			Game, Finish, AfterFinish
+		};
+		State state = State::Game;
 	};
 }

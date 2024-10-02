@@ -289,7 +289,7 @@
     <ClCompile Include="Miyagawa\Task_UIManager.cpp">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TimeLimitGauge.cpp">
+    <ClCompile Include="Miyagawa\Task_TimeLimitBar.cpp">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClCompile>
     <ClCompile Include="Miyagawa\Task_EasingLogo.cpp">
@@ -496,7 +496,7 @@
     <ClInclude Include="Miyagawa\Task_UIManager.h">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TimeLimitGauge.h">
+    <ClInclude Include="Miyagawa\Task_TimeLimitBar.h">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_EasingLogo.h">
