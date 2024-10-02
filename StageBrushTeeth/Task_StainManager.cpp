@@ -108,7 +108,8 @@ namespace  StainManager
 		if (KillNum == 0 ) //チェッククリア //if stain that have same id is null make isClear to true 
 		{
 			isClear = true;
-			ge->score[this->id] += com->addscore[com->rank]; //addscore
+			//ge->score[this->id] += com->addscore[com->rank]; //addscore
+			ge->AddScore(this->id, com->addscore[com->rank]);
 			com->rank++;
 		}
 	}

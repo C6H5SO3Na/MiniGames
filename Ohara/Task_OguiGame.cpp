@@ -407,19 +407,19 @@ namespace  OguiGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 4;
+					ge->AddScore(0, 4);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 4;
+					ge->AddScore(1, 4);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 4;
+					ge->AddScore(2, 4);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 4;
+					ge->AddScore(3, 4);
 					break;
 				}
 				break;
@@ -429,19 +429,19 @@ namespace  OguiGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 3;
+					ge->AddScore(0, 3);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 3;
+					ge->AddScore(1, 3);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 3;
+					ge->AddScore(2, 3);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 3;
+					ge->AddScore(3, 3);
 					break;
 				}
 				break;
@@ -451,19 +451,19 @@ namespace  OguiGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 2;
+					ge->AddScore(0, 2);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 2;
+					ge->AddScore(1, 2);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 2;
+					ge->AddScore(2, 2);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 2;
+					ge->AddScore(3, 2);
 					break;
 				}
 				break;
@@ -473,19 +473,19 @@ namespace  OguiGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 1;
+					ge->AddScore(0, 1);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 1;
+					ge->AddScore(1, 1);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 1;
+					ge->AddScore(2, 1);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 1;
+					ge->AddScore(3, 1);
 					break;
 				}
 				break;

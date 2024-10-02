@@ -50,11 +50,12 @@ namespace  BlanceGUIM
 	{
 		for (int i = 0; i < 4; ++i) {
 			if (failFlag[i] == false) {
-				ge->score[i] += 4;
+				ge->AddScore(i, 4);
 			}
 		}
 		for (auto i = rank.begin(); i != rank.end(); ++i) {
-			ge->score[(*i)] += ((*i) + 1);
+			ge->AddScore(*i, *i + 1);
+			//ge->score[(*i)] += ((*i) + 1);
 		}
 		//★データ＆タスク解放
 		ge->KillAll_G("BGPlayer");

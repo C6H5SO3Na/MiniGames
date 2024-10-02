@@ -226,7 +226,7 @@ namespace  Result
 		//MyPGからスコアを取得
 		for (int i = 0; i < sizeof(playersInfo) / sizeof(playersInfo[0]); ++i)
 		{
-			playersInfo[i].score = ge->score[i];
+			playersInfo[i].score = ge->GetScore(i);
 		}
 
 		//スコアが高い順にplayersInfoを並び替え
