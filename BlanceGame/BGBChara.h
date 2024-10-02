@@ -13,6 +13,8 @@ public:
 		Playing,//プレイ中
 		PlayR,	//右に倒す
 		PlayL,	//左に倒す
+		returnL,//右に回復中
+		returnR,//左に回復中
 		Fail,	//失敗
 		GameOver//ゲーム終了
 	};

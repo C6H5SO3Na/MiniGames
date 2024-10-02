@@ -18,6 +18,8 @@ namespace  StageBrushTeeth
 	{
 		this->bgImg = DG::Image::Create("./data/image/mirror.png");
 		this->teethImg = DG::Image::Create("./data/image/mouth.png");
+		this->controllerMark = DG::Image::Create("./data/image/LeftStickAllDirection.png");
+		this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		ge->debugRectLoad();
 		return true;
 	}
@@ -25,6 +27,10 @@ namespace  StageBrushTeeth
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->bgImg.reset();
+		this->teethImg.reset();
+		this->controllerMark.reset();
+		this->PlayerNum.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -46,6 +52,7 @@ namespace  StageBrushTeeth
 		this->state = Phase::Game;
 		this->timeCnt = 0;
 		this->clearCount = 0;
+		this->animCnt = 0;
 
 		//★タスクの生成
 		/*auto brush = brush::Object::Create(true);*/
@@ -63,6 +70,7 @@ namespace  StageBrushTeeth
 		ge->KillAll_G("よごれマネージャー");
 		ge->KillAll_G("よごれ");
 		ge->KillAll_G("共通アイテムマネージャー02");
+		ge->KillAll_G("ステージ歯磨き");
 
 		bgm::Stop("stage2_bgm");
 		se::Stop("Kirakira");
@@ -78,6 +86,17 @@ namespace  StageBrushTeeth
 	void  Object::UpDate()
 	{
 		timeCnt++;
+		animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 15)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 2)
+			{
+				this->animIndex = 0;
+			}
+		}
 		switch (this->state) {
 		case Phase::Game:
 			CheckClear();
@@ -97,10 +116,10 @@ namespace  StageBrushTeeth
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		//背景
 		ML::Box2D draw(0, 0, 1920, 1080);
 		ML::Box2D src(0, 0, 3300, 2550);
 		this->res->bgImg->Draw(draw, src);
-
 
 		ML::Box2D draw_2(1920 / 2, 0, 1920 / 2, 1080 / 2);
 		this->res->bgImg->Draw(draw_2, src);
@@ -124,6 +143,30 @@ namespace  StageBrushTeeth
 		ML::Box2D draw5(1920 / 2 + 1920 / 10, 1080/2 + 10, 1280/2, 1080/2 - 10 * 2);
 		this->res->teethImg->Draw(draw5, src2);
 		ge->debugRectDraw();
+
+		//コントローラーマーク
+		ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
+		int srcX = animIndex % 2 * 128;
+		int srcY = animIndex / 2 * 128;
+		ML::Box2D Src(srcX, srcY, 128, 128);
+		this->res->controllerMark->Draw(Draw, Src);
+
+		//プレイヤーナンバー
+		ML::Box2D draw01(0, 1080 / 2 - 105, 715 / 4, 105);
+		ML::Box2D src01(0, 0, 715 / 4 - 20, 105);
+		this->res->PlayerNum->Draw(draw01, src01);
+
+		ML::Box2D draw02(1920 - 715 / 4 - 10, 1080 / 2 - 105, 715 / 4, 105);
+		ML::Box2D src02(715 / 4 - 20, 0, 715 / 4, 105);
+		this->res->PlayerNum->Draw(draw02, src02);
+
+		ML::Box2D draw03(0, 1080 - 105 - 10, 715 / 4, 105);
+		ML::Box2D src03(715 / 2 - 10, 0, 715 / 4, 105);
+		this->res->PlayerNum->Draw(draw03, src03);
+
+		ML::Box2D draw04(1920 - 715 / 4 - 10, 1080 - 105 - 10, 715 / 4, 105);
+		ML::Box2D src04(715 / 4 * 3 - 10, 0, 715 / 4, 105);
+		this->res->PlayerNum->Draw(draw04, src04);
 
 	}
 	//-------------------------------------------------------------------

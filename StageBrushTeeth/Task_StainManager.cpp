@@ -55,7 +55,7 @@ namespace  StainManager
 		const int max = 1;
 
 		/*ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));*/
-		minPosX = pos[PlayerNum][min].x + num;//StainArea.x;
+		minPosX = pos[PlayerNum][min].x + num + 10;//StainArea.x;
 		minPosY = pos[PlayerNum][min].y + num;//StainArea.y;
 		maxPosX = pos[PlayerNum][max].x - 16 - num;//StainArea.x + StainArea.w - 32;
 		maxPosY = pos[PlayerNum][max].y - 16 - num;//StainArea.y + StainArea.h - 32;
@@ -63,14 +63,14 @@ namespace  StainManager
 	//-------------------------------------------------------------------
 	void Object::CreateStain()
 	{
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 10; ++i)
 		{
 			auto position = GetStainPos(positions);
 			positions.push_back(position);
 		}
 
 		//★データ初期化
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 10; ++i)
 		{
 			auto s = stain::Object::Create(true);
 			s->pos = positions[i];
@@ -108,7 +108,8 @@ namespace  StainManager
 		if (KillNum == 0 ) //チェッククリア //if stain that have same id is null make isClear to true 
 		{
 			isClear = true;
-			ge->score[this->id] += com->addscore[com->rank]; //addscore
+			//ge->score[this->id] += com->addscore[com->rank]; //addscore
+			ge->AddScore(this->id, com->addscore[com->rank]);
 			com->rank++;
 		}
 	}

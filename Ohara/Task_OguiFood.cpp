@@ -63,7 +63,7 @@ namespace  OguiFood
 		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
 
 		//大食いミニゲームタスクが取得できているか確認
-		if (game == nullptr)
+		if (game == nullptr) // nullチェック
 		{
 			return;
 		}
@@ -153,7 +153,7 @@ namespace  OguiFood
 		return rtv;
 	}
 	//-------------------------------------------------------------------
-	////料理の減少(受け身の処理)
+	//料理の減少(受け身の処理)
 	void Object::ReduceHP(int damage)
 	{
 		hp -= damage;

@@ -48,7 +48,8 @@ namespace  Game
 		//★データ初期化
 		//reset score
 		for (int i = 0; i < 4; ++i) {
-			ge->score[i] = 0;
+			//ge->score[i] = 0;
+			ge->SetScore(i, 0);
 		}
 		//デバッグ用フォントの準備
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
@@ -56,7 +57,6 @@ namespace  Game
 		//★タスクの生成
 		CreateTask();
 		UIManager::Object::Create(true);
-
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -65,8 +65,6 @@ namespace  Game
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("本編");
-		ge->KillAll_G("ステージ目覚まし時計");
-		ge->KillAll_G("ステージ歯磨き");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -124,6 +122,7 @@ namespace  Game
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

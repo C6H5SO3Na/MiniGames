@@ -11,10 +11,10 @@ public:
 	//コンストラクタ
 	OCharaBase()
 		:
-		state(State::Default),
-		playerNum(PlayerNum::Player1),
-		gameFps(60),
-		animationCount(0)
+		//列挙型変数
+		state(State::Default), playerNum(PlayerNum::Player1), playerType(PlayerType::HumanPlayer),
+		//変数
+		gameFps(60), animationCount(0), numberDecidePlayerType(0)
 	{}
 
 	//デストラクタ
@@ -28,16 +28,24 @@ protected:
 		ML::Box2D draw, src;
 	};
 
+	//☆列挙型
+	//プレイヤ操作かCPU操作かの判定用(プレイヤは0、CPUは1としても扱える)
+	enum class PlayerType
+	{
+		HumanPlayer,	// プレイヤが操作する場合
+		CPUPlayer,		// プレイヤが操作しない場合
+	};
+
 	//☆変数
-	int gameFps;		//ゲームプレイする上で想定しているFPS値を設定
-	int animationCount;	//画像をアニメーションにするためのカウント
+	int			gameFps;				// ゲームプレイする上で想定しているFPS値を設定
+	int			animationCount;			// 画像をアニメーションにするためのカウント
 	
 public:
-	//☆クラス・構造体
+	//☆列挙型
 	enum class State
 	{
 		//☆共通
-		Default,						//初期状態、何もしない
+		Default,					//初期状態、何もしない
 
 		//☆サボりミニゲームのプレイヤー用
 		PWork,						//仕事中状態
@@ -60,8 +68,10 @@ public:
 	};
 
 	//☆変数
-	State		 state;
-	PlayerNum    playerNum;
+	State		state;					// プレイヤーの状態
+	PlayerNum   playerNum;				// プレイヤー識別用番号
+	PlayerType	playerType;				// プレイヤが操作するかCPUが処理するかを決める
+	int			numberDecidePlayerType;	// PlayerTypeを決める数(0でプレイヤ操作、1でCPU操作)
 
 protected:
 	//☆メソッド

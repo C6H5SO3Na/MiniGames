@@ -45,24 +45,21 @@ namespace  OguiFoodManager
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
-	public:
 		//追加したい変数・メソッドはここに追加する
-		//☆メソッド
-		void NotExistFood(PlayerNum food_PlayerNum);	//料理がなくなった情報を取得
-
-	private:
+		//料理生成関係----------------------------------------------------------------------------------------------------------------------
 		//☆変数
-		int  createCount[4];			//料理が完成するまでのカウント、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
-		bool hasExistFoods[4];			//料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
-		ML::Vec2 foodPositions[4] = {	//料理の出現位置
-			{ ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f + 200 }, 
-			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f + 200 },
-			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f + 200 },
-			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 200 }
-		};
+		int				createCount[4];			// 料理が完成するまでのカウント、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
+		vector<bool>	hasExistFoods;			// 料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
+		//bool			hasExistFoods[4];		// 料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する CPU実装時はこっちを使う
+		int				playerCount;			// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
+		ML::Vec2		foodPositions[4];		// 料理の出現位置 
 
 		//☆メソッド
-		void CreateFood(PlayerNum food_PlayerNum);	//料理の生成
+		void CreateFood(PlayerNum food_PlayerNum);							//料理の生成
 		void SendCreateFoodInformation(PlayerNum food_PlayerNum);			//料理を生成した情報を他タスクに送る
+	public:
+		void NotExistFood(PlayerNum food_PlayerNum);						//料理がなくなった情報を取得
+		
+	private:
 	};
 }

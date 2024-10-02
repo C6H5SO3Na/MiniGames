@@ -58,6 +58,7 @@ namespace  brush
 		XI::GamePad::SP controller;
 
 		float minPosX, minPosY, maxPosX, maxPosY;
+		float LStick_x, LStick_y;
 
 		void Positionalise(int PlayerNum);
 

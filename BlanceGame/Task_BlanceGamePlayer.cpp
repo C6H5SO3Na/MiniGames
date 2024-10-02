@@ -13,6 +13,7 @@ namespace  BGPlayer
 	bool  Resource::Initialize()
 	{
 		playerImg = DG::Image::Create("./data/image/game_otsan_train.png");
+		playerNumImg = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -59,21 +60,32 @@ namespace  BGPlayer
 		auto in = controller->GetState();
 		switch (GetBGState())
 		{
+		case BGstate::BStart:
+			SetBGState(BGstate::Playing);
+			break;
 		case BGstate::Playing:
 			break;
 		case BGstate::PlayR:
 			direction += 1;
-			if (in.LStick.BL.down) { SetBGState(BGstate::PlayL); }
-			if (direction > 45) { SetBGState(BGstate::Fail); }
-			if (direction == 0) { SetBGState(BGstate::Playing); }
+			if (in.LStick.BL.down) { SetBGState(BGstate::returnL); }
+			if (direction > 45) { SetBGState(BGstate::Fail); }		
 			break;
 		case BGstate::PlayL:
 			direction -= 1;
-			if (in.LStick.BR.down) { SetBGState(BGstate::PlayR); }
-			if (direction < -45) { SetBGState(BGstate::Fail); }
+			if (in.LStick.BR.down) { SetBGState(BGstate::returnR); }
+			if (direction < -45) { SetBGState(BGstate::Fail); }			
+			break;
+		case BGstate::returnL:
+			direction -= 1;
+			if (direction == 0) { SetBGState(BGstate::Playing); }
+			break;
+		case BGstate::returnR:
+			direction += 1;
 			if (direction == 0) { SetBGState(BGstate::Playing); }
 			break;
 		case BGstate::Fail:
+			break;
+		case BGstate::GameOver:
 			pos.y = 600;
 			direction = 90;
 			break;
@@ -97,12 +109,23 @@ namespace  BGPlayer
 		case BGstate::PlayL:
 			src = ML::Box2D(2236, 1086, 446, 542);
 			break;
+		case BGstate::returnR:
+			src = ML::Box2D(2236, 543, 446, 542);
+			break;
+		case BGstate::returnL:
+			src = ML::Box2D(2236, 1086, 446, 542);
+			break;
 		case BGstate::Fail:
 			
 			break;
 		}
 		res->playerImg->Rotation(ML::ToRadian(direction * 2), ML::Vec2(180, 432));
 		res->playerImg->Draw(draw.OffsetCopy(pos), src);
+		//playerNum
+		src = playerNumUIsrc[playerNum];
+		draw = playerNumUIdraw[playerNum];
+		res->playerNumImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -250)), src);
+
 	}
 
 	//šššššššššššššššššššššššššššššššššššššššššš

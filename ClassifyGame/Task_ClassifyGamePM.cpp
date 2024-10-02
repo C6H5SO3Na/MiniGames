@@ -31,6 +31,7 @@ namespace  ClassifyGamePM
 	{
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
+
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
 
@@ -49,6 +50,7 @@ namespace  ClassifyGamePM
 			pList.push_back(p);
 			pList[i]->posInitialize(ML::Vec2(450 + 960 * (i % 2), 300 + 540 * (i / 2)));
 			pList[i]->controller = cList[i];
+			pList[i]->playerNum = i;
 		}
 		return  true;
 	}
@@ -78,16 +80,16 @@ namespace  ClassifyGamePM
 			for (int i = 0; i < 4; i++) {
 				switch (ranks[i]) {
 				case 1:
-					ge->score[i] += 4;
+					ge->AddScore(i, 4);
 					break;
 				case 2:
-					ge->score[i] += 3;
+					ge->AddScore(i, 2);
 					break;
 				case 3:
-					ge->score[i] += 2;
+					ge->AddScore(i, 1);
 					break;
 				case 4:
-					ge->score[i] += 1;
+					ge->AddScore(i, 0);
 					break;
 				default:
 					break;

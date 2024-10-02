@@ -46,6 +46,7 @@ namespace  BlanceGamePM
 			pList.push_back(p);
 			pList[i]->pos=ML::Vec2(400 + 400*i, 500);
 			pList[i]->controller = cList[i];
+			pList[i]->playerNum = i;
 		}
 		return  true;
 	}
@@ -78,14 +79,14 @@ namespace  BlanceGamePM
 			{
 			case 0:
 				for (int i = 0; i < 4; ++i) {
-					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
+					if (pList[i]->GetBGState() == BGBChara::BGstate::Playing) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayL);
 					}
 				}
 				break;
 			case 1:
 				for (int i = 0; i < 4; ++i) {
-					if (pList[i]->GetBGState() != BGBChara::BGstate::Fail) {
+					if (pList[i]->GetBGState() == BGBChara::BGstate::Playing) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayR);
 					}
 				}

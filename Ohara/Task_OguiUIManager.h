@@ -49,24 +49,22 @@ namespace  OguiUIManager
 		//追加したい変数・メソッドはここに追加する
 		
 	private:
-		//☆構造体
-		struct PlayerNumberDrawInformation
-		{
-			ML::Box2D draw, src;
-			ML::Vec2 pos;
-		};
-
 		//☆変数
 		DG::Font::SP testFont;
 
-		PlayerNumberDrawInformation playerNumbersDrawInfo[4] = {	//プレイヤー番号の描画情報
-			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f - 200.f) },			//1P
-			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f - 200.f) },	//2P
-			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f - 200.f) },	//3P
-			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f - 200.f) }	//4P
+		//プレイヤー識別番号関係-------------------------------------------------------------------------------------
+		//☆構造体
+		struct PlayerNumberDrawInformation
+		{
+			ML::Box2D	draw, src;	// 描画位置, 元画像切り取り位置
+			ML::Vec2	pos;		// Offsetの位置
 		};
+		
+		//☆変数
+		PlayerNumberDrawInformation playerNumbersDrawInfo[4];	// プレイヤー番号の描画情報
+		int							playerCount;				// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 
-		//☆メソッド
+		//☆関数
 		void DrawPlayerNumber();	//プレイヤー番号の描画
 	};
 }

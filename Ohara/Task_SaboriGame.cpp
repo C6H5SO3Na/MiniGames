@@ -44,10 +44,22 @@ namespace  SaboriGame
 		res = Resource::Create();
 
 		//★データ初期化
+		//playerCountに不正な値が入った場合4を入れる
+		if (playerCount < 1 || playerCount > 4)
+		{
+			playerCount = 4;
+		}
+
+		//使用するコントローラーの設定
+		for (int i = 0; i < playerCount; ++i)
+		{
+			useControllers.push_back(controllers[i]);
+		}
 
 		//★タスクの生成
 		//プレイヤー
-		for (int i = 0; i < size(controllers); ++i)
+		//for (int i = 0; i < 4; ++i) // CPU実装時はこっちを使う
+		for (int i = 0; i < useControllers.size(); ++i)
 		{
 			auto p = SaboriPlayer::Object::Create(true);
 			p->pos = this->playerFirstPos[i];
@@ -382,19 +394,19 @@ namespace  SaboriGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 4;
+					ge->AddScore(0, 4);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 4;
+					ge->AddScore(1, 4);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 4;
+					ge->AddScore(2, 4);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 4;
+					ge->AddScore(3, 4);
 					break;
 				}
 				break;
@@ -404,19 +416,19 @@ namespace  SaboriGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 3;
+					ge->AddScore(0, 3);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 3;
+					ge->AddScore(1, 3);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 3;
+					ge->AddScore(2, 3);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 3;
+					ge->AddScore(3, 3);
 					break;
 				}
 				break;
@@ -426,19 +438,19 @@ namespace  SaboriGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 2;
+					ge->AddScore(0, 2);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 2;
+					ge->AddScore(1, 2);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 2;
+					ge->AddScore(2, 2);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 2;
+					ge->AddScore(3, 2);
 					break;
 				}
 				break;
@@ -448,24 +460,30 @@ namespace  SaboriGame
 				switch (playersInfo[i].playerNum)
 				{
 				case PlayerNum::Player1:	//ge->score[0]
-					ge->score[0] += 1;
+					ge->AddScore(0, 1);
 					break;
 
 				case PlayerNum::Player2:	//ge->score[1]
-					ge->score[1] += 1;
+					ge->AddScore(1, 1);
 					break;
 
 				case PlayerNum::Player3:	//ge->score[2]
-					ge->score[2] += 1;
+					ge->AddScore(2, 1);
 					break;
 
 				case PlayerNum::Player4:	//ge->score[3]
-					ge->score[3] += 1;
+					ge->AddScore(3, 1);
 					break;
 				}
 				break;
 			}
 		}
+	}
+	//-------------------------------------------------------------------
+	//ゲームを遊ぶプレイヤーの人数の情報を渡す
+	int Object::GetPlayerCount()
+	{
+		return playerCount;
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -503,14 +521,22 @@ namespace  SaboriGame
 	//-------------------------------------------------------------------
 	Object::Object()
 		:
-		gameStart(true),
-		timeLimit(30.f), //制限時間を設定
-		isInGame(false),
-		countToNextTask(0),
-		gameState(GameState::BeforeGameStart),
-		playersInfo{},
-		countToFightDraw(0),
-		countToChangeGameState(0)
+		//サボりゲーム関係
+		gameState(GameState::BeforeGameStart), gameStart(true), countToNextTask(0), gameFps(60), countToChangeGameState(0), timeLimit(30.f), isInGame(false),
+		//プレイヤー関係
+		playerFirstPos{
+			{ ge->screen2DWidth / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 230.f },
+			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 230.f } 
+		},
+		controllers{ ge->in1, ge->in2, ge->in3, ge->in4 }, playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playersInfo(),
+		playerCount(4),
+		//上司関係
+		joushiFirstPos(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 3.f)),
+		//文字描画関係
+		gameRuleImagePos(ML::Vec2(0.f, ge->screen2DHeight / 2.f)), fightImagePos(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f)),
+		finishImagePos(ML::Vec2(0.f, ge->screen2DHeight / 2.f)), countToFightDraw(0)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

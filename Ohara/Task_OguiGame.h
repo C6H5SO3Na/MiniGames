@@ -51,30 +51,11 @@ namespace  OguiGame
 	public:
 		//追加したい変数・メソッドはここに追加する
 		//☆変数
+		// 大食いゲーム関係------------------------------------------------------------------------------------------------------------------------
 		float timeLimit;	//制限時間
 		bool  isInGame;		//ミニゲーム中、trueにする
 
 	private:
-		//☆変数
-		ML::Vec2 playerFirstPos[4] = {	//プレイヤーの初期位置
-			{ ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f + 100.f }, 
-			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f + 100.f },
-			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f + 100.f },
-			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 100.f }
-		};
-		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 };	//取得するコントローラー
-		PlayerNum playersNum[4] = { PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }; //プレイヤーの識別番号設定用
-
-		ML::Vec2 gameRuleImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
-		ML::Vec2 fightImagePos = ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f);
-		ML::Vec2 finishImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
-
-		int   countToFightDraw;			//「Fight」の文字を描画するまでのカウント
-		int   countToChangeGameState;	//GameStateを変更するまでのカウント
-		int   countToNextTask;			//次のタスクにするまでのカウント
-		int   gameFps = 60;
-		bool  gameStart;				//ゲーム開始時true	
-
 		//☆構造体・列挙型
 		//ゲームの状態
 		enum class GameState
@@ -83,8 +64,7 @@ namespace  OguiGame
 			Game,				//ゲーム中
 			End,				//ゲーム終了
 		};
-		GameState gameState;
-		
+
 		//順位決めに必要なプレイヤーの情報
 		struct PlayerInformation
 		{
@@ -92,7 +72,29 @@ namespace  OguiGame
 			int		  eatFoodCount;	//食べた料理の数
 			int		  rank;			//順位
 		};
-		PlayerInformation playersInfo[4];
+
+		//☆変数
+		//プレイヤー関係--------------------------------------------------------------------------------------------------------------------------
+		//☆変数
+		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
+		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
+		vector<XI::GamePad::SP> useControllers;		// 実際に使用するコントローラーを格納する
+		PlayerNum				playersNum[4];		// プレイヤーの識別番号設定用
+		int						playerCount;		// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
+		PlayerInformation		playersInfo[4];		// 順位決めに必要なプレイヤーの情報
+
+		//☆関数
+		void Ranking();																				//順位決めの処理
+		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
+		void SendScore();																			//ge->scoreに得点を送る
+
+		//大食いゲーム関係--------------------------------------------------------------------------------------------------------------------------
+		//☆変数
+		GameState	gameState;				// ゲームの状態
+		int			countToChangeGameState;	// GameStateを変更するまでのカウント
+		int			countToNextTask;		// 次のタスクにするまでのカウント
+		int			gameFps;				// 想定FPS
+		bool		gameStart;				// ゲーム開始時true
 
 		//☆関数
 		void GameStateTransition();					//ゲームの状態遷移
@@ -100,8 +102,16 @@ namespace  OguiGame
 		void Work();								//状態毎の処理
 		void Render();								//状態毎の描画
 
-		void Ranking();		//順位決めの処理
-		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
-		void SendScore();	//ge->scoreに得点を送る
+		//文字描画関係-----------------------------------------------------------------------------------------------------------------------------
+		//☆変数
+		ML::Vec2	gameRuleImagePos;	// ゲームの説明の文章の初期位置
+		ML::Vec2	fightImagePos;		// 「Fight」の文字の初期位置
+		ML::Vec2	finishImagePos;		// 「Finish」の文字の初期位置
+		int			countToFightDraw;	// 「Fight」の文字を描画するまでのカウント
+
+	public:
+		//getter関数------------------------------------------------------------------------------------------------------------------------------
+		int GetPlayerCount();	// ゲームを遊ぶプレイヤーの人数の情報を渡す
+
 	};
 }
