@@ -55,7 +55,7 @@ namespace  CommonItemManager02
 		vector<brush::Object::SP> PLBrushList;
 		vector<XI::GamePad::SP> CTList;
 
-		int addscore[4] = { 4, 3, 2, 1 };
-		int rank;
+		int addscore[4] = { 4, 2, 1, 0 };
+		int rank = 0;
 	};
 }

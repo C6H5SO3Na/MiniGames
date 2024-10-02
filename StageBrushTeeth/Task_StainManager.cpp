@@ -6,6 +6,7 @@
 #include  "Task_stain.h"
 #include  "../randomLib.h"
 #include  "Task_CommonItemManager02.h"
+#include  "Task_StageBrushTeeth.h"
 
 namespace  StainManager
 {
@@ -105,12 +106,9 @@ namespace  StainManager
 				KillNum++;
 			}
 		}
-		if (KillNum == 0 ) //チェッククリア //if stain that have same id is null make isClear to true 
+		if (KillNum == 0 && !isClear) //チェッククリア //if stain that have same id is null make isClear to true 
 		{
 			isClear = true;
-			//ge->score[this->id] += com->addscore[com->rank]; //addscore
-			ge->AddScore(this->id, com->addscore[com->rank]);
-			com->rank++;
 		}
 	}
 	//-------------------------------------------------------------------

@@ -76,6 +76,8 @@ namespace  hand
 
 		bool IsClear() const { return isClear; }
 
-		
+		bool isScoreAdd = false;
+			
+		int id;;
 	};
 }
