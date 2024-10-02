@@ -46,6 +46,7 @@ namespace  BlanceGamePM
 			pList.push_back(p);
 			pList[i]->pos=ML::Vec2(400 + 400*i, 500);
 			pList[i]->controller = cList[i];
+			pList[i]->playerNum = i;
 		}
 		return  true;
 	}

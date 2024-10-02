@@ -25,6 +25,7 @@ namespace  BGPlayer
 	//•ÏX‰Â
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
 		DG::Image::SP playerImg;
+		DG::Image::SP playerNumImg;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BGBChara
@@ -52,5 +53,12 @@ namespace  BGPlayer
 		void Received() {};
 		int direction;
 		XI::GamePad::SP controller;
+		int playerNum = 0;
+		ML::Box2D playerNumUIsrc[4] = {
+			ML::Box2D(0, 0, 155, 105),ML::Box2D(155, 0, 192, 105),ML::Box2D(347, 0, 175, 105), ML::Box2D(522, 0, 193, 105)
+		};
+		ML::Box2D playerNumUIdraw[4] = {
+			ML::Box2D(0, 0, 155, 105),ML::Box2D(0, 0, 192, 105),ML::Box2D(0, 0, 175, 105), ML::Box2D(0, 0, 193, 105)
+		};
 	};
 }
