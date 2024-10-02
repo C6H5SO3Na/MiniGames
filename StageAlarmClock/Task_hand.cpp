@@ -142,7 +142,8 @@ namespace  hand
 				if (!this->isClear)
 				{
 					this->isClear = true;
-					ge->score[(*it)->id] += com->addscore[com->rank]; //addscore
+					//ge->score[(*it)->id] += com->addscore[com->rank]; //addscore
+					ge->AddScore((*it)->id, com->addscore[com->rank]);
 					com->rank++;
 				}
 				

@@ -79,16 +79,16 @@ namespace  ClassifyGamePM
 			for (int i = 0; i < 4; i++) {
 				switch (ranks[i]) {
 				case 1:
-					ge->score[i] += 4;
+					ge->AddScore(i, 4);
 					break;
 				case 2:
-					ge->score[i] += 3;
+					ge->AddScore(i, 3);
 					break;
 				case 3:
-					ge->score[i] += 2;
+					ge->AddScore(i, 2);
 					break;
 				case 4:
-					ge->score[i] += 1;
+					ge->AddScore(i, 1);
 					break;
 				default:
 					break;

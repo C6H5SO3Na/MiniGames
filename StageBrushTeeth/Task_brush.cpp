@@ -62,6 +62,7 @@ namespace  brush
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//šˆø‚«Œp‚¬ƒ^ƒXƒN‚Ì¶¬
 			se::Stop("brushing");
+			se::Stop("Kirakira");
 		}
 
 		return  true;
@@ -74,7 +75,6 @@ namespace  brush
 
 		if (inp.LStick.volume > 0)
 		{
-
 			LStick_x = cos(inp.LStick.angleDYP) * this->speed;
 			LStick_y = sin(inp.LStick.angleDYP) * this->speed;
 			this->moveVec = ML::Vec2(LStick_x, LStick_y);

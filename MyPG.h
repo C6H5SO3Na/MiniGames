@@ -84,8 +84,6 @@ namespace  MyPG
 		bool isGameClear = false;//クリアフラグ
 		bool unHitEnemy = false;//敵との当たり判定
 
-		int score[4] = {};
-
 		bool isTransparent = false; //透明フラグ
 
 
@@ -144,6 +142,21 @@ namespace  MyPG
 		void StartCounter(string str, int count);
 
 
+	private:
+		int score[4] = {};
+	public:
+		int GetScore(int index)
+		{
+			return score[index];
+		}
+		void SetScore(int index, int value)
+		{
+			score[index] = value;
+		}
+		void AddScore(int index, int value)
+		{
+			score[index] += value;
+		}
 	};
 }
 extern MyPG::MyGameEngine* ge;

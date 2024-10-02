@@ -313,16 +313,16 @@ namespace TaxiGamePlayer
 	void Object::AddScore(int& score, XI::GamePad::SP con)
 	{
 		if (con == ge->in1) {
-			ge->score[0] += score;
+			ge->AddScore(0, score);
 		}
 		if (con == ge->in2) {
-			ge->score[1] += score;
+			ge->AddScore(1, score);
 		}
 		if (con == ge->in3) {
-			ge->score[2] += score;
+			ge->AddScore(2, score);
 		}
 		if (con == ge->in4) {
-			ge->score[3] += score;
+			ge->AddScore(3, score);
 		}
 		--score;
 	}
