@@ -148,10 +148,13 @@ namespace  OguiGame
 			//™§ŒÀŽžŠÔ‚ðŒ¸‚ç‚·
 			this->timeLimit -= 1.f / gameFps;
 
-			//§ŒÀŽžŠÔ‚ª0–¢–ž‚¾‚Á‚½‚ç0‚É‚·‚é
-			if (this->timeLimit < 0.f)
+			//§ŒÀŽžŠÔ‚ª0ˆÈ‰º‚É‚È‚Á‚½‚çƒQ[ƒ€‚ðI—¹‚³‚¹‚é
+			if (this->timeLimit <= 0.f)
 			{
 				this->timeLimit = 0.f;
+
+				//ƒQ[ƒ€‚ðI—¹‚³‚¹‚é
+				ge->hasAllClearedGame = true;
 			}
 			break;
 
