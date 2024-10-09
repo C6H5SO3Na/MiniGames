@@ -5,6 +5,7 @@
 //-------------------------------------------------------------------
 #include "../BChara.h"
 #include  "Task_EasingLogo.h"
+#include  "Task_FightLogo.h"
 #include  "Task_TimeLimitBar.h"
 
 namespace UIManager
@@ -38,7 +39,9 @@ namespace UIManager
 		Resource::SP	res;
 		static EasingLogo::Object::SP ShowRule();
 		static EasingLogo::Object::SP ShowFinish();
-		static TimeLimitBar::Object::SP CreateTimeLimitBar(const ML::Vec2& pos);
+		static TimeLimitBar::Object::SP CreateTimeLimitBar(const ML::Vec2& pos, const int& time);
+		static FightLogo::Object::SP CreateFightLogo();
+
 	private:
 		Object();
 		bool  B_Initialize();
@@ -49,5 +52,9 @@ namespace UIManager
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
 		void Received() override {}
+		enum class Phase {
+			None, RuleShow, RuleEasing, StartShow, StartEasing, FinishShow, FinishEasing,
+		};
+		Phase phase = Phase::RuleShow;
 	};
 }

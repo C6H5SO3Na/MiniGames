@@ -298,6 +298,9 @@
     <ClCompile Include="Miyagawa\Task_GameMessage.cpp">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClCompile>
+    <ClCompile Include="Miyagawa\Task_FightLogo.cpp">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -503,6 +506,9 @@
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_GameMessage.h">
+      <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_FightLogo.h">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
   </ItemGroup>

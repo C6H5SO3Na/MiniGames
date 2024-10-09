@@ -147,6 +147,7 @@
     <ClCompile Include="easing.cpp" />
     <ClCompile Include="fpscounter.cpp" />
     <ClCompile Include="GameEngine_Ver3_83.cpp" />
+    <ClCompile Include="Miyagawa\Task_FightLogo.cpp" />
     <ClCompile Include="Miyagawa\Task_GameMessage.cpp" />
     <ClCompile Include="Miyagawa\Task_EasingLogo.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="easing.h" />
     <ClInclude Include="fpscounter.h" />
     <ClInclude Include="GameEngine_Ver3_83.h" />
+    <ClInclude Include="Miyagawa\Task_FightLogo.h" />
     <ClInclude Include="Miyagawa\Task_GameMessage.h" />
     <ClInclude Include="Miyagawa\Task_EasingLogo.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGame.h" />

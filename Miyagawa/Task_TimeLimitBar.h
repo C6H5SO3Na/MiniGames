@@ -34,7 +34,7 @@ namespace TimeLimitBar
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		static  Object::SP Create(const ML::Vec2& pos);
+		static  Object::SP Create(const ML::Vec2& pos, const int& time);
 		Resource::SP	res;
 	private:
 		Object();
@@ -62,10 +62,5 @@ namespace TimeLimitBar
 
 		void DrawFlame() const;//ògï`âÊ
 		void DrawGauge() const;//ÉQÅ[ÉWï`âÊ
-
-		enum class State {
-			Game, Finish, AfterFinish
-		};
-		State state = State::Game;
 	};
 }

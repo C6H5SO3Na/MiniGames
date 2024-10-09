@@ -4,6 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_TimeLimitBar.h"
 #include  "Task_UIManager.h"
+#include  "../Task_Game.h"
 
 namespace TimeLimitBar
 {
@@ -35,9 +36,6 @@ namespace TimeLimitBar
 		render2D_Priority[1] = 0.01f;
 		srcBase = ML::Box2D(0, 0, 96, 32);
 
-		remainingCnt = 100;
-		maxCnt = remainingCnt;
-
 		//★タスクの生成
 		return  true;
 	}
@@ -58,25 +56,13 @@ namespace TimeLimitBar
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (state) {
-		case State::Game:
-			--remainingCnt;
-			remainingCnt = max(remainingCnt, 0);
-			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
-			if (remainingCnt <= 0) {
-				//ゲーム終了
-				finish = UIManager::Object::ShowFinish();
-				state = State::Finish;
-			}
-			break;
-
-		case State::Finish:
-			if (finish.lock() == nullptr) {
-				Kill();
-			}
-			break;
+		--remainingCnt;
+		remainingCnt = max(remainingCnt, 0);
+		if (remainingCnt == 0) {
+			auto g = ge->GetTask<Game::Object>("本編");
+			g->gameState = Game::Object::GameState::Finish;
 		}
-
+		gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -138,12 +124,14 @@ namespace TimeLimitBar
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object():gaugeAmount(0.f), maxCnt(0), minPower(0), remainingCnt(0) {}
+	Object::Object() :gaugeAmount(0.f), maxCnt(0), minPower(0), remainingCnt(0) {}
 	//-------------------------------------------------------------------
-	Object::SP Object::Create(const ML::Vec2& pos_)
+	Object::SP Object::Create(const ML::Vec2& pos, const int& time)
 	{
 		auto gauge = Create(true);
-		gauge->pos = pos_;
+		gauge->pos = pos;
+		gauge->remainingCnt = time;
+		gauge->maxCnt = gauge->remainingCnt;
 		return gauge;
 	}
 	//-------------------------------------------------------------------

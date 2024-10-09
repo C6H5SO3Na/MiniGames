@@ -2,23 +2,24 @@
 //ゲームの最初に出る指示
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_GameMessage.h"
+#include  "Task_FightLogo.h"
 #include  "../sound.h"
-#include  "../easing.h"
 
-namespace GameMessage
+namespace FightLogo
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		img = DG::Image::Create("./data/image/Fight.gif");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -32,18 +33,10 @@ namespace GameMessage
 
 		//★データ初期化
 		render2D_Priority[1] = 0.01f;
+		src = ML::Box2D(0, 0, 219, 95);
 
-		pos = ML::Vec2(3000, ge->screen2DHeight / 2.f);
-
-		easing::Set("Start", easing::CIRCOUT, static_cast<float>(ge->screen2DWidth + src.w), ge->screen2DWidth / 2.f, 60, "End");
-		easing::Set("End", easing::CIRCIN, ge->screen2DWidth / 2.f, static_cast<float>(-src.w), 60);
-
-		//☆イージング開始
-		easing::Start("Start");
-
-		se::LoadFile("default", "./data/sound/se/Common/試合開始のゴング.wav");
-
-		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
+		se::LoadFile("Fight", "./data/sound/se/Common/試合開始のゴング.wav");
+		ge->StartCounter("ToGame", 60);
 		//★タスクの生成
 		return  true;
 	}
@@ -54,7 +47,6 @@ namespace GameMessage
 		//★データ＆タスク解放
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			img.reset();
 		}
 
 		return  true;
@@ -64,20 +56,11 @@ namespace GameMessage
 	void  Object::UpDate()
 	{
 		if (!hasPlayedSE) {
-			se::Play(SEName);
+			se::Play("Fight");
 			hasPlayedSE = true;
 		}
 
-		//☆イージングで座標移動
-		//Readyを動かす
-		pos.x = easing::GetPos("Start");
-		if (easing::GetState("Start") == easing::EQ_STATE::EQ_END) //イージング「GameRuleStart」が終わったら
-		{
-			pos.x = easing::GetPos("End");
-		}
-		//イージングが完全終了したらタスクを消去
-		if (easing::GetState("End") == easing::EQ_STATE::EQ_END) //イージング「GameRuleEnd」が終わったら
-		{
+		if (ge->getCounterFlag("ToGame") == ge->LIMIT) {
 			Kill();
 		}
 	}
@@ -87,10 +70,10 @@ namespace GameMessage
 	{
 		ML::Box2D draw;
 
-		draw = ML::Box2D(-src.w, -src.h, src.w * 2, src.h * 2);
-		draw.Offset(pos);
+		draw = ML::Box2D(-110 * 3, -48 * 3, src.w * 3, src.h * 3);
+		draw.Offset(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f));
 
-		img->Draw(draw, src);
+		res->img->Draw(draw, src);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -127,15 +110,6 @@ namespace GameMessage
 	}
 	//-------------------------------------------------------------------
 	Object::Object() {}
-	//-------------------------------------------------------------------
-	Object::SP Object::Create(DG::Image::SP img, const ML::Box2D& src, const string& SEName)
-	{
-		auto logo = Create(true);
-		logo->img = img;
-		logo->src = src;
-		logo->SEName = SEName;
-		return logo;
-	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
