@@ -89,28 +89,9 @@ namespace  OguiGame
 		//背景タスク作成
 		OguiGameBG::Object::Create(true);
 
-		//☆イージング
-		//文字画像移動用
-		//Ready移動用
-		easing::Set("GameRuleStart", easing::CIRCOUT, ge->screen2DWidth + 687.f, ge->screen2DWidth / 2.f, this->gameFps, "GameRuleEnd");
-		easing::Set("GameRuleEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -687.f, this->gameFps);
-
-		//Finish移動用
-		easing::Set("FinishStart", easing::CIRCOUT, ge->screen2DWidth + 438.f * 2.f, ge->screen2DWidth / 2.f, this->gameFps, "FinishEnd");
-		easing::Set("FinishEnd", easing::CIRCIN, ge->screen2DWidth / 2.f, -438.f * 2.f, this->gameFps);
-
 		//☆BGM
 		bgm::LoadFile("OguiGameBGM", "./data/sound/bgm/大食い_harunopayapaya.mp3");
 		bgm::VolumeControl("OguiGameBGM", 90); // マジックナンバーは音量(0～100の範囲)
-
-		//☆SE
-		//Fight描画時に鳴らす
-		se::LoadFile("StartSE", "./data/sound/se/Common/試合開始のゴング.wav");
-		se::SetVolume("StartSE", 100); // マジックナンバーは音量(0～100の範囲)
-
-		//ゲーム終了時に鳴らす
-		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
-		se::SetVolume("FinishSE", 100); // マジックナンバーは音量(0～100の範囲)
 
 		return  true;
 	}
@@ -137,95 +118,23 @@ namespace  OguiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		//ゲームの状態遷移
-		this->GameStateTransition();
 		//状態に対応する行動処理
 		this->Work();
-		//イージングを動かす
-		easing::UpDate();
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		//状態に対応する描画処理
-		this->Render();
 	}
 	//-------------------------------------------------------------------
-	//ゲームの状態遷移
-	void Object::GameStateTransition()
-	{
-		GameState nowState = this->gameState;	//とりあえず現在の状態を代入
-
-		//モーションの切り替え
-		switch (nowState)
-		{
-		case GameState::BeforeGameStart:	//ゲーム開始前
-			if (this->countToChangeGameState >= gameFps) { nowState = GameState::Game; } //ゲーム中へ
-			break;
-
-		case GameState::Game:				//ゲーム中
-			if (timeLimit == 0) { nowState = GameState::End; } //制限時間が0になったらゲーム終了へ
-			break;
-		}
-
-		//状態更新
-		this->UpdateGameState(nowState);
-	}
-	//-------------------------------------------------------------------
-	//ゲームの状態変更時処理
-	void Object::UpdateGameState(GameState nowState)
-	{
-		if (nowState != this->gameState)
-		{
-			this->gameState = nowState;
-		}
-	}
+	//★自分で実装した関数★
 	//-------------------------------------------------------------------
 	//状態毎の処理
 	void Object::Work()
 	{
-		switch (this->gameState)
+		switch (ge->gameState)
 		{
-		case GameState::BeforeGameStart:	//ゲーム開始前
-			//☆ゲームが始まった瞬間に行う処理
-			if (this->gameStart == true)
-			{
-				//☆イージング開始
-				easing::Start("GameRuleStart");
-
-				this->gameStart = false;
-			}
-
-			//☆イージングで座標移動
-			//Readyを動かす
-			this->gameRuleImagePos.x = easing::GetPos("GameRuleStart");
-			if (easing::GetState("GameRuleStart") == easing::EQ_STATE::EQ_END) //イージング「GameRuleStart」が終わったら
-			{
-				this->gameRuleImagePos.x = easing::GetPos("GameRuleEnd");
-			}
-
-			//☆Fight描画用処理
-			if (easing::GetState("GameRuleEnd") == easing::EQ_STATE::EQ_END) //イージング「GameRuleEnd」が終わったら
-			{
-				this->countToFightDraw++;
-			}
-
-			//☆Fightの描画時に行う処理
-			if (countToFightDraw == this->gameFps)
-			{
-				//ゲーム開始のSEを鳴らす
-				se::Play("StartSE");
-			}
-
-			//☆状態を遷移するための処理
-			if (countToFightDraw >= this->gameFps) //Fightの描画と同時に
-			{
-				this->countToChangeGameState++;
-			}
-			break;
-
-		case GameState::Game:				//ゲーム中
+		case MyPG::MyGameEngine::GameState::Game:				//ゲーム中
 			//☆ゲーム本編が始まった瞬間に行う処理
 			if (this->isInGame == false)
 			{
@@ -246,7 +155,7 @@ namespace  OguiGame
 			}
 			break;
 
-		case GameState::End:				//ゲーム終了
+		case MyPG::MyGameEngine::GameState::Finish:				//ゲーム終了
 			//☆ゲームの状態がEndの時、一度だけ行う処理
 			if (this->isInGame == true)
 			{
@@ -256,30 +165,15 @@ namespace  OguiGame
 				//☆SEを止める
 				se::AllStop();
 
-				//終了したらSEを鳴らす
-				se::Play("FinishSE");
-
 				//☆順位を決め、ge->scoreに得点を送る
 				//順位を決める
 				this->Ranking();
 				//ge->scoreに得点を送る
 				this->SendScore();
-
-				//☆イージング開始
-				easing::Start("FinishStart");//☆イージング開始
-				easing::Start("FinishStart");
-			}
-
-			//☆イージングで座標移動
-			//Finishを動かす
-			this->finishImagePos.x = easing::GetPos("FinishStart");
-			if (easing::GetState("FinishStart") == easing::EQ_STATE::EQ_END) //イージング「FinishStart」が終わったら
-			{
-				this->finishImagePos.x = easing::GetPos("FinishEnd");
 			}
 
 			//☆次のタスクに行くまでのカウント
-			if (easing::GetState("FinishEnd") == easing::EQ_STATE::EQ_END)  //イージング「FinishEnd」が終わったら
+			if (ge->hasFinishedEasing)  //Finishの描画が終わったら
 			{
 				this->countToNextTask++;
 			}
@@ -291,46 +185,6 @@ namespace  OguiGame
 			if (ge->getCounterFlag("test") == ge->LIMIT) {
 				Kill();
 			}
-			break;
-		}
-	}
-	//-------------------------------------------------------------------
-	//状態毎の描画
-	void Object::Render()
-	{
-		ML::Box2D src = {};
-		ML::Box2D draw = {};
-
-		switch (this->gameState)
-		{
-		case GameState::BeforeGameStart:	//ゲーム開始前
-			//☆「Ready」描画
-			//描画情報設定
-			src = ML::Box2D(0, 0, 687, 88);
-			draw = ML::Box2D(-src.w, -src.h, src.w * 2, src.h * 2);
-			draw.Offset(this->gameRuleImagePos);
-
-			this->res->gameRuleImage->Draw(draw, src);
-
-			//☆「Fight」描画
-			if (this->countToFightDraw >= this->gameFps)
-			{
-				//描画情報設定
-				src = ML::Box2D(0, 0, 219, 95);
-				draw = ML::Box2D(-110 * 3, -48 * 3, src.w * 3, src.h * 3);
-				draw.Offset(this->fightImagePos);
-
-				this->res->fightImage->Draw(draw, src);
-			}
-			break;
-
-		case GameState::End:				//ゲーム終了
-			//☆「Finish」描画
-			src = ML::Box2D(0, 0, 438, 105);
-			draw = ML::Box2D(-src.w, -48, src.w * 2, src.h * 2);
-			draw.Offset(this->finishImagePos);
-
-			this->res->finishImage->Draw(draw, src);
 			break;
 		}
 	}
@@ -545,10 +399,7 @@ namespace  OguiGame
 		controllers{ ge->in1, ge->in2, ge->in3, ge->in4 }, playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playerCount(4),
 		playersInfo(),
 		// 大食いゲーム関係
-		timeLimit(15.f), isInGame(false), gameState(GameState::BeforeGameStart), countToChangeGameState(0), countToNextTask(0), gameFps(60), gameStart(true),
-		// 文字描画関係
-		gameRuleImagePos(ML::Vec2(0.f, ge->screen2DHeight / 2.f)), fightImagePos(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f)),
-		finishImagePos(ML::Vec2(0.f, ge->screen2DHeight / 2.f)), countToFightDraw(0)
+		timeLimit(15.f), isInGame(false), countToChangeGameState(0), countToNextTask(0), gameFps(60), gameStart(true)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

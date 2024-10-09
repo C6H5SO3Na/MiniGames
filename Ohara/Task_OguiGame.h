@@ -56,15 +56,7 @@ namespace  OguiGame
 		bool  isInGame;		//ミニゲーム中、trueにする
 
 	private:
-		//☆構造体・列挙型
-		//ゲームの状態
-		enum class GameState
-		{
-			BeforeGameStart,	//ゲーム開始前
-			Game,				//ゲーム中
-			End,				//ゲーム終了
-		};
-
+		//☆構造体
 		//順位決めに必要なプレイヤーの情報
 		struct PlayerInformation
 		{
@@ -90,24 +82,13 @@ namespace  OguiGame
 
 		//大食いゲーム関係--------------------------------------------------------------------------------------------------------------------------
 		//☆変数
-		GameState	gameState;				// ゲームの状態
 		int			countToChangeGameState;	// GameStateを変更するまでのカウント
 		int			countToNextTask;		// 次のタスクにするまでのカウント
 		int			gameFps;				// 想定FPS
 		bool		gameStart;				// ゲーム開始時true
 
 		//☆関数
-		void GameStateTransition();					//ゲームの状態遷移
-		void UpdateGameState(GameState nowState);	//ゲームの状態変更時処理
-		void Work();								//状態毎の処理
-		void Render();								//状態毎の描画
-
-		//文字描画関係-----------------------------------------------------------------------------------------------------------------------------
-		//☆変数
-		ML::Vec2	gameRuleImagePos;	// ゲームの説明の文章の初期位置
-		ML::Vec2	fightImagePos;		// 「Fight」の文字の初期位置
-		ML::Vec2	finishImagePos;		// 「Finish」の文字の初期位置
-		int			countToFightDraw;	// 「Fight」の文字を描画するまでのカウント
+		void Work();						// 状態毎の処理
 
 	public:
 		//getter関数------------------------------------------------------------------------------------------------------------------------------
