@@ -102,13 +102,14 @@ namespace  StageBrushTeeth
 			CheckClear();
 			if (timeCnt >= 20 * 60)
 			{
+				MarkCount();
 				this->state = Phase::Clear;
 			}
 
 			break;
 
 		case Phase::Clear:
-			Clear();
+			Kill();
 			break;
 		}
 	}
@@ -174,10 +175,16 @@ namespace  StageBrushTeeth
 	void  Object::CheckClear()
 	{
 		auto stainManager = ge->GetTasks<StainManager::Object>("よごれマネージャー");
+		auto com = ge->GetTask<CommonItemManager02::Object>("共通アイテムマネージャー02");
 		for (auto it = stainManager->begin(); it != stainManager->end(); it++)
 		{
 			if ((*it)->IsClear()) {
 				clearCount++;
+				if (!(*it)->isScoreAdd) {
+					ge->AddScore((*it)->id, com->addscore[com->rank]);
+					com->rank++;
+					(*it)->isScoreAdd = true;
+				}		
 			}
 		}
 		if (clearCount == 4) {// if all players were clear
@@ -190,12 +197,17 @@ namespace  StageBrushTeeth
 	}
 	//-------------------------------------------------------------------
 	//全員クリア後の処理
-	void  Object::Clear()
+	void  Object::MarkCount()
 	{
-		Kill();
-		/*if (ge->getCounterFlag("Clear") == ge->LIMIT) {
-			Kill();
-		}*/
+		auto stainManager = ge->GetTasks<StainManager::Object>("よごれマネージャー");
+		auto com = ge->GetTask<CommonItemManager02::Object>("共通アイテムマネージャー02");
+		for (auto it = stainManager->begin(); it != stainManager->end(); it++)
+		{
+			if (!(*it)->isScoreAdd) {
+				ge->AddScore((*it)->id, com->addscore[com->rank]);
+				(*it)->isScoreAdd = true;
+			}
+		}
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

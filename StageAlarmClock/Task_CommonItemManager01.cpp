@@ -42,10 +42,11 @@ namespace  CommonItemManager01
 		{
 			auto c = Clock::Object::Create(true);
 			ClockList.push_back(c);
-			ClockList[i]->id = i;
+			//ClockList[i]->id = i;
 
 			auto h = hand::Object::Create(true);
 			PLhandList.push_back(h);
+			PLhandList[i]->id = i;
 
 			c->Positionalise(i);
 			h->Positionalise(i);

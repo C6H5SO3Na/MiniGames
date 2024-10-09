@@ -127,7 +127,7 @@ namespace  hand
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);
 		//ge->debugRect(me, 4);
 		auto t = ge->GetTasks<Clock::Object>("目覚まし時計");
-		auto com = ge->GetTask<CommonItemManager01::Object>("共通アイテムマネージャー01");
+		
 		for (auto it = t->begin(); it != t->end(); ++it)
 		{
 			auto you = (*it)->hitBase.OffsetCopy((*it)->pos);
@@ -143,8 +143,8 @@ namespace  hand
 				{
 					this->isClear = true;
 					//ge->score[(*it)->id] += com->addscore[com->rank]; //addscore
-					ge->AddScore((*it)->id, com->addscore[com->rank]);
-					com->rank++;
+					/*ge->AddScore((*it)->id, com->addscore[com->rank]);
+					com->rank++;*/
 				}
 				
 			}

@@ -62,7 +62,9 @@ namespace  StainManager
 			}
 			else return false;
 		}
-
+		int KillNum;
 		int id;
+		
+		bool isScoreAdd = false;
 	};
 }

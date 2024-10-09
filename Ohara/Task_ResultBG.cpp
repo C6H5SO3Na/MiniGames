@@ -32,6 +32,7 @@ namespace  ResultBG
 
 		//★データ初期化
 		this->render2D_Priority[1] = 1.f;
+		moveVec.x = 3.f;
 		
 		//★タスクの生成
 
@@ -54,13 +55,26 @@ namespace  ResultBG
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		//背景の移動
+		pos -= moveVec;
+
+		//移動した距離を増やす
+		movedDistance += moveVec.x;
+
+		//背景が移動しきったら、最初の位置に戻す
+		if (movedDistance > ge->screen2DWidth)
+		{
+			pos.x += movedDistance;
+			movedDistance = 0.f;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
 		ML::Box2D draw(0, 0, ge->screen2DWidth, ge->screen2DHeight);
-		ML::Box2D src(0, 0, 1601, 1200);
+		draw.Offset(pos);
+		ML::Box2D src(0, 0, 1557, 1200);
 		this->res->image->Draw(draw, src);
 	}
 
@@ -98,7 +112,10 @@ namespace  ResultBG
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object()
+		:
+		moveVec(0.f, 0.f), movedDistance(0.f), pos(0.f, 0.f)
+	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
