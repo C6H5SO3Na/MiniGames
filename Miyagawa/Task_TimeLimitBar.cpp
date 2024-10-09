@@ -33,7 +33,7 @@ namespace TimeLimitBar
 		res = Resource::Create();
 
 		//★データ初期化
-		render2D_Priority[1] = 0.01f;
+		render2D_Priority[1] = -0.99f;
 		srcBase = ML::Box2D(0, 0, 96, 32);
 
 		//★タスクの生成
@@ -58,10 +58,10 @@ namespace TimeLimitBar
 	{
 		switch (ge->gameState) {
 		case MyPG::MyGameEngine::GameState::Start:
-			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
+			gaugeAmount = static_cast<float>(ge->nowTimeLimit) / maxCnt;
 			break;
 		case MyPG::MyGameEngine::GameState::Game:
-			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
+			gaugeAmount = static_cast<float>(ge->nowTimeLimit) / maxCnt;
 			break;
 
 		case MyPG::MyGameEngine::GameState::Finish:
@@ -134,8 +134,7 @@ namespace TimeLimitBar
 	{
 		auto gauge = Create(true);
 		gauge->pos = pos;
-		gauge->remainingCnt = ge->timeLimitTable[ge->nowStage];
-		gauge->maxCnt = gauge->remainingCnt;
+		gauge->maxCnt = ge->nowTimeLimit;
 		return gauge;
 	}
 	//-------------------------------------------------------------------

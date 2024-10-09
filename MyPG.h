@@ -101,9 +101,7 @@ namespace  MyPG
 		};
 		GameState gameState;
 
-		int timeLimitTable[7] = {
-			20 * 60, 20 * 60, 22 * 60, 22 * 60, 30 * 60, 15 * 60, 30 * 60,
-		};
+		int nowTimeLimit = 0;
 
 		void CreateEffect(int no, ML::Vec2 pos);
 		void Dbg_ToConsole(const char* str, ...);
