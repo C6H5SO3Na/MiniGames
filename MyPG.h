@@ -93,6 +93,8 @@ namespace  MyPG
 		FPSCounter* c = nullptr;
 
 		int stage = 1;
+		bool hasFinishedEasing = false; //Finishのイージングが終わるとtrue
+		bool hasAllClearedGame = false; //
 
 		enum class GameState {
 			Start, Game, Finish,

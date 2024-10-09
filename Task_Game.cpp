@@ -78,8 +78,8 @@ namespace  Game
 	void  Object::UpDate()
 	{
 		easing::UpDate();
-		if (ge->in1->GetState().ST.down) {
-			UIManager::Object::CreateFightLogo();
+		if (ge->hasAllClearedGame) {
+			ge->gameState = MyPG::MyGameEngine::GameState::Finish;
 		}
 	}
 	//-------------------------------------------------------------------
@@ -102,26 +102,32 @@ namespace  Game
 		case 1:
 			StageBrushTeeth::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f), timeLimitTable[ge->nowStage]);
 			break;
 		case 2:
 			BlanceGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f), timeLimitTable[ge->nowStage]);
 			break;
 		case 3:
 			ClassifyGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f), timeLimitTable[ge->nowStage]);
 			break;
 		case 4:
 			SaboriGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f), timeLimitTable[ge->nowStage]);
 			break;
 		case 5:
 			OguiGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f), timeLimitTable[ge->nowStage]);
 			break;
 		case 6:
 			TaxiGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f), timeLimitTable[ge->nowStage]);
 			break;
 		default:
 			g->Kill();

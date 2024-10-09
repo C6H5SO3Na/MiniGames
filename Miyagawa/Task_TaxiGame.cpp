@@ -93,11 +93,6 @@ namespace  TaxiGame
 			Clear();
 			break;
 		}
-		gameCnt++;//ゲーム時間のカウンター（フレーム）
-		if (gameCnt == 1800) {
-			ge->StartCounter("Clear", 180);
-			phase = Phase::Clear;
-		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -118,7 +113,10 @@ namespace  TaxiGame
 			});
 		//クリア
 		if (clearNum >= players->size()) {
-			ge->StartCounter("Clear", 180);
+			ge->hasAllClearedGame = true;
+		}
+
+		if (ge->hasAllClearedGame) {
 			phase = Phase::Clear;
 		}
 	}
@@ -126,7 +124,7 @@ namespace  TaxiGame
 	//全員クリア後の処理
 	void  Object::Clear()
 	{
-		if (ge->getCounterFlag("Clear") == ge->LIMIT) {
+		if (ge->hasFinishedEasing) {
 			Kill();
 		}
 	}
