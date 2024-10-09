@@ -77,7 +77,7 @@ namespace  hand
 		{
 		case State::Left:
 			this->moveVec = ML::Vec2(-2 * this->speed, 0);
-			if (this->pos.x <= minPosX)
+			if (this->pos.x <= minPosX +16)
 			{
 				this->state = State::Right;
 				isright = true;
@@ -85,7 +85,7 @@ namespace  hand
 			break;
 		case State::Right:
 			this->moveVec = ML::Vec2(2 * this->speed, 0);
-			if (this->pos.x >= maxPosX)
+			if (this->pos.x >= maxPosX -16)
 			{
 				this->state = State::Left;
 				isright = false;
@@ -166,9 +166,9 @@ namespace  hand
 		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
 		pos.x = (float)PlayerArea.x + (drawBase.w / 2);
 		pos.y = (float)PlayerArea.y + (drawBase.h / 2);
-		minPosX = (float)PlayerArea.x + (drawBase.w / 2);
+		minPosX = (float)PlayerArea.x + (drawBase.w / 2) + 60;
 		minPosY = (float)PlayerArea.y + (drawBase.h / 2) + 2 * this->speed;
-		maxPosX = (float)PlayerArea.x + PlayerArea.w - drawBase.w;
+		maxPosX = (float)PlayerArea.x + PlayerArea.w - drawBase.w - 20;
 		maxPosY = (float)PlayerArea.y + PlayerArea.h / 2;
 	}
 	//šššššššššššššššššššššššššššššššššššššššššš
