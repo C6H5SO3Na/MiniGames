@@ -12,7 +12,7 @@ namespace FightLogo
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/Fight.gif");
+		img = DG::Image::Create("./data/image/Fight.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -33,7 +33,7 @@ namespace FightLogo
 
 		//★データ初期化
 		render2D_Priority[1] = 0.01f;
-		src = ML::Box2D(0, 0, 219, 95);
+		srcBase = ML::Box2D(0, 0, 219, 95);
 
 		se::LoadFile("Fight", "./data/sound/se/Common/試合開始のゴング.wav");
 		ge->StartCounter("ToGame", 60);
@@ -63,14 +63,14 @@ namespace FightLogo
 		if (ge->getCounterFlag("ToGame") == ge->LIMIT) {
 			Kill();
 		}
+		++animCnt;
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw;
-
-		draw = ML::Box2D(-110 * 3, -48 * 3, src.w * 3, src.h * 3);
+		ML::Box2D src(219 * (animCnt / 4 % 5), srcBase.y, srcBase.w, srcBase.h);
+		ML::Box2D draw(-110 * 3, -48 * 3, src.w * 3, src.h * 3);
 		draw.Offset(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f));
 
 		res->img->Draw(draw, src);

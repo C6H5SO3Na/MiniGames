@@ -61,7 +61,6 @@ namespace TimeLimitBar
 			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
 			break;
 		case MyPG::MyGameEngine::GameState::Game:
-			--remainingCnt;
 			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
 			break;
 
@@ -131,11 +130,11 @@ namespace TimeLimitBar
 	//-------------------------------------------------------------------
 	Object::Object() :gaugeAmount(0.f), maxCnt(0), minPower(0), remainingCnt(0) {}
 	//-------------------------------------------------------------------
-	Object::SP Object::Create(const ML::Vec2& pos, const int& time)
+	Object::SP Object::Create(const ML::Vec2& pos)
 	{
 		auto gauge = Create(true);
 		gauge->pos = pos;
-		gauge->remainingCnt = time;
+		gauge->remainingCnt = ge->timeLimitTable[ge->nowStage];
 		gauge->maxCnt = gauge->remainingCnt;
 		return gauge;
 	}

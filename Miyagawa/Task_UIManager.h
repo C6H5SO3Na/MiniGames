@@ -39,7 +39,7 @@ namespace UIManager
 		Resource::SP	res;
 		static EasingLogo::Object::SP ShowRule();
 		static EasingLogo::Object::SP ShowFinish();
-		static TimeLimitBar::Object::SP CreateTimeLimitBar(const ML::Vec2& pos, const int& time);
+		static TimeLimitBar::Object::SP CreateTimeLimitBar(const ML::Vec2& pos);
 		static FightLogo::Object::SP CreateFightLogo();
 
 	private:
