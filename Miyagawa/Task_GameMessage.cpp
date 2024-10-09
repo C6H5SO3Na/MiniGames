@@ -31,7 +31,7 @@ namespace GameMessage
 		res = Resource::Create();
 
 		//šƒf[ƒ^‰Šú‰»
-		render2D_Priority[1] = 0.01f;
+		render2D_Priority[1] = -0.99f;
 
 		pos = ML::Vec2(3000, ge->screen2DHeight / 2.f);
 
