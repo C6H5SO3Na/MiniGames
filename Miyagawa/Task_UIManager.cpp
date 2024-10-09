@@ -2,9 +2,11 @@
 //UIマネージャー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
+#include  "../Task_Game.h"
 #include  "Task_UIManager.h"
 #include  "Task_EasingLogo.h"
-#include  "Task_TimeLimitGauge.h"
+#include  "Task_FightLogo.h"
+#include  "Task_TimeLimitBar.h"
 
 namespace UIManager
 {
@@ -31,9 +33,10 @@ namespace UIManager
 		res = Resource::Create();
 
 		//★データ初期化
+		phase = Phase::RuleShow;
 
 		//★タスクの生成
-		TimeLimitBar::Object::Create(ML::Vec2(1000.f, 1000.f));
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -52,6 +55,57 @@ namespace UIManager
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		auto g = ge->GetTask<Game::Object>("本編");
+		switch (g->gameState) {
+		case Game::Object::GameState::Start:
+
+			switch (phase) {
+			case Phase::RuleShow:
+				ShowRule();
+				phase = Phase::RuleEasing;
+				break;
+
+			case Phase::RuleEasing:
+				if (ge->GetTask<EasingLogo::Object>(EasingLogo::defGroupName, EasingLogo::defName) == nullptr) {
+					phase = Phase::StartShow;
+				}
+				break;
+
+			case Phase::StartShow:
+				CreateFightLogo();
+				phase = Phase::StartEasing;
+				break;
+
+			case Phase::StartEasing:
+				if (ge->GetTask<EasingLogo::Object>(EasingLogo::defGroupName, EasingLogo::defName) == nullptr) {
+					phase = Phase::FinishShow;
+					g->gameState = Game::Object::GameState::Game;
+				}
+				break;
+			}
+			break;
+
+		case Game::Object::GameState::Game:
+
+			break;
+
+		case Game::Object::GameState::Finish:
+			switch (phase) {
+			case Phase::FinishShow:
+				ShowFinish();
+				phase = Phase::FinishEasing;
+				break;
+
+			case Phase::FinishEasing:
+				if (ge->GetTask<EasingLogo::Object>(EasingLogo::defGroupName, EasingLogo::defName) == nullptr) {
+					phase = Phase::RuleShow;//使いまわし
+					auto bar = ge->GetTask<TimeLimitBar::Object>(TimeLimitBar::defGroupName, TimeLimitBar::defName);
+					bar->Kill();
+				}
+				break;
+			}
+			break;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
@@ -62,13 +116,41 @@ namespace UIManager
 	//ステージ説明を描画
 	EasingLogo::Object::SP Object::ShowRule()
 	{
-		return EasingLogo::Object::Spawn(false);
+		//シングルトン
+		if (ge->GetTask<EasingLogo::Object>(EasingLogo::defGroupName, EasingLogo::defName) == nullptr) {
+			return EasingLogo::Object::Spawn(false);
+		}
+		return nullptr;
 	}
 	//-------------------------------------------------------------------
 	//Finishを描画
 	EasingLogo::Object::SP  Object::ShowFinish()
 	{
-		return EasingLogo::Object::Spawn(true);
+		//シングルトン
+		if (ge->GetTask<EasingLogo::Object>(EasingLogo::defGroupName, EasingLogo::defName) == nullptr) {
+			return EasingLogo::Object::Spawn(true);
+		}
+		return nullptr;
+	}
+	//-------------------------------------------------------------------
+	//タイムリミットのゲージを描画
+	TimeLimitBar::Object::SP  Object::CreateTimeLimitBar(const ML::Vec2& pos, const int& time)
+	{
+		//シングルトン
+		if (ge->GetTask<TimeLimitBar::Object>(TimeLimitBar::defGroupName, TimeLimitBar::defName) == nullptr) {
+			return TimeLimitBar::Object::Create(pos, time);
+		}
+		return nullptr;
+	}
+	//-------------------------------------------------------------------
+	//「Fight」描画
+	FightLogo::Object::SP  Object::CreateFightLogo()
+	{
+		//シングルトン
+		if (ge->GetTask<FightLogo::Object>(FightLogo::defGroupName, FightLogo::defName) == nullptr) {
+			return FightLogo::Object::Create(true);
+		}
+		return nullptr;
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

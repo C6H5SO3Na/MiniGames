@@ -63,9 +63,6 @@ namespace EasingLogo
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		if (logo.lock() == nullptr) {
-			Kill();
-		}
 		if (!isCreated) {
 			if (isFinish) {
 				logo = GameMessage::Object::Create(res->img[7], srcTable[7], "FinishSE");
@@ -74,6 +71,9 @@ namespace EasingLogo
 				logo = GameMessage::Object::Create(res->img[ge->nowStage], srcTable[ge->nowStage]);
 			}
 			isCreated = true;
+		}
+		if (logo.lock() == nullptr) {
+			Kill();
 		}
 	}
 	//-------------------------------------------------------------------

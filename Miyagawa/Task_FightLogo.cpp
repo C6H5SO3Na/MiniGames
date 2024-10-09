@@ -1,17 +1,18 @@
 //-------------------------------------------------------------------
-//残り時間のバー
+//ゲームの最初に出る指示
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TimeLimitGauge.h"
+#include  "Task_FightLogo.h"
+#include  "../sound.h"
 
-namespace TimeLimitBar
+namespace FightLogo
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/bar.png");
+		img = DG::Image::Create("./data/image/Fight.gif");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -32,11 +33,10 @@ namespace TimeLimitBar
 
 		//★データ初期化
 		render2D_Priority[1] = 0.01f;
-		srcBase = ML::Box2D(0, 0, 96, 32);
+		src = ML::Box2D(0, 0, 219, 95);
 
-		remainingCnt = 1000;
-		maxCnt = remainingCnt;
-
+		se::LoadFile("Fight", "./data/sound/se/Common/試合開始のゴング.wav");
+		ge->StartCounter("ToGame", 60);
 		//★タスクの生成
 		return  true;
 	}
@@ -45,8 +45,6 @@ namespace TimeLimitBar
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
-
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}
@@ -57,37 +55,24 @@ namespace TimeLimitBar
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		--remainingCnt;
-		remainingCnt = max(remainingCnt, 0);
-		gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
-		if (remainingCnt <= 0) {
-			//ゲーム終了
+		if (!hasPlayedSE) {
+			se::Play("Fight");
+			hasPlayedSE = true;
+		}
+
+		if (ge->getCounterFlag("ToGame") == ge->LIMIT) {
+			Kill();
 		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		DrawFlame();
-		DrawGauge();
-	}
-	//-------------------------------------------------------------------
-	//バーの枠描画
-	void Object::DrawFlame() const
-	{
-		ML::Box2D src(0, 0, srcBase.w, srcBase.h);
-		ML::Box2D draw(-srcBase.w * 6 / 2, -srcBase.h * 2 / 2, srcBase.w * 6, srcBase.h * 2);
-		draw.Offset(pos);
-		res->img->Draw(draw, src);
-	}
-	//-------------------------------------------------------------------
-	//バーのゲージ描画
-	void Object::DrawGauge() const
-	{
-		int gSize = static_cast<int>(srcBase.w * gaugeAmount);
-		ML::Box2D src(0, srcBase.h, gSize, srcBase.h);
-		ML::Box2D draw(-srcBase.w * 6 / 2, -src.h * 2 / 2, gSize * 6, srcBase.h * 2);
-		draw.Offset(pos);
+		ML::Box2D draw;
+
+		draw = ML::Box2D(-110 * 3, -48 * 3, src.w * 3, src.h * 3);
+		draw.Offset(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 2.f));
+
 		res->img->Draw(draw, src);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -125,12 +110,6 @@ namespace TimeLimitBar
 	}
 	//-------------------------------------------------------------------
 	Object::Object() {}
-	//-------------------------------------------------------------------
-	void Object::Create(const ML::Vec2& pos_)
-	{
-		auto gauge = Create(true);
-		gauge->pos = pos_;
-	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
