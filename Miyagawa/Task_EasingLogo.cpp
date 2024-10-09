@@ -41,7 +41,7 @@ namespace EasingLogo
 		res = Resource::Create();
 
 		//★データ初期化
-		render2D_Priority[1] = 0.01f;
+		render2D_Priority[1] = -0.99f;
 
 		//★タスクの生成
 

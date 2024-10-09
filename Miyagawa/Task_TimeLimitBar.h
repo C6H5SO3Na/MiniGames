@@ -34,7 +34,7 @@ namespace TimeLimitBar
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		static  Object::SP Create(const ML::Vec2& pos, const int& time);
+		static  Object::SP Create(const ML::Vec2& pos);
 		Resource::SP	res;
 	private:
 		Object();
