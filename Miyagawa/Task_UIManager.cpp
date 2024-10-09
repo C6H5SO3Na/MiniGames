@@ -61,6 +61,7 @@ namespace UIManager
 
 			switch (phase) {
 			case Phase::RuleShow:
+				ge->hasFinishedEasing = false;
 				ShowRule();
 				phase = Phase::RuleEasing;
 				break;
@@ -98,7 +99,9 @@ namespace UIManager
 
 			case Phase::FinishEasing:
 				if (ge->GetTask<EasingLogo::Object>(EasingLogo::defGroupName, EasingLogo::defName) == nullptr) {
+					ge->hasFinishedEasing = true;//イージング終了
 					phase = Phase::RuleShow;//使いまわし
+					ge->hasAllClearedGame = false; //リセット
 					auto bar = ge->GetTask<TimeLimitBar::Object>(TimeLimitBar::defGroupName, TimeLimitBar::defName);
 					bar->Kill();
 				}
