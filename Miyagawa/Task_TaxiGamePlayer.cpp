@@ -150,7 +150,7 @@ namespace TaxiGamePlayer
 	{
 		if (owner_->BUTTON(0) == 0) { return; }
 		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {//ビット単位のための計算
-			easing::Set("move" + to_string(owner_->controllerNum), easing::QUADINOUT, 0, -150, 120);
+			easing::Set("move" + to_string(owner_->controllerNum), easing::QUADINOUT, 0, -150, 60);
 			easing::Start("move" + to_string(owner_->controllerNum));
 			owner_->ChangeState(new MoveState(owner_));
 			se::Play("Walk");
