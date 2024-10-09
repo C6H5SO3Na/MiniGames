@@ -50,10 +50,5 @@ namespace  Game
 		DG::Font::SP TestFont;
 		static void CreateTask();
 		static void CreateTask(int nextTask);
-
-		enum class GameState {
-			Start, Game, Finish,
-		};
-		GameState gameState;
 	};
 }
