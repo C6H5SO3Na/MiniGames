@@ -94,6 +94,11 @@ namespace  MyPG
 
 		int stage = 1;
 
+		enum class GameState {
+			Start, Game, Finish,
+		};
+		GameState gameState;
+
 		void CreateEffect(int no, ML::Vec2 pos);
 		void Dbg_ToConsole(const char* str, ...);
 		void Dbg_ToDisplay(int x, int y, const char* str, ...);
