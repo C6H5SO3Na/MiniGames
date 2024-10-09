@@ -54,7 +54,6 @@ namespace  Clock
 		void Received() {};
 		void Positionalise(int PlayerNum);
 		ML::Box2D drawBase;
-		int id;
 
 		int animCnt;
 		int animIndex;

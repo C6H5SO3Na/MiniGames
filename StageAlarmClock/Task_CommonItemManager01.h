@@ -55,7 +55,7 @@ namespace  CommonItemManager01
 		vector<hand::Object::SP> PLhandList;
 		vector<XI::GamePad::SP> CTList;
 
-		int addscore[4] = { 4, 3, 2, 1 };
+		int addscore[4] = { 4, 2, 1, 0 };
 		int rank;
 	};
 }
