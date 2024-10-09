@@ -105,7 +105,11 @@ namespace  StageAlarmClock
 			break;
 
 		case Phase::Clear:
-			Kill();
+			ge->hasAllClearedGame = true;
+			if (ge->hasFinishedEasing)
+			{
+				Kill();
+			}
 			break;
 		}
 	}
@@ -127,12 +131,18 @@ namespace  StageAlarmClock
 		ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
 		this->res->bgImg->Draw(draw4, src);
 
-		//コントローラーマーク
-		ML::Box2D Draw(1920/2 - 150/2, 1080/2 - 150/2, 150, 150);
-		int srcX = animIndex % 2 * 128;
-		int srcY = animIndex / 2 * 128;
-		ML::Box2D Src(srcX, srcY, 128, 128);
-		this->res->controllerMark->Draw(Draw, Src);
+		switch (ge->gameState)
+		{
+		case MyPG::MyGameEngine::GameState::Game:
+			//コントローラーマーク
+			ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
+			int srcX = animIndex % 2 * 128;
+			int srcY = animIndex / 2 * 128;
+			ML::Box2D Src(srcX, srcY, 128, 128);
+			this->res->controllerMark->Draw(Draw, Src);
+			break;
+		}
+		
 
 		//プレイヤーナンバー
 		ML::Box2D draw01(0, 1080/2 - 105, 715/4, 105);

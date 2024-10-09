@@ -71,7 +71,16 @@ namespace  hand
 	void  Object::UpDate()
 	{
 		se::PlayLoop("Ring");
-		this->pos += this->moveVec;
+		switch (ge->gameState)
+		{
+		case MyPG::MyGameEngine::GameState::Game:
+			this->pos += this->moveVec;
+			break;
+		case MyPG::MyGameEngine::GameState::Finish:
+			se::Play("Stop");
+			break;
+		}
+		
 
 		switch (this->state)
 		{
