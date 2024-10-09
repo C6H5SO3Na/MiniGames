@@ -1,9 +1,13 @@
 //-------------------------------------------------------------------
 //
 //-------------------------------------------------------------------
+#include "../randomLib.h"
 #include  "../MyPG.h"
 #include  "Task_stain.h"
 #include  "Task_StainManager.h"
+#define _USE_MATH_DEFINES
+#include  "math.h"
+#include "algorithm"
 
 namespace  stain
 {
@@ -39,6 +43,9 @@ namespace  stain
 		this->timeCnt = 0;
 		this->animCnt = 0;
 		this->animIndex = 0;
+		this->speed = GetRandom(1.0f, 5.0f);
+		dx = 0;
+		dy = 0;
 		//★タスクの生成
 
 		return  true;
@@ -72,6 +79,34 @@ namespace  stain
 				this->animIndex = 0;
 			}
 		}
+
+		//ランダムで真っ直ぐやまるで動く
+		if (rand() % 100 < 20) { // State変わる％
+			State = (State == MovementState::Forward) ? MovementState::Circular : MovementState::Forward;
+		}
+
+		if (State == MovementState::Forward) {
+			//ランダムで動く
+			//float direction = GetRandom(0.f, 2 * (float)M_PI); // ラジアンで方向を計算する
+			//dx = speed * cos(direction);
+			//dy = speed * sin(direction);
+			float dx = (GetRandom(-1, 1) * speed); //右左
+			float dy = (GetRandom(-1, 1) * speed); //上下
+		}
+		else if (State == MovementState::Circular) {
+			//まるで動くt
+			float radius = GetRandom(1.f, 5.f);
+			angle += 0.1f;
+			dx = radius * cos(angle);
+			dy = radius * sin(angle);
+		}
+
+		pos.x += dx;
+		pos.y += dy;
+
+		this->pos.x = max(minX, min(this->pos.x, maxX));
+		this->pos.y = max(minY, min(this->pos.y, maxY));
+
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

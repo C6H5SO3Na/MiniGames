@@ -53,5 +53,14 @@ namespace  stain
 		int animCnt;
 		int animIndex;
 		int id;
+		float speed;
+		float dx, dy;
+		int minX, minY, maxX, maxY;
+
+		enum class MovementState {
+			Forward,
+			Circular
+		};
+		MovementState State;
 	};
 }
