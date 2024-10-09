@@ -55,7 +55,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		CreateTask();
+		CreateTask();//引数に数字を入れると、1:歯磨きゲーム、2:電車ゲーム…という風になる
 		UIManager::Object::Create(true);
 		return  true;
 	}
