@@ -1,15 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//ゲームの最初に出る指示
+//「Fight」
 //-------------------------------------------------------------------
 #include "../BChara.h"
 
-namespace GameMessage
+namespace FightLogo
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("UI");	//グループ名
-	const  string  defName("イージングロゴ");//タスク名
+	const  string  defName("Fight");//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -22,6 +22,7 @@ namespace GameMessage
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
 		static  Resource::SP  Create();
+		DG::Image::SP img;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -31,8 +32,10 @@ namespace GameMessage
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		static  Object::SP  Create(DG::Image::SP img, const ML::Box2D& src, const string& SEName = "default");
+		//生成窓口 引数はtrueでタスクシステムへ自動登録
+		static  Object::SP  Create(bool flagGameEnginePushBack_);
 		Resource::SP	res;
+
 	private:
 		Object();
 		bool  B_Initialize();
@@ -42,13 +45,8 @@ namespace GameMessage
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
-		//生成窓口 引数はtrueでタスクシステムへ自動登録
-		static  Object::SP  Create(bool flagGameEnginePushBack_);
-
 		ML::Box2D src;
-		DG::Image::SP img;
 		ML::Vec2 pos;
 		bool hasPlayedSE = false;
-		string SEName = "default"; //書き忘れで落ちないようにする
 	};
 }

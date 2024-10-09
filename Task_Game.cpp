@@ -78,42 +78,52 @@ namespace  Game
 	void  Object::UpDate()
 	{
 		easing::UpDate();
+		if (ge->in1->GetState().ST.down) {
+			UIManager::Object::CreateFightLogo();
+		}
 	}
 	//-------------------------------------------------------------------
 	//タスクの生成
 	//引数なしなら最初のタスクを生成
 	void  Object::CreateTask() {
 		StageAlarmClock::Object::Create(true);
+		UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f), 20 * 60);
 	}
 	void  Object::CreateTask(int nextTask) {
 		ge->nowStage = nextTask;
-		
+
 		int timeLimitTable[] = {
-			1000, 100,10,113,110,100,100,
+			20 * 60, 20 * 60, 22 * 60, 22 * 60, 30 * 60, 15 * 60, 30 * 60,
 		};
 		//auto gsUI=gamesetUI::Object::Create(true);  //ゲームセットUI生成用
 		/*std::this_thread::sleep_for(std::chrono::seconds(2));*/
+		auto g = ge->GetTask<Game::Object>("本編");
 		switch (ge->nowStage) {
 		case 1:
 			StageBrushTeeth::Object::Create(true);
+			g->gameState = GameState::Start;
 			break;
 		case 2:
 			BlanceGame::Object::Create(true);
+			g->gameState = GameState::Start;
 			break;
 		case 3:
 			ClassifyGame::Object::Create(true);
+			g->gameState = GameState::Start;
 			break;
 		case 4:
 			SaboriGame::Object::Create(true);
+			g->gameState = GameState::Start;
 			break;
 		case 5:
 			OguiGame::Object::Create(true);
+			g->gameState = GameState::Start;
 			break;
 		case 6:
 			TaxiGame::Object::Create(true);
+			g->gameState = GameState::Start;
 			break;
 		default:
-			auto g = ge->GetTask < Game::Object >("本編");
 			g->Kill();
 			break;
 		}

@@ -1,24 +1,26 @@
 //-------------------------------------------------------------------
-//ゲームの最初に出る指示
+//残り時間のバー
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_GameMessage.h"
-#include  "../sound.h"
-#include  "../easing.h"
+#include  "Task_TimeLimitBar.h"
+#include  "Task_UIManager.h"
+#include  "../Task_Game.h"
 
-namespace GameMessage
+namespace TimeLimitBar
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		img = DG::Image::Create("./data/image/bar.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -32,18 +34,8 @@ namespace GameMessage
 
 		//★データ初期化
 		render2D_Priority[1] = 0.01f;
+		srcBase = ML::Box2D(0, 0, 96, 32);
 
-		pos = ML::Vec2(3000, ge->screen2DHeight / 2.f);
-
-		easing::Set("Start", easing::CIRCOUT, static_cast<float>(ge->screen2DWidth + src.w), ge->screen2DWidth / 2.f, 60, "End");
-		easing::Set("End", easing::CIRCIN, ge->screen2DWidth / 2.f, static_cast<float>(-src.w), 60);
-
-		//☆イージング開始
-		easing::Start("Start");
-
-		se::LoadFile("default", "./data/sound/se/Common/試合開始のゴング.wav");
-
-		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
 		//★タスクの生成
 		return  true;
 	}
@@ -52,9 +44,10 @@ namespace GameMessage
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
+
+
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			img.reset();
 		}
 
 		return  true;
@@ -63,34 +56,39 @@ namespace GameMessage
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		if (!hasPlayedSE) {
-			se::Play(SEName);
-			hasPlayedSE = true;
+		--remainingCnt;
+		remainingCnt = max(remainingCnt, 0);
+		if (remainingCnt == 0) {
+			auto g = ge->GetTask<Game::Object>("本編");
+			g->gameState = Game::Object::GameState::Finish;
 		}
-
-		//☆イージングで座標移動
-		//Readyを動かす
-		pos.x = easing::GetPos("Start");
-		if (easing::GetState("Start") == easing::EQ_STATE::EQ_END) //イージング「GameRuleStart」が終わったら
-		{
-			pos.x = easing::GetPos("End");
-		}
-		//イージングが完全終了したらタスクを消去
-		if (easing::GetState("End") == easing::EQ_STATE::EQ_END) //イージング「GameRuleEnd」が終わったら
-		{
-			Kill();
-		}
+		gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw;
-
-		draw = ML::Box2D(-src.w, -src.h, src.w * 2, src.h * 2);
+		DrawFlame();
+		DrawGauge();
+	}
+	//-------------------------------------------------------------------
+	//バーの枠描画
+	void Object::DrawFlame() const
+	{
+		ML::Box2D src(0, 0, srcBase.w, srcBase.h);
+		ML::Box2D draw(-srcBase.w * 6 / 2, -srcBase.h * 2 / 2, srcBase.w * 6, srcBase.h * 2);
 		draw.Offset(pos);
-
-		img->Draw(draw, src);
+		res->img->Draw(draw, src);
+	}
+	//-------------------------------------------------------------------
+	//バーのゲージ描画
+	void Object::DrawGauge() const
+	{
+		int gSize = static_cast<int>(srcBase.w * gaugeAmount);
+		ML::Box2D src(0, srcBase.h, gSize, srcBase.h);
+		ML::Box2D draw(-srcBase.w * 6 / 2, -src.h * 2 / 2, gSize * 6, srcBase.h * 2);
+		draw.Offset(pos);
+		res->img->Draw(draw, src);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -126,15 +124,15 @@ namespace GameMessage
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {}
+	Object::Object() :gaugeAmount(0.f), maxCnt(0), minPower(0), remainingCnt(0) {}
 	//-------------------------------------------------------------------
-	Object::SP Object::Create(DG::Image::SP img, const ML::Box2D& src, const string& SEName)
+	Object::SP Object::Create(const ML::Vec2& pos, const int& time)
 	{
-		auto logo = Create(true);
-		logo->img = img;
-		logo->src = src;
-		logo->SEName = SEName;
-		return logo;
+		auto gauge = Create(true);
+		gauge->pos = pos;
+		gauge->remainingCnt = time;
+		gauge->maxCnt = gauge->remainingCnt;
+		return gauge;
 	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
