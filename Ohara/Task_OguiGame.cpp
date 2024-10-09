@@ -56,6 +56,9 @@ namespace  OguiGame
 			useControllers.push_back(controllers[i]);
 		}
 
+		//制限時間の設定
+		ge->nowTimeLimit = static_cast<int>(timeLimit * gameFps);
+
 		//★タスクの生成
 		//プレイヤータスク作成
 		//for(int i = 0; i < 4; ++i) // CPU実装時はこっちを使う
@@ -146,12 +149,12 @@ namespace  OguiGame
 			}
 
 			//☆制限時間を減らす
-			this->timeLimit -= 1.f / gameFps;
+			ge->nowTimeLimit -= 1;
 
 			//制限時間が0以下になったらゲームを終了させる
-			if (this->timeLimit <= 0.f)
+			if (ge->nowTimeLimit <= 0.f)
 			{
-				this->timeLimit = 0.f;
+				ge->nowTimeLimit = 0.f;
 
 				//ゲームを終了させる
 				ge->hasAllClearedGame = true;

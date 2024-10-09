@@ -84,14 +84,6 @@ namespace  OguiUIManager
 			++loopCount;
 		}
 
-		//™§ŒÀŠÔ‚Ì•`‰æ
-		//ƒTƒ{‚èƒQ[ƒ€‚Ì“Š‡‚Ìî•ñ‚ğæ“¾
-		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
-		//•`‰æ
-		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2 - 150, 0, ge->screen2DWidth, ge->screen2DHeight),
-			"c‚èF" + to_string(static_cast<int>(game->timeLimit)) + "•b", ML::Color(1, 0, 0, 0)
-		);
-
 		//™ƒvƒŒƒCƒ„[”Ô†‚Ì•`‰æ
 		this->DrawPlayerNumber();
 	}
