@@ -58,10 +58,10 @@ namespace TimeLimitBar
 	{
 		switch (ge->gameState) {
 		case MyPG::MyGameEngine::GameState::Start:
-			gaugeAmount = static_cast<float>(ge->nowStage) / maxCnt;
+			gaugeAmount = static_cast<float>(ge->nowTimeLimit) / maxCnt;
 			break;
 		case MyPG::MyGameEngine::GameState::Game:
-			gaugeAmount = static_cast<float>(ge->nowStage) / maxCnt;
+			gaugeAmount = static_cast<float>(ge->nowTimeLimit) / maxCnt;
 			break;
 
 		case MyPG::MyGameEngine::GameState::Finish:
