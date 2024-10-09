@@ -45,8 +45,9 @@ namespace FightLogo
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
-		ML::Box2D src;
+		ML::Box2D srcBase;
 		ML::Vec2 pos;
 		bool hasPlayedSE = false;
+		int animCnt;
 	};
 }
