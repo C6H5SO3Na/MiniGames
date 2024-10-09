@@ -62,9 +62,6 @@ namespace TimeLimitBar
 			break;
 		case MyPG::MyGameEngine::GameState::Game:
 			--remainingCnt;
-			if (remainingCnt <= 0) {
-				ge->hasAllClearedGame = true;
-			}
 			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
 			break;
 
