@@ -56,9 +56,9 @@ namespace  StainManager
 		const int max = 1;
 
 		/*ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));*/
-		minPosX = pos[PlayerNum][min].x + num + 10;//StainArea.x;
+		minPosX = pos[PlayerNum][min].x + num + 30;//StainArea.x;
 		minPosY = pos[PlayerNum][min].y + num;//StainArea.y;
-		maxPosX = pos[PlayerNum][max].x - 16 - num;//StainArea.x + StainArea.w - 32;
+		maxPosX = pos[PlayerNum][max].x - 16 - num -30;//StainArea.x + StainArea.w - 32;
 		maxPosY = pos[PlayerNum][max].y - 16 - num;//StainArea.y + StainArea.h - 32;
 	}
 	//-------------------------------------------------------------------
@@ -75,6 +75,10 @@ namespace  StainManager
 		{
 			auto s = stain::Object::Create(true);
 			s->pos = positions[i];
+			s->minX = minPosX;
+			s->minY = minPosY;
+			s->maxX = maxPosX;
+			s->maxY = maxPosY;
 			s->id = this->id;//GIVE STAIN A ID
 			stains.push_back(s);
 		}
