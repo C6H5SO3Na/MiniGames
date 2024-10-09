@@ -56,8 +56,8 @@ namespace UIManager
 	void  Object::UpDate()
 	{
 		auto g = ge->GetTask<Game::Object>("–{•Ò");
-		switch (g->gameState) {
-		case Game::Object::GameState::Start:
+		switch (ge->gameState) {
+		case MyPG::MyGameEngine::GameState::Start:
 
 			switch (phase) {
 			case Phase::RuleShow:
@@ -77,19 +77,19 @@ namespace UIManager
 				break;
 
 			case Phase::StartEasing:
-				if (ge->GetTask<EasingLogo::Object>(EasingLogo::defGroupName, EasingLogo::defName) == nullptr) {
+				if (ge->GetTask<FightLogo::Object>(FightLogo::defGroupName, FightLogo::defName) == nullptr) {
 					phase = Phase::FinishShow;
-					g->gameState = Game::Object::GameState::Game;
+					ge->gameState = MyPG::MyGameEngine::GameState::Game;
 				}
 				break;
 			}
 			break;
 
-		case Game::Object::GameState::Game:
+		case MyPG::MyGameEngine::GameState::Game:
 
 			break;
 
-		case Game::Object::GameState::Finish:
+		case MyPG::MyGameEngine::GameState::Finish:
 			switch (phase) {
 			case Phase::FinishShow:
 				ShowFinish();

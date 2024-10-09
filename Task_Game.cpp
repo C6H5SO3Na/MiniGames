@@ -101,27 +101,27 @@ namespace  Game
 		switch (ge->nowStage) {
 		case 1:
 			StageBrushTeeth::Object::Create(true);
-			g->gameState = GameState::Start;
+			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			break;
 		case 2:
 			BlanceGame::Object::Create(true);
-			g->gameState = GameState::Start;
+			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			break;
 		case 3:
 			ClassifyGame::Object::Create(true);
-			g->gameState = GameState::Start;
+			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			break;
 		case 4:
 			SaboriGame::Object::Create(true);
-			g->gameState = GameState::Start;
+			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			break;
 		case 5:
 			OguiGame::Object::Create(true);
-			g->gameState = GameState::Start;
+			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			break;
 		case 6:
 			TaxiGame::Object::Create(true);
-			g->gameState = GameState::Start;
+			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			break;
 		default:
 			g->Kill();

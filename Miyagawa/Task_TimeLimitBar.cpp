@@ -56,13 +56,21 @@ namespace TimeLimitBar
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		--remainingCnt;
-		remainingCnt = max(remainingCnt, 0);
-		if (remainingCnt == 0) {
-			auto g = ge->GetTask<Game::Object>("本編");
-			g->gameState = Game::Object::GameState::Finish;
+		switch (ge->gameState) {
+		case MyPG::MyGameEngine::GameState::Start:
+			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
+			break;
+		case MyPG::MyGameEngine::GameState::Game:
+			--remainingCnt;
+			if (remainingCnt == 0) {
+				ge->gameState = MyPG::MyGameEngine::GameState::Finish;
+			}
+			gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
+			break;
+
+		case MyPG::MyGameEngine::GameState::Finish:
+			break;
 		}
-		gaugeAmount = static_cast<float>(remainingCnt) / maxCnt;
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
