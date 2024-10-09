@@ -137,11 +137,11 @@ namespace UIManager
 	}
 	//-------------------------------------------------------------------
 	//タイムリミットのゲージを描画
-	TimeLimitBar::Object::SP  Object::CreateTimeLimitBar(const ML::Vec2& pos, const int& time)
+	TimeLimitBar::Object::SP  Object::CreateTimeLimitBar(const ML::Vec2& pos)
 	{
 		//シングルトン
 		if (ge->GetTask<TimeLimitBar::Object>(TimeLimitBar::defGroupName, TimeLimitBar::defName) == nullptr) {
-			return TimeLimitBar::Object::Create(pos, time);
+			return TimeLimitBar::Object::Create(pos);
 		}
 		return nullptr;
 	}
