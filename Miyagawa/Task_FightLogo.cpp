@@ -32,7 +32,7 @@ namespace FightLogo
 		res = Resource::Create();
 
 		//★データ初期化
-		render2D_Priority[1] = 0.01f;
+		render2D_Priority[1] = -0.99f;
 		srcBase = ML::Box2D(0, 0, 219, 95);
 
 		se::LoadFile("Fight", "./data/sound/se/Common/試合開始のゴング.wav");

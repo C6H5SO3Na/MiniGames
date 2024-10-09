@@ -32,7 +32,7 @@ namespace  Effect00
 
 
 		//šƒf[ƒ^‰Šú‰»
-		render2D_Priority[1] = 0.f;
+		render2D_Priority[1] = -1.f;
 
 		//ˆÚ“®—Ê
 		pos = ML::Vec2(0, 0);
