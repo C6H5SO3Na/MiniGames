@@ -103,12 +103,11 @@ namespace  StageAlarmClock
 			if (timeCnt <= 0)
 			{
 				MarkCount();
-				ge->gameState = MyPG::MyGameEngine::GameState::Finish;
+				ge->hasAllClearedGame = true;
 			}
 			break;
 
 		case MyPG::MyGameEngine::GameState::Finish:
-			ge->hasAllClearedGame = true;
 			if (ge->hasFinishedEasing)
 			{
 				Kill();

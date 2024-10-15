@@ -87,7 +87,7 @@ namespace  stain
 
 		switch (ge->gameState)
 		{
-		case MyPG::MyGameEngine::GameState::Start:
+		case MyPG::MyGameEngine::GameState::Game:
 			if (State == MovementState::Forward) {
 				//ランダムで動く
 				//float direction = GetRandom(0.f, 2 * (float)M_PI); // ラジアンで方向を計算する
