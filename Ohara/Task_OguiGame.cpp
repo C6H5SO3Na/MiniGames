@@ -137,7 +137,7 @@ namespace  OguiGame
 	{
 		switch (ge->gameState)
 		{
-		case MyPG::MyGameEngine::GameState::Game:				//ゲーム中
+		case MyPG::MyGameEngine::GameState::Game:	//ゲーム中
 			//☆ゲーム本編が始まった瞬間に行う処理
 			if (this->isInGame == false)
 			{
@@ -152,23 +152,23 @@ namespace  OguiGame
 			ge->nowTimeLimit -= 1;
 
 			//制限時間が0以下になったらゲームを終了させる
-			if (ge->nowTimeLimit <= 0.f)
+			if (ge->nowTimeLimit <= 0)
 			{
-				ge->nowTimeLimit = 0.f;
+				ge->nowTimeLimit = 0;
 
 				//ゲームを終了させる
 				ge->hasAllClearedGame = true;
 			}
 			break;
 
-		case MyPG::MyGameEngine::GameState::Finish:				//ゲーム終了
+		case MyPG::MyGameEngine::GameState::Finish:	//ゲーム終了
 			//☆ゲームの状態がEndの時、一度だけ行う処理
 			if (this->isInGame == true)
 			{
-				//☆ゲームを終了させる
+				//ゲームを終了させる
 				this->isInGame = false;
 
-				//☆SEを止める
+				//全てのSEを止める
 				se::AllStop();
 
 				//☆順位を決め、ge->scoreに得点を送る
@@ -405,7 +405,7 @@ namespace  OguiGame
 		controllers{ ge->in1, ge->in2, ge->in3, ge->in4 }, playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playerCount(4),
 		playersInfo(),
 		// 大食いゲーム関係
-		timeLimit(15.f), isInGame(false), countToChangeGameState(0), countToNextTask(0), gameFps(60), gameStart(true)
+		timeLimit(15.f), isInGame(false), countToNextTask(0), gameFps(60), gameStart(true)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

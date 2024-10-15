@@ -24,6 +24,7 @@ namespace  SaboriUIManager
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
 		DG::Image::SP playerNumberImage;
+		DG::Image::SP totalSaboriTimeImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -49,8 +50,12 @@ namespace  SaboriUIManager
 		//追加したい変数・メソッドはここに追加する
 
 	private:
+		//サボり合計時間描画関係---------------------------------------------------------------------------------------
 		//☆変数
 		DG::Font::SP testFont;
+
+		//☆関数
+		void DrawTotalSaboriTime();
 
 		//プレイヤー識別番号関係---------------------------------------------------------------------------------------
 		//☆構造体
