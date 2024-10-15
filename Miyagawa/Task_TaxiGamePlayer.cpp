@@ -99,11 +99,6 @@ namespace TaxiGamePlayer
 	void  Object::Move()
 	{
 		state->move();
-
-		//強制的にリザルト画面へ(2~3P用)
-		if (input.SE.down) {
-			ge->KillAll_G("タクシー");
-		}
 	}
 	//-------------------------------------------------------------------
 	//受け身
@@ -148,6 +143,9 @@ namespace TaxiGamePlayer
 	//思考
 	void  Object::IdleState::think()
 	{
+		if (ge->gameState != MyPG::MyGameEngine::GameState::Game) {
+			return;
+		}
 		if (owner_->BUTTON(0) == 0) { return; }
 		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {//ビット単位のための計算
 			easing::Set("move" + to_string(owner_->controllerNum), easing::QUADINOUT, 0, -150, 60);
@@ -175,7 +173,10 @@ namespace TaxiGamePlayer
 		draw.Offset(owner_->pos);
 		owner_->res->imgPlayer->Draw(draw, src);
 
-		owner_->DrawButton();
+		if (ge->gameState == MyPG::MyGameEngine::GameState::Game) {
+			owner_->DrawButton();
+		}
+
 	}
 
 	//-------------------------------------------------------------------

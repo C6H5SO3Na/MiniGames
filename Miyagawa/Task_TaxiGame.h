@@ -45,12 +45,6 @@ namespace  TaxiGame
 		void  Render2D_AF()		override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();	//「終了」タスク消滅時に１回だけ行う処理
 
-		enum class Phase {
-			None, Game, Clear, 
-		};
-
-		Phase phase = Phase::None;
-
 		void Game();
 		void Clear();
 		int gameCnt;//ゲーム時間のカウンター
