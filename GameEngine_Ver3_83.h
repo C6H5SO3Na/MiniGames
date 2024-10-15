@@ -9,6 +9,7 @@
 #include <vector>
 #include <unordered_map>
 #include <map>
+#include "fpscounter.h" // おっさんゲームプロジェクトで追加したもの、不都合があったら消して問題無し
 
 //タスクリソース基本クラス
 class BResource
