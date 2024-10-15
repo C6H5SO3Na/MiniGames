@@ -61,7 +61,9 @@ namespace  BGPlayer
 		switch (GetBGState())
 		{
 		case BGstate::BStart:
-			SetBGState(BGstate::Playing);
+			if (ge->gameState == MyPG::MyGameEngine::GameState::Start) {
+				SetBGState(BGstate::Playing);
+			}
 			break;
 		case BGstate::Playing:
 			break;

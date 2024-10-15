@@ -55,7 +55,7 @@ namespace  Game
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 
 		//★タスクの生成
-		CreateTask(5);//引数に数字を入れると、1:歯磨きゲーム、2:電車ゲーム…という風になる
+		CreateTask(2);//引数に数字を入れると、1:歯磨きゲーム、2:電車ゲーム…という風になる
 		UIManager::Object::Create(true);
 		return  true;
 	}
@@ -80,6 +80,7 @@ namespace  Game
 		easing::UpDate();
 		if (ge->hasAllClearedGame) {
 			ge->gameState = MyPG::MyGameEngine::GameState::Finish;
+			ge->hasAllClearedGame = false;
 		}
 	}
 	//-------------------------------------------------------------------
@@ -102,8 +103,9 @@ namespace  Game
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		case 2:
-			BlanceGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			BlanceGame::Object::Create(true);
+			
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 		case 3:

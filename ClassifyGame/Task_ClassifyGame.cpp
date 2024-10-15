@@ -34,8 +34,9 @@ namespace  ClassifyGame
 		this->res = Resource::Create();
 
 		//★データ初期化
+
 		gameCnt = 0;
-		
+		ge->nowTimeLimit = 1320;
 		//BGM
 		bgm::LoadFile("bgmCG", "./data/sound/bgm/tanoshiimugibatake.mp3");
 		bgm::Play("bgmCG");
@@ -63,10 +64,23 @@ namespace  ClassifyGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		gameCnt++;
-		if (gameCnt == 1319) {
-			Kill();
+		switch (ge->gameState)
+		{
+		case MyPG::MyGameEngine::GameState::Start:
+			break;
+		case MyPG::MyGameEngine::GameState::Game:
+			gameCnt++;
+			if (gameCnt == 1319) {
+				ge->hasAllClearedGame = true;
+			}
+			break;
+		case MyPG::MyGameEngine::GameState::Finish:
+			if (ge->hasFinishedEasing) {
+				this->Kill();
+			}
+			break;
 		}
+		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理

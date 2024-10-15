@@ -71,9 +71,47 @@ namespace  ClassifyGamePM
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		gameCnt++;
-		if (gameCnt == 1319) {
-			vector<int> nums = { pList[0]->Fb, pList[1]->Fb, pList[2]->Fb, pList[3]->Fb }; 
+		switch (ge->gameState)
+		{
+		case MyPG::MyGameEngine::GameState::Start:
+			break;
+		case MyPG::MyGameEngine::GameState::Game:
+			gameCnt++;
+			ge->nowTimeLimit--;
+			if (gameCnt == 1319) {
+				ge->hasAllClearedGame = true;
+			}
+			if (gameCnt % 120 == 0) {
+				se::Play("seCGd");
+				int r = rand() % 3;
+				switch (r)
+				{
+				case 0:
+					for (int i = 0; i < 4; ++i) {
+						if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+							pList[i]->SetCGState(CGBChara::CGstate::PlayR);
+						}
+					}
+					break;
+				case 1:
+					for (int i = 0; i < 4; ++i) {
+						if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+							pList[i]->SetCGState(CGBChara::CGstate::PlayG);
+						}
+					}
+					break;
+				case 2:
+					for (int i = 0; i < 4; ++i) {
+						if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
+							pList[i]->SetCGState(CGBChara::CGstate::PlayB);
+						}
+					}
+					break;
+				}
+			}
+			break;
+		case MyPG::MyGameEngine::GameState::Finish:
+			vector<int> nums = { pList[0]->Fb, pList[1]->Fb, pList[2]->Fb, pList[3]->Fb };
 			vector<int> ranks(nums.size());
 
 			assignRanks(nums, ranks);
@@ -95,35 +133,13 @@ namespace  ClassifyGamePM
 					break;
 				}
 			}
-		}
-		else if (gameCnt % 120 == 0) {
-			se::Play("seCGd");
-			int r = rand() % 3;
-			switch (r)
-			{
-			case 0:
-				for (int i = 0; i < 4; ++i) {
-					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
-						pList[i]->SetCGState(CGBChara::CGstate::PlayR);
-					}
-				}
-				break;
-			case 1:
-				for (int i = 0; i < 4; ++i) {
-					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
-						pList[i]->SetCGState(CGBChara::CGstate::PlayG);
-					}
-				}
-				break;
-			case 2:
-				for (int i = 0; i < 4; ++i) {
-					if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
-						pList[i]->SetCGState(CGBChara::CGstate::PlayB);
-					}
-				}
-				break;
+			if (ge->hasFinishedEasing) {
+				this->Kill();
 			}
+			break;
 		}
+		
+	
 	}
 	//-------------------------------------------------------------------
 	//順位確定用
