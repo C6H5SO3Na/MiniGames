@@ -13,14 +13,14 @@ namespace  OguiUIManager
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
+		playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->playerNumberImage.reset();
+		playerNumberImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -83,14 +83,6 @@ namespace  OguiUIManager
 			//ループ回数のカウント
 			++loopCount;
 		}
-
-		//☆制限時間の描画
-		//サボりゲームの統括の情報を取得
-		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
-		//描画
-		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2 - 150, 0, ge->screen2DWidth, ge->screen2DHeight),
-			"残り：" + to_string(static_cast<int>(game->timeLimit)) + "秒", ML::Color(1, 0, 0, 0)
-		);
 
 		//☆プレイヤー番号の描画
 		this->DrawPlayerNumber();

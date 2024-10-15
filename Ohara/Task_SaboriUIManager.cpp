@@ -13,14 +13,16 @@ namespace  SaboriUIManager
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
+		playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
+		totalSaboriTimeImage = DG::Image::Create("./data/image/TextImage/TotalSaboriTimeFont.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->playerNumberImage.reset();
+		playerNumberImage.reset();
+		totalSaboriTimeImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -69,14 +71,6 @@ namespace  SaboriUIManager
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		//☆制限時間の描画
-		//サボりゲームの統括の情報を取得
-		auto game = ge->GetTask<SaboriGame::Object>(SaboriGame::defGroupName, SaboriGame::defName);
-		//描画
-		testFont->Draw(ML::Box2D(ge->screen2DWidth / 2 - 150, 0, ge->screen2DWidth, ge->screen2DHeight),
-			"残り：" + to_string(static_cast<int>(game->timeLimit)) + "秒", ML::Color(1, 0, 0, 0)
-		);
-
 		//☆サボり合計時間の描画
 		//プレイヤー全てを抽出する
 		auto players = ge->GetTasks<SaboriPlayer::Object>("プレイヤー");
@@ -84,10 +78,13 @@ namespace  SaboriUIManager
 		int loopCount = 0; //ループした回数のカウント
 		for (auto p = players->begin(); p != players->end(); ++p)
 		{
-			//描画
+			//プレイヤー番号描画
 			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 90, ge->screen2DWidth, ge->screen2DHeight),
 				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->totalSaboriTime), ML::Color(1, 0, 0, 0)
 			);
+
+			//合計サボり時間描画
+			
 			//ループ回数のカウント
 			++loopCount;
 		}

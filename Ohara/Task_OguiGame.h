@@ -48,33 +48,32 @@ namespace  OguiGame
 		void  Render2D_AF()		override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();	//「終了」タスク消滅時に１回だけ行う処理
 		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
-	public:
 		//追加したい変数・メソッドはここに追加する
-		//☆変数
 		// 大食いゲーム関係------------------------------------------------------------------------------------------------------------------------
-		float timeLimit;	//制限時間
-		bool  isInGame;		//ミニゲーム中、trueにする
+		//☆変数
+		bool		gameStart;				// ゲーム開始時true
+		int			countToNextTask;		// 次のタスクにするまでのカウント
+		int			gameFps;				// 想定FPS
+		float		timeLimit;				// 制限時間
+	
+		//☆関数
+		void		Work();					// 状態毎の処理
+
+	public:
+		//☆変数
+		bool		isInGame;				//ミニゲーム中、trueにする
 
 	private:
-		//☆構造体・列挙型
-		//ゲームの状態
-		enum class GameState
-		{
-			BeforeGameStart,	//ゲーム開始前
-			Game,				//ゲーム中
-			End,				//ゲーム終了
-		};
-
+		//プレイヤー関係--------------------------------------------------------------------------------------------------------------------------
+		//☆構造体
 		//順位決めに必要なプレイヤーの情報
 		struct PlayerInformation
 		{
-			PlayerNum playerNum;	//プレイヤー識別用番号
-			int		  eatFoodCount;	//食べた料理の数
-			int		  rank;			//順位
+			PlayerNum playerNum;	// プレイヤー識別用番号
+			int		  eatFoodCount;	// 食べた料理の数
+			int		  rank;			// 順位
 		};
 
-		//☆変数
-		//プレイヤー関係--------------------------------------------------------------------------------------------------------------------------
 		//☆変数
 		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
 		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
@@ -87,27 +86,7 @@ namespace  OguiGame
 		void Ranking();																				//順位決めの処理
 		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
 		void SendScore();																			//ge->scoreに得点を送る
-
-		//大食いゲーム関係--------------------------------------------------------------------------------------------------------------------------
-		//☆変数
-		GameState	gameState;				// ゲームの状態
-		int			countToChangeGameState;	// GameStateを変更するまでのカウント
-		int			countToNextTask;		// 次のタスクにするまでのカウント
-		int			gameFps;				// 想定FPS
-		bool		gameStart;				// ゲーム開始時true
-
-		//☆関数
-		void GameStateTransition();					//ゲームの状態遷移
-		void UpdateGameState(GameState nowState);	//ゲームの状態変更時処理
-		void Work();								//状態毎の処理
-		void Render();								//状態毎の描画
-
-		//文字描画関係-----------------------------------------------------------------------------------------------------------------------------
-		//☆変数
-		ML::Vec2	gameRuleImagePos;	// ゲームの説明の文章の初期位置
-		ML::Vec2	fightImagePos;		// 「Fight」の文字の初期位置
-		ML::Vec2	finishImagePos;		// 「Finish」の文字の初期位置
-		int			countToFightDraw;	// 「Fight」の文字を描画するまでのカウント
+		
 
 	public:
 		//getter関数------------------------------------------------------------------------------------------------------------------------------
