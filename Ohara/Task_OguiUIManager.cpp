@@ -13,14 +13,14 @@ namespace  OguiUIManager
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
+		playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->playerNumberImage.reset();
+		playerNumberImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------

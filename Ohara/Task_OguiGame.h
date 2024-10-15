@@ -48,25 +48,32 @@ namespace  OguiGame
 		void  Render2D_AF()		override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();	//「終了」タスク消滅時に１回だけ行う処理
 		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
-	public:
 		//追加したい変数・メソッドはここに追加する
-		//☆変数
 		// 大食いゲーム関係------------------------------------------------------------------------------------------------------------------------
-		float timeLimit;	//制限時間
-		bool  isInGame;		//ミニゲーム中、trueにする
+		//☆変数
+		bool		gameStart;				// ゲーム開始時true
+		int			countToNextTask;		// 次のタスクにするまでのカウント
+		int			gameFps;				// 想定FPS
+		float		timeLimit;				// 制限時間
+	
+		//☆関数
+		void		Work();					// 状態毎の処理
+
+	public:
+		//☆変数
+		bool		isInGame;				//ミニゲーム中、trueにする
 
 	private:
+		//プレイヤー関係--------------------------------------------------------------------------------------------------------------------------
 		//☆構造体
 		//順位決めに必要なプレイヤーの情報
 		struct PlayerInformation
 		{
-			PlayerNum playerNum;	//プレイヤー識別用番号
-			int		  eatFoodCount;	//食べた料理の数
-			int		  rank;			//順位
+			PlayerNum playerNum;	// プレイヤー識別用番号
+			int		  eatFoodCount;	// 食べた料理の数
+			int		  rank;			// 順位
 		};
 
-		//☆変数
-		//プレイヤー関係--------------------------------------------------------------------------------------------------------------------------
 		//☆変数
 		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
 		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
@@ -79,16 +86,7 @@ namespace  OguiGame
 		void Ranking();																				//順位決めの処理
 		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのeatFoodCountで比較し、playerInfoAの方が大きい時trueを返す
 		void SendScore();																			//ge->scoreに得点を送る
-
-		//大食いゲーム関係--------------------------------------------------------------------------------------------------------------------------
-		//☆変数
-		int			countToChangeGameState;	// GameStateを変更するまでのカウント
-		int			countToNextTask;		// 次のタスクにするまでのカウント
-		int			gameFps;				// 想定FPS
-		bool		gameStart;				// ゲーム開始時true
-
-		//☆関数
-		void Work();						// 状態毎の処理
+		
 
 	public:
 		//getter関数------------------------------------------------------------------------------------------------------------------------------

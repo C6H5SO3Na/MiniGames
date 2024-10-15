@@ -48,7 +48,8 @@ namespace  StageAlarmClock
 		//★データ初期化
 		this->render2D_Priority[1] = 0.9f;
 		this->state = Phase::Game;
-		this->timeCnt = 0;
+		this->timeCnt = 10 * 60;
+		ge->nowTimeLimit = this->timeCnt;
 		this->animCnt = 0;
 
 		//★タスクの生成
@@ -82,7 +83,7 @@ namespace  StageAlarmClock
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		timeCnt++;
+		ge->nowTimeLimit = this->timeCnt;
 		animCnt++;
 		//アニメ更新
 		if (this->animCnt >= 15)
@@ -94,17 +95,19 @@ namespace  StageAlarmClock
 				this->animIndex = 0;
 			}
 		}
-		switch (this->state) {
-		case Phase::Game:
+
+		switch (ge->gameState) {
+		case MyPG::MyGameEngine::GameState::Game:
+			timeCnt--;
 			CheckClear();
-			if (timeCnt >= 20 * 60)
+			if (timeCnt <= 0)
 			{
 				MarkCount();
-				this->state = Phase::Clear;
+				ge->gameState = MyPG::MyGameEngine::GameState::Finish;
 			}
 			break;
 
-		case Phase::Clear:
+		case MyPG::MyGameEngine::GameState::Finish:
 			ge->hasAllClearedGame = true;
 			if (ge->hasFinishedEasing)
 			{
