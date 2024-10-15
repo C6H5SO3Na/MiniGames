@@ -42,6 +42,8 @@ namespace GameMessage
 		easing::Start("Start");
 
 		se::LoadFile("default", "./data/sound/se/Common/試合開始のゴング.wav");
+		se::LoadFile("StartSE", "./data/sound/se/Common/logo.wav");
+		se::SetVolume("StartSE", 100);
 
 		se::LoadFile("FinishSE", "./data/sound/se/Common/試合終了のゴング.wav");
 		//★タスクの生成
