@@ -68,7 +68,7 @@ namespace EasingLogo
 				logo = GameMessage::Object::Create(res->img[7], srcTable[7], "FinishSE");
 			}
 			else {
-				logo = GameMessage::Object::Create(res->img[ge->nowStage], srcTable[ge->nowStage]);
+				logo = GameMessage::Object::Create(res->img[ge->nowStage], srcTable[ge->nowStage], "StartSE");
 			}
 			isCreated = true;
 		}
