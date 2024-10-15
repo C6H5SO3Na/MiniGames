@@ -37,8 +37,8 @@ namespace  TaxiGame
 		res = Resource::Create();
 
 		//★データ初期化
-		phase = Phase::Game;
 		TaxiGamePlayer::Object::playerScore = 4;
+		ge->nowTimeLimit = 20 * 60;
 
 		//BGM
 		bgm::LoadFile("TaxiGame", "./data/sound/bgm/タクシー_retrogamecenter3.mp3");
@@ -84,12 +84,15 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (phase) {
-		case Phase::Game:
+		switch (ge->gameState) {
+		case MyPG::MyGameEngine::GameState::Start:
+			break;
+
+		case MyPG::MyGameEngine::GameState::Game:
 			Game();
 			break;
 
-		case Phase::Clear:
+		case MyPG::MyGameEngine::GameState::Finish:
 			Clear();
 			break;
 		}
@@ -103,6 +106,10 @@ namespace  TaxiGame
 	//ゲーム本編の処理
 	void  Object::Game()
 	{
+		--ge->nowTimeLimit;
+		if (ge->nowTimeLimit == 0) {
+			ge->hasAllClearedGame = true;
+		}
 		int clearNum = 0;
 		auto players = ge->GetTasks<TaxiGamePlayer::Object>(TaxiGamePlayer::defGroupName, TaxiGamePlayer::defName);
 		for_each(players->begin(), players->end(),
@@ -114,10 +121,6 @@ namespace  TaxiGame
 		//クリア
 		if (clearNum >= players->size()) {
 			ge->hasAllClearedGame = true;
-		}
-
-		if (ge->hasAllClearedGame) {
-			phase = Phase::Clear;
 		}
 	}
 	//-------------------------------------------------------------------
