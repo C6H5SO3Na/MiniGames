@@ -12,7 +12,7 @@ namespace TaxiGameBG
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/TaxiGameBG.jpg");
+		img = DG::Image::Create("./data/image/TaxiGameBG.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -58,7 +58,7 @@ namespace TaxiGameBG
 	//u‚Q‚c•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D src(0, 0, 6667, 5000);
+		ML::Box2D src(0, 0, 1920, 1080);
 		ML::Box2D draw(0, 0, 1920, 1080);
 		res->img->Draw(draw, src);
 	}

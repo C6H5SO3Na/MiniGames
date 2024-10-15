@@ -50,17 +50,17 @@ namespace  TaxiGame
 		vector<XI::GamePad::SP> players;
 		players.push_back(ge->in1);
 		players.push_back(ge->in2);
-		//players.push_back(ge->in3);
-		//players.push_back(ge->in4);
+		players.push_back(ge->in3);
+		players.push_back(ge->in4);
 
 		//プレイヤー配置
 		for (int i = 0; i < players.size(); ++i) {
-			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 1) / 5.f), players[i]);
+			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 2) / 6.f), players[i]);
 		}
 
 		//タクシー配置
 		for (int i = 0; i < players.size(); ++i) {
-			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (1 + i) / 5.f));
+			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (i + 2) / 6.f));
 		}
 		return  true;
 	}

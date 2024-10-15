@@ -56,7 +56,7 @@ namespace  Game
 
 		//★タスクの生成
 
-		CreateTask();//引数に数字を入れると、1:歯磨きゲーム、2:電車ゲーム…という風になる
+		CreateTask(0);//0:目覚ましゲーム、1:歯磨きゲーム、2:電車ゲーム…
 
 		UIManager::Object::Create(true);
 		return  true;
@@ -67,6 +67,7 @@ namespace  Game
 	{
 		//★データ＆タスク解放
 		ge->KillAll_G("本編");
+		ge->KillAll_G("UI");
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -82,16 +83,10 @@ namespace  Game
 		easing::UpDate();
 		if (ge->hasAllClearedGame) {
 			ge->gameState = MyPG::MyGameEngine::GameState::Finish;
-			ge->hasAllClearedGame = false;
 		}
 	}
 	//-------------------------------------------------------------------
 	//タスクの生成
-	//引数なしなら最初のタスクを生成
-	void  Object::CreateTask() {
-		StageAlarmClock::Object::Create(true);
-		UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
-	}
 	void  Object::CreateTask(int nextTask) {
 		ge->nowStage = nextTask;
 
@@ -99,37 +94,48 @@ namespace  Game
 		/*std::this_thread::sleep_for(std::chrono::seconds(2));*/
 		auto g = ge->GetTask<Game::Object>("本編");
 		switch (ge->nowStage) {
+		case 0:
+			StageAlarmClock::Object::Create(true);
+			ge->gameState = MyPG::MyGameEngine::GameState::Start;
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
+			break;
+
 		case 1:
 			StageBrushTeeth::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
+
 		case 2:
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			BlanceGame::Object::Create(true);
-			
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
+
 		case 3:
 			ClassifyGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
+
 		case 4:
 			SaboriGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
+
 		case 5:
 			OguiGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
+
 		case 6:
 			TaxiGame::Object::Create(true);
 			ge->gameState = MyPG::MyGameEngine::GameState::Start;
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 100.f));
 			break;
+
 		default:
 			g->Kill();
 			break;
