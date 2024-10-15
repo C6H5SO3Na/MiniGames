@@ -57,6 +57,7 @@ namespace  Game
 		//★タスクの生成
 
 		CreateTask();//引数に数字を入れると、1:歯磨きゲーム、2:電車ゲーム…という風になる
+
 		UIManager::Object::Create(true);
 		return  true;
 	}

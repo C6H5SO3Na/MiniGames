@@ -44,7 +44,7 @@ namespace  hand
 		this->drawBase = ML::Box2D(-84, -53, 168, 106);
 		this->pos.x = 0;
 		this->pos.y = 0;
-		this->speed = 30.0f;
+		this->speed = 32.0f;
 		this->controller = ge->in1;
 		this->state = State::Right;
 		isright = true;
