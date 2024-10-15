@@ -73,39 +73,45 @@ namespace  brush
 	{
 		auto inp = this->controller->GetState();
 
-		if (inp.LStick.volume > 0)
+		switch (ge->gameState)
 		{
-			LStick_x = cos(inp.LStick.angleDYP) * this->speed;
-			LStick_y = sin(inp.LStick.angleDYP) * this->speed;
-			this->moveVec = ML::Vec2(LStick_x, LStick_y);
-		}
-		else
-		{
-			this->moveVec = ML::Vec2(0, 0);
-		}
+		case MyPG::MyGameEngine::GameState::Game:
+			if (inp.LStick.volume > 0)
+			{
+				LStick_x = cos(inp.LStick.angleDYP) * this->speed;
+				LStick_y = sin(inp.LStick.angleDYP) * this->speed;
+				this->moveVec = ML::Vec2(LStick_x, LStick_y);
+			}
+			else
+			{
+				this->moveVec = ML::Vec2(0, 0);
+			}
 
-		if (inp.LStick.volume != 0)
-		{
-			se::PlayLoop("brushing");
-		}
-		else
-		{
-			se::Stop("brushing");
-		}
+			if (inp.LStick.volume != 0)
+			{
+				se::PlayLoop("brushing");
+			}
+			else
+			{
+				se::Stop("brushing");
+			}
 
-		this->pos += this->moveVec;
-		if (this->pos.x + this->moveVec.x <= this->minPosX) {
-			this->pos.x = this->minPosX;
+			this->pos += this->moveVec;
+			if (this->pos.x + this->moveVec.x <= this->minPosX) {
+				this->pos.x = this->minPosX;
+			}
+			if (this->pos.y + this->moveVec.y <= this->minPosY) {
+				this->pos.y = this->minPosY;
+			}
+			if (this->pos.x + this->moveVec.x >= this->maxPosX) {
+				this->pos.x = this->maxPosX;
+			}
+			if (this->pos.y + this->moveVec.y >= this->maxPosY) {
+				this->pos.y = this->maxPosY;
+			}
+			break;
 		}
-		if (this->pos.y + this->moveVec.y <= this->minPosY) {
-			this->pos.y = this->minPosY;
-		}
-		if (this->pos.x + this->moveVec.x >= this->maxPosX) {
-			this->pos.x = this->maxPosX;
-		}
-		if (this->pos.y + this->moveVec.y >= this->maxPosY){
-			this->pos.y = this->maxPosY;
-		}
+		
 
 
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);

@@ -105,7 +105,10 @@ namespace  BlanceGUIM
 		}
 		failtime += j;
 		if (failFlag[0]&& failFlag[1]&& failFlag[2]&& failFlag[3]) {	
-			Kill();
+			ge->hasAllClearedGame = true;
+			if (ge->hasFinishedEasing) {
+				Kill();
+			}
 		}
 	}
 	//-------------------------------------------------------------------

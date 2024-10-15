@@ -35,6 +35,7 @@ namespace  BlanceGame
 		//★データ初期化
 		gameCnt = 0;
 		shake = false;
+		ge->nowTimeLimit = 1320;
 		//BGM
 		bgm::LoadFile("bgmBG", "./data/sound/bgm/shichigatsunokomorebi.mp3");
 		bgm::Play("bgmBG");
@@ -64,18 +65,30 @@ namespace  BlanceGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		gameCnt++;
-		if (gameCnt % 240 == 0)
-			shake = true;
-		else
-			shake = false;
-		if (gameCnt > 1319) {
-			this->Kill();
+		
+		switch (ge->gameState)
+		{
+		case MyPG::MyGameEngine::GameState::Start:			
+			break;
+		case MyPG::MyGameEngine::GameState::Game:
+			gameCnt++;
+			ge->nowTimeLimit--;
+			if (gameCnt % 240 == 0)
+				shake = true;
+			else
+				shake = false;
+			if (gameCnt > 1319) {
+				ge->hasAllClearedGame = true;
+				gameCnt = -1000;
+			}			
+			break;
+		case MyPG::MyGameEngine::GameState::Finish:
+			if (ge->hasFinishedEasing) {
+				this->Kill();
+			}
+			break;
 		}
-		auto ui = ge->GetTask<BlanceGUIM::Object>("blanceGameUIManager");
-		if (ui == nullptr) {
-			this->Kill();
-		}
+		
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
