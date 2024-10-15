@@ -38,11 +38,11 @@ namespace  TaxiGame
 
 		//★データ初期化
 		TaxiGamePlayer::Object::playerScore = 4;
-		ge->nowTimeLimit = 20 * 60;
+		ge->nowTimeLimit = 30 * 60;
 
 		//BGM
 		bgm::LoadFile("TaxiGame", "./data/sound/bgm/タクシー_retrogamecenter3.mp3");
-		bgm::Play("TaxiGame");
+		
 		//★タスクの生成
 		TaxiGameBG::Object::Create(true);
 
@@ -89,6 +89,10 @@ namespace  TaxiGame
 			break;
 
 		case MyPG::MyGameEngine::GameState::Game:
+			if (!isBGMPlay) {
+				bgm::Play("TaxiGame");
+				isBGMPlay = true;
+			}
 			Game();
 			break;
 
