@@ -1,15 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//コントローラー登録画面
+//最終リザルト画面背景
 //-------------------------------------------------------------------
 #include "../GameEngine_Ver3_83.h"
 
-namespace SubscribeController
+namespace  SubscribeControllerBG
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("コントローラー登録画面");	//グループ名
-	const  string  defName("Noname");//タスク名
+	const  string  defName("背景");					//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -22,11 +22,13 @@ namespace SubscribeController
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
 		static  Resource::SP  Create();
+		//共有する変数はここに追加する
+		DG::Image::SP image;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
 	{
-		//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	public:
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
@@ -43,14 +45,11 @@ namespace SubscribeController
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
-		void Subscribe(XI::GamePad::SP controller, bool& isPush, const int& i);
+		ML::Vec2	moveVec;		// 移動ベクトル
+		float		movedDistance;	// 移動した距離
 
-		DG::Font::SP TestFont;
-		bool isPushButton[4] = {};
-		int controllerIndex[4] = {};//~Pは~コントローラーか
-		int subscribeCnt = 0;
-		float easingPos[4] = {};
+	public:
+		ML::Vec2	pos;			// 背景の位置
 
-		vector<XI::GamePad::SP> inputs;
 	};
 }

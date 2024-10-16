@@ -1,24 +1,24 @@
 //-------------------------------------------------------------------
-//
+//最終リザルト画面背景
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_CommonItemManager01.h"
-#include "Task_Clock.h"
-#include "Task_hand.h"
+#include  "Task_SubscribeControllerBG.h"
 
-namespace  CommonItemManager01
+namespace  SubscribeControllerBG
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		image = DG::Image::Create("./data/image/SubscribeBG.jpg");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		image.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -28,31 +28,11 @@ namespace  CommonItemManager01
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		this->res = Resource::Create();
+		res = Resource::Create();
 
 		//★データ初期化
-		this->rank = 0;
-
-		/*CTList.push_back(ge->in1);
-		CTList.push_back(ge->in2);
-		CTList.push_back(ge->in3);
-		CTList.push_back(ge->in4);*/
-
-		for (auto i = 0; i < ge->players.size(); ++i)
-		{
-			auto c = Clock::Object::Create(true);
-			ClockList.push_back(c);
-			//ClockList[i]->id = i;
-
-			auto h = hand::Object::Create(true);
-			PLhandList.push_back(h);
-			PLhandList[i]->id = i;
-
-			c->Positionalise(i);
-			h->Positionalise(i);
-
-			h->controller = ge->players[i]/*CTList[i]*/;
-		}
+		render2D_Priority[1] = 1.f;
+		moveVec.x = 3.f;
 		
 		//★タスクの生成
 
@@ -65,7 +45,7 @@ namespace  CommonItemManager01
 		//★データ＆タスク解放
 
 
-		if (!ge->QuitFlag() && this->nextTaskCreate) {
+		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}
 
@@ -75,11 +55,27 @@ namespace  CommonItemManager01
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		//背景の移動
+		pos -= moveVec;
+
+		//移動した距離を増やす
+		movedDistance += moveVec.x;
+
+		//背景が移動しきったら、最初の位置に戻す
+		if (movedDistance > 1600)
+		{
+			pos.x += movedDistance;
+			movedDistance = 0.f;
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		ML::Box2D src(0, 0, 1600, 1200);
+		ML::Box2D draw(0, 0, src.w, src.h);
+		draw.Offset(pos);
+		res->image->Draw(draw, src);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -106,17 +102,20 @@ namespace  CommonItemManager01
 	//-------------------------------------------------------------------
 	bool  Object::B_Initialize()
 	{
-		return  this->Initialize();
+		return  Initialize();
 	}
 	//-------------------------------------------------------------------
-	Object::~Object() { this->B_Finalize(); }
+	Object::~Object() { B_Finalize(); }
 	bool  Object::B_Finalize()
 	{
-		auto  rtv = this->Finalize();
+		auto  rtv = Finalize();
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {	}
+	Object::Object()
+		:
+		moveVec(0.f, 0.f), movedDistance(0.f), pos(0.f, 0.f)
+	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
@@ -136,5 +135,5 @@ namespace  CommonItemManager01
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
 	//-------------------------------------------------------------------
-	Resource::~Resource() { this->Finalize(); }
+	Resource::~Resource() { Finalize(); }
 }

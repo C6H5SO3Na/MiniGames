@@ -93,7 +93,7 @@ namespace  BlanceGUIM
 		
 		auto pm = ge->GetTask<BlanceGamePM::Object>("blanceGamePM");
 		int j = 0;
-		for (int i = 0; i < 4; ++i) {
+		for (int i = 0; i < pm->pList.size(); ++i) {
 			if (pm->pList[i]->GetBGState() == BGstate::Fail&& failFlag[i] == false) {
 				se::Play("seBGf");
 				failPlayerNum.push_back(failtime);
@@ -104,11 +104,19 @@ namespace  BlanceGUIM
 			}
 		}
 		failtime += j;
-		if (failFlag[0]&& failFlag[1]&& failFlag[2]&& failFlag[3]) {	
-			ge->hasAllClearedGame = true;
-			if (ge->hasFinishedEasing) {
-				Kill();
+		playerfailCount = 0;
+		for (int i = 0; i < pm->pList.size(); ++i) {
+			if (failFlag[i])
+			{
+				playerfailCount++;
 			}
+		}
+		if (playerfailCount== pm->pList.size())
+		{
+			ge->hasAllClearedGame = true;
+		}
+		if (ge->hasFinishedEasing) {
+			Kill();
 		}
 	}
 	//-------------------------------------------------------------------

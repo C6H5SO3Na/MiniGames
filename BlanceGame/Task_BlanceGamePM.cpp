@@ -32,22 +32,23 @@ namespace  BlanceGamePM
 		this->res = Resource::Create();
 
 		//★データ初期化
-		cList.push_back(ge->in1);
-		cList.push_back(ge->in2);
-		cList.push_back(ge->in3);
-		cList.push_back(ge->in4);
+		for (auto i = 0; i < ge->players.size(); ++i) {
+			/*cList.push_back(ge->players[i]);*/
+			auto p = BGPlayer::Object::Create(true);
+			pList.push_back(p);
+			pList[i]->pos = ML::Vec2(400 + 400 * i, 500);
+			pList[i]->controller = ge->players[i];
+			pList[i]->playerNum = i;
+		}
+		//cList.push_back(ge->in1);
+		//cList.push_back(ge->in2);
+		//cList.push_back(ge->in3);
+		//cList.push_back(ge->in4);
 		//se
 		se::LoadFile("seBGd", "./data/sound/se/BlanceGame/Onoma-Surprise02-1(High).wav");
 		se::LoadFile("seBGf", "./data/sound/se/BlanceGame/Motion-Fall06-3(Long).wav");
 		//★タスクの生成
 
-		for (int i = 0; i < 4; ++i) {
-			auto p = BGPlayer::Object::Create(true);
-			pList.push_back(p);
-			pList[i]->pos=ML::Vec2(400 + 400*i, 500);
-			pList[i]->controller = cList[i];
-			pList[i]->playerNum = i;
-		}
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -78,14 +79,14 @@ namespace  BlanceGamePM
 			switch (r)
 			{
 			case 0:
-				for (int i = 0; i < 4; ++i) {
+				for (int i = 0; i < pList.size(); ++i) {
 					if (pList[i]->GetBGState() == BGBChara::BGstate::Playing) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayL);
 					}
 				}
 				break;
 			case 1:
-				for (int i = 0; i < 4; ++i) {
+				for (int i = 0; i < pList.size(); ++i) {
 					if (pList[i]->GetBGState() == BGBChara::BGstate::Playing) {
 						pList[i]->SetBGState(BGBChara::BGstate::PlayR);
 					}

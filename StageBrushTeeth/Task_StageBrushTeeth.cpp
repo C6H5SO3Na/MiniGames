@@ -49,7 +49,7 @@ namespace  StageBrushTeeth
 
 		//šƒf[ƒ^‰Šú‰»
 		this->render2D_Priority[1] = 0.9f;
-		this->state = Phase::Game;
+		//this->state = Phase::Game;
 		this->timeCnt = 10 * 60;
 		ge->nowTimeLimit = this->timeCnt;
 		this->clearCount = 0;
@@ -199,8 +199,9 @@ namespace  StageBrushTeeth
 				}		
 			}
 		}
-		if (clearCount == 4) {// if all players were clear
-			state = Phase::Clear;
+		if (clearCount == ge->players.size()) {// if all players were clear
+			//state = Phase::Clear;
+			ge->hasAllClearedGame = true;
 		}
 		else
 		{
