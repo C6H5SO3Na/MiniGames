@@ -48,7 +48,7 @@ namespace  SaboriGame
 		useControllers = ge->players;
 
 		//プレイ人数の設定
-		playerCount = useControllers.size();
+		playerCount = static_cast<int>(useControllers.size());
 		//playerCountに不正な値が入った場合4を入れる
 		if (playerCount < 1 || playerCount > 4)
 		{
@@ -56,7 +56,7 @@ namespace  SaboriGame
 		}
 
 		//制限時間の設定
-		ge->nowTimeLimit = static_cast<int>(timeLimit * gameFps);
+		ge->nowTimeLimit = timeLimit;
 
 		//★タスクの生成
 		//プレイヤータスク作成
@@ -110,6 +110,7 @@ namespace  SaboriGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		ge->c->DrawFps();
 		//状態に対応する行動処理
 		this->Work();
 	}
@@ -138,7 +139,7 @@ namespace  SaboriGame
 			}
 
 			//☆制限時間を減らす
-			ge->nowTimeLimit -= 1;
+			ge->nowTimeLimit -= ge->c->deltaTime;
 
 			//制限時間が0以下になったらゲームを終了させる
 			if (ge->nowTimeLimit <= 0)
@@ -381,7 +382,7 @@ namespace  SaboriGame
 	Object::Object()
 		:
 		//サボりゲーム関係
-		gameStart(true), countToNextTask(0), gameFps(60), timeLimit(30.f), isInGame(false),
+		gameStart(true), countToNextTask(0), timeLimit(30.f), isInGame(false),
 		//プレイヤー関係
 		playerFirstPos{
 			{ ge->screen2DWidth / 8.f, ge->screen2DHeight - 230.f },

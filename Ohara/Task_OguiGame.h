@@ -53,7 +53,6 @@ namespace  OguiGame
 		//☆変数
 		bool		gameStart;				// ゲーム開始時true
 		int			countToNextTask;		// 次のタスクにするまでのカウント
-		int			gameFps;				// 想定FPS
 		float		timeLimit;				// 制限時間
 	
 		//☆関数

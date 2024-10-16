@@ -97,7 +97,7 @@ namespace  MyPG
 		};
 		GameState gameState;
 
-		int nowTimeLimit = 0;
+		float nowTimeLimit = 0;
 
 		void CreateEffect(int no, ML::Vec2 pos);
 		void Dbg_ToConsole(const char* str, ...);

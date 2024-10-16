@@ -48,7 +48,7 @@ namespace  OguiGame
 		useControllers = ge->players;
 
 		//プレイ人数の設定
-		playerCount = useControllers.size();
+		playerCount = static_cast<int>(useControllers.size());
 		//playerCountに不正な値が入った場合4を入れる
 		if (playerCount < 1 || playerCount > 4)
 		{
@@ -56,7 +56,7 @@ namespace  OguiGame
 		}
 
 		//制限時間の設定
-		ge->nowTimeLimit = static_cast<int>(timeLimit * gameFps);
+		ge->nowTimeLimit = timeLimit;
 
 		//★タスクの生成
 		//プレイヤータスク作成
@@ -148,7 +148,7 @@ namespace  OguiGame
 			}
 
 			//☆制限時間を減らす
-			ge->nowTimeLimit -= 1;
+			ge->nowTimeLimit -= ge->c->deltaTime;
 
 			//制限時間が0以下になったらゲームを終了させる
 			if (ge->nowTimeLimit <= 0)
@@ -404,7 +404,7 @@ namespace  OguiGame
 		playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playerCount(4),
 		playersInfo(),
 		// 大食いゲーム関係
-		timeLimit(15.f), isInGame(false), countToNextTask(0), gameFps(60), gameStart(true)
+		timeLimit(15.f), isInGame(false), countToNextTask(0), gameStart(true)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
