@@ -44,32 +44,31 @@ namespace  OguiGame
 		res = Resource::Create();
 
 		//★データ初期化
+		//使用するコントローラーの設定
+		useControllers = ge->players;
+
+		//プレイ人数の設定
+		playerCount = static_cast<int>(useControllers.size());
 		//playerCountに不正な値が入った場合4を入れる
 		if (playerCount < 1 || playerCount > 4)
 		{
 			playerCount = 4;
 		}
-		
-		//使用するコントローラーの設定
-		for (int i = 0; i < playerCount; ++i)
-		{
-			useControllers.push_back(controllers[i]);
-		}
 
 		//制限時間の設定
-		ge->nowTimeLimit = static_cast<int>(timeLimit * gameFps);
+		ge->nowTimeLimit = timeLimit;
 
 		//★タスクの生成
 		//プレイヤータスク作成
 		//for(int i = 0; i < 4; ++i) // CPU実装時はこっちを使う
-		for (int i = 0; i < useControllers.size(); ++i)
+		for (int i = 0; i < playerCount; ++i)
 		{
 			auto p = OguiPlayer::Object::Create(true);	// タスク生成
 			if (p) // nullチェック
 			{
-				p->pos = this->playerFirstPos[i];		// プレイヤの初期位置設定
-				p->controller = this->controllers[i];	// 使用コントローラ設定(コントローラが接続されていなくても問題ない)
-				p->playerNum = playersNum[i];			// プレイヤー識別番号設定
+				p->pos = playerFirstPos[i];			// プレイヤーの初期位置設定
+				p->controller = useControllers[i];	// 使用コントローラ設定(コントローラが接続されていなくても問題ない)
+				p->playerNum = playersNum[i];		// プレイヤー識別番号設定
 
 				////プレイヤ操作かCPU操作かの設定
 				//if (i < playerCount)
@@ -149,7 +148,7 @@ namespace  OguiGame
 			}
 
 			//☆制限時間を減らす
-			ge->nowTimeLimit -= 1;
+			ge->nowTimeLimit -= ge->c->deltaTime;
 
 			//制限時間が0以下になったらゲームを終了させる
 			if (ge->nowTimeLimit <= 0)
@@ -402,10 +401,10 @@ namespace  OguiGame
 			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f + 100.f },
 			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 100.f } 
 		}, 
-		controllers{ ge->in1, ge->in2, ge->in3, ge->in4 }, playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playerCount(4),
+		playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playerCount(4),
 		playersInfo(),
 		// 大食いゲーム関係
-		timeLimit(15.f), isInGame(false), countToNextTask(0), gameFps(60), gameStart(true)
+		timeLimit(15.f), isInGame(false), countToNextTask(0), gameStart(true)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

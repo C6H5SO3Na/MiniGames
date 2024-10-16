@@ -76,18 +76,14 @@ namespace  MyPG
 
 		XI::Mouse::SP  mouse;
 		XI::GamePad::SP  in1, in2, in3, in4;	//取り敢えず４本
+
+		vector<XI::GamePad::SP>  players;
+
 		//２Ｄカメラ矩形
 		ML::Box2D				camera2D;	//  ２Ｄスクロール制御用
 		map<string, float> evFlags;
 
-		bool isGameOver = false; //ゲームオーバーフラグ
-		bool isGameClear = false;//クリアフラグ
-		bool unHitEnemy = false;//敵との当たり判定
-
 		int nowStage = 0;
-
-		bool isTransparent = false; //透明フラグ
-
 
 		//----------------------------------------------
 		FPSCounter* c = nullptr;
@@ -101,7 +97,7 @@ namespace  MyPG
 		};
 		GameState gameState;
 
-		int nowTimeLimit = 0;
+		float nowTimeLimit = 0;
 
 		void CreateEffect(int no, ML::Vec2 pos);
 		void Dbg_ToConsole(const char* str, ...);
