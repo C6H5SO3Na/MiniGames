@@ -26,6 +26,8 @@ namespace  BGPlayer
 		//ã§óLÇ∑ÇÈïœêîÇÕÇ±Ç±Ç…í«â¡Ç∑ÇÈ
 		DG::Image::SP playerImg;
 		DG::Image::SP playerNumImg;
+		DG::Image::SP controllerMarkR;
+		DG::Image::SP controllerMarkL;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BGBChara
@@ -60,5 +62,8 @@ namespace  BGPlayer
 		ML::Box2D playerNumUIdraw[4] = {
 			ML::Box2D(0, 0, 155, 105),ML::Box2D(0, 0, 192, 105),ML::Box2D(0, 0, 175, 105), ML::Box2D(0, 0, 193, 105)
 		};
+		int animCnt;
+		int animIndex;
+
 	};
 }

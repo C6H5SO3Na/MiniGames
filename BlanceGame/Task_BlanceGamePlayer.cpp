@@ -14,6 +14,8 @@ namespace  BGPlayer
 	{
 		playerImg = DG::Image::Create("./data/image/game_otsan_train.png");
 		playerNumImg = DG::Image::Create("./data/image/PlayerNumber.png");
+		controllerMarkL= DG::Image::Create("./data/image/LeftLeftStickDown.png");
+		controllerMarkR = DG::Image::Create("./data/image/RightLeftStickDown.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -21,6 +23,9 @@ namespace  BGPlayer
 	bool  Resource::Finalize()
 	{
 		playerImg.reset();
+		playerNumImg.reset();
+		controllerMarkL.reset();
+		controllerMarkR.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -34,6 +39,7 @@ namespace  BGPlayer
 
 		//★データ初期化
 		direction = 0;
+		animCnt = 0;
 		SetBGState(BGstate::BStart);
 	
 		//★タスクの生成
@@ -92,7 +98,17 @@ namespace  BGPlayer
 			direction = 90;
 			break;
 		}
-		
+		animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 15)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 2)
+			{
+				this->animIndex = 0;
+			}
+		}
 		
 	}
 	//-------------------------------------------------------------------
@@ -101,15 +117,22 @@ namespace  BGPlayer
 	{
 		ML::Box2D src(0, 0, 446, 542);
 		ML::Box2D draw(-100, 0, 360, 432);
+		//コントローラーマーク
+		ML::Box2D Draw(0, -250 / 2, 150, 150);
+		int srcX = animIndex % 2 * 128;
+		int srcY = animIndex / 2 * 128;
+		ML::Box2D Src(srcX, srcY, 128, 128);
 		switch (GetBGState())
 		{
 		case BGstate::Playing:
 			break;
 		case BGstate::PlayR:
 			src = ML::Box2D(2236, 543, 446, 542);
+			this->res->controllerMarkL->Draw(Draw.OffsetCopy(pos), Src);
 			break;
 		case BGstate::PlayL:
 			src = ML::Box2D(2236, 1086, 446, 542);
+			this->res->controllerMarkR->Draw(Draw.OffsetCopy(pos), Src);
 			break;
 		case BGstate::returnR:
 			src = ML::Box2D(2236, 543, 446, 542);
@@ -126,8 +149,7 @@ namespace  BGPlayer
 		//playerNum
 		src = playerNumUIsrc[playerNum];
 		draw = playerNumUIdraw[playerNum];
-		res->playerNumImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -250)), src);
-
+		res->playerNumImg->Draw(draw.OffsetCopy(pos + ML::Vec2(0, -350)), src);
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
