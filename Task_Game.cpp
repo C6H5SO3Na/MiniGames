@@ -90,54 +90,43 @@ namespace  Game
 	void  Object::CreateTask(int nextTask) {
 		ge->nowStage = nextTask;
 
+		ge->gameState = MyPG::MyGameEngine::GameState::Start;
 		//auto gsUI=gamesetUI::Object::Create(true);  //ゲームセットUI生成用
 		/*std::this_thread::sleep_for(std::chrono::seconds(2));*/
-		auto g = ge->GetTask<Game::Object>("本編");
 		switch (ge->nowStage) {
 		case 0:
 			StageAlarmClock::Object::Create(true);
-			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 
 		case 1:
 			StageBrushTeeth::Object::Create(true);
-			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 
 		case 2:
-			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			BlanceGame::Object::Create(true);
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 
 		case 3:
 			ClassifyGame::Object::Create(true);
-			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 
 		case 4:
 			SaboriGame::Object::Create(true);
-			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 
 		case 5:
 			OguiGame::Object::Create(true);
-			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
 			break;
 
 		case 6:
 			TaxiGame::Object::Create(true);
-			ge->gameState = MyPG::MyGameEngine::GameState::Start;
 			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 100.f));
-			break;
-
-		default:
-			g->Kill();
 			break;
 		}
 	}
