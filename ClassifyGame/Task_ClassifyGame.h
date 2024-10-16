@@ -23,7 +23,7 @@ namespace  ClassifyGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
-		
+		DG::Image::SP controllerMark;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -48,5 +48,7 @@ namespace  ClassifyGame
 	public:
 		//追加したい変数・メソッドはここに追加する
 		int gameCnt;
+		int animCnt;
+		int animIndex;
 	};
 }

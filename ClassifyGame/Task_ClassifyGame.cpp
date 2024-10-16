@@ -16,12 +16,14 @@ namespace  ClassifyGame
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		controllerMark = DG::Image::Create("./data/image/clasLeftStickAllDirection.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		controllerMark.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -37,6 +39,7 @@ namespace  ClassifyGame
 
 		gameCnt = 0;
 		ge->nowTimeLimit = 1320;
+		animCnt = 0;
 		//BGM
 		bgm::LoadFile("bgmCG", "./data/sound/bgm/tanoshiimugibatake.mp3");
 		bgm::Play("bgmCG");
@@ -73,6 +76,17 @@ namespace  ClassifyGame
 			if (gameCnt == 1319) {
 				ge->hasAllClearedGame = true;
 			}
+			animCnt++;
+			//アニメ更新
+			if (this->animCnt >= 15)
+			{
+				this->animCnt = 0;
+				this->animIndex++;
+				if (this->animIndex >= 2)
+				{
+					this->animIndex = 0;
+				}
+			}
 			break;
 		case MyPG::MyGameEngine::GameState::Finish:
 			if (ge->hasFinishedEasing) {
@@ -86,6 +100,15 @@ namespace  ClassifyGame
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		if (ge->gameState == MyPG::MyGameEngine::GameState::Game)
+		{
+			//コントローラーマーク
+			ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
+			int srcX = animIndex % 2 * 128;
+			int srcY = animIndex / 2 * 128;
+			ML::Box2D Src(srcX, srcY, 128, 128);
+			this->res->controllerMark->Draw(Draw, Src);
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

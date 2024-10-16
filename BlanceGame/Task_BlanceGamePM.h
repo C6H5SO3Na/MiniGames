@@ -50,5 +50,6 @@ namespace  BlanceGamePM
 		//追加したい変数・メソッドはここに追加する
 		vector<BGPlayer::Object::SP> pList;	//プレイヤリスト
 		vector<XI::GamePad::SP> cList;		//コントローラリスト
+	
 	};
 }
