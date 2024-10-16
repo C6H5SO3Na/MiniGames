@@ -542,6 +542,8 @@ ge->debugRect(me, DEBUGRECTMODE::RED ,- ge->camera2D.x, -ge->camera2D.y);
 		//カウンタ動作
 		ActCounter();
 
+		//可変フレームレート対応を可能にする
+		c->UpdateFPS();
 	}
 
 	//2D描画環境のデフォルトパラメータ設定
