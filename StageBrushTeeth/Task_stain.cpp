@@ -81,7 +81,7 @@ namespace  stain
 		}
 
 		//ƒ‰ƒ“ƒ_ƒ€‚Å^‚Á’¼‚®‚â‚Ü‚é‚Å“®‚­
-		if (rand() % 100 < 20) { // State•Ï‚í‚é“
+		if (rand() % 100 < 30) { // State•Ï‚í‚é“
 			State = (State == MovementState::Forward) ? MovementState::Circular : MovementState::Forward;
 		}
 
@@ -98,7 +98,7 @@ namespace  stain
 			}
 			else if (State == MovementState::Circular) {
 				//‚Ü‚é‚Å“®‚­t
-				float radius = GetRandom(1.f, 5.f);
+				float radius = GetRandom(1.f, 6.f);
 				angle += 0.1f;
 				dx = radius * cos(angle);
 				dy = radius * sin(angle);
