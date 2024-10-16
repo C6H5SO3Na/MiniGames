@@ -76,7 +76,6 @@ namespace  OguiGame
 
 		//☆変数
 		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
-		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
 		vector<XI::GamePad::SP> useControllers;		// 実際に使用するコントローラーを格納する
 		PlayerNum				playersNum[4];		// プレイヤーの識別番号設定用
 		int						playerCount;		// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)

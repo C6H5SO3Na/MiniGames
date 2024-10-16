@@ -76,7 +76,6 @@ namespace  SaboriGame
 
 		//☆変数
 		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
-		XI::GamePad::SP			controllers[4];		// 取得するコントローラー
 		vector<XI::GamePad::SP> useControllers;		// 実際に使用するコントローラーを格納する
 		PlayerNum				playersNum[4];		// プレイヤーの識別番号設定用
 		PlayerInformation		playersInfo[4];		// 順位決めに必要なプレイヤーの情報

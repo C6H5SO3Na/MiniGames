@@ -44,16 +44,15 @@ namespace  SaboriGame
 		res = Resource::Create();
 
 		//★データ初期化
+		//使用するコントローラーの設定
+		useControllers = ge->players;
+
+		//プレイ人数の設定
+		playerCount = useControllers.size();
 		//playerCountに不正な値が入った場合4を入れる
 		if (playerCount < 1 || playerCount > 4)
 		{
 			playerCount = 4;
-		}
-
-		//使用するコントローラーの設定
-		for (int i = 0; i < playerCount; ++i)
-		{
-			useControllers.push_back(controllers[i]);
 		}
 
 		//制限時間の設定
@@ -62,12 +61,12 @@ namespace  SaboriGame
 		//★タスクの生成
 		//プレイヤータスク作成
 		//for (int i = 0; i < 4; ++i) // CPU実装時はこっちを使う
-		for (int i = 0; i < useControllers.size(); ++i)
+		for (int i = 0; i < playerCount; ++i)
 		{
 			auto p = SaboriPlayer::Object::Create(true);
-			p->pos = this->playerFirstPos[i];
-			p->controller = this->controllers[i];
-			p->playerNum = playersNum[i];
+			p->pos = playerFirstPos[i];			// プレイヤーの初期位置設定
+			p->controller = useControllers[i];	// 使用コントローラ設定(コントローラが接続されていなくても問題ない)
+			p->playerNum = playersNum[i];		// プレイヤー識別番号設定
 		}
 
 		//上司タスク作成
@@ -390,7 +389,7 @@ namespace  SaboriGame
 			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 230.f },
 			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 230.f } 
 		},
-		controllers{ ge->in1, ge->in2, ge->in3, ge->in4 }, playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playersInfo(),
+		playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playersInfo(),
 		playerCount(4),
 		//上司関係
 		joushiFirstPos(ML::Vec2(ge->screen2DWidth / 2.f, ge->screen2DHeight / 3.f))
