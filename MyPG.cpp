@@ -1,5 +1,6 @@
 ﻿#include "MyPG.h"
 
+#include "fpscounter.h"
 #include "randomLib.h"
 #include "sound.h"
 #define MYDEBUG

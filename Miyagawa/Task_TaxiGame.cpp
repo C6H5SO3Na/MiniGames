@@ -46,20 +46,13 @@ namespace  TaxiGame
 		//★タスクの生成
 		TaxiGameBG::Object::Create(true);
 
-		//プレイヤー毎のコントローラー登録
-		vector<XI::GamePad::SP> players;
-		players.push_back(ge->in1);
-		players.push_back(ge->in2);
-		players.push_back(ge->in3);
-		players.push_back(ge->in4);
-
 		//プレイヤー配置
-		for (int i = 0; i < players.size(); ++i) {
-			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 2) / 6.f), players[i]);
+		for (int i = 0; i < ge->players.size(); ++i) {
+			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 2) / 6.f), ge->players[i]);
 		}
 
 		//タクシー配置
-		for (int i = 0; i < players.size(); ++i) {
+		for (int i = 0; i < ge->players.size(); ++i) {
 			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (i + 2) / 6.f));
 		}
 		return  true;

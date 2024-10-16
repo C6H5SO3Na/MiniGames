@@ -307,6 +307,9 @@
     <ClCompile Include="Miyagawa\Task_SubscribeController.cpp">
       <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
     </ClCompile>
+    <ClCompile Include="Miyagawa\Task_SubscribeControllerBG.cpp">
+      <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -518,6 +521,9 @@
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_SubscribeController.h">
+      <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_SubscribeControllerBG.h">
       <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
     </ClInclude>
   </ItemGroup>
