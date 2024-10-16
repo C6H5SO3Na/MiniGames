@@ -56,6 +56,7 @@ namespace  Game
 
 		//★タスクの生成
 
+
 		CreateTask(0);//0:目覚ましゲーム、1:歯磨きゲーム、2:電車ゲーム…
 
 		UIManager::Object::Create(true);
