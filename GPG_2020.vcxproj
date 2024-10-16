@@ -151,6 +151,7 @@
     <ClCompile Include="Miyagawa\Task_GameMessage.cpp" />
     <ClCompile Include="Miyagawa\Task_EasingLogo.cpp" />
     <ClCompile Include="Miyagawa\Task_SubscribeController.cpp" />
+    <ClCompile Include="Miyagawa\Task_SubscribeControllerBG.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Miyagawa\Task_GameMessage.h" />
     <ClInclude Include="Miyagawa\Task_EasingLogo.h" />
     <ClInclude Include="Miyagawa\Task_SubscribeController.h" />
+    <ClInclude Include="Miyagawa\Task_SubscribeControllerBG.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGame.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGameBG.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h" />
