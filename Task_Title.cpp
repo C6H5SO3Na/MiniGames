@@ -8,7 +8,7 @@
 #include "sound.h"
 #include "easing.h"
 
-#include  "Task_Game.h"
+#include  "./Miyagawa/Task_SubscribeController.h"
 
 #include  <chrono>
 #include  <thread>
@@ -104,7 +104,7 @@ namespace  Title
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			se::Play("se_confirm");
 			std::this_thread::sleep_for(std::chrono::seconds(1));	
-			Game::Object::Create(true);
+			SubscribeController::Object::Create(true);
 		}
 
 		return  true;

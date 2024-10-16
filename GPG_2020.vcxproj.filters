@@ -89,6 +89,9 @@
     <Filter Include="MyPG\Task\Miyagawa\UIManager">
       <UniqueIdentifier>{8593b2c4-219d-4819-9163-15a84b967942}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Miyagawa\SubscribeController">
+      <UniqueIdentifier>{c8af132b-0427-4331-97ce-8dba21009f39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -301,6 +304,9 @@
     <ClCompile Include="Miyagawa\Task_FightLogo.cpp">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
     </ClCompile>
+    <ClCompile Include="Miyagawa\Task_SubscribeController.cpp">
+      <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -510,6 +516,9 @@
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_FightLogo.h">
       <Filter>MyPG\Task\Miyagawa\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_SubscribeController.h">
+      <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
