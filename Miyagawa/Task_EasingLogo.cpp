@@ -12,13 +12,13 @@ namespace EasingLogo
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		img.push_back(DG::Image::Create("./data/image/SaboriGameRuleSentence.png"));
-		img.push_back(DG::Image::Create("./data/image/bar.png"));
-		img.push_back(DG::Image::Create("./data/image/bar.png"));
-		img.push_back(DG::Image::Create("./data/image/bar.png"));
-		img.push_back(DG::Image::Create("./data/image/SaboriGameRuleSentence.png"));
-		img.push_back(DG::Image::Create("./data/image/OugiGameRuleSentence.png"));
-		img.push_back(DG::Image::Create("./data/image/bar.png"));
+		img.push_back(DG::Image::Create("./data/image/PopUpWord_Stage1.png"));
+		img.push_back(DG::Image::Create("./data/image/PopUpWord_Stage2.png"));
+		img.push_back(DG::Image::Create("./data/image/PopUpWord_Stage3.png"));
+		img.push_back(DG::Image::Create("./data/image/PopUpWord_Stage4.png"));
+		img.push_back(DG::Image::Create("./data/image/PopUpWord_Stage5.png"));
+		img.push_back(DG::Image::Create("./data/image/PopUpWord_Stage6.png"));
+		img.push_back(DG::Image::Create("./data/image/PopUpWord_Stage7.png"));
 		img.push_back(DG::Image::Create("./data/image/Finish.png"));
 		return true;
 	}
