@@ -53,6 +53,7 @@ namespace  SaboriUIManager
 		//サボり合計時間描画関係---------------------------------------------------------------------------------------
 		//☆変数
 		DG::Font::SP testFont;
+		char totalSaboriTimeText[5];	// 合計時間を小数点第一位まで表示するようにする(配列の必要要素数 = 整数部分2 + 小数点1 + 少数第一位1 + ヌル文字1 = 5)
 
 		//☆関数
 		void DrawTotalSaboriTime();
