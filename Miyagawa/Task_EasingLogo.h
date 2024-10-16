@@ -55,13 +55,13 @@ namespace EasingLogo
 		bool isCreated = false;
 
 		ML::Box2D srcTable[8] = {
-			ML::Box2D(0, 0, 756, 87),
-			ML::Box2D(0, 0, 438, 105),
-			ML::Box2D(0, 0, 438, 105),
-			ML::Box2D(0, 0, 438, 105),
-			ML::Box2D(0, 0, 756, 87),
-			ML::Box2D(0, 0, 687, 88),
-			ML::Box2D(0, 0, 438, 105),
+			ML::Box2D(0, 0, 647, 123),//Stage1
+			ML::Box2D(0, 0, 341, 96),
+			ML::Box2D(0, 0, 585, 94),
+			ML::Box2D(0, 0, 583, 116),
+			ML::Box2D(0, 0, 750, 161),
+			ML::Box2D(0, 0, 700, 150),
+			ML::Box2D(0, 0, 564, 116),
 			ML::Box2D(0, 0, 438, 105)//Finish
 		};
 	};

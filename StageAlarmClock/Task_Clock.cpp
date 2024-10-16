@@ -60,30 +60,22 @@ namespace  Clock
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		animCnt++;
-		//アニメ更新
-		if (this->animCnt >= 5)
+		switch (ge->gameState)
 		{
-			this->animCnt = 0;
-			this->animIndex++;
-			if (this->animIndex >= 5)
+		case MyPG::MyGameEngine::GameState::Game:
+			animCnt++;
+			//アニメ更新
+			if (this->animCnt >= 5)
 			{
-				this->animIndex = 0;
+				this->animCnt = 0;
+				this->animIndex++;
+				if (this->animIndex >= 5)
+				{
+					this->animIndex = 0;
+				}
 			}
+			break;
 		}
-
-		/*auto players = ge->GetTasks <hand::Object>("手");
-		for_each(players->begin(), players->end(), [&](auto iter) {
-			if (iter->IsClear()) {
-				animLine = 1;
-			}
-			})*/;
-
-		/*auto pl = ge->GetTask<hand::Object>("手");
-		if (pl->isClear)
-		{
-			animLine = 1;
-		}*/
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
