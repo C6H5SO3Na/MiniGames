@@ -56,7 +56,7 @@ namespace  Game
 
 		//★タスクの生成
 
-		CreateTask(0);//0:目覚ましゲーム、1:歯磨きゲーム、2:電車ゲーム…
+		CreateTask(5);//0:目覚ましゲーム、1:歯磨きゲーム、2:電車ゲーム…
 
 		UIManager::Object::Create(true);
 		return  true;
@@ -116,12 +116,12 @@ namespace  Game
 
 		case 4:
 			SaboriGame::Object::Create(true);
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 50.f));
 			break;
 
 		case 5:
 			OguiGame::Object::Create(true);
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(0, 50.f));
 			break;
 
 		case 6:

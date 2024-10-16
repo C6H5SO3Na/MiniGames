@@ -12,9 +12,9 @@ public:
 	OCharaBase()
 		:
 		//列挙型変数
-		state(State::Default), playerNum(PlayerNum::Player1), playerType(PlayerType::HumanPlayer),
+		state(State::Default), playerNum(PlayerNum::Player1), playerType(PlayerType::HumanPlayer), gameFps(60),
 		//変数
-		gameFps(60), animationCount(0), numberDecidePlayerType(0)
+		animationCount(0), numberDecidePlayerType(0)
 	{}
 
 	//デストラクタ
@@ -37,7 +37,7 @@ protected:
 	};
 
 	//☆変数
-	int			gameFps;				// ゲームプレイする上で想定しているFPS値を設定
+	int			gameFps;
 	int			animationCount;			// 画像をアニメーションにするためのカウント
 	
 public:

@@ -78,7 +78,7 @@ namespace  SaboriUIManager
 		int loopCount = 0; //ループした回数のカウント
 		for (auto p = players->begin(); p != players->end(); ++p)
 		{
-			//プレイヤー番号描画
+			//プレイヤーサボり時間描画
 			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 90, ge->screen2DWidth, ge->screen2DHeight),
 				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->totalSaboriTime), ML::Color(1, 0, 0, 0)
 			);
