@@ -121,7 +121,7 @@ namespace  Game
 
 		case 5:
 			OguiGame::Object::Create(true);
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(0, 50.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 50.f));
 			break;
 
 		case 6:
