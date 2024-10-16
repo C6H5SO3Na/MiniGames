@@ -170,7 +170,7 @@ namespace  CGPlayer
 	void  Object::Render2D_AF()
 	{
 		//Š÷
-		ML::Box2D src(0, 0, 1920, 1080);
+		ML::Box2D src(0, 0, 480, 256);
 		ML::Box2D draw(-450, -300, 960, 540);
 		res->deskImg->Draw(draw.OffsetCopy(pos), src);
 		//Žè
