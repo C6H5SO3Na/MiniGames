@@ -77,6 +77,7 @@ namespace  hand
 			this->pos += this->moveVec;
 			break;
 		case MyPG::MyGameEngine::GameState::Finish:
+			this->pos = this->pos;
 			se::Play("Stop");
 			break;
 		}
