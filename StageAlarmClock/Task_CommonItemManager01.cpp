@@ -33,12 +33,12 @@ namespace  CommonItemManager01
 		//★データ初期化
 		this->rank = 0;
 
-		CTList.push_back(ge->in1);
+		/*CTList.push_back(ge->in1);
 		CTList.push_back(ge->in2);
 		CTList.push_back(ge->in3);
-		CTList.push_back(ge->in4);
+		CTList.push_back(ge->in4);*/
 
-		for (int i = 0; i < 4; ++i)
+		for (auto i = 0; i < ge->players.size(); ++i)
 		{
 			auto c = Clock::Object::Create(true);
 			ClockList.push_back(c);
@@ -51,7 +51,7 @@ namespace  CommonItemManager01
 			c->Positionalise(i);
 			h->Positionalise(i);
 
-			h->controller = CTList[i];
+			h->controller = ge->players[i]/*CTList[i]*/;
 		}
 		
 		//★タスクの生成

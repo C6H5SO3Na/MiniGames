@@ -47,7 +47,7 @@ namespace  StageAlarmClock
 
 		//šƒf[ƒ^‰Šú‰»
 		this->render2D_Priority[1] = 0.9f;
-		this->state = Phase::Game;
+		//this->state = Phase::Game;
 		this->timeCnt = 10 * 60;
 		ge->nowTimeLimit = this->timeCnt;
 		this->animCnt = 0;
@@ -183,8 +183,9 @@ namespace  StageAlarmClock
 				}
 			}
 		});
-		if (clearNum == 4) {
-			state = Phase::Clear;
+		if (clearNum == ge->players.size()) {
+			ge->hasAllClearedGame = true;
+			//state = Phase::Clear;
 		}
 		else
 		{
