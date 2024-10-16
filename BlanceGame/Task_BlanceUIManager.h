@@ -51,6 +51,7 @@ namespace  BlanceGUIM
 		//BChara‚ÉŠÜ‚Ü‚ê‚È‚¢ƒ‚ƒm‚Ì‚Ý‚±‚±‚É’Ç‰Á‚·‚é
 		void Received() {};
 		bool failFlag[4];
+		int playerfailCount;
 		int failtime;
 		vector<int> failPlayerNum;
 		vector<int> rank;
