@@ -48,7 +48,6 @@ namespace  Game
 	public:
 		//追加したい変数・メソッドはここに追加する
 		DG::Font::SP TestFont;
-		static void CreateTask();
 		static void CreateTask(int nextTask);
 	};
 }
