@@ -15,6 +15,8 @@ namespace SubscribeController
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		//「~P」
+		playerNumLogo = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -75,6 +77,8 @@ namespace SubscribeController
 	void  Object::UpDate()
 	{
 		easing::UpDate();//必須
+
+		//登録処理
 		for (int i = 0; i < inputs.size(); ++i) {
 			//次のタスクへ
 			if (inputs[i]->GetState().ST.down && subscribeCnt > 0) {
@@ -83,25 +87,26 @@ namespace SubscribeController
 
 			//登録 
 			if (inputs[i]->GetState().B1.down) {
-				easing::Set("Reaction" + to_string(controllerIndex[i]), easing::QUADOUT, 0, 50, 5, "ReactionEnd" + to_string(controllerIndex[i]));
-				easing::Set("ReactionEnd" + to_string(controllerIndex[i]), easing::QUADOUT, 50, 0, 5);
-				easing::Start("Reaction" + to_string(controllerIndex[i]));
 				if (!isPushButton[i]) {
 					Subscribe(inputs[i], isPushButton[i], i);
 				}
+				//イージング開始
+				StartEasing(i);
 			}
 		}
 
-		for (int i = 0; i < ge->players.size(); ++i) {
-			if (easing::GetState("ReactionEnd" + to_string(controllerIndex[i])) == easing::EQ_STATE::EQ_END) {
-				easingPos[controllerIndex[i]] = 0.f;
+		//イージング処理
+		for (int i = 0; i < inputs.size(); ++i) {
+			if (!isPushButton[i]) { continue; }
+			if (easing::GetState("ReactionEnd" + to_string(i)) == easing::EQ_STATE::EQ_END) {
+				easingPos[i] = 0.f;
 			}
-			else if (easing::GetState("Reaction" + to_string(controllerIndex[i])) == easing::EQ_STATE::EQ_END) {
-				easingPos[controllerIndex[i]] = easing::GetPos("ReactionEnd" + to_string(controllerIndex[i]));
+			else if (easing::GetState("Reaction" + to_string(i)) == easing::EQ_STATE::EQ_END) {
+				easingPos[i] = easing::GetPos("ReactionEnd" + to_string(i));
 			}
 			else
 			{
-				easingPos[controllerIndex[i]] = easing::GetPos("Reaction" + to_string(controllerIndex[i]));
+				easingPos[i] = easing::GetPos("Reaction" + to_string(i));
 			}
 		}
 
@@ -111,10 +116,12 @@ namespace SubscribeController
 	void  Object::Render2D_AF()
 	{
 		for (int i = 0; i < ge->players.size(); ++i) {
-			if (!isPushButton[controllerIndex[i]]) { continue; }
-			ML::Box2D textBox(100 * i, 100 + easingPos[i], 100, 100);
-			string text = to_string(i + 1) + "P";
-			TestFont->Draw(textBox, text);
+			//ML::Box2D textBox(100 * i, 100 + easingPos[controllerIndex[i]], 100, 100);
+			// 
+			//string text = to_string(i + 1) + "P";
+			ML::Box2D draw = drawTable[i].OffsetCopy(400 + 300 * i, static_cast<int>(100 + easingPos[controllerIndex[i]]));
+			res->playerNumLogo->Draw(draw, srcTable[i]);
+			//TestFont->Draw(textBox, text);
 		}
 	}
 	//-------------------------------------------------------------------
@@ -125,6 +132,14 @@ namespace SubscribeController
 		ge->players.push_back(controller);
 		controllerIndex[subscribeCnt] = i;
 		++subscribeCnt;
+	}
+	//-------------------------------------------------------------------
+	//「２Ｄ描画」１フレーム毎に行う処理
+	void  Object::StartEasing(const int& index)
+	{
+		easing::Set("Reaction" + to_string(index), easing::QUADOUT, 0, 50, 5, "ReactionEnd" + to_string(index));
+		easing::Set("ReactionEnd" + to_string(index), easing::QUADOUT, 50, 0, 5);
+		easing::Start("Reaction" + to_string(index));
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
