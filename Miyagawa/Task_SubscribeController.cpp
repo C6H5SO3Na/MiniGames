@@ -61,6 +61,12 @@ namespace SubscribeController
 		inputs.push_back(ge->in3);
 		inputs.push_back(ge->in4);
 
+		//サウンド
+		//SE
+		for (int i = 0; i < 4; ++i) {
+			se::LoadFile(to_string(i + 1) + "P", "./data/sound/se/SubscribePlayer/" + to_string(i + 1) + "P.wav");
+		}
+
 		//★タスクの生成
 		//背景
 		//横スクロールを作る
@@ -108,6 +114,7 @@ namespace SubscribeController
 				}
 				//イージング開始
 				StartEasing(i);
+				se::Play(to_string(i + 1) + "P");
 			}
 		}
 
