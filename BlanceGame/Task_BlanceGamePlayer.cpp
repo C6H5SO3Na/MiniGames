@@ -12,17 +12,18 @@ namespace  BGPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		playerImg = DG::Image::Create("./data/image/game_otsan_train.png");
+		playerImg = DG::Image::Create(string("./data/image/")+ playerImgPath[playerNum]);
 		playerNumImg = DG::Image::Create("./data/image/PlayerNumber.png");
 		controllerMarkL= DG::Image::Create("./data/image/LeftLeftStickDown.png");
 		controllerMarkR = DG::Image::Create("./data/image/RightLeftStickDown.png");
+		
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		playerImg.reset();
+		
 		playerNumImg.reset();
 		controllerMarkL.reset();
 		controllerMarkR.reset();
@@ -35,7 +36,8 @@ namespace  BGPlayer
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		this->res = Resource::Create();
+		this->res = Resource::Create(playerNum);
+		
 
 		//★データ初期化
 		direction = 0;
@@ -45,6 +47,9 @@ namespace  BGPlayer
 		//★タスクの生成
 
 		return  true;
+	}
+	void Object::changeImg() {
+		this->res->playerNum = this->playerNum;
 	}
 	//-------------------------------------------------------------------
 	//「終了」タスク消滅時に１回だけ行う処理
@@ -157,14 +162,14 @@ namespace  BGPlayer
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//-------------------------------------------------------------------
 	//タスク生成窓口
-	Object::SP  Object::Create(bool  flagGameEnginePushBack_)
+	Object::SP  Object::Create(bool  flagGameEnginePushBack_, int playerNum_)
 	{
 		Object::SP  ob = Object::SP(new  Object());
 		if (ob) {
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
-				
+				ob->playerNum = playerNum_;
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -189,19 +194,14 @@ namespace  BGPlayer
 	Object::Object() {	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
-	Resource::SP  Resource::Create()
+	Resource::SP  Resource::Create(int p)
 	{
-		if (auto sp = instance.lock()) {
-			return sp;
+		auto sp = Resource::SP(new  Resource());
+		if (sp) {
+			sp->playerNum = p;
+			sp->Initialize();
 		}
-		else {
-			sp = Resource::SP(new  Resource());
-			if (sp) {
-				sp->Initialize();
-				instance = sp;
-			}
-			return sp;
-		}
+		return sp;
 	}
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
