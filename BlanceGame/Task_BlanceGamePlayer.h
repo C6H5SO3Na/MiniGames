@@ -67,6 +67,5 @@ namespace  BGPlayer
 		};
 		int animCnt;
 		int animIndex;
-		void changeImg();
 	};
 }
