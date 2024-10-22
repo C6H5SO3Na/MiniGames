@@ -21,13 +21,16 @@ namespace  BGPlayer
 		typedef  shared_ptr<Resource>	SP;
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
-		static  Resource::SP  Create();
+		static  Resource::SP  Create(int p);
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP playerImg;
 		DG::Image::SP playerNumImg;
 		DG::Image::SP controllerMarkR;
-		DG::Image::SP controllerMarkL;
+		DG::Image::SP controllerMarkL; 
+		int playerNum;
+		string playerImgPath[4] = { "game_otsan_train_red.png","game_otsan_train.png",
+									"game_otsan_train_yellow.png","game_otsan_train_green.png" };
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BGBChara
@@ -37,7 +40,7 @@ namespace  BGPlayer
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
 		//生成窓口 引数はtrueでタスクシステムへ自動登録
-		static  Object::SP  Create(bool flagGameEnginePushBack_);
+		static  Object::SP  Create(bool flagGameEnginePushBack_, int playerNum);
 		Resource::SP	res;
 	private:
 
@@ -64,6 +67,5 @@ namespace  BGPlayer
 		};
 		int animCnt;
 		int animIndex;
-
 	};
 }

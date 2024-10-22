@@ -21,10 +21,12 @@ namespace  brush
 		typedef  shared_ptr<Resource>	SP;
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
-		static  Resource::SP  Create();
+		static  Resource::SP  Create(int playerNumId_);
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP img;
+		int PlayerNumId;
+		string BrushImageList[4] = { "game_brush_red.png", "game_brush_blue.png", "game_brush.png", "game_brush_yellow.png" };
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -34,7 +36,7 @@ namespace  brush
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
 		//生成窓口 引数はtrueでタスクシステムへ自動登録
-		static  Object::SP  Create(bool flagGameEnginePushBack_);
+		static  Object::SP  Create(bool flagGameEnginePushBack_, int playerNumId);
 		Resource::SP	res;
 	private:
 
@@ -63,5 +65,7 @@ namespace  brush
 		void Positionalise(int PlayerNum);
 
 		ML::Box2D drawBase;
+
+		int playerNumId;
 	};
 }

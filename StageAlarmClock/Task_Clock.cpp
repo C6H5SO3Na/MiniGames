@@ -12,7 +12,7 @@ namespace  Clock
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/game_clock.png");
+		this->img = DG::Image::Create(string("./data/image/") + ClockImageList[PlayerNumId]);
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -29,7 +29,7 @@ namespace  Clock
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		this->res = Resource::Create();
+		this->res = Resource::Create(PlayerNumId);
 
 		//★データ初期化
 		this->render2D_Priority[1] = -0.5f;
@@ -111,14 +111,14 @@ namespace  Clock
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//-------------------------------------------------------------------
 	//タスク生成窓口
-	Object::SP  Object::Create(bool  flagGameEnginePushBack_)
+	Object::SP  Object::Create(bool  flagGameEnginePushBack_, int PlayerNumId_)
 	{
 		Object::SP  ob = Object::SP(new  Object());
 		if (ob) {
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
-				
+				ob->PlayerNumId = PlayerNumId_;
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -143,19 +143,19 @@ namespace  Clock
 	Object::Object() {	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
-	Resource::SP  Resource::Create()
+	Resource::SP  Resource::Create(int PlayerNumId_)
 	{
-		if (auto sp = instance.lock()) {
+		/*if (auto sp = instance.lock()) {
 			return sp;
 		}
-		else {
-			sp = Resource::SP(new  Resource());
-			if (sp) {
-				sp->Initialize();
-				instance = sp;
-			}
-			return sp;
+		else {*/
+		auto sp = Resource::SP(new  Resource());
+		if (sp) {
+			sp->PlayerNumId = PlayerNumId_;
+			sp->Initialize();
+			instance = sp;
 		}
+		return sp;
 	}
 	//-------------------------------------------------------------------
 	Resource::Resource() {}

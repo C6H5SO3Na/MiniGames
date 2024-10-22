@@ -43,7 +43,7 @@ namespace  stain
 		this->timeCnt = 0;
 		this->animCnt = 0;
 		this->animIndex = 0;
-		this->speed = GetRandom(1.0f, 5.0f);
+		this->speed = GetRandom(1.0f, 7.0f);
 		dx = 0;
 		dy = 0;
 		//šƒ^ƒXƒN‚Ì¶¬
@@ -98,7 +98,7 @@ namespace  stain
 			}
 			else if (State == MovementState::Circular) {
 				//‚Ü‚é‚Å“®‚­t
-				float radius = GetRandom(1.f, 6.f);
+				float radius = GetRandom(1.f, 8.f);
 				angle += 0.1f;
 				dx = radius * cos(angle);
 				dy = radius * sin(angle);

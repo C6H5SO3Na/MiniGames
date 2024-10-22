@@ -22,6 +22,11 @@ namespace SubscribeController
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
 		static  Resource::SP  Create();
+
+		DG::Image::SP playerNumLogo;
+		DG::Image::SP playerImg[4];
+		DG::Image::SP startButton[2];
+		DG::Image::SP AButton[2];
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -44,6 +49,14 @@ namespace SubscribeController
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
 		void Subscribe(XI::GamePad::SP controller, bool& isPush, const int& i);
+		void StartEasing(const int& index) const;
+
+		void DrawPlayerNums() const;
+		void DrawPlayers() const;
+
+		void DrawUI() const;
+		void DrawOperation() const;
+		void DrawButton(DG::Image::SP img, const ML::Vec2& pos) const;
 
 		DG::Font::SP TestFont;
 		bool isPushButton[4] = {};
@@ -51,6 +64,10 @@ namespace SubscribeController
 		int subscribeCnt = 0;
 		float easingPos[4] = {};
 
+		//プレイヤーのリソース矩形
+		ML::Box2D srcPlayer = { 436, 0, 436, 542 };
+
 		vector<XI::GamePad::SP> inputs;
+		int animCnt = 0;
 	};
 }
