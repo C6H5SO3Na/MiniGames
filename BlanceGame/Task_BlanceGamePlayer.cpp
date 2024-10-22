@@ -48,9 +48,6 @@ namespace  BGPlayer
 
 		return  true;
 	}
-	void Object::changeImg() {
-		this->res->playerNum = this->playerNum;
-	}
 	//-------------------------------------------------------------------
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
