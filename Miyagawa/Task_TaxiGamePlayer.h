@@ -23,7 +23,6 @@ namespace TaxiGamePlayer
 		static   WP  instance;
 		static  Resource::SP  Create();
 
-		DG::Image::SP imgPlayer;
 		DG::Image::SP imgBtn[2][4];//[0,1][A,B,X,Y]
 		DG::Image::SP imgClear;
 	};
@@ -35,7 +34,7 @@ namespace TaxiGamePlayer
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		static void Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_);
+		static void Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_, const int& controllerNum_);
 		Resource::SP	res;
 	private:
 		Object();
@@ -54,6 +53,17 @@ namespace TaxiGamePlayer
 
 		//前回の位置(イージング用)
 		ML::Vec2 prePos;
+
+		//プレイヤー画像
+		DG::Image::SP imgPlayer;
+
+		//プレイヤー画像のパス
+		const string imgPlayerPath[4] = {
+			"./data/image/game_otsan_run_red.png",
+			"./data/image/game_otsan_run.png",
+			"./data/image/game_otsan_run_yellow.png",
+			"./data/image/game_otsan_run_green.png"
+		};
 
 		//クリアフラグ
 		bool isClear;

@@ -16,9 +16,6 @@ namespace TaxiGamePlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		//プレイヤー画像
-		imgPlayer = DG::Image::Create("./data/image/game_otsan_run.png");
-
 		//クリア画像
 		imgClear = DG::Image::Create("./data/image/clearImage.png");
 
@@ -37,6 +34,7 @@ namespace TaxiGamePlayer
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		imgClear.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -65,7 +63,7 @@ namespace TaxiGamePlayer
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
+		imgPlayer.reset();
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -171,7 +169,7 @@ namespace TaxiGamePlayer
 		ML::Box2D src(0, 0, 342, 486);
 		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
 		draw.Offset(owner_->pos);
-		owner_->res->imgPlayer->Draw(draw, src);
+		owner_->imgPlayer->Draw(draw, src);
 
 		if (ge->gameState == MyPG::MyGameEngine::GameState::Game) {
 			owner_->DrawButton();
@@ -212,7 +210,7 @@ namespace TaxiGamePlayer
 		ML::Box2D src = animTable[owner_->animCnt / 7 % size(animTable)];
 		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
 		draw.Offset(owner_->pos);
-		owner_->res->imgPlayer->Draw(draw, src);
+		owner_->imgPlayer->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
 	//思考
@@ -232,7 +230,7 @@ namespace TaxiGamePlayer
 		ML::Box2D src(0, 0, 342, 486);
 		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
 		draw.Offset(owner_->pos);
-		owner_->res->imgPlayer->Draw(draw, src);
+		owner_->imgPlayer->Draw(draw, src);
 
 		//クリアメッセージ描画
 		owner_->DrawClearMessage();
@@ -262,7 +260,7 @@ namespace TaxiGamePlayer
 		draw.Offset(owner_->pos);
 		//振動
 		draw.Offset(GetRandom(0, 10), GetRandom(0, 10));
-		owner_->res->imgPlayer->Draw(draw, src, ML::Color(1.f, 1.f, 0.5f, 0.5f));
+		owner_->imgPlayer->Draw(draw, src, ML::Color(1.f, 1.f, 0.5f, 0.5f));
 
 		owner_->DrawButton();
 	}
@@ -381,13 +379,16 @@ namespace TaxiGamePlayer
 	//-------------------------------------------------------------------
 	Object::Object() :state(new IdleState(this)), isClear(false) {	}
 	//-------------------------------------------------------------------
-	void Object::Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_)
+	void Object::Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_, const int& controllerNum_)
 	{
 		auto player = Create(true);
 		player->pos = pos_;
 		player->controller = controller_;
 		//コントローラーの番号を取得
 		player->controllerNum = player->GetControllerNum(player->controller);
+		//プレイヤー画像
+		player->imgPlayer = DG::Image::Create(player->imgPlayerPath[controllerNum_]);
+
 	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

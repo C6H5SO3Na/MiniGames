@@ -48,7 +48,7 @@ namespace  TaxiGame
 
 		//プレイヤー配置
 		for (int i = 0; i < ge->players.size(); ++i) {
-			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 2) / 6.f), ge->players[i]);
+			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 2) / 6.f), ge->players[i], i);
 		}
 
 		//タクシー配置
