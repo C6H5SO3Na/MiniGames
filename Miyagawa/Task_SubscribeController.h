@@ -24,6 +24,9 @@ namespace SubscribeController
 		static  Resource::SP  Create();
 
 		DG::Image::SP playerNumLogo;
+		DG::Image::SP playerImg[4];
+		DG::Image::SP startButton[2];
+		DG::Image::SP AButton[2];
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -46,7 +49,14 @@ namespace SubscribeController
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
 
 		void Subscribe(XI::GamePad::SP controller, bool& isPush, const int& i);
-		void StartEasing(const int& index);
+		void StartEasing(const int& index) const;
+
+		void DrawPlayerNums() const;
+		void DrawPlayers() const;
+
+		void DrawUI() const;
+		void DrawOperation() const;
+		void DrawButton(DG::Image::SP img, const ML::Vec2& pos) const;
 
 		DG::Font::SP TestFont;
 		bool isPushButton[4] = {};
@@ -54,13 +64,10 @@ namespace SubscribeController
 		int subscribeCnt = 0;
 		float easingPos[4] = {};
 
-		ML::Box2D srcTable[4] = {
-			ML::Box2D(0, 0, 155, 105),ML::Box2D(155, 0, 192, 105), ML::Box2D(347, 0, 175, 105), ML::Box2D(522, 0, 193, 105)
-		};
-		ML::Box2D drawTable[4] = {
-			ML::Box2D(-78, -53, 155, 105),ML::Box2D(-96, -53, 192, 105),ML::Box2D(-88, -53, 175, 105), ML::Box2D(-97, -53, 193, 105)
-		};
+		//プレイヤーのリソース矩形
+		ML::Box2D srcPlayer = { 436, 0, 436, 542 };
 
 		vector<XI::GamePad::SP> inputs;
+		int animCnt = 0;
 	};
 }
