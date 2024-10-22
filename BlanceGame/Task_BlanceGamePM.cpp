@@ -38,8 +38,6 @@ namespace  BlanceGamePM
 			pList.push_back(p);
 			pList[i]->pos = ML::Vec2(pp[ge->players.size() - 1] + 400 * i, 500);
 			pList[i]->controller = ge->players[i];
-			pList[i]->playerNum = i;
-			pList[i]->changeImg();
 		}
 		//cList.push_back(ge->in1);
 		//cList.push_back(ge->in2);

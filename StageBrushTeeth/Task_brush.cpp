@@ -13,7 +13,7 @@ namespace  brush
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->img = DG::Image::Create("./data/image/game_brush.png");
+		this->img = DG::Image::Create(string("./data/image/")+BrushImageList[PlayerNumId]);
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -30,7 +30,7 @@ namespace  brush
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		this->res = Resource::Create();
+		this->res = Resource::Create(playerNumId);
 
 		//SE
 		se::LoadFile("Kirakira", "./data/sound/se/BrushTeethGame/きらきら輝く1.wav");
@@ -169,14 +169,14 @@ namespace  brush
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//-------------------------------------------------------------------
 	//タスク生成窓口
-	Object::SP  Object::Create(bool  flagGameEnginePushBack_)
+	Object::SP  Object::Create(bool  flagGameEnginePushBack_, int playerNumId_)
 	{
 		Object::SP  ob = Object::SP(new  Object());
 		if (ob) {
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
-				
+				ob->playerNumId = playerNumId_;
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -201,19 +201,20 @@ namespace  brush
 	Object::Object() {	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
-	Resource::SP  Resource::Create()
+	Resource::SP  Resource::Create(int PlayerNumId_)
 	{
-		if (auto sp = instance.lock()) {
+		/*if (auto sp = instance.lock()) {
 			return sp;
 		}
-		else {
-			sp = Resource::SP(new  Resource());
+		else {*/
+			auto sp = Resource::SP(new  Resource());
 			if (sp) {
+				sp->PlayerNumId = PlayerNumId_;
 				sp->Initialize();
 				instance = sp;
 			}
 			return sp;
-		}
+		//}
 	}
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
