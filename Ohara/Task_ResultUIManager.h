@@ -100,7 +100,7 @@ namespace  ResultUIManager
 			{ static_cast<int>(ge->screen2DWidth) / 2 - srcValues[3][2] / 2 + srcValues[1][2] / 2, static_cast<int>(ge->screen2DHeight) / 2 - srcValues[3][3] / 2 + 100, srcValues[3][2], srcValues[3][3]}, //「ボタンでタイトルへ」と描画
 		};	
 
-		ML::Vec2 prefaceImagePos = ML::Vec2(0.f, ge->screen2DHeight / 2.f);
+		ML::Vec2 prefaceImagePos = ML::Vec2(-srcValues[0][2], ge->screen2DHeight / 2.f);
 
 		int  drawUpToCount;						// 描画するまでのカウント
 		int	 animationCount;					// アニメーション用のカウント
