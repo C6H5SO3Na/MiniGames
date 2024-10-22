@@ -75,7 +75,7 @@ namespace  SubscribeControllerBG
 		ML::Box2D src(0, 0, 1600, 1200);
 		ML::Box2D draw(0, 0, src.w, src.h);
 		draw.Offset(pos);
-		res->image->Draw(draw, src);
+		res->image->Draw(draw, src, ML::Color(1.f, 0.5f, 0.5f, 0.5f));
 	}
 
 	//šššššššššššššššššššššššššššššššššššššššššš

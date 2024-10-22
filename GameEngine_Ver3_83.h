@@ -306,6 +306,11 @@ public:
 	,renderCnt(0)
 
 	{
+
+//Releseモードの時は強制的に全画面表示にする
+#ifndef _DEBUG
+		screenMode = true;
+#endif
 		//擬似フルスクリーンモードによる変更
 		if(screenMode == true)
 		{
