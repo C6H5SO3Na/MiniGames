@@ -49,6 +49,7 @@ namespace  BlanceGamePM
 	public:
 		//追加したい変数・メソッドはここに追加する
 		vector<BGPlayer::Object::SP> pList;	//プレイヤリスト
+		int pp[4] = { 860,660,460,260 };//人数によって生成基準点を変更
 		//vector<XI::GamePad::SP> cList;		//コントローラリスト
 	};
 }

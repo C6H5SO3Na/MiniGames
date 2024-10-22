@@ -30,15 +30,16 @@ namespace  BlanceGamePM
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
 		this->res = Resource::Create();
-
+		
 		//★データ初期化
 		for (auto i = 0; i < ge->players.size(); ++i) {
 			/*cList.push_back(ge->players[i]);*/
-			auto p = BGPlayer::Object::Create(true);
+			auto p = BGPlayer::Object::Create(true,i);
 			pList.push_back(p);
-			pList[i]->pos = ML::Vec2(400 + 400 * i, 500);
+			pList[i]->pos = ML::Vec2(pp[ge->players.size() - 1] + 400 * i, 500);
 			pList[i]->controller = ge->players[i];
 			pList[i]->playerNum = i;
+			pList[i]->changeImg();
 		}
 		//cList.push_back(ge->in1);
 		//cList.push_back(ge->in2);
