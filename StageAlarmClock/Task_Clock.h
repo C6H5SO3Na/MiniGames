@@ -58,5 +58,7 @@ namespace  Clock
 		int animCnt;
 		int animIndex;
 		int animLine;
+
+		int id;
 	};
 }

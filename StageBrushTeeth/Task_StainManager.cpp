@@ -45,7 +45,7 @@ namespace  StainManager
 	//-------------------------------------------------------------------
 	void Object::Positionalise(int PlayerNum)
 	{
-		const int num = 200;
+		const int num = 170;
 		ML::Vec2 pos[][2] = {
 			{ ML::Vec2(0.f, 0.f), ML::Vec2(1980 / 2, 1080 / 2) },
 			{ ML::Vec2(1980 / 2, 0.f), ML::Vec2(1980, 1080 / 2) },
@@ -56,10 +56,10 @@ namespace  StainManager
 		const int max = 1;
 
 		/*ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));*/
-		minPosX = pos[PlayerNum][min].x + num + 30;//StainArea.x;
-		minPosY = pos[PlayerNum][min].y + num;//StainArea.y;
-		maxPosX = pos[PlayerNum][max].x - 16 - num -30;//StainArea.x + StainArea.w - 32;
-		maxPosY = pos[PlayerNum][max].y - 16 - num;//StainArea.y + StainArea.h - 32;
+		minPosX = pos[PlayerNum][min].x + num + 40;//StainArea.x;
+		minPosY = pos[PlayerNum][min].y + num - 50;//StainArea.y;
+		maxPosX = pos[PlayerNum][max].x - 16 - num - 40;//StainArea.x + StainArea.w - 32;
+		maxPosY = pos[PlayerNum][max].y - 16 - num + 100;//StainArea.y + StainArea.h - 32;
 	}
 	//-------------------------------------------------------------------
 	void Object::CreateStain()

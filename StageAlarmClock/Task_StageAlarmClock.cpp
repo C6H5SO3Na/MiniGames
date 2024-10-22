@@ -18,7 +18,7 @@ namespace  StageAlarmClock
 	bool  Resource::Initialize()
 	{
 		this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
-		this->controllerMark = DG::Image::Create("./data/image/LeftStickDown.png");
+		this->controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");
 		this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		ge->debugRectLoad();
 		return true;
