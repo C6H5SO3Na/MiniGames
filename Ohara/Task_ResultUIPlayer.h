@@ -25,7 +25,7 @@ namespace  ResultUIPlayer
 		static  Resource::SP  Create();
 	//•ÏX‰Â
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
-		DG::Image::SP playerImage;
+		DG::Image::SP playerImage[4];
 		DG::Image::SP playerNumberImage;
 		DG::Image::SP rankImage;
 	};

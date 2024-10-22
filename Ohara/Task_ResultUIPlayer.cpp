@@ -11,16 +11,24 @@ namespace  ResultUIPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->playerImage = DG::Image::Create("./data/image/game_otsan_pose.png");
-		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
-		this->rankImage = DG::Image::Create("./data/image/CompanyRank_new.png");
+		//プレイヤー
+		playerImage[0] = DG::Image::Create("./data/image/game_otsan_pose_red.png");
+		playerImage[1] = DG::Image::Create("./data/image/game_otsan_pose.png");
+		playerImage[2] = DG::Image::Create("./data/image/game_otsan_pose_yellow.png");
+		playerImage[3] = DG::Image::Create("./data/image/game_otsan_pose_green.png");
+
+		//プレイヤー識別番号
+		playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
+
+		//順位
+		rankImage = DG::Image::Create("./data/image/CompanyRank_new.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->playerImage.reset();
+		this->playerImage->reset();
 		this->playerNumberImage.reset();
 		this->rankImage.reset();
 		return true;
@@ -67,7 +75,7 @@ namespace  ResultUIPlayer
 		DrawInformation drawPlayerImage = this->GetDrawImages(0);
 		drawPlayerImage.draw.Offset(this->drawPos.displayPlayerPos);
 
-		this->res->playerImage->Draw(drawPlayerImage.draw, drawPlayerImage.src);
+		this->res->playerImage[drawPlayerInfo.PlayerNum - 1]->Draw(drawPlayerImage.draw, drawPlayerImage.src);
 
 		//☆プレイヤー番号の描画
 		DrawInformation drawPlayerNumberImage = this->GetDrawImages(1);

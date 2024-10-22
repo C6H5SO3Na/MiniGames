@@ -15,18 +15,24 @@ namespace  SaboriPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/game_otsan_working.png");
-		this->buttonImage_A = DG::Image::Create("./data/image/button/Double/xbox_button_color_a.png");
-		this->buttonImage_A_Outline = DG::Image::Create("./data/image/button/Double/xbox_button_color_a_outline.png");
+		//プレイヤー
+		image[0] = DG::Image::Create("./data/image/game_otsan_working_red.png");
+		image[1] = DG::Image::Create("./data/image/game_otsan_working.png");
+		image[2] = DG::Image::Create("./data/image/game_otsan_working_yellow.png");
+		image[3] = DG::Image::Create("./data/image/game_otsan_working_green.png");
+
+		//ボタン
+		buttonImage_A = DG::Image::Create("./data/image/button/Double/xbox_button_color_a.png");
+		buttonImage_A_Outline = DG::Image::Create("./data/image/button/Double/xbox_button_color_a_outline.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->image.reset();
-		this->buttonImage_A.reset();
-		this->buttonImage_A_Outline.reset();
+		image->reset();
+		buttonImage_A.reset();
+		buttonImage_A_Outline.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -90,7 +96,7 @@ namespace  SaboriPlayer
 		DrawInformation drawImage = this->GetDrawImage();
 		drawImage.draw.Offset(this->pos);
 		
-		this->res->image->Draw(drawImage.draw, drawImage.src);
+		this->res->image[static_cast<int>(playerNum) - 1]->Draw(drawImage.draw, drawImage.src);
 
 		//☆Aボタン描画
 		this->DrawButton();
