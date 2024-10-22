@@ -78,13 +78,15 @@ namespace  SaboriUIManager
 		int loopCount = 0; //ループした回数のカウント
 		for (auto p = players->begin(); p != players->end(); ++p)
 		{
-			//プレイヤー番号描画
-			testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 90, ge->screen2DWidth, ge->screen2DHeight),
-				to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->totalSaboriTime), ML::Color(1, 0, 0, 0)
-			);
+			//合計時間用プレイヤー番号描画
+			DrawPlayerNumber_TotalSaboriTime(loopCount);
+			/*testFont->Draw(ML::Box2D(45 + ge->screen2DWidth / 4 * loopCount , 90, ge->screen2DWidth, ge->screen2DHeight),
+				to_string((int)(*p)->playerNum) + "P:", ML::Color(1, 0, 0, 0)
+			);*/
 
 			//合計サボり時間描画
-			
+			DrawTotalSaboriTime((*p)->totalSaboriTime);
+
 			//ループ回数のカウント
 			++loopCount;
 		}
@@ -92,6 +94,8 @@ namespace  SaboriUIManager
 		//☆プレイヤー番号の描画
 		this->DrawPlayerNumber();
 	}
+	//-------------------------------------------------------------------
+	//★自作関数★
 	//-------------------------------------------------------------------
 	//プレイヤー番号の描画
 	void Object::DrawPlayerNumber()
@@ -105,6 +109,64 @@ namespace  SaboriUIManager
 
 			//描画
 			this->res->playerNumberImage->Draw(playerNumberDraw, playerNumberSrc);
+		}
+	}
+
+	//-------------------------------------------------------------------
+	//サボり合計時間の判別用プレイヤー番号の描画
+	void Object::DrawPlayerNumber_TotalSaboriTime(const int loopCount)
+	{
+		ML::Box2D playerNumberDraw = playerNumbersDrawInfo_TotalSaboriTime[loopCount].draw;
+		playerNumberDraw.Offset(playerNumbersDrawInfo_TotalSaboriTime[loopCount].pos);
+		ML::Box2D playerNumberSrc = playerNumbersDrawInfo_TotalSaboriTime[loopCount].src;
+
+		//描画
+		this->res->playerNumberImage->Draw(playerNumberDraw, playerNumberSrc);
+	}
+
+	//-------------------------------------------------------------------
+	//合計サボり時間の描画
+	void Object::DrawTotalSaboriTime(const float totalSaboriTime)
+	{
+		//小数点を描画したかを判定する変数をfalseに戻す
+		bool shouldDrewDecimalPoint = false;
+
+		//合計サボり時間の小数点第一位までを分解して格納する
+		sprintf(totalSaboriTimeText, "%04.1f", totalSaboriTime); 
+
+		//切り取り位置、表示位置を決めて描画する
+		for (int i = 0; i < static_cast<int>(size(totalSaboriTimeText)) - 1; ++i)
+		{
+			//srcのx,yの値設定
+			int src_x = (totalSaboriTimeText[i] - '0') * 32;	// ML::Box2D srcのxの値
+			int src_y = 0;										// ML::Box2D srcのyの値
+			//もしi番目の配列の中身が「.」だったらyの値を変更する
+			if (totalSaboriTimeText[i] == '.')
+			{
+				src_x = 0;
+				src_y = 32;
+			}
+
+			//小数点の描画位置設定
+			int offValue_x = 0;	// 「.」の描画でずれるx座標の値
+
+			//「.」を描画した後の描画位置をずらす値設定
+			if (shouldDrewDecimalPoint)
+			{
+				offValue_x = -32; // 32はsrcのw値
+			}
+
+			//もしi番目の配列の中身が「.」の時、描画位置をずらす値を設定
+			if (totalSaboriTimeText[i] == '.')
+			{
+				offValue_x = -(32 / 2); // 32はsrcのw値
+				shouldDrewDecimalPoint = true;
+			}
+
+			ML::Box2D src(src_x, src_y, 32, 32);
+			ML::Box2D draw((src.w * 2) * i + offValue_x + 100, 100, src.w * 2, src.h * 2); // x座標はプレイヤー番号描画位置の後ろ側、y座標はプレイヤー番号描画位置と同じ位置に描画されるようにする
+
+			this->res->totalSaboriTimeImage->Draw(draw, src);
 		}
 	}
 
@@ -144,13 +206,22 @@ namespace  SaboriUIManager
 	//-------------------------------------------------------------------
 	Object::Object() 
 		:
+		//プレイヤー識別番号関係---------------------------------------------------------------------------------------
 		playerNumbersDrawInfo{
-			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 8.f, ge->screen2DHeight - 480.f) },			//1P
-			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 480.f) },	//2P
-			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 480.f) },	//3P
-			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 480.f) }		//4P
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 8.f, ge->screen2DHeight - 480.f) },			// 1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 480.f) },	// 2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 480.f) },	// 3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 480.f) }		// 4P
 		},
-		playerCount(1)
+		playerNumbersDrawInfo_TotalSaboriTime{
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 12.f, 153.f)},			// 1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 4.f / 12.f, 153.f)},	// 2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 7.f / 12.f, 153.f)},	// 3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 10.f / 12.f, 153.f)}	// 4P
+		},
+		playerCount(1),
+		//サボり合計時間描画関係---------------------------------------------------------------------------------------
+		totalSaboriTimeText()
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

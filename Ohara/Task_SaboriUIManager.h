@@ -50,14 +50,6 @@ namespace  SaboriUIManager
 		//追加したい変数・メソッドはここに追加する
 
 	private:
-		//サボり合計時間描画関係---------------------------------------------------------------------------------------
-		//☆変数
-		DG::Font::SP testFont;
-		char totalSaboriTimeText[5];	// 合計時間を小数点第一位まで表示するようにする(配列の必要要素数 = 整数部分2 + 小数点1 + 少数第一位1 + ヌル文字1 = 5)
-
-		//☆関数
-		void DrawTotalSaboriTime();
-
 		//プレイヤー識別番号関係---------------------------------------------------------------------------------------
 		//☆構造体
 		struct PlayerNumberDrawInformation
@@ -67,10 +59,20 @@ namespace  SaboriUIManager
 		};
 
 		//☆変数
-		PlayerNumberDrawInformation playerNumbersDrawInfo[4];	// プレイヤー番号の描画情報
-		int							playerCount;				// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
+		PlayerNumberDrawInformation playerNumbersDrawInfo[4];					// プレイヤー番号の描画情報
+		PlayerNumberDrawInformation playerNumbersDrawInfo_TotalSaboriTime[4];	// サボり合計時間の判別用プレイヤー番号の描画情報
+		int							playerCount;								// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 
 		//☆メソッド
-		void DrawPlayerNumber();	// プレイヤー番号の描画
+		void DrawPlayerNumber();					// プレイヤー番号の描画
+		void DrawPlayerNumber_TotalSaboriTime(const int loopCount);	// サボり合計時間の判別用プレイヤー番号の描画
+
+		//サボり合計時間描画関係---------------------------------------------------------------------------------------
+		//☆変数
+		DG::Font::SP testFont;
+		char totalSaboriTimeText[5];	// 合計時間を小数点第一位まで表示するようにする(配列の必要要素数 = 整数部分2 + 小数点1 + 少数第一位1 + ヌル文字1 = 5)
+
+		//☆関数
+		void DrawTotalSaboriTime(const float totalSaboriTime);	// 合計サボり時間の描画
 	};
 }
