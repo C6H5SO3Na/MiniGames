@@ -21,10 +21,12 @@ namespace  Clock
 		typedef  shared_ptr<Resource>	SP;
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
-		static  Resource::SP  Create();
+		static  Resource::SP  Create(int PlayerNumId_);
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP img;
+		int PlayerNumId;
+		string ClockImageList[4] = { "game_clock_red.png", "game_clock_blue.png", "game_clock_green.png", "game_clock.png" };
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -34,7 +36,7 @@ namespace  Clock
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
 		//生成窓口 引数はtrueでタスクシステムへ自動登録
-		static  Object::SP  Create(bool flagGameEnginePushBack_);
+		static  Object::SP  Create(bool flagGameEnginePushBack_, int PlayerNumId_);
 		Resource::SP	res;
 	private:
 
@@ -59,6 +61,6 @@ namespace  Clock
 		int animIndex;
 		int animLine;
 
-		int id;
+		int PlayerNumId;
 	};
 }

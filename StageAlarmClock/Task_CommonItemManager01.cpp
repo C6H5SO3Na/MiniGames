@@ -40,7 +40,7 @@ namespace  CommonItemManager01
 
 		for (auto i = 0; i < ge->players.size(); ++i)
 		{
-			auto c = Clock::Object::Create(true);
+			auto c = Clock::Object::Create(true, i);
 			ClockList.push_back(c);
 			//ClockList[i]->id = i;
 

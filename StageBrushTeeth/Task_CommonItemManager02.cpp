@@ -39,7 +39,7 @@ namespace  CommonItemManager02
 
 		for (auto i = 0; i < ge->players.size(); ++i)
 		{
-			auto b = brush::Object::Create(true);
+			auto b = brush::Object::Create(true,i);
 			PLBrushList.push_back(b);
 
 			auto s = StainManager::Object::Create(true);
