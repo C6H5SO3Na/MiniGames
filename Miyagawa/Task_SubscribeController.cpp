@@ -67,6 +67,9 @@ namespace SubscribeController
 			se::LoadFile(to_string(i + 1) + "P", "./data/sound/se/SubscribePlayer/" + to_string(i + 1) + "P.wav");
 		}
 
+		//BGM
+		bgm::LoadFile("BGM", "./data/sound/BGM/SubscribePlayer.mp3");
+
 		//★タスクの生成
 		//背景
 		//横スクロールを作る
@@ -78,13 +81,14 @@ namespace SubscribeController
 				BG->pos.x = static_cast<float>(i * 1600);
 			}
 		}
+		bgm::Play("BGM");
 		return  true;
 	}
 	//-------------------------------------------------------------------
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
 	{
-
+		bgm::AllStop();
 		ge->KillAll_G("コントローラー登録画面");
 		//★データ＆タスク解放
 		if (!ge->QuitFlag() && nextTaskCreate) {
