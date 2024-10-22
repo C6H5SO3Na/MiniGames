@@ -17,8 +17,8 @@ namespace  StageBrushTeeth
 	bool  Resource::Initialize()
 	{
 		this->bgImg = DG::Image::Create("./data/image/mirror.png");
-		this->teethImg = DG::Image::Create("./data/image/mouth.png");
-		this->controllerMark = DG::Image::Create("./data/image/LeftStickAllDirection.png");
+		this->teethImg = DG::Image::Create("./data/image/mouth_new.png");
+		this->controllerMark = DG::Image::Create("./data/image/LeftStickAllDirection_new.png");
 		this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		ge->debugRectLoad();
 		return true;
@@ -138,7 +138,7 @@ namespace  StageBrushTeeth
 		this->res->bgImg->Draw(draw_4, src);
 
 		ML::Box2D draw2(1920 / 10, 10, 1280/2, 1080/2 - 10 * 2);
-		ML::Box2D src2(0, 0, 3300, 2550);
+		ML::Box2D src2(0, 0, 1500, 1080);
 		this->res->teethImg->Draw(draw2, src2);
 
 		ML::Box2D draw3(1920 / 2 + 1920 / 10, 10, 1280/2, 1080/2 - 10 * 2);
@@ -155,10 +155,10 @@ namespace  StageBrushTeeth
 		{
 		case MyPG::MyGameEngine::GameState::Game:
 			//コントローラーマーク
-			ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
-			int srcX = animIndex % 2 * 128;
+			ML::Box2D Draw(1920 / 2 - 140 / 2, 1080 / 2 - 128 / 2, 140, 128);
+			int srcX = animIndex % 2 * 140;
 			int srcY = animIndex / 2 * 128;
-			ML::Box2D Src(srcX, srcY, 128, 128);
+			ML::Box2D Src(srcX, srcY, 140, 128);
 			this->res->controllerMark->Draw(Draw, Src);
 			break;
 		}
