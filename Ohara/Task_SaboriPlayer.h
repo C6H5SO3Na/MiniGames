@@ -24,7 +24,7 @@ namespace  SaboriPlayer
 		static  Resource::SP  Create();
 	//•ÏX‰Â
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
-		DG::Image::SP image;
+		DG::Image::SP image[4];
 		DG::Image::SP buttonImage_A;
 		DG::Image::SP buttonImage_A_Outline;
 	};

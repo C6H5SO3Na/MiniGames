@@ -110,7 +110,6 @@ namespace  SaboriGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		ge->c->DrawFps();
 		//状態に対応する行動処理
 		this->Work();
 	}
