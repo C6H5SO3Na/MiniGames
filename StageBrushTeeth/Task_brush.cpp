@@ -35,8 +35,8 @@ namespace  brush
 		//SE
 		se::LoadFile("Kirakira", "./data/sound/se/BrushTeethGame/‚«‚ç‚«‚ç‹P‚­1.wav");
 		se::LoadFile("brushing", "./data/sound/se/BrushTeethGame/•–‚«.wav");
-		se::SetVolume("Kirakira", 20);
-		se::SetVolume("brushing", 100);
+		se::SetVolume("Kirakira", 50);
+		se::SetVolume("brushing", 50);
 
 		//šƒf[ƒ^‰Šú‰»
 		this->render2D_Priority[1] = -0.6f;
@@ -46,7 +46,7 @@ namespace  brush
 		this->pos.y = 0;
 		this->LStick_x = 0;
 		this->LStick_y = 0;
-		this->speed = 6.0f;
+		this->speed = 5.0f;
 		/*this->controller = ge->in1;*/
 		
 
