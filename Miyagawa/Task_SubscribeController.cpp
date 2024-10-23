@@ -69,8 +69,9 @@ namespace SubscribeController
 		//サウンド
 		//SE
 		for (int i = 0; i < 4; ++i) {
-			se::LoadFile(to_string(i + 1) + "P", "./data/sound/se/SubscribePlayer/" + to_string(i + 1) + "P.wav");
+			se::LoadFile(to_string(i + 1) + "P", "./data/sound/se/SubscribePlayer/" + to_string(i + 1) + "P.wav");//選択
 		}
+		se::LoadFile("se_confirm", "./data/sound/se/Common/confirmSE.wav");//スタート
 
 		//BGM
 		bgm::LoadFile("BGM", "./data/sound/BGM/SubscribePlayer.mp3");
@@ -83,7 +84,7 @@ namespace SubscribeController
 			auto BG = SubscribeControllerBG::Object::Create(true);
 			if (BG)
 			{
-				BG->pos.x = static_cast<float>(i * 1600);
+				BG->pos.x = i * 1600.f;
 			}
 		}
 		bgm::Play("BGM");
@@ -109,43 +110,57 @@ namespace SubscribeController
 	{
 		easing::UpDate();//必須
 
-		//登録処理
-		for (int i = 0; i < inputs.size(); ++i) {
-			//次のタスクへ
-			if (inputs[i]->GetState().ST.down && subscribeCnt > 0) {
-				Kill();
-			}
-
-			//登録 
-			if (inputs[i]->GetState().B1.down) {
-				if (!isPushButton[i]) {
-					Subscribe(inputs[i], isPushButton[i], i);
+		switch (phase) {
+		case Phase::Subscribe:
+			//登録処理
+			for (int i = 0; i < inputs.size(); ++i) {
+				//次のタスクへ
+				if (inputs[i]->GetState().ST.down && subscribeCnt > 0) {
+					se::Play("se_confirm");
+					//フェードアウト開始
+					ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
+					ge->CreateEffect(98, ML::Vec2(0, 0));
+					phase = Phase::Fadeout;
 				}
-				//イージング開始
-				StartEasing(i);
-				for (int j = 0; j < 4; ++j) {
-					if (controllerIndex[j] == i) {
-						se::Play(to_string(j + 1) + "P");
+
+				//登録 
+				if (inputs[i]->GetState().B1.down) {
+					if (!isPushButton[i]) {
+						Subscribe(inputs[i], isPushButton[i], i);
+					}
+					//イージング開始
+					StartEasing(i);
+					for (int j = 0; j < 4; ++j) {
+						if (controllerIndex[j] == i) {
+							se::Play(to_string(j + 1) + "P");
+						}
 					}
 				}
 			}
-		}
 
-		//イージング処理
-		for (int i = 0; i < inputs.size(); ++i) {
-			if (!isPushButton[i]) { continue; }
-			if (easing::GetState("ReactionEnd" + to_string(i)) == easing::EQ_STATE::EQ_END) {
-				easingPos[i] = 0.f;
+			//イージング処理
+			for (int i = 0; i < inputs.size(); ++i) {
+				if (!isPushButton[i]) { continue; }
+				if (easing::GetState("ReactionEnd" + to_string(i)) == easing::EQ_STATE::EQ_END) {
+					easingPos[i] = 0.f;
+				}
+				else if (easing::GetState("Reaction" + to_string(i)) == easing::EQ_STATE::EQ_END) {
+					easingPos[i] = easing::GetPos("ReactionEnd" + to_string(i));
+				}
+				else
+				{
+					easingPos[i] = easing::GetPos("Reaction" + to_string(i));
+				}
 			}
-			else if (easing::GetState("Reaction" + to_string(i)) == easing::EQ_STATE::EQ_END) {
-				easingPos[i] = easing::GetPos("ReactionEnd" + to_string(i));
+			++animCnt;
+			break;
+
+		case Phase::Fadeout:
+			if (ge->getCounterFlag("test") == ge->LIMIT) {
+				Kill();
 			}
-			else
-			{
-				easingPos[i] = easing::GetPos("Reaction" + to_string(i));
-			}
+			break;
 		}
-		++animCnt;
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
