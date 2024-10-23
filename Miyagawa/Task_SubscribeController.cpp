@@ -118,7 +118,11 @@ namespace SubscribeController
 				}
 				//イージング開始
 				StartEasing(i);
-				se::Play(to_string(i + 1) + "P");
+				for (int j = 0; j < 4; ++j) {
+					if (controllerIndex[j] == i) {
+						se::Play(to_string(j + 1) + "P");
+					}
+				}
 			}
 		}
 

@@ -60,7 +60,7 @@ namespace SubscribeController
 
 		DG::Font::SP TestFont;
 		bool isPushButton[4] = {};
-		int controllerIndex[4] = {};//~Pは~コントローラーか
+		int controllerIndex[4] = {-1 ,-1, -1, -1};//~Pは~コントローラーか
 		int subscribeCnt = 0;
 		float easingPos[4] = {};
 
