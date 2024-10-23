@@ -1,14 +1,14 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//
+//背景
 //-------------------------------------------------------------------
-#include "../BChara.h"
+#include  "CGBChara.h"
 
-namespace  hand
+namespace  ClassifyGameBG
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("手");	//グループ名
+	const  string  defGroupName("ClassifyGameBG");	//グループ名
 	const  string  defName("NoName");		//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
@@ -24,10 +24,10 @@ namespace  hand
 		static  Resource::SP  Create();
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
-		DG::Image::SP img;
+		DG::Image::SP backGround;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public  BChara
+	class  Object : public  CGBChara
 	{
 	public:
 		virtual  ~Object();
@@ -49,35 +49,6 @@ namespace  hand
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//追加したい変数・メソッドはここに追加する
 		//BCharaに含まれないモノのみここに追加する
-		//「変数宣言を書く」
-		//「追加メソッドを書く」
-		void Received() {};
-
-		float speed;
-		float minPosX, minPosY, maxPosX, maxPosY;
-		bool isright;
-		bool isClear = false;
-
-		ML::Box2D drawBase;
-
-		enum class State
-		{
-			Left,
-			Right,
-			Down,
-			Up,
-		};
-
-		State state;
-
-		XI::GamePad::SP controller;
-
-		void Positionalise(ML::Box2D PlayerAreaPos_);
-
-		bool IsClear() const { return isClear; }
-
-		bool isScoreAdd = false;
-			
-		int id;;
+		void Received()override {}
 	};
 }

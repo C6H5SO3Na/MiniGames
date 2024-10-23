@@ -26,6 +26,9 @@ namespace  CommonItemManager02
 		static  Resource::SP  Create();
 		//ã§óLÇ∑ÇÈïœêîÇÕÇ±Ç±Ç…í«â¡Ç∑ÇÈ
 		//ÅuïœêîêÈåæÇèëÇ≠Åv
+		DG::Image::SP bgImg;
+		DG::Image::SP teethImg;
+		DG::Image::SP PlayerNum;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -57,5 +60,19 @@ namespace  CommonItemManager02
 
 		int addscore[4] = { 4, 2, 1, 0 };
 		int rank = 0;
+
+		ML::Box2D PlayerAreaPos[4][4] = {
+			{ ML::Box2D(480, 270, 960, 540)},
+			{ ML::Box2D(480, 0, 960, 540), ML::Box2D(480, 540, 960, 540)},
+			{ ML::Box2D(0, 0, 960, 540), ML::Box2D(960, 0, 960, 540), ML::Box2D(480, 540, 960, 540)},
+			{ ML::Box2D(0, 0, 960, 540), ML::Box2D(960, 0, 960, 540), ML::Box2D(0, 540, 960, 540), ML::Box2D(960, 540, 960, 540) }
+		};
+
+		ML::Box2D PlayerNumIndexSrc[4] = {
+			{ ML::Box2D(0, 0, 715 / 4 - 20, 105)},
+			{ ML::Box2D(715 / 4 - 20, 0, 715 / 4, 105)},
+			{ ML::Box2D(715 / 2 - 10, 0, 715 / 4, 105)},
+			{ ML::Box2D(715 / 4 * 3 - 10, 0, 715 / 4, 105)}
+		};
 	};
 }

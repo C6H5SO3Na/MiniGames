@@ -53,44 +53,23 @@ namespace  Title
 
 
 		//★データ初期化
-		controller = ge->in1;
+		inputs.push_back(ge->in1);
+		inputs.push_back(ge->in2);
+		inputs.push_back(ge->in3);
+		inputs.push_back(ge->in4);
+
 		render2D_Priority[1] = 0.5f;
 		this->Cnt = 0;
 		int RenderTime = 0;
 
 		ge->stage = 1;
 
-		easing::Set("titleY", easing::BACKOUT, -250, ge->screen2DHeight / 5, 200);
+		easing::Set("titleY", easing::BACKOUT, -250, ge->screen2DHeight / 5.f, 200);
 		easing::Start("titleY");
 
 
 		//デバッグ用フォントの準備
 		TestFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
-
-		//音楽ファイルの読み込み
-		//BGM
-		// BGMの利用するファイルは曲の長さによってサイズが変わります。
-		// 一般的にWavは中身が波形データと呼ばれるサイズが大きなデータにります。
-		// 一方mp3はネットなどでの扱いを想定した圧縮形式です。
-		// BGMを用いる場合はmp3形式のファイルを利用しましょう。
-		// ちなみにこのサンプルのファイルは
-		// 再生時間1：30ほぼの曲で
-		// mp3 = 4.3MB wav = 19MBです。
-		//bgm::LoadFile("bgm1", "./data/sound/bgm/弾むキモチ_2.mp3");
-		//bgm::Play("bgm1");
-
-		//se
-		// seは効果音です。
-		// bgmとの最大の違いはひとつの音楽ファイルの同時再生に対応していることです。
-		// seはwavファイルしか扱うことが出来ません。mp3はエラーになります。
-		// 同時再生の必要がないものはBGM
-		// 同時再生が必要なものはseと使い分けてください。
-	  // またこのサンプルのような日本語ファイル名はやめた方が良いです。
-		// 読み込みエラーの元になります。
-		//se::LoadFile("se1","./data/sound/se/「すごいすごい」.wav");
-
-//		se::LoadFile("se2", "./data/sound/se/「頑張ったね」.mp3");これはエラー wavじゃないとダメ
-		//se::LoadFile("se2", "./data/sound/se/「頑張ったね」.wav");
 
 		//★タスクの生成
 		return  true;
@@ -103,7 +82,7 @@ namespace  Title
 		bgm::Stop("Title_bgm");
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			se::Play("se_confirm");
-			std::this_thread::sleep_for(std::chrono::seconds(1));	
+			std::this_thread::sleep_for(std::chrono::seconds(1));
 			SubscribeController::Object::Create(true);
 		}
 
@@ -113,22 +92,29 @@ namespace  Title
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = controller->GetState();
-
 		this->Cnt++;
 
-		if (inp.B2.down && ge->getCounterFlag("test") != ge->ACTIVE) {
-			ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
-			ge->CreateEffect(98, ML::Vec2(0, 0));
-		}
+		//全てのコントローラーから入力
+		for_each(inputs.begin(), inputs.end(), [](auto input) {
+			if (input->GetState().B2.down) {
+				//イージング中はイージングスキップ
+				if (easing::GetState("titleY") == easing::EQ_STATE::EQ_START) {
+
+					easing::Set("titleY", easing::LINEAR, -200, ge->screen2DHeight / 5.f, 1);
+					easing::Start("titleY");
+				}
+				//イージングが終了していたらフェード
+				else if (ge->getCounterFlag("test") != ge->ACTIVE) {
+					ge->StartCounter("test", 45); //フェードは90フレームなので半分の45で切り替え
+					ge->CreateEffect(98, ML::Vec2(0, 0));
+				}
+			}});
 		if (ge->getCounterFlag("test") == ge->LIMIT) {
 			Kill();
 		}
 
 		easing::UpDate();
 		logoY = easing::GetPos("titleY");
-
-		return;
 
 	}
 	//-------------------------------------------------------------------
@@ -139,28 +125,28 @@ namespace  Title
 			"TITLE"
 		);
 
-		ML::Box2D draw (0, 0, 1980, 1080);
+		ML::Box2D draw(0, 0, 1980, 1080);
 		ML::Box2D src(0, 0, 1980, 1080);
 
 		this->res->img->Draw(draw, src);
 
-		ML::Box2D draw2(ge->screen2DWidth / 14.5, logoY, 1666, 530);
+		ML::Box2D draw2(static_cast<int>(ge->screen2DWidth / 14.5f), static_cast<int>(logoY), 1666, 530);
 		ML::Box2D src2(0, 0, 1666, 530);
 		this->res->TitleLogo01->Draw(draw2, src2);
 
-		if (this->Cnt > 0)
+		if (easing::GetState("titleY") == easing::EQ_STATE::EQ_END)
 		{
 			if ((this->Cnt / 10) % 5 == 0)
 			{
 				return; //8フレーム中4フレーム画像を表示しない
 			}
-			ML::Box2D draw3(ge->screen2DWidth / 4.5, 750, 980, 234);
+			ML::Box2D draw3(static_cast<int>(ge->screen2DWidth / 4.5f), 750, 980, 234);
 			ML::Box2D src3(0, 0, 980, 234);
 			this->res->StartLogo->Draw(draw3, src3);
 		}
 
 	}
-	
+
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

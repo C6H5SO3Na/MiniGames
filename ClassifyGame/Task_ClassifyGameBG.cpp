@@ -1,26 +1,25 @@
 //-------------------------------------------------------------------
-//残り時間のバー
+//
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TimeLimitBar.h"
-#include  "Task_UIManager.h"
+#include  "Task_ClassifyGameBG.h"
 #include  "../Task_Game.h"
 
-namespace TimeLimitBar
+namespace  ClassifyGameBG
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/TimeBar.png");
+		backGround = DG::Image::Create("./data/image/SubscribeBG.jpg");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		img.reset();
+		backGround.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -30,13 +29,12 @@ namespace TimeLimitBar
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		res = Resource::Create();
+		this->res = Resource::Create();
 
 		//★データ初期化
-		render2D_Priority[1] = -0.99f;
-		srcBase = ML::Box2D(0, 0, 600, 100);
-
+		render2D_Priority[1] = 1.f;
 		//★タスクの生成
+
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -46,7 +44,7 @@ namespace TimeLimitBar
 		//★データ＆タスク解放
 
 
-		if (!ge->QuitFlag() && nextTaskCreate) {
+		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}
 
@@ -56,44 +54,16 @@ namespace TimeLimitBar
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (ge->gameState) {
-		case MyPG::MyGameEngine::GameState::Start:
-			gaugeAmount = static_cast<float>(ge->nowTimeLimit) / maxCnt;
-			break;
-		case MyPG::MyGameEngine::GameState::Game:
-			gaugeAmount = static_cast<float>(ge->nowTimeLimit) / maxCnt;
-			break;
-
-		case MyPG::MyGameEngine::GameState::Finish:
-			break;
-		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		DrawFlame();
-		DrawGauge();
+		ML::Box2D draw(0, 0, 1920, 1080);
+		ML::Box2D src(0, 0, 1920, 1080);
+		res->backGround->Draw(draw, src);
 	}
-	//-------------------------------------------------------------------
-	//バーの枠描画
-	void Object::DrawFlame() const
-	{
-		ML::Box2D src(0, 0, srcBase.w, srcBase.h / 2);
-		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
-		draw.Offset(pos);
-		res->img->Draw(draw, src);
-	}
-	//-------------------------------------------------------------------
-	//バーのゲージ描画
-	void Object::DrawGauge() const
-	{
-		int gSize = static_cast<int>(srcBase.w * gaugeAmount);
-		ML::Box2D src(0, srcBase.h / 2, gSize, srcBase.h / 2);
-		ML::Box2D draw(-srcBase.w / 2, -src.h / 2, gSize, srcBase.h / 2);
-		draw.Offset(pos);
-		res->img->Draw(draw, src);
-	}
+
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -106,7 +76,7 @@ namespace TimeLimitBar
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
-
+				
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -118,25 +88,17 @@ namespace TimeLimitBar
 	//-------------------------------------------------------------------
 	bool  Object::B_Initialize()
 	{
-		return  Initialize();
+		return  this->Initialize();
 	}
 	//-------------------------------------------------------------------
-	Object::~Object() { B_Finalize(); }
+	Object::~Object() { this->B_Finalize(); }
 	bool  Object::B_Finalize()
 	{
-		auto  rtv = Finalize();
+		auto  rtv = this->Finalize();
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() :gaugeAmount(0.f), maxCnt(0), minPower(0), remainingCnt(0) {}
-	//-------------------------------------------------------------------
-	Object::SP Object::Create(const ML::Vec2& pos)
-	{
-		auto gauge = Create(true);
-		gauge->pos = pos;
-		gauge->maxCnt = ge->nowTimeLimit;
-		return gauge;
-	}
+	Object::Object() {	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()
@@ -156,5 +118,5 @@ namespace TimeLimitBar
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
 	//-------------------------------------------------------------------
-	Resource::~Resource() { Finalize(); }
+	Resource::~Resource() { this->Finalize(); }
 }

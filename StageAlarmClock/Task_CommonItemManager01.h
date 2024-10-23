@@ -26,11 +26,14 @@ namespace  CommonItemManager01
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
 		//「変数宣言を書く」
+		DG::Image::SP bgImg;
+		//DG::Image::SP controllerMark;
+		DG::Image::SP PlayerNum;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
 	{
-	//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+		//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	public:
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
@@ -46,7 +49,7 @@ namespace  CommonItemManager01
 		void  UpDate()			override;//「実行」１フレーム毎に行う処理
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
-	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
+		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
 		//「変数宣言を書く」
@@ -57,5 +60,22 @@ namespace  CommonItemManager01
 
 		int addscore[4] = { 4, 2, 1, 0 };
 		int rank;
+
+		ML::Box2D PlayerAreaPos[4][4] = {
+			{ ML::Box2D(480, 270, 960, 540)},
+			{ ML::Box2D(480, 0, 960, 540), ML::Box2D(480, 540, 960, 540)},
+			{ ML::Box2D(0, 0, 960, 540), ML::Box2D(960, 0, 960, 540), ML::Box2D(480, 540, 960, 540)},
+			{ ML::Box2D(0, 0, 960, 540), ML::Box2D(960, 0, 960, 540), ML::Box2D(0, 540, 960, 540), ML::Box2D(960, 540, 960, 540) }
+		};
+
+		ML::Box2D PlayerNumIndexSrc[4] = {
+			{ ML::Box2D(0, 0, 715 / 4 - 20, 105)},
+			{ ML::Box2D(715 / 4 - 20, 0, 715 / 4, 105)},
+			{ ML::Box2D(715 / 2 - 10, 0, 715 / 4, 105)},
+			{ ML::Box2D(715 / 4 * 3 - 10, 0, 715 / 4, 105)}
+		};
+		
+		//int animCnt;
+		//int animIndex;
 	};
 }

@@ -54,7 +54,7 @@ namespace  StainManager
 		bool isClear = false;
 
 		void CreateStain();
-		void Positionalise(int PlayerNum);
+		void Positionalise(ML::Box2D PlayerAreaPos_);
 		bool IsClear() const {
 			if (isClear)
 			{

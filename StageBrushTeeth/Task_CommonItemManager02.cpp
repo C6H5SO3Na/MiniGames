@@ -14,12 +14,18 @@ namespace  CommonItemManager02
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->bgImg = DG::Image::Create("./data/image/mirror.png");
+		this->teethImg = DG::Image::Create("./data/image/mouth_new.png");
+		this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->bgImg.reset();
+		this->teethImg.reset();
+		this->PlayerNum.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -46,8 +52,8 @@ namespace  CommonItemManager02
 			CreateStatinList.push_back(s);
 			CreateStatinList[i]->id = i;
 
-			b->Positionalise(i);
-			s->Positionalise(i);
+			b->Positionalise(PlayerAreaPos[ge->players.size() - 1][i]);
+			s->Positionalise(PlayerAreaPos[ge->players.size() - 1][i]);
 
 			b->controller = ge->players[i]/*CTList[i]*/;
 			s->CreateStain();
@@ -79,6 +85,26 @@ namespace  CommonItemManager02
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		for (int i = 0; i < ge->players.size(); ++i) {
+			//背景
+			ML::Box2D draw(0, 0, 1920 / 2, 1080 / 2);
+			ML::Box2D src(0, 0, 3300, 2550);
+			draw.Offset(PlayerAreaPos[ge->players.size() - 1][i].x, PlayerAreaPos[ge->players.size() - 1][i].y);
+			this->res->bgImg->Draw(draw, src);
+
+			ML::Box2D draw2(1920 / 10, 10, 1280 / 2, 1080 / 2 - 10 * 2);
+			ML::Box2D src2(0, 0, 1500, 1080);
+			draw2.Offset(PlayerAreaPos[ge->players.size() - 1][i].x, PlayerAreaPos[ge->players.size() - 1][i].y);
+			this->res->teethImg->Draw(draw2, src2);
+
+			//プレイヤーナンバー
+			ML::Box2D draw01(0, 1080 / 2 - 105, 715 / 4, 105);
+			ML::Box2D src01 = PlayerNumIndexSrc[i];
+			draw01.Offset(PlayerAreaPos[ge->players.size() - 1][i].x, PlayerAreaPos[ge->players.size() - 1][i].y);
+			this->res->PlayerNum->Draw(draw01, src01);
+		}
+
+		
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★

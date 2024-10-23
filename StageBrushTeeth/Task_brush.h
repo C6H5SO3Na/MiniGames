@@ -26,7 +26,7 @@ namespace  brush
 		//ã§óLÇ∑ÇÈïœêîÇÕÇ±Ç±Ç…í«â¡Ç∑ÇÈ
 		DG::Image::SP img;
 		int PlayerNumId;
-		string BrushImageList[4] = { "game_brush_red.png", "game_brush_blue.png", "game_brush.png", "game_brush_yellow.png" };
+		string BrushImageList[4] = { "game_brush_red.png", "game_brush_blue.png", "game_brush_yellow.png", "game_brush.png" };
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -62,7 +62,7 @@ namespace  brush
 		float minPosX, minPosY, maxPosX, maxPosY;
 		float LStick_x, LStick_y;
 
-		void Positionalise(int PlayerNum);
+		void Positionalise(ML::Box2D PlayerAreaPos_);
 
 		ML::Box2D drawBase;
 

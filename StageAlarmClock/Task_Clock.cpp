@@ -99,9 +99,9 @@ namespace  Clock
 		this->res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
+	void Object::Positionalise(ML::Box2D PlayerAreaPos_)
 	{
-		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
+		ML::Box2D PlayerArea = PlayerAreaPos_;
 		pos.x = PlayerArea.x + (PlayerArea.w / 2);
 		pos.y = PlayerArea.y + (PlayerArea.h / 4) * 3;
 	}

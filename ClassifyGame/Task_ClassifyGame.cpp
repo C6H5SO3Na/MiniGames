@@ -4,6 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_ClassifyGame.h"
 #include  "Task_ClassifyGamePM.h"
+#include  "Task_ClassifyGameBG.h"
 
 #include  "../Task_Game.h"
 #include  "../sound.h"
@@ -45,6 +46,7 @@ namespace  ClassifyGame
 		bgm::Play("bgmCG");
 		//★タスクの生成
 		auto cgpm = ClassifyGamePM::Object::Create(true); //プレイヤマネージャーを生成
+		auto bg = ClassifyGameBG::Object::Create(true);
 		//auto bguim = ClassifyGUIM::Object::Create(true);
 		return  true;
 	}
@@ -55,6 +57,7 @@ namespace  ClassifyGame
 		bgm::Stop("bgmCG");
 		//★データ＆タスク解放
 		ge->KillAll_G("ClassifyGamePM");
+		ge->KillAll_G("ClassifyGameBG");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 			ge->GetScore(0);
