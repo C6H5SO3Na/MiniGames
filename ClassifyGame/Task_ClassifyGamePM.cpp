@@ -40,6 +40,7 @@ namespace  ClassifyGamePM
 		for (int i = 0; i < ge->players.size(); ++i) {
 			cList.push_back(ge->players[i]);
 		}
+		isCount = false;
 		
 		//se
 		se::LoadFile("seCGd", "./data/sound/se/ClassifyGame/doit.wav");
@@ -116,26 +117,29 @@ namespace  ClassifyGamePM
 				nums.push_back(pList[i]->Fb);
 			}
 			vector<int> ranks(nums.size());
-
-			assignRanks(nums, ranks);
-			for (int i = 0; i < nums.size(); i++) {
-				switch (ranks[i]) {
-				case 1:
-					ge->AddScore(i, 4);
-					break;
-				case 2:
-					ge->AddScore(i, 2);
-					break;
-				case 3:
-					ge->AddScore(i, 1);
-					break;
-				case 4:
-					ge->AddScore(i, 0);
-					break;
-				default:
-					break;
+			if (!isCount) {
+				assignRanks(nums, ranks);
+				for (int i = 0; i < nums.size(); i++) {
+					switch (ranks[i]) {
+					case 1:
+						ge->AddScore(i, 4);
+						break;
+					case 2:
+						ge->AddScore(i, 2);
+						break;
+					case 3:
+						ge->AddScore(i, 1);
+						break;
+					case 4:
+						ge->AddScore(i, 0);
+						break;
+					default:
+						break;
+					}
 				}
+				isCount = true;
 			}
+			
 			if (ge->hasFinishedEasing) {
 				this->Kill();
 			}
