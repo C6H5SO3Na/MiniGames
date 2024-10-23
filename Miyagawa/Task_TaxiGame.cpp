@@ -9,6 +9,7 @@
 #include  "Task_TaxiGamePlayer.h"
 #include  "Task_TaxiGameTaxi.h"
 #include  "Task_TaxiGameBG.h"
+#include  "Task_TaxiGameUI.h"
 #include  "../Task_Game.h"
 #include  "../sound.h"
 
@@ -48,13 +49,16 @@ namespace  TaxiGame
 
 		//プレイヤー配置
 		for (int i = 0; i < ge->players.size(); ++i) {
-			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 100.f, ge->screenHeight * (i + 2) / 6.f), ge->players[i], i);
+			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 80.f, ge->screenHeight * (i + 2) / 6.f), ge->players[i], i);
 		}
 
 		//タクシー配置
 		for (int i = 0; i < ge->players.size(); ++i) {
 			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (i + 2) / 6.f));
 		}
+
+		//~PのUI配置
+		TaxiGameUI::Object::Create(true);
 		return  true;
 	}
 	//-------------------------------------------------------------------

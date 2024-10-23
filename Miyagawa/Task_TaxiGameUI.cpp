@@ -1,24 +1,24 @@
 //-------------------------------------------------------------------
-//タクシー
+//プレイヤー番号表示
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiGameTaxi.h"
-#include "../randomLib.h"
+#include  "Task_TaxiGameUI.h"
 
-namespace TaxiGameTaxi
+namespace TaxiGameUI
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/Taxi.png");
+		img = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		img.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -31,8 +31,7 @@ namespace TaxiGameTaxi
 		res = Resource::Create();
 
 		//★データ初期化
-		render2D_Priority[1] = 0.7f;
-		src = ML::Box2D(0, 0, 460, 460);
+		render2D_Priority[1] = 0.5f;
 
 		//★タスクの生成
 		return  true;
@@ -42,7 +41,6 @@ namespace TaxiGameTaxi
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -54,32 +52,26 @@ namespace TaxiGameTaxi
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		Think();
-		Move();
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
-		draw *= 0.5f;
-		draw.Offset(pos);
-		res->img->Draw(draw, src);
-	}
-	//-------------------------------------------------------------------
-	//思考
-	void  Object::Think()
-	{
-	}
-	//-------------------------------------------------------------------
-	//行動
-	void  Object::Move()
-	{
-	}
-	//-------------------------------------------------------------------
-	//受け身
-	void  Object::Received()
-	{
+		//テーブル化
+		const ML::Box2D srcTable[4] = {
+			ML::Box2D(0, 0, 155, 105),ML::Box2D(155, 0, 192, 105), ML::Box2D(347, 0, 175, 105), ML::Box2D(522, 0, 193, 105)
+		};
+
+		//テーブル化
+		const ML::Box2D drawTable[4] = {
+			ML::Box2D(-78, -53, 155, 105),ML::Box2D(-96, -53, 192, 105),ML::Box2D(-88, -53, 175, 105), ML::Box2D(-97, -53, 193, 105)
+		};
+		for (int i = 0; i < ge->players.size(); ++i) {
+			ML::Box2D draw = drawTable[i];
+			draw *= 0.75f;
+			draw.Offset(ML::Vec2(1850, ge->screenHeight * (i + 2) / 6.f));
+			res->img->Draw(draw, srcTable[i]);
+		}
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -115,13 +107,7 @@ namespace TaxiGameTaxi
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() {}
-	//-------------------------------------------------------------------
-	void Object::Spawn(const ML::Vec2& pos_)
-	{
-		auto taxi = Create(true);
-		taxi->pos = pos_;
-	}
+	Object::Object() {	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
 	Resource::SP  Resource::Create()

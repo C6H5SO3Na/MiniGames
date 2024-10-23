@@ -120,12 +120,8 @@ namespace TaxiGamePlayer
 	{
 		//•`‰æ‹éŒ`
 		ML::Box2D src(0, 0, 64, 64);
-		ML::Box2D draw(
-			static_cast<int>(pos.x),
-			static_cast<int>(pos.y),
-			src.w,
-			src.h
-		);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
+		draw.Offset(pos + ML::Vec2(-30.f, 60.f));
 		res->imgBtn[animCnt / 10 % 2][nowBtn]->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
@@ -167,7 +163,8 @@ namespace TaxiGamePlayer
 	{
 		//ƒvƒŒƒCƒ„•`‰æ
 		ML::Box2D src(0, 0, 342, 486);
-		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
+		draw *= 0.35f;
 		draw.Offset(owner_->pos);
 		owner_->imgPlayer->Draw(draw, src);
 
@@ -208,7 +205,8 @@ namespace TaxiGamePlayer
 			ML::Box2D(1026, 0, 342, 486),
 		};
 		ML::Box2D src = animTable[owner_->animCnt / 7 % size(animTable)];
-		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
+		draw *= 0.35f;
 		draw.Offset(owner_->pos);
 		owner_->imgPlayer->Draw(draw, src);
 	}
@@ -228,7 +226,8 @@ namespace TaxiGamePlayer
 	{
 		//ƒvƒŒƒCƒ„[•`‰æ
 		ML::Box2D src(0, 0, 342, 486);
-		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
+		draw *= 0.35f;
 		draw.Offset(owner_->pos);
 		owner_->imgPlayer->Draw(draw, src);
 
@@ -256,7 +255,8 @@ namespace TaxiGamePlayer
 	{
 		//•`‰æ‹éŒ`
 		ML::Box2D src(0, 0, 342, 486);
-		ML::Box2D draw(-src.w / 8, -src.h / 8, -src.w / 4, src.h / 4);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
+		draw *= 0.35f;
 		draw.Offset(owner_->pos);
 		//U“®
 		draw.Offset(GetRandom(0, 10), GetRandom(0, 10));
