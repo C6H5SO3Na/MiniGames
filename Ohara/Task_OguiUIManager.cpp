@@ -36,7 +36,6 @@ namespace  OguiUIManager
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
-		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 50);
 
 		//ミニゲーム統括タスクからデータを取得する
 		auto game = ge->GetTask<OguiGame::Object>(OguiGame::defGroupName, OguiGame::defName);
@@ -82,11 +81,9 @@ namespace  OguiUIManager
 			{
 				//プレイヤー判別用番号描画
 				DrawPlayerNumber_eatFoodCount(loopCount);
-				/*testFont->Draw(ML::Box2D(45 + ge->screen2DWidth * loopCount / 4, 90, ge->screen2DWidth, ge->screen2DHeight),
-					to_string((int)(*p)->playerNum) + "P:" + to_string((*p)->eatFoodCount), ML::Color(1, 0, 0, 0)
-				);*/
 
 				//食べた料理の数描画
+				DrawTotalSaboriTime((*p)->eatFoodCount, loopCount);
 
 				//ループ回数のカウント
 				++loopCount;
@@ -125,6 +122,32 @@ namespace  OguiUIManager
 
 		//描画
 		this->res->playerNumberImage->Draw(playerNumberDraw, playerNumberSrc);
+	}
+
+	//-------------------------------------------------------------------
+	//食べた料理の数描画
+	void Object::DrawTotalSaboriTime(const int eatFoodCount, const int loopCount)
+	{
+		//合計サボり時間の小数点第一位までを分解して格納する
+		sprintf(eatFoodCountText, "%d", eatFoodCount);
+
+		//切り取り位置、表示位置を決めて描画する
+		for (int i = 0; i < static_cast<int>(size(eatFoodCountText)) - 1; ++i)
+		{
+			//srcのx,yの値設定
+			int src_x = (eatFoodCountText[i] - '0') * 32;	// ML::Box2D srcのxの値
+
+
+			//プレイヤーごとのスコア表示がわかる位置に描画されるようにする
+			int drawingPositionCorrectionEachPlayer_x = static_cast<int>(playerNumbersDrawInfo_eatFoodCount[loopCount].pos.x) + 100;	// プレイヤーごとの描画位置補正 75は食べた料理の数の判別用プレイヤー番号の描画情報の-50を消した上で+50するための値
+			
+			ML::Box2D src(src_x, 0, 32, 32);
+			ML::Box2D draw(-src.w, -src.h, src.w * 2, src.h * 2);
+			//x座標をプレイヤー番号描画位置の後ろ側、y座標をプレイヤー番号描画位置と同じ位置に描画されるようにする
+			draw.Offset(((src.w * 2) * i) + drawingPositionCorrectionEachPlayer_x, static_cast<int>(100 + (53 / 1.5f)));
+
+			this->res->eatFoodCountImage->Draw(draw, src);
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -171,12 +194,14 @@ namespace  OguiUIManager
 			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f - 200.f) }	//4P
 		},
 		playerNumbersDrawInfo_eatFoodCount{
-			{ ML::Box2D(static_cast<int>(-78 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(155 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 12.f - 50.f, 100.f + (53.f / 1.5f))},			// 1P
-			{ ML::Box2D(static_cast<int>(-96 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(192 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 4.f / 12.f - 50.f, 100.f + (53.f / 1.5f))},	// 2P
-			{ ML::Box2D(static_cast<int>(-88 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(175 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 7.f / 12.f - 50.f, 100.f + (53.f / 1.5f))},	// 3P
-			{ ML::Box2D(static_cast<int>(-97 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(193 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 10.f / 12.f - 50.f, 100.f + (53.f / 1.5f))}	// 4P
+			{ ML::Box2D(static_cast<int>(-78 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(155 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 12.f - 50.f, 100.f + (53 / 1.5f))},			// 1P
+			{ ML::Box2D(static_cast<int>(-96 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(192 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 4.f / 12.f - 50.f, 100.f + (53 / 1.5f))},	// 2P
+			{ ML::Box2D(static_cast<int>(-88 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(175 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 7.f / 12.f - 50.f, 100.f + (53 / 1.5f))},	// 3P
+			{ ML::Box2D(static_cast<int>(-97 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(193 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 10.f / 12.f - 50.f, 100.f + (53 / 1.5f))}	// 4P
 		},
-		playerCount(1)
+		playerCount(1),
+		//食べた料理の数描画関係
+		eatFoodCountText()
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

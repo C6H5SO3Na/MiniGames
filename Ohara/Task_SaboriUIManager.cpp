@@ -163,7 +163,7 @@ namespace  SaboriUIManager
 			}
 
 			//プレイヤーごとのスコア表示がわかる位置に描画されるようにする
-			int drawingPositionCorrectionEachPlayer_x = playerNumbersDrawInfo_TotalSaboriTime[loopCount].pos.x + 75;	// プレイヤーごとの描画位置補正 50はサボり合計時間の判別用プレイヤー番号の描画情報の-50を消すための値
+			int drawingPositionCorrectionEachPlayer_x = playerNumbersDrawInfo_TotalSaboriTime[loopCount].pos.x + 75;	// プレイヤーごとの描画位置補正 75はサボり合計時間の判別用プレイヤー番号の描画情報の-50を消した上で+25するための値
 
 			ML::Box2D src(src_x, src_y, 32, 32);
 			ML::Box2D draw((src.w * 2) * i + offValue_x + drawingPositionCorrectionEachPlayer_x, 100, src.w * 2, src.h * 2); // x座標はプレイヤー番号描画位置の後ろ側、y座標はプレイヤー番号描画位置と同じ位置に描画されるようにする

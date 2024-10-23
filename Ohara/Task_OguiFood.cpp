@@ -40,7 +40,6 @@ namespace  OguiFood
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
 		this->state = State::FExist;
-		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 		
 		//★タスクの生成
 

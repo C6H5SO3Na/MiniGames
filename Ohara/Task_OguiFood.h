@@ -60,7 +60,6 @@ namespace  OguiFood
 
 	private:
 		//☆変数
-		DG::Font::SP testFont;
 		char foodHPText[3];	// 描画するHPを格納する(配列の必要要素数 = 整数部分2 + ヌル文字1 = 3)
 
 		//☆関数

@@ -50,9 +50,6 @@ namespace  OguiUIManager
 		//追加したい変数・メソッドはここに追加する
 		
 	private:
-		//☆変数
-		DG::Font::SP testFont;
-
 		//プレイヤー識別番号関係-------------------------------------------------------------------------------------
 		//☆構造体
 		struct PlayerNumberDrawInformation
@@ -73,5 +70,8 @@ namespace  OguiUIManager
 		//食べた料理の数描画関係-------------------------------------------------------------------------------------
 		//☆変数
 		char eatFoodCountText[3];	// 食べた料理の数を二桁まで表示するようにする(配列の必要要素数 = 整数部分2 + ヌル文字1 = 3)
+
+		//☆関数
+		void DrawTotalSaboriTime(const int eatFoodCount, const int loopCount);	// 食べた料理の数描画
 	};
 }
