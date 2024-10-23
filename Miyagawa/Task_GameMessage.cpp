@@ -87,9 +87,7 @@ namespace GameMessage
 	//u‚Q‚c•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw;
-
-		draw = ML::Box2D(-src.w, -src.h, src.w * 2, src.h * 2);
+		ML::Box2D draw(-src.w, -src.h, src.w * 2, src.h * 2);
 		draw.Offset(pos);
 
 		img->Draw(draw, src);
