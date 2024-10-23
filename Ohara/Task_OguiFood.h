@@ -25,6 +25,7 @@ namespace  OguiFood
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
 		DG::Image::SP image;
+		DG::Image::SP foodHPImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  OCharaBase
@@ -50,19 +51,24 @@ namespace  OguiFood
 		//追加したい変数・メソッドはここに追加する
 		//BCharaに含まれないモノのみここに追加する
 		//☆変数
-		int hp;			//料理の残量
-		int maxHP = 10; //満杯の状態の料理
+		int hp;			// 料理の残量
+		int maxHP = 10; // 満杯の状態の料理
 
-		//☆メソッド
-		void ReduceHP(int damage);		//料理の減少(受け身の処理)
-		void SendNotExistInformation(); //料理が無くなった情報を料理管理タスクに送る
+		//☆関数
+		void ReduceHP(int damage);		// 料理の減少(受け身の処理)
+		void SendNotExistInformation(); // 料理が無くなった情報を料理管理タスクに送る
+
+	private:
+		//☆変数
+		char foodHPText[3];	// 描画するHPを格納する(配列の必要要素数 = 整数部分2 + ヌル文字1 = 3)
+
+		//☆関数
+		void drawRemainingCuisineRemainingAmount();	// 残り料理残量描画
 
 		virtual void Think() override;
 		virtual void Move() override;
 		virtual DrawInformation GetDrawImage() override;
 		virtual void Received() override {}
 
-	private:
-		DG::Font::SP testFont;
 	};
 }

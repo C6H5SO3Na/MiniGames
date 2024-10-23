@@ -24,6 +24,7 @@ namespace  OguiUIManager
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
 		DG::Image::SP playerNumberImage;
+		DG::Image::SP eatFoodCountImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -49,9 +50,6 @@ namespace  OguiUIManager
 		//追加したい変数・メソッドはここに追加する
 		
 	private:
-		//☆変数
-		DG::Font::SP testFont;
-
 		//プレイヤー識別番号関係-------------------------------------------------------------------------------------
 		//☆構造体
 		struct PlayerNumberDrawInformation
@@ -61,10 +59,19 @@ namespace  OguiUIManager
 		};
 		
 		//☆変数
-		PlayerNumberDrawInformation playerNumbersDrawInfo[4];	// プレイヤー番号の描画情報
-		int							playerCount;				// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
+		PlayerNumberDrawInformation playerNumbersDrawInfo[4];				// プレイヤー番号の描画情報
+		PlayerNumberDrawInformation playerNumbersDrawInfo_eatFoodCount[4];	// 食べた料理の数の判別用プレイヤー番号の描画情報
+		int							playerCount;							// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 
 		//☆関数
-		void DrawPlayerNumber();	//プレイヤー番号の描画
+		void DrawPlayerNumber();									// プレイヤー番号の描画
+		void DrawPlayerNumber_eatFoodCount(const int loopCount);	// 食べた料理の数の判別用プレイヤー番号の描画
+
+		//食べた料理の数描画関係-------------------------------------------------------------------------------------
+		//☆変数
+		char eatFoodCountText[3];	// 食べた料理の数を二桁まで表示するようにする(配列の必要要素数 = 整数部分2 + ヌル文字1 = 3)
+
+		//☆関数
+		void DrawTotalSaboriTime(const int eatFoodCount, const int loopCount);	// 食べた料理の数描画
 	};
 }
