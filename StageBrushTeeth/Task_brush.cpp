@@ -110,6 +110,10 @@ namespace  brush
 				this->pos.y = this->maxPosY;
 			}
 			break;
+		case MyPG::MyGameEngine::GameState::Finish:
+			se::Stop("brushing");
+			se::Stop("Kirakira");
+			break;
 		}
 		
 
@@ -154,9 +158,9 @@ namespace  brush
 		}	
 	}
 	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
+	void Object::Positionalise(ML::Box2D PlayerAreaPos_)
 	{
-		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
+		ML::Box2D PlayerArea = PlayerAreaPos_;
 		pos.x = PlayerArea.x + (drawBase.w/2);
 		pos.y = PlayerArea.y + (drawBase.h/2);
 		minPosX = PlayerArea.x + (drawBase.w / 2) - 100;

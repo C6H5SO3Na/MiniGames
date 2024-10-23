@@ -72,7 +72,7 @@ namespace  hand
 
 		XI::GamePad::SP controller;
 
-		void Positionalise(int PlayerNum);
+		void Positionalise(ML::Box2D PlayerAreaPos_);
 
 		bool IsClear() const { return isClear; }
 

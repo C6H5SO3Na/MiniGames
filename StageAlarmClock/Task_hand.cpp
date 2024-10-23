@@ -71,10 +71,11 @@ namespace  hand
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		se::PlayLoop("Ring");
+		
 		switch (ge->gameState)
 		{
 		case MyPG::MyGameEngine::GameState::Game:
+			se::PlayLoop("Ring");
 			this->pos += this->moveVec;
 			break;
 		case MyPG::MyGameEngine::GameState::Finish:
@@ -172,9 +173,9 @@ namespace  hand
 		this->res->img->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
+	void Object::Positionalise(ML::Box2D PlayerAreaPos_)
 	{
-		ML::Box2D PlayerArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));
+		ML::Box2D PlayerArea = PlayerAreaPos_;
 		pos.x = (float)PlayerArea.x + (drawBase.w / 2);
 		pos.y = (float)PlayerArea.y + (drawBase.h / 2);
 		minPosX = (float)PlayerArea.x + (drawBase.w / 2) + 60;

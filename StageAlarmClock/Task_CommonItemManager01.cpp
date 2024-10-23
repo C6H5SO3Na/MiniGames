@@ -13,12 +13,16 @@ namespace  CommonItemManager01
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
+		this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		this->bgImg.reset();
+		this->PlayerNum.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -48,12 +52,13 @@ namespace  CommonItemManager01
 			PLhandList.push_back(h);
 			PLhandList[i]->id = i;
 
-			c->Positionalise(i);
-			h->Positionalise(i);
+			c->Positionalise(PlayerAreaPos[ge->players.size() - 1][i]);
+			h->Positionalise(PlayerAreaPos[ge->players.size() - 1][i]);
 
 			h->controller = ge->players[i]/*CTList[i]*/;
 		}
 		
+
 		//★タスクの生成
 
 		return  true;
@@ -80,6 +85,19 @@ namespace  CommonItemManager01
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		for (int i = 0; i < ge->players.size(); ++i) {
+			//背景
+			ML::Box2D draw(0, 0, 1920 / 2, 1080 / 2);
+			ML::Box2D src(0, 0, 1920, 1080);
+			draw.Offset(PlayerAreaPos[ge->players.size() - 1][i].x, PlayerAreaPos[ge->players.size() - 1][i].y);
+			this->res->bgImg->Draw(draw, src);
+
+			//プレイヤーナンバー
+			ML::Box2D draw01(0, 1080 / 2 - 105, 715 / 4, 105);
+			ML::Box2D src01 = PlayerNumIndexSrc[i];
+			draw01.Offset(PlayerAreaPos[ge->players.size() - 1][i].x, PlayerAreaPos[ge->players.size() - 1][i].y);
+			this->res->PlayerNum->Draw(draw01, src01);
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
