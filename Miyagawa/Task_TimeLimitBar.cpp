@@ -13,7 +13,7 @@ namespace TimeLimitBar
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		img = DG::Image::Create("./data/image/bar.png");
+		img = DG::Image::Create("./data/image/TimeBar.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -34,7 +34,7 @@ namespace TimeLimitBar
 
 		//★データ初期化
 		render2D_Priority[1] = -0.99f;
-		srcBase = ML::Box2D(0, 0, 96, 32);
+		srcBase = ML::Box2D(0, 0, 600, 100);
 
 		//★タスクの生成
 		return  true;
@@ -79,8 +79,8 @@ namespace TimeLimitBar
 	//バーの枠描画
 	void Object::DrawFlame() const
 	{
-		ML::Box2D src(0, 0, srcBase.w, srcBase.h);
-		ML::Box2D draw(-srcBase.w * 6 / 2, -srcBase.h * 2 / 2, srcBase.w * 6, srcBase.h * 2);
+		ML::Box2D src(0, 0, srcBase.w, srcBase.h / 2);
+		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
 		draw.Offset(pos);
 		res->img->Draw(draw, src);
 	}
@@ -89,8 +89,8 @@ namespace TimeLimitBar
 	void Object::DrawGauge() const
 	{
 		int gSize = static_cast<int>(srcBase.w * gaugeAmount);
-		ML::Box2D src(0, srcBase.h, gSize, srcBase.h);
-		ML::Box2D draw(-srcBase.w * 6 / 2, -src.h * 2 / 2, gSize * 6, srcBase.h * 2);
+		ML::Box2D src(0, srcBase.h / 2, gSize, srcBase.h / 2);
+		ML::Box2D draw(-srcBase.w / 2, -src.h / 2, gSize, srcBase.h / 2);
 		draw.Offset(pos);
 		res->img->Draw(draw, src);
 	}

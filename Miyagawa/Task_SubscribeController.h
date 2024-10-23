@@ -72,5 +72,10 @@ namespace SubscribeController
 
 		vector<XI::GamePad::SP> inputs;
 		int animCnt = 0;
+
+		enum class Phase {
+			Subscribe, Fadeout
+		};
+		Phase phase = Phase::Subscribe;
 	};
 }
