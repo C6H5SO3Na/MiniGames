@@ -39,7 +39,7 @@ namespace  TaxiGame
 
 		//★データ初期化
 		TaxiGamePlayer::Object::playerScore = 4;
-		ge->nowTimeLimit = 30 * 60;
+		ge->nowTimeLimit = 30;
 
 		//BGM
 		bgm::LoadFile("TaxiGame", "./data/sound/bgm/タクシー_retrogamecenter3.mp3");
@@ -107,8 +107,8 @@ namespace  TaxiGame
 	//ゲーム本編の処理
 	void  Object::Game()
 	{
-		--ge->nowTimeLimit;
-		if (ge->nowTimeLimit == 0) {
+		ge->nowTimeLimit -= ge->c->deltaTime;
+		if (ge->nowTimeLimit <= 0.f) {
 			ge->hasAllClearedGame = true;
 		}
 		int clearNum = 0;

@@ -56,7 +56,7 @@ namespace  Game
 
 		//★タスクの生成
 
-		CreateTask(3);//0:目覚ましゲーム、1:歯磨きゲーム、2:電車ゲーム…
+		CreateTask(0);//0:目覚ましゲーム、1:歯磨きゲーム、2:電車ゲーム…
 
 		UIManager::Object::Create(true);
 		return  true;
@@ -101,7 +101,7 @@ namespace  Game
 
 		case 1:
 			StageBrushTeeth::Object::Create(true);
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 1000.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 1040.f));
 			break;
 
 		case 2:

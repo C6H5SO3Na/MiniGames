@@ -62,6 +62,9 @@ namespace  Title
 		this->Cnt = 0;
 		int RenderTime = 0;
 
+		//Å‰‚Éˆêu‰f‚é‚Ì‚ð–h‚®
+		logoY = -200;
+
 		ge->stage = 1;
 
 		easing::Set("titleY", easing::BACKOUT, -250, ge->screen2DHeight / 5.f, 200);
