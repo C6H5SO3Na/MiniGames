@@ -49,7 +49,7 @@ namespace TaxiGamePlayer
 		//★データ初期化
 		render2D_Priority[1] = 0.5f;
 		nowBtn = GetRandom(0, 3);
-		
+
 		//SE
 		se::LoadFile("Miss", "./data/sound/se/ClassifyGame/maou_se_onepoint33.wav");
 		se::LoadFile("Clear", "./data/sound/se/TaxiGame/clear.wav");
@@ -310,38 +310,7 @@ namespace TaxiGamePlayer
 	//スコア加算
 	void Object::AddScore(int& score, XI::GamePad::SP con)
 	{
-		if (con == ge->in1) {
-			ge->AddScore(0, score);
-		}
-		if (con == ge->in2) {
-			ge->AddScore(1, score);
-		}
-		if (con == ge->in3) {
-			ge->AddScore(2, score);
-		}
-		if (con == ge->in4) {
-			ge->AddScore(3, score);
-		}
-		--score;
-	}
-	//-------------------------------------------------------------------
-	//コントローラー番号を取得
-	int Object::GetControllerNum(XI::GamePad::SP con) const
-	{
-		int rtv = 0;
-		if (con == ge->in1) {
-			rtv = 1;
-		}
-		else if (con == ge->in2) {
-			rtv = 2;
-		}
-		else if (con == ge->in3) {
-			rtv = 3;
-		}
-		else if (con == ge->in4) {
-			rtv = 4;
-		}
-		return rtv;
+		ge->AddScore(controllerNum - 1, score);
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
@@ -385,7 +354,7 @@ namespace TaxiGamePlayer
 		player->pos = pos_;
 		player->controller = controller_;
 		//コントローラーの番号を取得
-		player->controllerNum = player->GetControllerNum(player->controller);
+		player->controllerNum = controllerNum_ + 1;
 		//プレイヤー画像
 		player->imgPlayer = DG::Image::Create(player->imgPlayerPath[controllerNum_]);
 

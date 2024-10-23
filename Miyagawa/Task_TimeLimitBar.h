@@ -51,7 +51,7 @@ namespace TimeLimitBar
 		ML::Box2D srcBase;
 		ML::Box2D drawBase;
 		int remainingCnt;
-		int maxCnt;
+		float maxCnt;
 		int minPower;
 		float gaugeAmount;
 		EasingLogo::Object::WP finish;//FinishÉçÉS

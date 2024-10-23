@@ -101,7 +101,7 @@ namespace  Game
 
 		case 1:
 			StageBrushTeeth::Object::Create(true);
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 1000.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 1040.f));
 			break;
 
 		case 2:
