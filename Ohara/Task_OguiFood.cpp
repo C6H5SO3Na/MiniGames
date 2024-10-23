@@ -16,14 +16,16 @@ namespace  OguiFood
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/otsan_ramen.png");
+		image = DG::Image::Create("./data/image/otsan_ramen.png");
+		foodHPImage = DG::Image::Create("./data/image/TextImage/OguiFont.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->image.reset();
+		image.reset();
+		foodHPImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -38,7 +40,6 @@ namespace  OguiFood
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
 		this->state = State::FExist;
-		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 30);
 		
 		//★タスクの生成
 
@@ -81,8 +82,6 @@ namespace  OguiFood
 	}
 
 	//-------------------------------------------------------------------
-	//自分で作った関数の処理
-	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
@@ -93,20 +92,11 @@ namespace  OguiFood
 		this->res->image->Draw(drawImage.draw, drawImage.src);
 
 		//☆残り料理残量描画
-		//描画
-		if (this->hp > 0)
-		{
-			testFont->Draw(ML::Box2D(static_cast<int>(this->pos.x) - 25, static_cast<int>(this->pos.y) - 25, ge->screen2DWidth, ge->screen2DHeight),
-				to_string(this->hp), ML::Color(1, 0, 0, 0)
-			);
-		}
-		else
-		{
-			testFont->Draw(ML::Box2D(static_cast<int>(this->pos.x) - 25, static_cast<int>(this->pos.y) - 25, ge->screen2DWidth, ge->screen2DHeight),
-				"0", ML::Color(1, 0, 0, 0)
-			);
-		}
+		drawRemainingCuisineRemainingAmount();
 	}
+
+	//-------------------------------------------------------------------
+	//自分で作った関数の処理
 	//-------------------------------------------------------------------
 	//現在の料理の状態制御
 	void Object::Think()
@@ -172,17 +162,84 @@ namespace  OguiFood
 		//☆プレイヤーに情報を送る
 		//全てのプレイヤーを取得
 		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
-		for (auto p = players->begin(); p != players->end(); ++p)
+		if (players)
 		{
-			//この料理を食べたプレイヤーか判定
-			if ((*p)->playerNum == this->playerNum)
+			for (auto p = players->begin(); p != players->end(); ++p)
 			{
-				//プレイヤーの食べた料理数のカウントを増やす
-				(*p)->eatFoodCount++;
-				//料理が無くなったのでfalseを送る
-				(*p)->SetExistFood(false);
+				//この料理を食べたプレイヤーか判定
+				if ((*p)->playerNum == this->playerNum)
+				{
+					//プレイヤーの食べた料理数のカウントを増やす
+					(*p)->eatFoodCount++;
+					//食べた料理の数が99を超え無いようにする
+					if ((*p)->eatFoodCount > 99)
+					{
+						(*p)->eatFoodCount = 99;
+					}
+
+					//料理が無くなったのでfalseを送る
+					(*p)->SetExistFood(false);
+				}
 			}
 		}
+	}
+	//-------------------------------------------------------------------
+	//残り料理残量描画
+	void Object::drawRemainingCuisineRemainingAmount()
+	{
+		//描画
+		if (this->hp > 0)
+		{
+			//hpを分解して格納する
+			sprintf(foodHPText, "%d", hp);
+
+			//切り取り位置、表示位置を決めて描画する
+			for (int i = 0; i < static_cast<int>(size(foodHPText)) - 1; ++i)
+			{
+				//srcのxの値設定
+				int src_x = (foodHPText[i] - '0') * 32;	// ML::Box2D srcのxの値
+
+				//描画位置と切り取り位置の変数宣言
+				ML::Box2D draw(0, 0, 0, 0);			// 描画位置
+				ML::Box2D src(src_x, 0, 32, 32);	// 切り取り位置
+
+				//hpが二桁か一桁かで描画位置を変更する
+				if (hp >= 10)
+				{
+					//描画位置設定
+					draw = ML::Box2D(-src.w / 2, -src.h / 2, src.w, src.h);
+					draw.Offset(pos.x + (-(src.w / 2) + (src.w * i)), pos.y);
+				}
+				else
+				{
+					//描画位置設定
+					draw = ML::Box2D(-src.w / 2, -src.h / 2, src.w, src.h);
+					draw.Offset(pos.x, pos.y);
+				}
+
+				//描画
+				this->res->foodHPImage->Draw(draw, src);
+			}
+
+			/*testFont->Draw(ML::Box2D(static_cast<int>(this->pos.x) - 25, static_cast<int>(this->pos.y) - 25, ge->screen2DWidth, ge->screen2DHeight),
+				to_string(this->hp), ML::Color(1, 0, 0, 0)
+			);*/
+		}
+		////hpが0未満になったら
+		//else
+		//{
+		//	//描画位置と切り取り位置の設定
+		//	ML::Box2D src(0, 0, 32, 32);
+		//	ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
+		//	draw.Offset(pos.x, pos.y);
+
+		//	//描画
+		//	this->res->foodHPImage->Draw(draw, src);
+
+		//	/*testFont->Draw(ML::Box2D(static_cast<int>(this->pos.x) - 25, static_cast<int>(this->pos.y) - 25, ge->screen2DWidth, ge->screen2DHeight),
+		//		"0", ML::Color(1, 0, 0, 0)
+		//	);*/
+		//}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -221,7 +278,7 @@ namespace  OguiFood
 	//-------------------------------------------------------------------
 	Object::Object()
 		:
-		hp(0)
+		hp(0), foodHPText()
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

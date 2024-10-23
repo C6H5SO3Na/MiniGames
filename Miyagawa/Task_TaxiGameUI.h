@@ -1,15 +1,15 @@
 #pragma warning(disable:4996)
 #pragma once
 //-------------------------------------------------------------------
-//タクシー
+//プレイヤー番号表示
 //-------------------------------------------------------------------
-#include "../BChara.h"
+#include "../GameEngine_Ver3_83.h"
 
-namespace TaxiGameTaxi
+namespace TaxiGameUI
 {
 	//タスクに割り当てるグループ名と固有名
 	const  string  defGroupName("タクシー");	//グループ名
-	const  string  defName("タクシー");	//タスク名
+	const  string  defName("UI");	//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
@@ -26,14 +26,15 @@ namespace TaxiGameTaxi
 		DG::Image::SP img;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public  BChara
+	class  Object : public  BTask
 	{
 		//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	public:
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
 		typedef  weak_ptr<Object>		WP;
-		static void Spawn(const ML::Vec2& pos_);
+		//生成窓口 引数はtrueでタスクシステムへ自動登録
+		static  Object::SP  Create(bool flagGameEnginePushBack_);
 		Resource::SP	res;
 	private:
 		Object();
@@ -42,13 +43,8 @@ namespace TaxiGameTaxi
 		bool  Initialize();	//「初期化」タスク生成時に１回だけ行う処理
 		void  UpDate()			override;//「実行」１フレーム毎に行う処理
 		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
-		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
-		//生成窓口 引数はtrueでタスクシステムへ自動登録
-		static  Object::SP  Create(bool flagGameEnginePushBack_);
+		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理zz
 
-		void Think();
-		void Move();
-		void Received() override;
-		ML::Box2D src;
+		ML::Vec2 pos;
 	};
 }

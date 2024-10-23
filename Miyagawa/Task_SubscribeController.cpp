@@ -31,6 +31,11 @@ namespace SubscribeController
 		//Aボタン
 		AButton[0] = DG::Image::Create("./data/image/button/Double/xbox_button_color_a.png");
 		AButton[1] = DG::Image::Create("./data/image/button/Double/xbox_button_color_a_outline.png");
+
+		//UI
+		playerEntryLogo = DG::Image::Create("./data/image/PlayerEntry.png");
+		entryLogo = DG::Image::Create("./data/image/Entry.png");
+		gameStartLogo = DG::Image::Create("./data/image/GameStart.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -61,6 +66,15 @@ namespace SubscribeController
 		inputs.push_back(ge->in3);
 		inputs.push_back(ge->in4);
 
+		//サウンド
+		//SE
+		for (int i = 0; i < 4; ++i) {
+			se::LoadFile(to_string(i + 1) + "P", "./data/sound/se/SubscribePlayer/" + to_string(i + 1) + "P.wav");
+		}
+
+		//BGM
+		bgm::LoadFile("BGM", "./data/sound/BGM/SubscribePlayer.mp3");
+
 		//★タスクの生成
 		//背景
 		//横スクロールを作る
@@ -72,13 +86,14 @@ namespace SubscribeController
 				BG->pos.x = static_cast<float>(i * 1600);
 			}
 		}
+		bgm::Play("BGM");
 		return  true;
 	}
 	//-------------------------------------------------------------------
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
 	{
-
+		bgm::AllStop();
 		ge->KillAll_G("コントローラー登録画面");
 		//★データ＆タスク解放
 		if (!ge->QuitFlag() && nextTaskCreate) {
@@ -108,6 +123,11 @@ namespace SubscribeController
 				}
 				//イージング開始
 				StartEasing(i);
+				for (int j = 0; j < 4; ++j) {
+					if (controllerIndex[j] == i) {
+						se::Play(to_string(j + 1) + "P");
+					}
+				}
 			}
 		}
 
@@ -192,9 +212,9 @@ namespace SubscribeController
 	//UI描画
 	void  Object::DrawUI() const
 	{
-		ML::Box2D textBox(550, 50, 1000, 100);
-		string text = "プレイヤーエントリー";
-		TestFont->Draw(textBox, text);
+		ML::Box2D src(0, 0, 754, 101);
+		ML::Box2D draw = src.OffsetCopy(ML::Vec2(550, 50));
+		res->playerEntryLogo->Draw(draw, src);
 
 		DrawOperation();
 	}
@@ -204,9 +224,9 @@ namespace SubscribeController
 	{
 		//ゲーム開始
 		if (subscribeCnt > 0) {
-			ML::Box2D textBox(800, 850, 1000, 100);
-			string text = "ゲーム開始";
-			TestFont->Draw(textBox, text);
+			ML::Box2D src(0, 0, 754, 101);
+			ML::Box2D draw = src.OffsetCopy(ML::Vec2(650.f, 840.f));
+			res->gameStartLogo->Draw(draw, src);
 		}
 
 		//ゲーム開始のボタン
@@ -216,9 +236,9 @@ namespace SubscribeController
 
 		//エントリー
 		{
-			ML::Box2D textBox(800, 960, 1000, 100);
-			string text = "エントリー";
-			TestFont->Draw(textBox, text);
+			ML::Box2D src(0, 0, 754, 101);
+			ML::Box2D draw = src.OffsetCopy(ML::Vec2(600.f, 950.f));
+			res->entryLogo->Draw(draw, src);
 		}
 
 		//エントリーのボタン
