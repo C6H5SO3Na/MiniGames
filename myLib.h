@@ -313,6 +313,25 @@ namespace ML
 			r.Offset(v_);
 			return r;
 		}
+
+		//演算子オーバーロード
+		Box2D& operator*(const float& value_)
+		{
+			this->x = static_cast<int>(this->x * value_);
+			this->y = static_cast<int>(this->y * value_);
+			this->w = static_cast<int>(this->w * value_);
+			this->h = static_cast<int>(this->h * value_);
+			return *this;
+		}
+
+		Box2D& operator*=(const float& value_)
+		{
+			this->x = static_cast<int>(this->x * value_);
+			this->y = static_cast<int>(this->y * value_);
+			this->w = static_cast<int>(this->w * value_);
+			this->h = static_cast<int>(this->h * value_);
+			return *this;
+		}
 	};
 
 
