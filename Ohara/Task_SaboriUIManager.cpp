@@ -36,7 +36,6 @@ namespace  SaboriUIManager
 
 		//★データ初期化
 		this->render2D_Priority[1] = 0.6f;
-		testFont = DG::Font::Create("ＭＳ ゴシック", 30, 50);
 
 		//ミニゲーム統括タスクからデータを取得する
 		auto game = ge->GetTask<SaboriGame::Object>(SaboriGame::defGroupName, SaboriGame::defName);
@@ -76,18 +75,21 @@ namespace  SaboriUIManager
 		auto players = ge->GetTasks<SaboriPlayer::Object>("プレイヤー");
 		//プレイヤーの数だけループを回す
 		int loopCount = 0; //ループした回数のカウント
-		for (auto p = players->begin(); p != players->end(); ++p)
+		if (players)
 		{
-			//合計時間用プレイヤー番号描画
-			DrawPlayerNumber_TotalSaboriTime(loopCount);
+			for (auto p = players->begin(); p != players->end(); ++p)
+			{
+				//合計時間用プレイヤー番号描画
+				DrawPlayerNumber_TotalSaboriTime(loopCount);
 
-			//合計サボり時間描画
-			DrawTotalSaboriTime((*p)->totalSaboriTime, loopCount);
+				//合計サボり時間描画
+				DrawTotalSaboriTime((*p)->totalSaboriTime, loopCount);
 
-			//ループ回数のカウント
-			++loopCount;
+				//ループ回数のカウント
+				++loopCount;
+			}
 		}
-
+		
 		//☆プレイヤー番号の描画
 		this->DrawPlayerNumber();
 	}
