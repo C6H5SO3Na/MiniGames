@@ -82,7 +82,6 @@ namespace TaxiGamePlayer
 		void DrawButton() const;
 		void MatchButton();
 		void DrawClearMessage() const;
-		int GetControllerNum(XI::GamePad::SP con) const;
 
 		//ボタンのビット
 		enum Button {

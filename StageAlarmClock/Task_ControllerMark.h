@@ -3,18 +3,18 @@
 //-------------------------------------------------------------------
 //
 //-------------------------------------------------------------------
-#include "../GameEngine_Ver3_83.h"
+#include "../BChara.h"
 
-namespace  StageBrushTeeth
+namespace  ControllerMark
 {
 	//タスクに割り当てるグループ名と固有名
-	const  string  defGroupName("ステージ歯磨き");	//グループ名
-	const  string  defName("NoName");	//タスク名
+	const  string  defGroupName("コントローラーマーク");	//グループ名
+	const  string  defName("NoName");		//タスク名
 	//-------------------------------------------------------------------
 	class  Resource : public BResource
 	{
-		bool  Initialize()	override;
-		bool  Finalize()	override;
+		bool  Initialize()		override;
+		bool  Finalize()		override;
 		Resource();
 	public:
 		~Resource();
@@ -22,17 +22,13 @@ namespace  StageBrushTeeth
 		typedef  weak_ptr<Resource>		WP;
 		static   WP  instance;
 		static  Resource::SP  Create();
+	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 		//共有する変数はここに追加する
-		//「変数宣言を書く」
-		DG::Image::SP bgImg;
-		//DG::Image::SP teethImg;
 		DG::Image::SP controllerMark;
-		//DG::Image::SP PlayerNum;
 	};
 	//-------------------------------------------------------------------
-	class  Object : public  BTask
+	class  Object : public  BChara
 	{
-	//変更不可◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	public:
 		virtual  ~Object();
 		typedef  shared_ptr<Object>		SP;
@@ -40,33 +36,30 @@ namespace  StageBrushTeeth
 		//生成窓口 引数はtrueでタスクシステムへ自動登録
 		static  Object::SP  Create(bool flagGameEnginePushBack_);
 		Resource::SP	res;
-
 	private:
+
 		Object();
 		bool  B_Initialize();
 		bool  B_Finalize();
 		bool  Initialize();	//「初期化」タスク生成時に１回だけ行う処理
-		void  UpDate()			override;//「実行」１フレーム毎に行う処理
-		void  Render2D_AF()		override;//「2D描画」１フレーム毎に行う処理
+		void  UpDate()		override;	//「実行」１フレーム毎に行う処理
+		void  Render2D_AF()	override;	//「2D描画」１フレーム毎に行う処理
 		bool  Finalize();		//「終了」タスク消滅時に１回だけ行う処理
-
-		enum class Phase {
-			Game, Clear, Max
-		};
-
-		Phase state;
-
-		void MarkCount();
-		void CheckClear();
-
-		int timeCnt;
-		int clearCount;//クリア数
+	public:
+		//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
+			//追加したい変数・メソッドはここに追加する
+			//BCharaに含まれないモノのみここに追加する
+			//「変数宣言を書く」
+			//「追加メソッドを書く」
+		void Received() {};
 		int animCnt;
 		int animIndex;
 
-	public:
-		bool isEnd = false;
-		bool isclearplayer[4];
+		ML::Box2D Imageplace[4] = {
+		{ ML::Box2D(1920 / 2 - 150 / 2, 50, 150, 150)},
+		{ ML::Box2D(1920 / 4 - 150, 1080 / 2 - 150 / 2, 150, 150)},
+		{ ML::Box2D(1920 / 4 - 300, 1080 / 4 * 3 - 150, 150, 150)},
+		{ ML::Box2D(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150)}
+		};
 	};
-
 }

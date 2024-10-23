@@ -8,6 +8,7 @@
 #include  "Task_CommonItemManager01.h"
 #include  "../Task_Game.h"
 #include "../sound.h"
+#include  "Task_ControllerMark.h"
 
 
 namespace  StageAlarmClock
@@ -17,8 +18,8 @@ namespace  StageAlarmClock
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		//this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
-		this->controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");
+		this->bgImg = DG::Image::Create("./data/image/stargarak1.png");
+		/*this->controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");*/
 		//this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		ge->debugRectLoad();
 		return true;
@@ -27,8 +28,8 @@ namespace  StageAlarmClock
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		//this->bgImg.reset();
-		this->controllerMark.reset();
+		this->bgImg.reset();
+		/*this->controllerMark.reset();*/
 		//this->PlayerNum.reset();
 		return true;
 	}
@@ -56,6 +57,7 @@ namespace  StageAlarmClock
 		/*auto alarmclock = Clock::Object::Create(true);
 		auto hand = hand::Object::Create(true);*/
 		auto commonmanager = CommonItemManager01::Object::Create(true);
+		auto Controllermark = ControllerMark::Object::Create(true);
 
 		return  true;
 	}
@@ -70,6 +72,7 @@ namespace  StageAlarmClock
 		ge->KillAll_G("手");
 		ge->KillAll_G("共通アイテムマネージャー01");
 		ge->KillAll_G("ステージ目覚まし時計");
+		ge->KillAll_G("コントローラーマーク");
 
 		bgm::Stop("stage1_bgm");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
@@ -84,17 +87,17 @@ namespace  StageAlarmClock
 	void  Object::UpDate()
 	{
 		ge->nowTimeLimit = this->timeCnt;
-		animCnt++;
-		//アニメ更新
-		if (this->animCnt >= 15)
-		{
-			this->animCnt = 0;
-			this->animIndex++;
-			if (this->animIndex >= 2)
-			{
-				this->animIndex = 0;
-			}
-		}
+		//animCnt++;
+		////アニメ更新
+		//if (this->animCnt >= 15)
+		//{
+		//	this->animCnt = 0;
+		//	this->animIndex++;
+		//	if (this->animIndex >= 2)
+		//	{
+		//		this->animIndex = 0;
+		//	}
+		//}
 
 		switch (ge->gameState) {
 		case MyPG::MyGameEngine::GameState::Game:
@@ -119,10 +122,10 @@ namespace  StageAlarmClock
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		////背景
-		//ML::Box2D draw (0, 0, 1920/2, 1080/2);
-		//ML::Box2D src (0, 0, 1920, 1080);
-		//this->res->bgImg->Draw(draw, src);
+		//背景
+		ML::Box2D draw (0, 0, 1920, 1080);
+		ML::Box2D src (0, 0, 1920, 1080);
+		this->res->bgImg->Draw(draw, src);
 
 		//ML::Box2D draw2(1920 / 2, 0, 1920 / 2, 1080 / 2);
 		//this->res->bgImg->Draw(draw2, src);
@@ -133,17 +136,17 @@ namespace  StageAlarmClock
 		//ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
 		//this->res->bgImg->Draw(draw4, src);
 
-		switch (ge->gameState)
-		{
-		case MyPG::MyGameEngine::GameState::Game:
-			//コントローラーマーク
-			ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
-			int srcX = animIndex % 2 * 128;
-			int srcY = animIndex / 2 * 128;
-			ML::Box2D Src(srcX, srcY, 128, 128);
-			this->res->controllerMark->Draw(Draw, Src);
-			break;
-		}
+		//switch (ge->gameState)
+		//{
+		//case MyPG::MyGameEngine::GameState::Game:
+		//	//コントローラーマーク
+		//	ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
+		//	int srcX = animIndex % 2 * 128;
+		//	int srcY = animIndex / 2 * 128;
+		//	ML::Box2D Src(srcX, srcY, 128, 128);
+		//	this->res->controllerMark->Draw(Draw, Src);
+		//	break;
+		//}
 		
 
 		////プレイヤーナンバー

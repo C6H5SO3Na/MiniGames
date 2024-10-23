@@ -8,6 +8,7 @@
 #include  "Task_CommonItemManager02.h"
 #include  "../Task_Game.h"
 #include  "../sound.h"
+#include  "Task_ControllerMark02.h"
 
 namespace  StageBrushTeeth
 {
@@ -16,9 +17,9 @@ namespace  StageBrushTeeth
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		/*this->bgImg = DG::Image::Create("./data/image/mirror.png");*/
+		this->bgImg = DG::Image::Create("./data/image/stargarak1.png");
 		/*this->teethImg = DG::Image::Create("./data/image/mouth_new.png");*/
-		this->controllerMark = DG::Image::Create("./data/image/LeftStickAllDirection_new.png");
+		/*this->controllerMark = DG::Image::Create("./data/image/LeftStickAllDirection_new.png");*/
 		/*this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");*/
 		ge->debugRectLoad();
 		return true;
@@ -27,9 +28,9 @@ namespace  StageBrushTeeth
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		/*this->bgImg.reset();
-		this->teethImg.reset();*/
-		this->controllerMark.reset();
+		this->bgImg.reset();
+		/*this->teethImg.reset();*/
+		/*this->controllerMark.reset();*/
 		/*this->PlayerNum.reset();*/
 		return true;
 	}
@@ -48,7 +49,7 @@ namespace  StageBrushTeeth
 		this->res = Resource::Create();
 
 		//★データ初期化
-		this->render2D_Priority[1] = 0.9f;
+		this->render2D_Priority[1] = 0.99f;
 		//this->state = Phase::Game;
 		this->timeCnt = 10 * 60;
 		ge->nowTimeLimit = this->timeCnt;
@@ -59,6 +60,7 @@ namespace  StageBrushTeeth
 		/*auto brush = brush::Object::Create(true);*/
 		/*auto stainmanager = StainManager::Object::Create(true);*/
 		auto commonmanager = CommonItemManager02::Object::Create(true);
+		auto Controllermark = ControllerMark02::Object::Create(true);
 
 		return  true;
 	}
@@ -72,6 +74,7 @@ namespace  StageBrushTeeth
 		ge->KillAll_G("よごれ");
 		ge->KillAll_G("共通アイテムマネージャー02");
 		ge->KillAll_G("ステージ歯磨き");
+		ge->KillAll_G("コントローラーマーク");
 
 		bgm::Stop("stage2_bgm");
 		se::Stop("Kirakira");
@@ -123,10 +126,10 @@ namespace  StageBrushTeeth
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		////背景
-		//ML::Box2D draw(0, 0, 1920 / 2, 1080 / 2);
-		//ML::Box2D src(0, 0, 3300, 2550);
-		//this->res->bgImg->Draw(draw, src);
+		//背景
+		ML::Box2D draw(0, 0, 1920, 1080);
+		ML::Box2D src(0, 0, 3300, 2550);
+		this->res->bgImg->Draw(draw, src);
 
 		//ML::Box2D draw_2(1920 / 2, 0, 1920 / 2, 1080 / 2);
 		//this->res->bgImg->Draw(draw_2, src);
@@ -151,17 +154,17 @@ namespace  StageBrushTeeth
 		//this->res->teethImg->Draw(draw5, src2);
 		ge->debugRectDraw();
 
-		switch (ge->gameState)
-		{
-		case MyPG::MyGameEngine::GameState::Game:
-			//コントローラーマーク
-			ML::Box2D Draw(1920 / 2 - 140 / 2, 1080 / 2 - 128 / 2, 140, 128);
-			int srcX = animIndex % 2 * 140;
-			int srcY = animIndex / 2 * 128;
-			ML::Box2D Src(srcX, srcY, 140, 128);
-			this->res->controllerMark->Draw(Draw, Src);
-			break;
-		}
+		//switch (ge->gameState)
+		//{
+		//case MyPG::MyGameEngine::GameState::Game:
+		//	//コントローラーマーク
+		//	ML::Box2D Draw(1920 / 2 - 140 / 2, 1080 / 2 - 128 / 2, 140, 128);
+		//	int srcX = animIndex % 2 * 140;
+		//	int srcY = animIndex / 2 * 128;
+		//	ML::Box2D Src(srcX, srcY, 140, 128);
+		//	this->res->controllerMark->Draw(Draw, Src);
+		//	break;
+		//}
 		
 
 		////プレイヤーナンバー

@@ -1,31 +1,24 @@
 //-------------------------------------------------------------------
-//タクシーゲーム
+//
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_TaxiGame.h"
+#include  "Task_ControllerMark02.h"
 
-#include "../randomLib.h"
-
-#include  "Task_TaxiGamePlayer.h"
-#include  "Task_TaxiGameTaxi.h"
-#include  "Task_TaxiGameBG.h"
-#include  "Task_TaxiGameUI.h"
-#include  "../Task_Game.h"
-#include  "../sound.h"
-
-namespace  TaxiGame
+namespace  ControllerMark02
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		controllerMark = DG::Image::Create("./data/image/LeftStickAllDirection_new.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		controllerMark.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -35,30 +28,13 @@ namespace  TaxiGame
 		//スーパークラス初期化
 		__super::Initialize(defGroupName, defName, true);
 		//リソースクラス生成orリソース共有
-		res = Resource::Create();
+		this->res = Resource::Create();
 
 		//★データ初期化
-		TaxiGamePlayer::Object::playerScore = 4;
-		ge->nowTimeLimit = 30;
-
-		//BGM
-		bgm::LoadFile("TaxiGame", "./data/sound/bgm/タクシー_retrogamecenter3.mp3");
-		
+		this->render2D_Priority[1] = -0.1f;
+		this->animCnt = 0;
 		//★タスクの生成
-		TaxiGameBG::Object::Create(true);
 
-		//プレイヤー配置
-		for (int i = 0; i < ge->players.size(); ++i) {
-			TaxiGamePlayer::Object::Spawn(ML::Vec2(ge->screenWidth - 80.f, ge->screenHeight * (i + 2) / 6.f), ge->players[i], i);
-		}
-
-		//タクシー配置
-		for (int i = 0; i < ge->players.size(); ++i) {
-			TaxiGameTaxi::Object::Spawn(ML::Vec2(200.f, ge->screenHeight * (i + 2) / 6.f));
-		}
-
-		//~PのUI配置
-		TaxiGameUI::Object::Create(true);
 		return  true;
 	}
 	//-------------------------------------------------------------------
@@ -66,13 +42,10 @@ namespace  TaxiGame
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-		ge->KillAll_G("タクシー");
 
-		if (!ge->QuitFlag() && nextTaskCreate) {
-			bgm::AllStop();
+
+		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			//最後のゲームから生成しない
 		}
 
 		return  true;
@@ -81,57 +54,35 @@ namespace  TaxiGame
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		switch (ge->gameState) {
-		case MyPG::MyGameEngine::GameState::Start:
-			break;
-
-		case MyPG::MyGameEngine::GameState::Game:
-			if (!isBGMPlay) {
-				bgm::Play("TaxiGame");
-				isBGMPlay = true;
+		animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 15)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 2)
+			{
+				this->animIndex = 0;
 			}
-			Game();
-			break;
-
-		case MyPG::MyGameEngine::GameState::Finish:
-			Clear();
-			break;
 		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-	}
-	//-------------------------------------------------------------------
-	//ゲーム本編の処理
-	void  Object::Game()
-	{
-		ge->nowTimeLimit -= ge->c->deltaTime;
-		if (ge->nowTimeLimit <= 0.f) {
-			ge->hasAllClearedGame = true;
-		}
-		int clearNum = 0;
-		auto players = ge->GetTasks<TaxiGamePlayer::Object>(TaxiGamePlayer::defGroupName, TaxiGamePlayer::defName);
-		for_each(players->begin(), players->end(),
-			[&](auto iter) {
-				if (iter->IsClear()) {
-					++clearNum;
-				}
-			});
-		//クリア
-		if (clearNum >= players->size()) {
-			ge->hasAllClearedGame = true;
+		switch (ge->gameState)
+		{
+		case MyPG::MyGameEngine::GameState::Game:
+			//コントローラーマーク
+			ML::Box2D Draw = Imageplace[ge->players.size() - 1];
+			int srcX = animIndex % 2 * 140;
+			int srcY = animIndex / 2 * 128;
+			ML::Box2D Src(srcX, srcY, 140, 128);
+			this->res->controllerMark->Draw(Draw, Src);
+			break;
 		}
 	}
 	//-------------------------------------------------------------------
-	//全員クリア後の処理
-	void  Object::Clear()
-	{
-		if (ge->hasFinishedEasing) {
-			Kill();
-		}
-	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -155,13 +106,13 @@ namespace  TaxiGame
 	//-------------------------------------------------------------------
 	bool  Object::B_Initialize()
 	{
-		return  Initialize();
+		return  this->Initialize();
 	}
 	//-------------------------------------------------------------------
-	Object::~Object() { B_Finalize(); }
+	Object::~Object() { this->B_Finalize(); }
 	bool  Object::B_Finalize()
 	{
-		auto  rtv = Finalize();
+		auto  rtv = this->Finalize();
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
@@ -185,5 +136,5 @@ namespace  TaxiGame
 	//-------------------------------------------------------------------
 	Resource::Resource() {}
 	//-------------------------------------------------------------------
-	Resource::~Resource() { Finalize(); }
+	Resource::~Resource() { this->Finalize(); }
 }

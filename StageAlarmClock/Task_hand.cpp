@@ -80,6 +80,7 @@ namespace  hand
 			break;
 		case MyPG::MyGameEngine::GameState::Finish:
 			this->pos = this->pos;
+			se::Stop("Ring");
 			se::Play("Stop");
 			break;
 		}
