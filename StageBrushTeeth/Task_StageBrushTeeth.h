@@ -66,6 +66,7 @@ namespace  StageBrushTeeth
 
 	public:
 		bool isEnd = false;
+		bool isclearplayer[4];
 	};
 
 }

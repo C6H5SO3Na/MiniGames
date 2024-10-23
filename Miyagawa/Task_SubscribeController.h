@@ -27,6 +27,9 @@ namespace SubscribeController
 		DG::Image::SP playerImg[4];
 		DG::Image::SP startButton[2];
 		DG::Image::SP AButton[2];
+		DG::Image::SP playerEntryLogo;
+		DG::Image::SP entryLogo;
+		DG::Image::SP gameStartLogo;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -60,7 +63,7 @@ namespace SubscribeController
 
 		DG::Font::SP TestFont;
 		bool isPushButton[4] = {};
-		int controllerIndex[4] = {};//~Pは~コントローラーか
+		int controllerIndex[4] = {-1 ,-1, -1, -1};//~Pは~コントローラーか
 		int subscribeCnt = 0;
 		float easingPos[4] = {};
 

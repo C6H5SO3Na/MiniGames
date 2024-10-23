@@ -39,13 +39,12 @@ namespace  CommonItemManager02
 
 		for (auto i = 0; i < ge->players.size(); ++i)
 		{
-			auto b = brush::Object::Create(true,i);
+			auto b = brush::Object::Create(true, i);
 			PLBrushList.push_back(b);
 
 			auto s = StainManager::Object::Create(true);
 			CreateStatinList.push_back(s);
 			CreateStatinList[i]->id = i;
-
 
 			b->Positionalise(i);
 			s->Positionalise(i);
