@@ -12,7 +12,7 @@ namespace  ClassifyGameBG
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		backGround = DG::Image::Create("./data/image/SubscribeBG.jpg");
+		backGround = DG::Image::Create("./data/image/stargarak1.png");
 		return true;
 	}
 	//-------------------------------------------------------------------

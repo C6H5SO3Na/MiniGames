@@ -17,7 +17,7 @@ namespace  StageAlarmClock
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		//this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
+		this->bgImg = DG::Image::Create("./data/image/stargarak1.png");
 		this->controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");
 		//this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		ge->debugRectLoad();
@@ -27,7 +27,7 @@ namespace  StageAlarmClock
 	//ƒŠƒ\[ƒX‚Ì‰ð•ú
 	bool  Resource::Finalize()
 	{
-		//this->bgImg.reset();
+		this->bgImg.reset();
 		this->controllerMark.reset();
 		//this->PlayerNum.reset();
 		return true;
@@ -119,10 +119,10 @@ namespace  StageAlarmClock
 	//u‚Q‚c•`‰æv‚PƒtƒŒ[ƒ€–ˆ‚És‚¤ˆ—
 	void  Object::Render2D_AF()
 	{
-		////”wŒi
-		//ML::Box2D draw (0, 0, 1920/2, 1080/2);
-		//ML::Box2D src (0, 0, 1920, 1080);
-		//this->res->bgImg->Draw(draw, src);
+		//”wŒi
+		ML::Box2D draw (0, 0, 1920, 1080);
+		ML::Box2D src (0, 0, 1920, 1080);
+		this->res->bgImg->Draw(draw, src);
 
 		//ML::Box2D draw2(1920 / 2, 0, 1920 / 2, 1080 / 2);
 		//this->res->bgImg->Draw(draw2, src);
