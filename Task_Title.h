@@ -51,20 +51,11 @@ namespace  Title
 	//変更可◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇◇
 	public:
 		//追加したい変数・メソッドはここに追加する
-		XI::GamePad::SP controller;
-
-		float bgmSpeed = 1.f;
-		int bgmVol = 100;
-
-		int seSpeed = 100;
-		int seVol = 100;
-
-		long tVol = 100;
+		vector<XI::GamePad::SP> inputs;
 
 		DG::Font::SP TestFont;
 
 		int Cnt;
-
 		float logoY;
 	};
 }
