@@ -17,7 +17,7 @@ namespace  OguiFood
 	bool  Resource::Initialize()
 	{
 		image = DG::Image::Create("./data/image/otsan_ramen.png");
-		foodHPImage = DG::Image::Create("./data/image/TextImage/FoodHPFont.png");
+		foodHPImage = DG::Image::Create("./data/image/TextImage/OguiFont.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -163,15 +163,24 @@ namespace  OguiFood
 		//☆プレイヤーに情報を送る
 		//全てのプレイヤーを取得
 		auto players = ge->GetTasks<OguiPlayer::Object>("プレイヤー");
-		for (auto p = players->begin(); p != players->end(); ++p)
+		if (players)
 		{
-			//この料理を食べたプレイヤーか判定
-			if ((*p)->playerNum == this->playerNum)
+			for (auto p = players->begin(); p != players->end(); ++p)
 			{
-				//プレイヤーの食べた料理数のカウントを増やす
-				(*p)->eatFoodCount++;
-				//料理が無くなったのでfalseを送る
-				(*p)->SetExistFood(false);
+				//この料理を食べたプレイヤーか判定
+				if ((*p)->playerNum == this->playerNum)
+				{
+					//プレイヤーの食べた料理数のカウントを増やす
+					(*p)->eatFoodCount++;
+					//食べた料理の数が99を超え無いようにする
+					if ((*p)->eatFoodCount > 99)
+					{
+						(*p)->eatFoodCount = 99;
+					}
+
+					//料理が無くなったのでfalseを送る
+					(*p)->SetExistFood(false);
+				}
 			}
 		}
 	}
