@@ -310,6 +310,9 @@
     <ClCompile Include="Miyagawa\Task_SubscribeControllerBG.cpp">
       <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
     </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGameUI.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -525,6 +528,9 @@
     </ClInclude>
     <ClInclude Include="Miyagawa\Task_SubscribeControllerBG.h">
       <Filter>MyPG\Task\Miyagawa\SubscribeController</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGameUI.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
