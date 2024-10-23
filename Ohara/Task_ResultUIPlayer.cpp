@@ -11,16 +11,24 @@ namespace  ResultUIPlayer
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->playerImage = DG::Image::Create("./data/image/game_otsan_pose.png");
-		this->playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
-		this->rankImage = DG::Image::Create("./data/image/CompanyRank.png");
+		//プレイヤー
+		playerImage[0] = DG::Image::Create("./data/image/game_otsan_pose_red.png");
+		playerImage[1] = DG::Image::Create("./data/image/game_otsan_pose.png");
+		playerImage[2] = DG::Image::Create("./data/image/game_otsan_pose_yellow.png");
+		playerImage[3] = DG::Image::Create("./data/image/game_otsan_pose_green.png");
+
+		//プレイヤー識別番号
+		playerNumberImage = DG::Image::Create("./data/image/PlayerNumber.png");
+
+		//順位
+		rankImage = DG::Image::Create("./data/image/CompanyRank_new.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->playerImage.reset();
+		this->playerImage->reset();
 		this->playerNumberImage.reset();
 		this->rankImage.reset();
 		return true;
@@ -67,7 +75,7 @@ namespace  ResultUIPlayer
 		DrawInformation drawPlayerImage = this->GetDrawImages(0);
 		drawPlayerImage.draw.Offset(this->drawPos.displayPlayerPos);
 
-		this->res->playerImage->Draw(drawPlayerImage.draw, drawPlayerImage.src);
+		this->res->playerImage[drawPlayerInfo.PlayerNum - 1]->Draw(drawPlayerImage.draw, drawPlayerImage.src);
 
 		//☆プレイヤー番号の描画
 		DrawInformation drawPlayerNumberImage = this->GetDrawImages(1);
@@ -90,22 +98,22 @@ namespace  ResultUIPlayer
 	{
 		DrawInformation imageTable[] = {
 			//プレイヤー
-			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(0, 0, 436, 542) },		//要素数0 1位プレイヤー
-			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(436, 0, 436, 542) },	//要素数1 2位プレイヤー
-			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(872, 0, 436, 542) },	//要素数2 3位プレイヤー
-			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(1308, 0, 436, 542)},	//要素数3 4位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(0, 0, 436, 542) },		// 要素数0 1位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(436, 0, 436, 542) },	// 要素数1 2位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(872, 0, 436, 542) },	// 要素数2 3位プレイヤー
+			{ ML::Box2D(-218 / 2, -271 / 2, 436 / 2, 542 / 2), ML::Box2D(1308, 0, 436, 542)},	// 要素数3 4位プレイヤー
 
 			//プレイヤーの番号
-			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105) },	//要素数4 1P
-			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105) },	//要素数5 2P
-			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105) },	//要素数6 3P
-			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105) },	//要素数7 4P
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105) },	// 要素数4 1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105) },	// 要素数5 2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105) },	// 要素数6 3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105) },	// 要素数7 4P
 
 			//順位
-			{ ML::Box2D(-77, -43, 154, 85), ML::Box2D(0, 0, 154, 85) },		//要素数8  1位(社長)
-			{ ML::Box2D(-77, -43, 154, 85), ML::Box2D(154, 0, 154, 85) },	//要素数9  2位(部長)
-			{ ML::Box2D(-78, -43, 155, 85), ML::Box2D(308, 0, 155, 85) },	//要素数10 3位(課長)
-			{ ML::Box2D(-110, -43, 219, 85), ML::Box2D(463, 0, 219, 85) },	//要素数11 4位(平社員)
+			{ ML::Box2D(-77, -43, 154, 85), ML::Box2D(0, 0, 155, 100) },	// 要素数8  1位(社長)
+			{ ML::Box2D(-77, -43, 154, 85), ML::Box2D(155, 0, 161, 100) },	// 要素数9  2位(部長)
+			{ ML::Box2D(-78, -43, 155, 85), ML::Box2D(316, 0, 160, 100) },	// 要素数10 3位(課長)
+			{ ML::Box2D(-110, -43, 219, 85), ML::Box2D(476, 0, 224, 100) },	// 要素数11 4位(平社員)
 
 			//スコア
 		};

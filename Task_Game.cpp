@@ -116,12 +116,12 @@ namespace  Game
 
 		case 4:
 			SaboriGame::Object::Create(true);
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 50.f));
 			break;
 
 		case 5:
 			OguiGame::Object::Create(true);
-			UIManager::Object::CreateTimeLimitBar(ML::Vec2(1000.f, 1000.f));
+			UIManager::Object::CreateTimeLimitBar(ML::Vec2(ge->screen2DWidth / 2.f, 50.f));
 			break;
 
 		case 6:
