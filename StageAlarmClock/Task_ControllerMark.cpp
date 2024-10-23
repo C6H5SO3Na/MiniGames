@@ -2,24 +2,23 @@
 //
 //-------------------------------------------------------------------
 #include  "../MyPG.h"
-#include  "Task_ClassifyGameBG.h"
-#include  "../Task_Game.h"
+#include  "Task_ControllerMark.h"
 
-namespace  ClassifyGameBG
+namespace  ControllerMark
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		backGround = DG::Image::Create("./data/image/stargarak1.png");
+		controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		backGround.reset();
+		controllerMark.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -32,7 +31,8 @@ namespace  ClassifyGameBG
 		this->res = Resource::Create();
 
 		//★データ初期化
-		render2D_Priority[1] = 1.f;
+		this->render2D_Priority[1] = -0.1f;
+		this->animCnt = 0;
 		//★タスクの生成
 
 		return  true;
@@ -54,16 +54,35 @@ namespace  ClassifyGameBG
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
+		animCnt++;
+		//アニメ更新
+		if (this->animCnt >= 15)
+		{
+			this->animCnt = 0;
+			this->animIndex++;
+			if (this->animIndex >= 2)
+			{
+				this->animIndex = 0;
+			}
+		}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		ML::Box2D draw(0, 0, 1920, 1080);
-		ML::Box2D src(0, 0, 1920, 1080);
-		res->backGround->Draw(draw, src);
+		switch (ge->gameState)
+		{
+		case MyPG::MyGameEngine::GameState::Game:
+			//コントローラーマーク
+			ML::Box2D Draw = Imageplace[ge->players.size() - 1];
+			int srcX = animIndex % 2 * 128;
+			int srcY = animIndex / 2 * 128;
+			ML::Box2D Src(srcX, srcY, 128, 128);
+			this->res->controllerMark->Draw(Draw, Src);
+			break;
+		}
 	}
-
+	//-------------------------------------------------------------------
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -76,7 +95,6 @@ namespace  ClassifyGameBG
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
-				
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill

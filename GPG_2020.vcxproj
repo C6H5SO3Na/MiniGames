@@ -182,10 +182,12 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="StageAlarmClock\Task_Clock.cpp" />
     <ClCompile Include="StageAlarmClock\Task_CommonItemManager01.cpp" />
+    <ClCompile Include="StageAlarmClock\Task_ControllerMark.cpp" />
     <ClCompile Include="StageAlarmClock\Task_hand.cpp" />
     <ClCompile Include="StageAlarmClock\Task_StageAlarmClock.cpp" />
     <ClCompile Include="StageBrushTeeth\Task_brush.cpp" />
     <ClCompile Include="StageBrushTeeth\Task_CommonItemManager02.cpp" />
+    <ClCompile Include="StageBrushTeeth\Task_ControllerMark02.cpp" />
     <ClCompile Include="StageBrushTeeth\Task_StageBrushTeeth.cpp" />
     <ClCompile Include="StageBrushTeeth\Task_stain.cpp" />
     <ClCompile Include="StageBrushTeeth\Task_StainManager.cpp" />
@@ -259,10 +261,12 @@
     <ClInclude Include="sound.h" />
     <ClInclude Include="StageAlarmClock\Task_Clock.h" />
     <ClInclude Include="StageAlarmClock\Task_CommonItemManager01.h" />
+    <ClInclude Include="StageAlarmClock\Task_ControllerMark.h" />
     <ClInclude Include="StageAlarmClock\Task_hand.h" />
     <ClInclude Include="StageAlarmClock\Task_StageAlarmClock.h" />
     <ClInclude Include="StageBrushTeeth\Task_brush.h" />
     <ClInclude Include="StageBrushTeeth\Task_CommonItemManager02.h" />
+    <ClInclude Include="StageBrushTeeth\Task_ControllerMark02.h" />
     <ClInclude Include="StageBrushTeeth\Task_StageBrushTeeth.h" />
     <ClInclude Include="StageBrushTeeth\Task_stain.h" />
     <ClInclude Include="StageBrushTeeth\Task_StainManager.h" />
