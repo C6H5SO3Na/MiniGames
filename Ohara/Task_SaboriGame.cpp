@@ -357,6 +357,7 @@ namespace  SaboriGame
 	//プレイヤーの初期位置を遊ぶプレイヤーの人数に応じて決める
 	void Object::DecidePlayerFirstPos(const int playerCount)
 	{
+		//計算に使う変数宣言
 		int sourceNumeratorValue = 0;	// 元になる分子の値
 		int valueIncreasePerLoop = 0;	// ループごとに増やす値
 

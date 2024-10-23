@@ -43,7 +43,13 @@ namespace  SaboriUIManager
 		{
 			playerCount = game->GetPlayerCount();
 		}
-		
+
+		//サボり合計時間の描画位置を決める
+		DecideTotalSaboriTimeDrawPos(playerCount);
+
+		//プレイヤー番号の描画位置を決める
+		DecidePlayerNumbersDrawInfo_pos(playerCount);
+
 		//★タスクの生成
 
 		return  true;
@@ -172,6 +178,82 @@ namespace  SaboriUIManager
 		}
 	}
 
+	//-------------------------------------------------------------------
+	//プレイヤー番号の位置を遊ぶプレイヤーの人数に応じて決める
+	void Object::DecidePlayerNumbersDrawInfo_pos(const int playerCount)
+	{
+		//計算に使う変数宣言
+		int sourceNumeratorValue = 0;	// 元になる分子の値
+		int valueIncreasePerLoop = 0;	// ループごとに増やす値
+
+		//計算に使う値を決める
+		switch (playerCount)
+		{
+		case 1:
+			sourceNumeratorValue = 4;
+			break;
+
+		case 2:
+			sourceNumeratorValue = 2;
+			valueIncreasePerLoop = 4;
+			break;
+
+		case 3:
+			sourceNumeratorValue = 1;
+			valueIncreasePerLoop = 3;
+			break;
+
+		case 4:
+			sourceNumeratorValue = 1;
+			valueIncreasePerLoop = 2;
+			break;
+		}
+
+		//playerNumbersDrawInfo.posを設定
+		for (int i = 0; i < playerCount; ++i)
+		{
+			playerNumbersDrawInfo[i].pos = ML::Vec2(ge->screen2DWidth * (sourceNumeratorValue + (valueIncreasePerLoop * i)) / 8.f, ge->screen2DHeight - 480.f);
+		}
+	}
+
+	//-------------------------------------------------------------------
+	//合計サボり時間の描画位置を決める
+	void Object::DecideTotalSaboriTimeDrawPos(const int playerCount)
+	{
+		//計算に使う変数宣言
+		int sourceNumeratorValue = 0;	// 元になる分子の値
+		int valueIncreasePerLoop = 0;	// ループごとに増やす値
+
+		//計算に使う値を決める
+		switch (playerCount)
+		{
+		case 1:
+			sourceNumeratorValue = 6;
+			break;
+
+		case 2:
+			sourceNumeratorValue = 3;
+			valueIncreasePerLoop = 6;
+			break;
+
+		case 3:
+			sourceNumeratorValue = 2;
+			valueIncreasePerLoop = 4;
+			break;
+
+		case 4:
+			sourceNumeratorValue = 1;
+			valueIncreasePerLoop = 3;
+			break;
+		}
+
+		//playerNumbersDrawInfo_TotalSaboriTime.posを設定
+		for (int i = 0; i < playerCount; ++i)
+		{
+			playerNumbersDrawInfo_TotalSaboriTime[i].pos = ML::Vec2(ge->screen2DWidth * (sourceNumeratorValue + (valueIncreasePerLoop * i)) / 12.f - 75.f, 100.f + (53.f / 1.5f));
+		}
+	}
+
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -210,10 +292,10 @@ namespace  SaboriUIManager
 		:
 		//プレイヤー識別番号関係---------------------------------------------------------------------------------------
 		playerNumbersDrawInfo{
-			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 8.f, ge->screen2DHeight - 480.f) },			// 1P
-			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 480.f) },	// 2P
-			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 480.f) },	// 3P
-			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 480.f) }		// 4P
+			{ ML::Box2D(-78, -53, 155, 105), ML::Box2D(0, 0, 155, 105), ML::Vec2(0, 0) },	// 1P
+			{ ML::Box2D(-96, -53, 192, 105), ML::Box2D(155, 0, 192, 105), ML::Vec2(0, 0) },	// 2P
+			{ ML::Box2D(-88, -53, 175, 105), ML::Box2D(347, 0, 175, 105), ML::Vec2(0, 0) },	// 3P
+			{ ML::Box2D(-97, -53, 193, 105), ML::Box2D(522, 0, 193, 105), ML::Vec2(0, 0) }	// 4P
 		},
 		playerNumbersDrawInfo_TotalSaboriTime{
 			{ ML::Box2D(static_cast<int>(-78 / 1.5f), static_cast<int>(-53 / 1.5f), static_cast<int>(155 / 1.5f), static_cast<int>(105 / 1.5f)), ML::Box2D(0, 0, 155, 105), ML::Vec2(ge->screen2DWidth / 12.f - 50.f, 100.f + (53.f / 1.5f))},			// 1P

@@ -66,6 +66,8 @@ namespace  SaboriUIManager
 		//☆メソッド
 		void DrawPlayerNumber();									// プレイヤー番号の描画
 		void DrawPlayerNumber_TotalSaboriTime(const int loopCount);	// サボり合計時間の判別用プレイヤー番号の描画
+		void DecidePlayerNumbersDrawInfo_pos(const int playerCount);	// プレイヤー番号の位置を遊ぶプレイヤーの人数に応じて決める
+		void DecideTotalSaboriTimeDrawPos(const int playerCount);	// 合計サボり時間の描画位置を決める
 
 		//サボり合計時間描画関係---------------------------------------------------------------------------------------
 		//☆変数
