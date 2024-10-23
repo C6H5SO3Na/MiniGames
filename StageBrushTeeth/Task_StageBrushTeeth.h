@@ -24,10 +24,10 @@ namespace  StageBrushTeeth
 		static  Resource::SP  Create();
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
 		//u•Ï”éŒ¾‚ğ‘‚­v
-		DG::Image::SP bgImg;
-		DG::Image::SP teethImg;
+		//DG::Image::SP bgImg;
+		//DG::Image::SP teethImg;
 		DG::Image::SP controllerMark;
-		DG::Image::SP PlayerNum;
+		//DG::Image::SP PlayerNum;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask

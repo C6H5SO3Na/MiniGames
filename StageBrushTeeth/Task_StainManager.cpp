@@ -43,23 +43,26 @@ namespace  StainManager
 		return  true;
 	}
 	//-------------------------------------------------------------------
-	void Object::Positionalise(int PlayerNum)
+	void Object::Positionalise(ML::Box2D PlayerAreaPos_)
 	{
 		const int num = 170;
-		ML::Vec2 pos[][2] = {
-			{ ML::Vec2(0.f, 0.f), ML::Vec2(1980 / 2, 1080 / 2) },
-			{ ML::Vec2(1980 / 2, 0.f), ML::Vec2(1980, 1080 / 2) },
-			{ ML::Vec2(0.f, 1080 / 2), ML::Vec2(1980 / 2, 1080) },
-			{ ML::Vec2(1980 / 2, 1080 / 2), ML::Vec2(1980, 1080) },
+		ML::Vec2 pos[2]= {
+			 ML::Vec2(0.f, 0.f), ML::Vec2(1980 / 2, 1080 / 2) 
+			//{ ML::Vec2(1980 / 2, 0.f), ML::Vec2(1980, 1080 / 2) },
+			//{ ML::Vec2(0.f, 1080 / 2), ML::Vec2(1980 / 2, 1080) },
+			//{ ML::Vec2(1980 / 2, 1080 / 2), ML::Vec2(1980, 1080) },
 		};
 		const int min = 0;
 		const int max = 1;
 
+		int AreaPosX = PlayerAreaPos_.x;
+		int AreaPosY = PlayerAreaPos_.y;
+
 		/*ML::Box2D StainArea(PlayerNum % 2 * (1980 / 2), PlayerNum / 2 * (1080 / 2), (1980 / 2), (1080 / 2));*/
-		minPosX = pos[PlayerNum][min].x + num + 40;//StainArea.x;
-		minPosY = pos[PlayerNum][min].y + num - 50;//StainArea.y;
-		maxPosX = pos[PlayerNum][max].x - 16 - num - 40;//StainArea.x + StainArea.w - 32;
-		maxPosY = pos[PlayerNum][max].y - 16 - num + 100;//StainArea.y + StainArea.h - 32;
+		minPosX = pos[min].x + num + 40 + AreaPosX;//StainArea.x;
+		minPosY = pos[min].y + num - 50 + AreaPosY;//StainArea.y;
+		maxPosX = pos[max].x - 16 - num - 40 + AreaPosX;//StainArea.x + StainArea.w - 32;
+		maxPosY = pos[max].y - 16 - num + 100 + AreaPosY;//StainArea.y + StainArea.h - 32;
 	}
 	//-------------------------------------------------------------------
 	void Object::CreateStain()

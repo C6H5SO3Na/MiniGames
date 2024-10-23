@@ -17,9 +17,9 @@ namespace  StageAlarmClock
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
+		//this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
 		this->controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");
-		this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
+		//this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		ge->debugRectLoad();
 		return true;
 	}
@@ -27,9 +27,9 @@ namespace  StageAlarmClock
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->bgImg.reset();
+		//this->bgImg.reset();
 		this->controllerMark.reset();
-		this->PlayerNum.reset();
+		//this->PlayerNum.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -50,7 +50,7 @@ namespace  StageAlarmClock
 		//this->state = Phase::Game;
 		this->timeCnt = 10 * 60;
 		ge->nowTimeLimit = this->timeCnt;
-		this->animCnt = 0;
+		/*this->animCnt = 0;*/
 
 		//★タスクの生成
 		/*auto alarmclock = Clock::Object::Create(true);
@@ -119,19 +119,19 @@ namespace  StageAlarmClock
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		//背景
-		ML::Box2D draw (0, 0, 1920/2, 1080/2);
-		ML::Box2D src (0, 0, 1920, 1080);
-		this->res->bgImg->Draw(draw, src);
+		////背景
+		//ML::Box2D draw (0, 0, 1920/2, 1080/2);
+		//ML::Box2D src (0, 0, 1920, 1080);
+		//this->res->bgImg->Draw(draw, src);
 
-		ML::Box2D draw2(1920 / 2, 0, 1920 / 2, 1080 / 2);
-		this->res->bgImg->Draw(draw2, src);
+		//ML::Box2D draw2(1920 / 2, 0, 1920 / 2, 1080 / 2);
+		//this->res->bgImg->Draw(draw2, src);
 
-		ML::Box2D draw3(0, 1080 / 2, 1920 / 2, 1080 / 2);
-		this->res->bgImg->Draw(draw3, src);
+		//ML::Box2D draw3(0, 1080 / 2, 1920 / 2, 1080 / 2);
+		//this->res->bgImg->Draw(draw3, src);
 
-		ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
-		this->res->bgImg->Draw(draw4, src);
+		//ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
+		//this->res->bgImg->Draw(draw4, src);
 
 		switch (ge->gameState)
 		{
@@ -146,22 +146,22 @@ namespace  StageAlarmClock
 		}
 		
 
-		//プレイヤーナンバー
-		ML::Box2D draw01(0, 1080/2 - 105, 715/4, 105);
-		ML::Box2D src01(0, 0, 715/4 - 20, 105);
-		this->res->PlayerNum->Draw(draw01, src01);
+		////プレイヤーナンバー
+		//ML::Box2D draw01(0, 1080/2 - 105, 715/4, 105);
+		//ML::Box2D src01(0, 0, 715/4 - 20, 105);
+		//this->res->PlayerNum->Draw(draw01, src01);
 
-		ML::Box2D draw02(1920 - 715 / 4 -10, 1080 / 2 - 105, 715 / 4, 105);
-		ML::Box2D src02(715 / 4 - 20, 0, 715 / 4, 105);
-		this->res->PlayerNum->Draw(draw02, src02);
+		//ML::Box2D draw02(1920 - 715 / 4 -10, 1080 / 2 - 105, 715 / 4, 105);
+		//ML::Box2D src02(715 / 4 - 20, 0, 715 / 4, 105);
+		//this->res->PlayerNum->Draw(draw02, src02);
 
-		ML::Box2D draw03(0, 1080 - 105 - 10, 715 / 4, 105);
-		ML::Box2D src03(715 / 2 - 10, 0, 715 / 4, 105);
-		this->res->PlayerNum->Draw(draw03, src03);
+		//ML::Box2D draw03(0, 1080 - 105 - 10, 715 / 4, 105);
+		//ML::Box2D src03(715 / 2 - 10, 0, 715 / 4, 105);
+		//this->res->PlayerNum->Draw(draw03, src03);
 
-		ML::Box2D draw04(1920 - 715 / 4 - 10, 1080 - 105 - 10, 715 / 4, 105);
-		ML::Box2D src04(715 / 4 * 3 - 10, 0, 715 / 4, 105);
-		this->res->PlayerNum->Draw(draw04, src04);
+		//ML::Box2D draw04(1920 - 715 / 4 - 10, 1080 - 105 - 10, 715 / 4, 105);
+		//ML::Box2D src04(715 / 4 * 3 - 10, 0, 715 / 4, 105);
+		//this->res->PlayerNum->Draw(draw04, src04);
 
 		ge->debugRectDraw();
 	}

@@ -26,7 +26,7 @@ namespace  Clock
 		//共有する変数はここに追加する
 		DG::Image::SP img;
 		int PlayerNumId;
-		string ClockImageList[4] = { "game_clock_red.png", "game_clock_blue.png", "game_clock_green.png", "game_clock.png" };
+		string ClockImageList[4] = { "game_clock_red.png", "game_clock_blue.png", "game_clock.png", "game_clock_green.png" };
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BChara
@@ -54,7 +54,7 @@ namespace  Clock
 		//「変数宣言を書く」
 		//「追加メソッドを書く」
 		void Received() {};
-		void Positionalise(int PlayerNum);
+		void Positionalise(ML::Box2D PlayerAreaPos_);
 		ML::Box2D drawBase;
 
 		int animCnt;
