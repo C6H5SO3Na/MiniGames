@@ -109,6 +109,7 @@ namespace  ClassifyGame
 			ML::Box2D Src(srcX, srcY, 128, 128);
 			if (ge->players.size() < 4) {
 				Draw.x -= 100;
+				Draw.y += ge->players.size() / 2 * 300 - 200;
 			}
 			this->res->controllerMark->Draw(Draw, Src);
 		}
