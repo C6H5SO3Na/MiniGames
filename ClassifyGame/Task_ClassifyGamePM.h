@@ -65,5 +65,6 @@ namespace  ClassifyGamePM
 			{ML::Vec2(450,300),ML::Vec2(1410,300),ML::Vec2(945,840),ML::Vec2(0,0)},
 			{ML::Vec2(450,300),ML::Vec2(1410,300),ML::Vec2(450,840),ML::Vec2(1410,840)}
 		};
+		bool isCount;
 	};
 }
