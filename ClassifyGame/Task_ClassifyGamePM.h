@@ -59,5 +59,11 @@ namespace  ClassifyGamePM
 		static bool compare(const NumIndex& a, const NumIndex& b);
 		void assignRanks(vector<int>& nums, vector<int>& ranks);
 		NumIndex ni;
+		ML::Vec2 playerWindowVec[4][4] = { 
+			{ML::Vec2(945,570),ML::Vec2(0,0),ML::Vec2(0,0),ML::Vec2(0,0)},
+			{ML::Vec2(945,300),ML::Vec2(945,840),ML::Vec2(0,0),ML::Vec2(0,0)},
+			{ML::Vec2(450,300),ML::Vec2(1510,300),ML::Vec2(980,840),ML::Vec2(0,0)},
+			{ML::Vec2(450,300),ML::Vec2(1510,300),ML::Vec2(450,840),ML::Vec2(1510,840)}
+		};
 	};
 }

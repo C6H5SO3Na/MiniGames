@@ -107,6 +107,9 @@ namespace  ClassifyGame
 			int srcX = animIndex % 2 * 128;
 			int srcY = animIndex / 2 * 128;
 			ML::Box2D Src(srcX, srcY, 128, 128);
+			if (ge->players.size() < 4) {
+				Draw.x -= 100;
+			}
 			this->res->controllerMark->Draw(Draw, Src);
 		}
 	}
