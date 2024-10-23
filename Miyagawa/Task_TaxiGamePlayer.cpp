@@ -311,6 +311,7 @@ namespace TaxiGamePlayer
 	void Object::AddScore(int& score, XI::GamePad::SP con)
 	{
 		ge->AddScore(controllerNum - 1, score);
+		--score;
 	}
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
