@@ -36,6 +36,7 @@ namespace  hand
 		//SE
 		se::LoadFile("Stop", "./data/sound/se/AlarmClockGame/Clock-Alarm05-5(Toggle).wav");
 		se::LoadFile("Ring", "./data/sound/se/AlarmClockGame/alarmRing.wav");
+		se::SetVolume("Ring", 25);
 		se::SetVolume("Stop", 100);
 
 		//šƒf[ƒ^‰Šú‰»
