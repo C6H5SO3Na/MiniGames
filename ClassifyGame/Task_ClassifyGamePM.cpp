@@ -37,18 +37,18 @@ namespace  ClassifyGamePM
 
 		//★データ初期化
 		gameCnt = 0;
-		cList.push_back(ge->in1);
-		cList.push_back(ge->in2);
-		cList.push_back(ge->in3);
-		cList.push_back(ge->in4);
+		for (int i = 0; i < ge->players.size(); ++i) {
+			cList.push_back(ge->players[i]);
+		}
+		
 		//se
 		se::LoadFile("seCGd", "./data/sound/se/ClassifyGame/doit.wav");
 		//★タスクの生成
 
-		for (int i = 0; i < 4; ++i) {
+		for (int i = 0; i < cList.size(); ++i) {
 			auto p = CGPlayer::Object::Create(true);
 			pList.push_back(p);
-			pList[i]->posInitialize(ML::Vec2(450 + 960 * (i % 2), 300 + 540 * (i / 2)));
+			pList[i]->posInitialize(playerWindowVec[cList.size() - 1][i]);
 			pList[i]->controller = cList[i];
 			pList[i]->playerNum = i;
 		}
@@ -87,21 +87,21 @@ namespace  ClassifyGamePM
 				switch (r)
 				{
 				case 0:
-					for (int i = 0; i < 4; ++i) {
+					for (int i = 0; i < pList.size(); ++i) {
 						if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
 							pList[i]->SetCGState(CGBChara::CGstate::PlayR);
 						}
 					}
 					break;
 				case 1:
-					for (int i = 0; i < 4; ++i) {
+					for (int i = 0; i < pList.size(); ++i) {
 						if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
 							pList[i]->SetCGState(CGBChara::CGstate::PlayG);
 						}
 					}
 					break;
 				case 2:
-					for (int i = 0; i < 4; ++i) {
+					for (int i = 0; i < pList.size(); ++i) {
 						if (pList[i]->GetCGState() != CGBChara::CGstate::Fail) {
 							pList[i]->SetCGState(CGBChara::CGstate::PlayB);
 						}
@@ -111,11 +111,14 @@ namespace  ClassifyGamePM
 			}
 			break;
 		case MyPG::MyGameEngine::GameState::Finish:
-			vector<int> nums = { pList[0]->Fb, pList[1]->Fb, pList[2]->Fb, pList[3]->Fb };
+			vector<int> nums;
+			for (int i = 0; i < pList.size(); ++i) {
+				nums.push_back(pList[i]->Fb);
+			}
 			vector<int> ranks(nums.size());
 
 			assignRanks(nums, ranks);
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < nums.size(); i++) {
 				switch (ranks[i]) {
 				case 1:
 					ge->AddScore(i, 4);
