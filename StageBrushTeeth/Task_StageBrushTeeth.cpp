@@ -124,7 +124,7 @@ namespace  StageBrushTeeth
 	void  Object::Render2D_AF()
 	{
 		//”wŒi
-		ML::Box2D draw(0, 0, 1920, 1080);
+		ML::Box2D draw(0, 0, 1920 / 2, 1080 / 2);
 		ML::Box2D src(0, 0, 3300, 2550);
 		this->res->bgImg->Draw(draw, src);
 
@@ -196,6 +196,7 @@ namespace  StageBrushTeeth
 					ge->AddScore((*it)->id, com->addscore[com->rank]);
 					com->rank++;
 					(*it)->isScoreAdd = true;
+					isclearplayer[(*it)->id] = true;
 				}		
 			}
 		}

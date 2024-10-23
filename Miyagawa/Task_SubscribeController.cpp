@@ -31,6 +31,11 @@ namespace SubscribeController
 		//Aボタン
 		AButton[0] = DG::Image::Create("./data/image/button/Double/xbox_button_color_a.png");
 		AButton[1] = DG::Image::Create("./data/image/button/Double/xbox_button_color_a_outline.png");
+
+		//UI
+		playerEntryLogo = DG::Image::Create("./data/image/PlayerEntry.png");
+		entryLogo = DG::Image::Create("./data/image/Entry.png");
+		gameStartLogo = DG::Image::Create("./data/image/GameStart.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -207,9 +212,9 @@ namespace SubscribeController
 	//UI描画
 	void  Object::DrawUI() const
 	{
-		ML::Box2D textBox(550, 50, 1000, 100);
-		string text = "プレイヤーエントリー";
-		TestFont->Draw(textBox, text);
+		ML::Box2D src(0, 0, 754, 101);
+		ML::Box2D draw = src.OffsetCopy(ML::Vec2(550, 50));
+		res->playerEntryLogo->Draw(draw, src);
 
 		DrawOperation();
 	}
@@ -219,9 +224,9 @@ namespace SubscribeController
 	{
 		//ゲーム開始
 		if (subscribeCnt > 0) {
-			ML::Box2D textBox(800, 850, 1000, 100);
-			string text = "ゲーム開始";
-			TestFont->Draw(textBox, text);
+			ML::Box2D src(0, 0, 754, 101);
+			ML::Box2D draw = src.OffsetCopy(ML::Vec2(650.f, 840.f));
+			res->gameStartLogo->Draw(draw, src);
 		}
 
 		//ゲーム開始のボタン
@@ -231,9 +236,9 @@ namespace SubscribeController
 
 		//エントリー
 		{
-			ML::Box2D textBox(800, 960, 1000, 100);
-			string text = "エントリー";
-			TestFont->Draw(textBox, text);
+			ML::Box2D src(0, 0, 754, 101);
+			ML::Box2D draw = src.OffsetCopy(ML::Vec2(600.f, 950.f));
+			res->entryLogo->Draw(draw, src);
 		}
 
 		//エントリーのボタン

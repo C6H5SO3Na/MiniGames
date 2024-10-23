@@ -27,6 +27,9 @@ namespace SubscribeController
 		DG::Image::SP playerImg[4];
 		DG::Image::SP startButton[2];
 		DG::Image::SP AButton[2];
+		DG::Image::SP playerEntryLogo;
+		DG::Image::SP entryLogo;
+		DG::Image::SP gameStartLogo;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
