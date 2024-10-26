@@ -20,18 +20,12 @@ namespace  SaboriGame
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->gameRuleImage = DG::Image::Create("./data/image/SaboriGameRuleSentence.png");
-		this->fightImage = DG::Image::Create("./data/image/Fight.gif");
-		this->finishImage = DG::Image::Create("./data/image/Finish.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->gameRuleImage.reset();
-		this->fightImage.reset();
-		this->finishImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------

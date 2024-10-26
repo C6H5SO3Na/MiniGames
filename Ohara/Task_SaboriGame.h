@@ -24,9 +24,6 @@ namespace  SaboriGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//‹¤—L‚·‚é•Ï”‚Í‚±‚±‚É’Ç‰Á‚·‚é
-		DG::Image::SP gameRuleImage;
-		DG::Image::SP fightImage;
-		DG::Image::SP finishImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask

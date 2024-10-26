@@ -43,6 +43,10 @@ namespace  OguiFoodManager
 		{
 			hasExistFoods.push_back(false);
 		}
+
+		//プレイヤーの初期位置を決める
+		DecideFoodFirstPos(playerCount);
+
 		//★タスクの生成
 
 		return  true;
@@ -136,6 +140,44 @@ namespace  OguiFoodManager
 		}
 	}
 
+	//-------------------------------------------------------------------
+	//料理の生成位置を遊ぶプレイヤーの人数に応じて決める
+	void Object::DecideFoodFirstPos(const int playerCount)
+	{
+		//計算に使う変数宣言
+		int sourceNumeratorValue = 0;	// 元になる分子の値
+		int valueIncreasePerLoop = 0;	// ループごとに増やす値
+
+		//計算に使う値を決める
+		switch (playerCount)
+		{
+		case 1:
+			sourceNumeratorValue = 4;
+			break;
+
+		case 2:
+			sourceNumeratorValue = 2;
+			valueIncreasePerLoop = 4;
+			break;
+
+		case 3:
+			sourceNumeratorValue = 1;
+			valueIncreasePerLoop = 3;
+			break;
+
+		case 4:
+			sourceNumeratorValue = 1;
+			valueIncreasePerLoop = 2;
+			break;
+		}
+
+		//playerFirstPosを設定
+		for (int i = 0; i < playerCount; ++i)
+		{
+			foodPositions.push_back(ML::Vec2(ge->screen2DWidth * (sourceNumeratorValue + (valueIncreasePerLoop * i)) / 8.f, ge->screen2DHeight / 2.f + 200));
+		}
+	}
+
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -173,13 +215,7 @@ namespace  OguiFoodManager
 	Object::Object()
 		:
 		//料理生成関係
-		createCount{30, 30, 30, 30}, playerCount(1),
-		foodPositions{
-			{ ge->screen2DWidth / 8.f, ge->screen2DHeight / 2.f + 200 },
-			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight / 2.f + 200 },
-			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight / 2.f + 200 },
-			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight / 2.f + 200 }
-		}
+		createCount{30, 30, 30, 30}, playerCount(4)
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成

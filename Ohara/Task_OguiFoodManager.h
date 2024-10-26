@@ -48,17 +48,19 @@ namespace  OguiFoodManager
 		//追加したい変数・メソッドはここに追加する
 		//料理生成関係----------------------------------------------------------------------------------------------------------------------
 		//☆変数
-		int				createCount[4];			// 料理が完成するまでのカウント、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
-		vector<bool>	hasExistFoods;			// 料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
-		//bool			hasExistFoods[4];		// 料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する CPU実装時はこっちを使う
-		int				playerCount;			// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
-		ML::Vec2		foodPositions[4];		// 料理の出現位置 
+		int					createCount[4];			// 料理が完成するまでのカウント、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
+		vector<bool>		hasExistFoods;			// 料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する
+		//bool				hasExistFoods[4];		// 料理が存在しているか判別、要素数0を1Pの料理、要素数1を2Pの料理・・・として使用する CPU実装時はこっちを使う
+		int					playerCount;			// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
+		vector<ML::Vec2>	foodPositions;		// 料理の出現位置 
 
 		//☆メソッド
-		void CreateFood(PlayerNum food_PlayerNum);							//料理の生成
-		void SendCreateFoodInformation(PlayerNum food_PlayerNum);			//料理を生成した情報を他タスクに送る
+		void CreateFood(PlayerNum food_PlayerNum);					// 料理の生成
+		void SendCreateFoodInformation(PlayerNum food_PlayerNum);	// 料理を生成した情報を他タスクに送る
+		void DecideFoodFirstPos(const int playerCount);				// 料理の生成位置を遊ぶプレイヤーの人数に応じて決める
+
 	public:
-		void NotExistFood(PlayerNum food_PlayerNum);						//料理がなくなった情報を取得
+		void NotExistFood(PlayerNum food_PlayerNum);				// 料理がなくなった情報を取得
 		
 	private:
 	};
