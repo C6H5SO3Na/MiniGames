@@ -101,6 +101,9 @@ namespace  SaboriPlayer
 		//☆Aボタン描画
 		this->DrawButton();
 	}
+
+	//-------------------------------------------------------------------
+	//★自作関数★
 	//-------------------------------------------------------------------
 	//現在のプレイヤーの状態制御
 	void Object::Think()
@@ -153,7 +156,7 @@ namespace  SaboriPlayer
 			se::PlayLoop(workSEName);
 
 			//ボタンの描画を開始する
-			this->buttonDrawPos = ML::Vec2(this->pos.x, this->pos.y - 400);
+			this->buttonDrawPos = ML::Vec2(this->pos.x + (250 / 1.5f) - 64, this->pos.y + (-230 / 1.5f) + 64); // (250 / 1.5f)はプレイヤーの画像の右半分、(-230 / 1.5f)は上半分、64はボタンの中心を(0,0)にする補正値を表す
 			this->isStartButtonDraw = true;
 
 			this->isPlayStartSE = true;

@@ -16,7 +16,7 @@ namespace  SaboriJoushi
 	//ƒŠƒ\[ƒX‚Ì‰Šú‰»
 	bool  Resource::Initialize()
 	{
-		this->image = DG::Image::Create("./data/image/game_boss.png");
+		this->image = DG::Image::Create("./data/image/game_boss_new.png");
 		return true;
 	}
 	//-------------------------------------------------------------------

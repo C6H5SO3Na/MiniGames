@@ -24,9 +24,6 @@ namespace  SaboriGame
 		static   WP  instance;
 		static  Resource::SP  Create();
 		//共有する変数はここに追加する
-		DG::Image::SP gameRuleImage;
-		DG::Image::SP fightImage;
-		DG::Image::SP finishImage;
 	};
 	//-------------------------------------------------------------------
 	class  Object : public  BTask
@@ -74,16 +71,17 @@ namespace  SaboriGame
 		};
 
 		//☆変数
-		ML::Vec2				playerFirstPos[4];	// プレイヤーの初期位置
-		vector<XI::GamePad::SP> useControllers;		// 実際に使用するコントローラーを格納する
-		PlayerNum				playersNum[4];		// プレイヤーの識別番号設定用
-		PlayerInformation		playersInfo[4];		// 順位決めに必要なプレイヤーの情報
-		int						playerCount;		// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
+		vector<ML::Vec2>		playerFirstPos;	// プレイヤーの初期位置
+		vector<XI::GamePad::SP> useControllers;	// 実際に使用するコントローラーを格納する
+		PlayerNum				playersNum[4];	// プレイヤーの識別番号設定用
+		PlayerInformation		playersInfo[4];	// 順位決めに必要なプレイヤーの情報
+		int						playerCount;	// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 
 		//☆関数
-		void Ranking();																				//順位決めの処理
-		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	//playerInfoAとplayerInfoBのtotalSaboriTimeで比較し、playerInfoAの方が大きい時trueを返す
-		void SendScore();																			//ge->scoreに得点を送る
+		void Ranking();																				// 順位決めの処理
+		bool compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB);	// playerInfoAとplayerInfoBのtotalSaboriTimeで比較し、playerInfoAの方が大きい時trueを返す
+		void SendScore();																			// ge->scoreに得点を送る
+		void DecidePlayerFirstPos(const int playerCount);											// プレイヤーの初期位置を遊ぶプレイヤーの人数に応じて決める
 
 		//上司関係----------------------------------------------------------------------------------------------------------------------------------------------------
 		//☆変数

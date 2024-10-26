@@ -20,18 +20,12 @@ namespace  SaboriGame
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->gameRuleImage = DG::Image::Create("./data/image/SaboriGameRuleSentence.png");
-		this->fightImage = DG::Image::Create("./data/image/Fight.gif");
-		this->finishImage = DG::Image::Create("./data/image/Finish.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		this->gameRuleImage.reset();
-		this->fightImage.reset();
-		this->finishImage.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -54,6 +48,9 @@ namespace  SaboriGame
 		{
 			playerCount = 4;
 		}
+
+		//プレイヤーの初期位置を決める
+		DecidePlayerFirstPos(playerCount);
 
 		//制限時間の設定
 		ge->nowTimeLimit = timeLimit;
@@ -118,6 +115,7 @@ namespace  SaboriGame
 	void  Object::Render2D_AF()
 	{
 	}
+
 	//-------------------------------------------------------------------
 	//★自分で実装した関数★
 	//-------------------------------------------------------------------
@@ -183,6 +181,7 @@ namespace  SaboriGame
 			break;
 		}
 	}
+
 	//-------------------------------------------------------------------
 	//順位決めの処理
 	void Object::Ranking()
@@ -233,12 +232,14 @@ namespace  SaboriGame
 			playersInfo[i].rank = currentRank;
 		}
 	}
+
 	//-------------------------------------------------------------------
 	//playerInfoAとplayerInfoBのtotalSaboriTimeで比較し、playerInfoAの方が大きい時trueを返す
 	bool Object::compare(const PlayerInformation& playerInfoA, const PlayerInformation& playerInfoB)
 	{
 		return playerInfoA.totalSaboriTime > playerInfoB.totalSaboriTime;
 	}
+
 	//-------------------------------------------------------------------
 	//ge->scoreに得点を送る
 	void Object::SendScore()
@@ -338,11 +339,50 @@ namespace  SaboriGame
 			}
 		}
 	}
+
 	//-------------------------------------------------------------------
 	//ゲームを遊ぶプレイヤーの人数の情報を渡す
 	int Object::GetPlayerCount()
 	{
 		return playerCount;
+	}
+
+	//-------------------------------------------------------------------
+	//プレイヤーの初期位置を遊ぶプレイヤーの人数に応じて決める
+	void Object::DecidePlayerFirstPos(const int playerCount)
+	{
+		//計算に使う変数宣言
+		int sourceNumeratorValue = 0;	// 元になる分子の値
+		int valueIncreasePerLoop = 0;	// ループごとに増やす値
+
+		//計算に使う値を決める
+		switch (playerCount)
+		{
+		case 1:
+			sourceNumeratorValue = 4;
+			break;
+
+		case 2:
+			sourceNumeratorValue = 2;
+			valueIncreasePerLoop = 4;
+			break;
+
+		case 3:
+			sourceNumeratorValue = 1;
+			valueIncreasePerLoop = 3;
+			break;
+
+		case 4:
+			sourceNumeratorValue = 1;
+			valueIncreasePerLoop = 2;
+			break;
+		}
+
+		//playerFirstPosを設定
+		for (int i = 0; i < playerCount; ++i)
+		{
+			playerFirstPos.push_back(ML::Vec2(ge->screen2DWidth * (sourceNumeratorValue + (valueIncreasePerLoop * i)) / 8.f, ge->screen2DHeight - 230.f));
+		}
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -383,12 +423,6 @@ namespace  SaboriGame
 		//サボりゲーム関係
 		gameStart(true), countToNextTask(0), timeLimit(30.f), isInGame(false),
 		//プレイヤー関係
-		playerFirstPos{
-			{ ge->screen2DWidth / 8.f, ge->screen2DHeight - 230.f },
-			{ ge->screen2DWidth * 3.f / 8.f, ge->screen2DHeight - 230.f },
-			{ ge->screen2DWidth * 5.f / 8.f, ge->screen2DHeight - 230.f },
-			{ ge->screen2DWidth * 7.f / 8.f, ge->screen2DHeight - 230.f } 
-		},
 		playersNum{ PlayerNum::Player1, PlayerNum::Player2, PlayerNum::Player3, PlayerNum::Player4 }, playersInfo(),
 		playerCount(4),
 		//上司関係

@@ -74,7 +74,7 @@ namespace  ResultUIPlayer
 		DrawPos drawPos = {};
 		
 		//☆メソッド
-		DrawInformation GetDrawImages(int imageNum); ////描画画像の制御　imageNumが0 = プレイヤー、1 = プレイヤーの番号、2 = 順位、3 = スコア　の画像制御
+		DrawInformation GetDrawImages(int imageNum); // 描画画像の制御　imageNumが0 = プレイヤー、1 = プレイヤーの番号、2 = 順位、3 = スコア　の画像制御
 
 		virtual void Think() override {}
 		virtual void Move() override {}

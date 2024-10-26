@@ -64,8 +64,10 @@ namespace  OguiUIManager
 		int							playerCount;							// ゲームを遊ぶプレイヤーの人数(1～4の範囲で値を入れる)
 
 		//☆関数
-		void DrawPlayerNumber();									// プレイヤー番号の描画
-		void DrawPlayerNumber_eatFoodCount(const int loopCount);	// 食べた料理の数の判別用プレイヤー番号の描画
+		void DrawPlayerNumber();										// プレイヤー番号の描画
+		void DrawPlayerNumber_eatFoodCount(const int loopCount);		// 食べた料理の数の判別用プレイヤー番号の描画
+		void DecidePlayerNumbersDrawInfo_pos(const int playerCount);	// プレイヤー番号の位置を遊ぶプレイヤーの人数に応じて決める
+		void DecideEatFoodCountDrawPos(const int playerCount);			// 食べた料理の数の描画位置を決める
 
 		//食べた料理の数描画関係-------------------------------------------------------------------------------------
 		//☆変数
