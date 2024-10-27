@@ -63,19 +63,20 @@ namespace  Result
 			int rank;
 			int score;
 		};
-		PlayerInformation playersInfo[4] = { {1, 0, 0}, {2, 0, 0}, {3, 0, 0}, {4, 0, 0} };
+		vector<PlayerInformation> playersInfo;
 		
 		//☆メソッド
 		void ChangeableToNextState();	//次の状態に変更できるようにする
 
 	private:		
 		//☆変数
-		XI::GamePad::SP controllers[4] = { ge->in1, ge->in2, ge->in3, ge->in4 }; //入力するコントローラーの情報を格納
+		//vector<XI::GamePad::SP> controllers; //入力するコントローラーの情報を格納
 		
 		bool nextStateGoIs;			//trueになったら次の状態に変更出来るようにする
 		int  countUpToStateChange;	//状態変更までのカウント
 		int  gameFps;				//ゲームプレイする上で想定しているFPS値を設定
 		bool shouldKillTask;		//UpDate処理内でTaskを消滅させる時に使用 trueの時に消滅させる
+		int playerNum;				//プレイヤーの人数
 
 		//☆メソッド
 		void ResultStateTransition();					//リザルトの状態遷移

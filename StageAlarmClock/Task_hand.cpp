@@ -131,10 +131,6 @@ namespace  hand
 		if (this->controller) {
 			auto inp = this->controller->GetState();
 			if (inp.LStick.BD.down) { state = State::Down; }
-			//3人以下の場合に次に行けるように(応急措置)
-			if (inp.SE.down) {
-				ge->KillAll_G("ステージ目覚まし時計");
-			}
 		}
 		
 		ML::Box2D me = this->hitBase.OffsetCopy(this->pos);

@@ -179,7 +179,7 @@ namespace  ResultUIManager
 				//1位の生成
 				se::Play("CharacterAppearanceSE");
 				se::Play("FirstPlayerDisplaySE");
-				for (int i = 0; i < 4; ++i)
+				for (int i = 0; i < ge->players.size(); ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i]);
@@ -204,7 +204,7 @@ namespace  ResultUIManager
 				//1位の生成
 				se::Play("CharacterAppearanceSE");
 				se::Play("FirstPlayerDisplaySE");
-				for (int i = 0; i < 3; ++i)
+				for (int i = 0; i < ge->players.size() - 1; ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i]);
@@ -219,7 +219,7 @@ namespace  ResultUIManager
 			{
 				//3位の生成
 				se::Play("CharacterAppearanceSE");
-				for (int i = 0; i < 2; ++i)
+				for (int i = 0; i < ge->players.size() - 2; ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i + 2]);
@@ -231,7 +231,7 @@ namespace  ResultUIManager
 				//1位の生成
 				se::Play("CharacterAppearanceSE");
 				se::Play("FirstPlayerDisplaySE");
-				for (int i = 0; i < 2; ++i)
+				for (int i = 0; i < ge->players.size() - 2; ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i]);
@@ -264,7 +264,7 @@ namespace  ResultUIManager
 				//1位の生成
 				se::Play("CharacterAppearanceSE");
 				se::Play("FirstPlayerDisplaySE");
-				for (int i = 0; i < 2; ++i)
+				for (int i = 0; i < ge->players.size() - 2; ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i]);
@@ -279,7 +279,7 @@ namespace  ResultUIManager
 			{
 				//2位の生成
 				se::Play("CharacterAppearanceSE");
-				for (int i = 0; i < 3; ++i)
+				for (int i = 0; i < ge->players.size() - 1; ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i + 1]);
@@ -313,7 +313,7 @@ namespace  ResultUIManager
 				se::Play("CharacterAppearanceSE");
 				se::Play("FirstPlayerDisplaySE");
 				//2位の生成
-				for (int i = 0; i < 2; ++i)
+				for (int i = 0; i < ge->players.size() - 2; ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i + 1]);
@@ -333,7 +333,7 @@ namespace  ResultUIManager
 			{
 				//3位の生成
 				se::Play("CharacterAppearanceSE");
-				for (int i = 0; i < 2; ++i)
+				for (int i = 0; i < ge->players.size() - 2; ++i)//1～3人に対応
 				{
 					auto displayPlayer = ResultUIPlayer::Object::Create(true);
 					displayPlayer->setPlayerInformation(result->playersInfo[i + 2]);
@@ -548,7 +548,7 @@ namespace  ResultUIManager
 		int rankCount[4] = {}; //要素数0を1位、1を2位・・・として順位の数をカウントする
 
 		//☆順位の数のカウント
-		for (int i = 0; i < sizeof(result->playersInfo) / sizeof(result->playersInfo[0]); ++i)
+		for (int i = 0; i < result->playersInfo.size(); ++i)
 		{
 			switch (result->playersInfo[i].rank)
 			{

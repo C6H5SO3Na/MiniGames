@@ -35,9 +35,13 @@ namespace  Result
 
 		//★データ初期化
 
+		for (int i = 0; i < playerNum; ++i) {
+			playersInfo.push_back({ i + 1, 0, 0 });
+		}
+
 		//☆スコア計算
 		Ranking();
-		
+
 		//★タスクの生成
 		//UI管理
 		ResultUIManager::Object::Create(true);
@@ -52,7 +56,7 @@ namespace  Result
 				BG->pos.x = static_cast<float>(i * ge->screen2DWidth);
 			}
 		}
-		
+
 		//☆BGM
 		bgm::LoadFile("ResultBGM", "./data/sound/bgm/エンディング_tanoshiibouken.mp3");
 		bgm::VolumeControl("ResultBGM", 95);
@@ -106,14 +110,6 @@ namespace  Result
 	//リザルトの状態遷移
 	void Object::ResultStateTransition()
 	{
-		XI::VGamePad input[4] = {};
-
-		//4人分のコントローラーを扱えるようにする
-		for (int i = 0; i < 4; ++i)
-		{
-			input[i] = this->controllers[i]->GetState();
-		}
-
 		ResultState nowState = this->resultState; //とりあえず現在の状態を代入
 
 		//状態の切り替え
@@ -122,13 +118,13 @@ namespace  Result
 		case ResultState::Preface:				//前置き
 			if (this->nextStateGoIs == true)
 			{
-				for (int i = 0; i < 4; ++i)
+				for (int i = 0; i < playerNum; ++i)
 				{
 					//結果発表へ
-					if (input[i].B2.down) 
+					if (ge->players[i]->GetState().B2.down)
 					{
 						nowState = ResultState::ResultAnnouncement; nextStateGoIs = false;
-					} 
+					}
 				}
 				if (this->countUpToStateChange >= (int)(0.5f * gameFps)) { nowState = ResultState::ResultAnnouncement; nextStateGoIs = false; } //結果発表へ
 			}
@@ -137,16 +133,16 @@ namespace  Result
 		case ResultState::ResultAnnouncement:	//結果発表
 			if (this->nextStateGoIs == true)
 			{
-				for (int i = 0; i < 4; ++i)
+				for (int i = 0; i < playerNum; ++i)
 				{
 					//結果発表終了へ
-					if (input[i].B2.down)
+					if (ge->players[i]->GetState().B2.down)
 					{
 						//SEを鳴らす
 						se::Play("PushButtonSE");
 
-						nowState = ResultState::End; nextStateGoIs = false; 
-					} 
+						nowState = ResultState::End; nextStateGoIs = false;
+					}
 				}
 			}
 			break;
@@ -178,14 +174,6 @@ namespace  Result
 	//状態毎の処理
 	void Object::ProcessEachState()
 	{
-		XI::VGamePad input[4] = {};
-
-		//4人分のコントローラーを扱えるようにする
-		for (int i = 0; i < 4; ++i)
-		{
-			input[i] = this->controllers[i]->GetState();
-		}
-
 		switch (this->resultState)
 		{
 		case ResultState::Preface:				//前置き
@@ -204,9 +192,9 @@ namespace  Result
 			if (this->nextStateGoIs == true)
 			{
 				//タイトル画面に遷移
-				for (int i = 0; i < 4; ++i)
+				for (int i = 0; i < playerNum; ++i)
 				{
-					if (input[i].B2.down) {
+					if (ge->players[i]->GetState().B2.down) {
 						//SEを鳴らす
 						se::Play("PushButtonSE");
 
@@ -232,21 +220,20 @@ namespace  Result
 	void Object::Ranking()
 	{
 		//MyPGからスコアを取得
-		for (int i = 0; i < sizeof(playersInfo) / sizeof(playersInfo[0]); ++i)
+		for (int i = 0; i < playersInfo.size(); ++i)
 		{
 			playersInfo[i].score = ge->GetScore(i);
 		}
 
 		//スコアが高い順にplayersInfoを並び替え
-		sort(playersInfo, playersInfo + (sizeof(playersInfo) / sizeof(playersInfo[0])), 
-			[this](const PlayerInformation& scoreA, const PlayerInformation& scoreB) { return compare(scoreA, scoreB); }); //playersInfo + (sizeof(playersInfo) / sizeof(playersInfo[0]))はranksのアドレスの一番最後の値
+		sort(playersInfo.begin(), playersInfo.end(), [&](const PlayerInformation& scoreA, const PlayerInformation& scoreB) { return compare(scoreA, scoreB); });
 
 		//順位を決める
 		int currentRank = 1; //入れる順位
-		for (int i = 0; i < sizeof(playersInfo) / sizeof(playersInfo[0]); ++i)
+		for (int i = 0; i < playersInfo.size(); ++i)
 		{
 			//2回目以降のループで、スコアの値が前のスコアと同じでなければ入れる順位を+1する
-			if (i > 0 && playersInfo[i].score != playersInfo[i - 1].score) 
+			if (i > 0 && playersInfo[i].score != playersInfo[i - 1].score)
 			{
 				currentRank = i + 1;
 			}
@@ -257,7 +244,7 @@ namespace  Result
 	}
 	//-------------------------------------------------------------------
 	//scoreAとscoreBに入れた変数のscoreで比較し、scoreAが大きい時trueを返す
-	bool Object::compare(const PlayerInformation& scoreA, const PlayerInformation& scoreB) 
+	bool Object::compare(const PlayerInformation& scoreA, const PlayerInformation& scoreB)
 	{
 		return scoreA.score > scoreB.score;
 	}
@@ -274,7 +261,7 @@ namespace  Result
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
-				
+
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill
@@ -302,7 +289,8 @@ namespace  Result
 		nextStateGoIs(false),
 		countUpToStateChange(0),
 		gameFps(60),
-		shouldKillTask(true)
+		shouldKillTask(true),
+		playerNum(ge->players.size())
 	{	}
 	//-------------------------------------------------------------------
 	//リソースクラスの生成
