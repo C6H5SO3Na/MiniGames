@@ -98,7 +98,8 @@ namespace  CommonItemManager02
 			this->res->teethImg->Draw(draw2, src2);
 
 			//プレイヤーナンバー
-			ML::Box2D draw01(0, 1080 / 2 - 105, 715 / 4, 105);
+			int ToRight = (i % 2) * 770;
+			ML::Box2D draw01(0 + ToRight, 1080 / 2 - 105, 715 / 4, 105);
 			ML::Box2D src01 = PlayerNumIndexSrc[i];
 			draw01.Offset(PlayerAreaPos[ge->players.size() - 1][i].x, PlayerAreaPos[ge->players.size() - 1][i].y);
 			this->res->PlayerNum->Draw(draw01, src01);
