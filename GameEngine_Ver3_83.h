@@ -309,7 +309,7 @@ public:
 
 //Releseモードの時は強制的に全画面表示にする
 #ifndef _DEBUG
-		screenMode = true;
+		//screenMode = true;
 #endif
 		//擬似フルスクリーンモードによる変更
 		if(screenMode == true)
