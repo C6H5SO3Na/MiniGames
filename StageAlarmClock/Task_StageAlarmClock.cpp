@@ -8,6 +8,7 @@
 #include  "Task_CommonItemManager01.h"
 #include  "../Task_Game.h"
 #include "../sound.h"
+#include  "Task_ControllerMark.h"
 
 
 namespace  StageAlarmClock
@@ -17,9 +18,9 @@ namespace  StageAlarmClock
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
-		this->bgImg = DG::Image::Create("./data/image/heya_blue.jpg");
-		this->controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");
-		this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
+		this->bgImg = DG::Image::Create("./data/image/stargarak1.png");
+		/*this->controllerMark = DG::Image::Create("./data/image/LeftStickDown_new.png");*/
+		//this->PlayerNum = DG::Image::Create("./data/image/PlayerNumber.png");
 		ge->debugRectLoad();
 		return true;
 	}
@@ -28,8 +29,8 @@ namespace  StageAlarmClock
 	bool  Resource::Finalize()
 	{
 		this->bgImg.reset();
-		this->controllerMark.reset();
-		this->PlayerNum.reset();
+		/*this->controllerMark.reset();*/
+		//this->PlayerNum.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -50,12 +51,13 @@ namespace  StageAlarmClock
 		//this->state = Phase::Game;
 		this->timeCnt = 10 * 60;
 		ge->nowTimeLimit = this->timeCnt;
-		this->animCnt = 0;
+		/*this->animCnt = 0;*/
 
 		//★タスクの生成
 		/*auto alarmclock = Clock::Object::Create(true);
 		auto hand = hand::Object::Create(true);*/
 		auto commonmanager = CommonItemManager01::Object::Create(true);
+		auto Controllermark = ControllerMark::Object::Create(true);
 
 		return  true;
 	}
@@ -70,6 +72,7 @@ namespace  StageAlarmClock
 		ge->KillAll_G("手");
 		ge->KillAll_G("共通アイテムマネージャー01");
 		ge->KillAll_G("ステージ目覚まし時計");
+		ge->KillAll_G("コントローラーマーク");
 
 		bgm::Stop("stage1_bgm");
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
@@ -84,17 +87,17 @@ namespace  StageAlarmClock
 	void  Object::UpDate()
 	{
 		ge->nowTimeLimit = this->timeCnt;
-		animCnt++;
-		//アニメ更新
-		if (this->animCnt >= 15)
-		{
-			this->animCnt = 0;
-			this->animIndex++;
-			if (this->animIndex >= 2)
-			{
-				this->animIndex = 0;
-			}
-		}
+		//animCnt++;
+		////アニメ更新
+		//if (this->animCnt >= 15)
+		//{
+		//	this->animCnt = 0;
+		//	this->animIndex++;
+		//	if (this->animIndex >= 2)
+		//	{
+		//		this->animIndex = 0;
+		//	}
+		//}
 
 		switch (ge->gameState) {
 		case MyPG::MyGameEngine::GameState::Game:
@@ -120,48 +123,48 @@ namespace  StageAlarmClock
 	void  Object::Render2D_AF()
 	{
 		//背景
-		ML::Box2D draw (0, 0, 1920/2, 1080/2);
+		ML::Box2D draw (0, 0, 1920, 1080);
 		ML::Box2D src (0, 0, 1920, 1080);
 		this->res->bgImg->Draw(draw, src);
 
-		ML::Box2D draw2(1920 / 2, 0, 1920 / 2, 1080 / 2);
-		this->res->bgImg->Draw(draw2, src);
+		//ML::Box2D draw2(1920 / 2, 0, 1920 / 2, 1080 / 2);
+		//this->res->bgImg->Draw(draw2, src);
 
-		ML::Box2D draw3(0, 1080 / 2, 1920 / 2, 1080 / 2);
-		this->res->bgImg->Draw(draw3, src);
+		//ML::Box2D draw3(0, 1080 / 2, 1920 / 2, 1080 / 2);
+		//this->res->bgImg->Draw(draw3, src);
 
-		ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
-		this->res->bgImg->Draw(draw4, src);
+		//ML::Box2D draw4(1920 / 2, 1080 / 2, 1920 / 2, 1080 / 2);
+		//this->res->bgImg->Draw(draw4, src);
 
-		switch (ge->gameState)
-		{
-		case MyPG::MyGameEngine::GameState::Game:
-			//コントローラーマーク
-			ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
-			int srcX = animIndex % 2 * 128;
-			int srcY = animIndex / 2 * 128;
-			ML::Box2D Src(srcX, srcY, 128, 128);
-			this->res->controllerMark->Draw(Draw, Src);
-			break;
-		}
+		//switch (ge->gameState)
+		//{
+		//case MyPG::MyGameEngine::GameState::Game:
+		//	//コントローラーマーク
+		//	ML::Box2D Draw(1920 / 2 - 150 / 2, 1080 / 2 - 150 / 2, 150, 150);
+		//	int srcX = animIndex % 2 * 128;
+		//	int srcY = animIndex / 2 * 128;
+		//	ML::Box2D Src(srcX, srcY, 128, 128);
+		//	this->res->controllerMark->Draw(Draw, Src);
+		//	break;
+		//}
 		
 
-		//プレイヤーナンバー
-		ML::Box2D draw01(0, 1080/2 - 105, 715/4, 105);
-		ML::Box2D src01(0, 0, 715/4 - 20, 105);
-		this->res->PlayerNum->Draw(draw01, src01);
+		////プレイヤーナンバー
+		//ML::Box2D draw01(0, 1080/2 - 105, 715/4, 105);
+		//ML::Box2D src01(0, 0, 715/4 - 20, 105);
+		//this->res->PlayerNum->Draw(draw01, src01);
 
-		ML::Box2D draw02(1920 - 715 / 4 -10, 1080 / 2 - 105, 715 / 4, 105);
-		ML::Box2D src02(715 / 4 - 20, 0, 715 / 4, 105);
-		this->res->PlayerNum->Draw(draw02, src02);
+		//ML::Box2D draw02(1920 - 715 / 4 -10, 1080 / 2 - 105, 715 / 4, 105);
+		//ML::Box2D src02(715 / 4 - 20, 0, 715 / 4, 105);
+		//this->res->PlayerNum->Draw(draw02, src02);
 
-		ML::Box2D draw03(0, 1080 - 105 - 10, 715 / 4, 105);
-		ML::Box2D src03(715 / 2 - 10, 0, 715 / 4, 105);
-		this->res->PlayerNum->Draw(draw03, src03);
+		//ML::Box2D draw03(0, 1080 - 105 - 10, 715 / 4, 105);
+		//ML::Box2D src03(715 / 2 - 10, 0, 715 / 4, 105);
+		//this->res->PlayerNum->Draw(draw03, src03);
 
-		ML::Box2D draw04(1920 - 715 / 4 - 10, 1080 - 105 - 10, 715 / 4, 105);
-		ML::Box2D src04(715 / 4 * 3 - 10, 0, 715 / 4, 105);
-		this->res->PlayerNum->Draw(draw04, src04);
+		//ML::Box2D draw04(1920 - 715 / 4 - 10, 1080 - 105 - 10, 715 / 4, 105);
+		//ML::Box2D src04(715 / 4 * 3 - 10, 0, 715 / 4, 105);
+		//this->res->PlayerNum->Draw(draw04, src04);
 
 		ge->debugRectDraw();
 	}
