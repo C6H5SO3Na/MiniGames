@@ -92,6 +92,9 @@
     <Filter Include="MyPG\Task\Miyagawa\SubscribeController">
       <UniqueIdentifier>{c8af132b-0427-4331-97ce-8dba21009f39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyPG\Task\Miyagawa\TaxiGame\Player">
+      <UniqueIdentifier>{5bd24181-8c89-4405-9b1b-876d325ea8a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Ver3_83.cpp">
@@ -283,9 +286,6 @@
     <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp">
       <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
     </ClCompile>
-    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp">
-      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
-    </ClCompile>
     <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp">
       <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
     </ClCompile>
@@ -315,6 +315,23 @@
     </ClCompile>
     <ClCompile Include="ClassifyGame\Task_ClassifyGameBG.cpp">
       <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="StageAlarmClock\Task_ControllerMark.cpp" />
+    <ClCompile Include="StageBrushTeeth\Task_ControllerMark02.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerIdleState.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerMoveState.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerMissState.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerClearState.cpp">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -505,9 +522,6 @@
     <ClInclude Include="Miyagawa\Task_TaxiGameBG.h">
       <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
     </ClInclude>
-    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h">
-      <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
-    </ClInclude>
     <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h">
       <Filter>MyPG\Task\Miyagawa\TaxiGame</Filter>
     </ClInclude>
@@ -537,6 +551,26 @@
     </ClInclude>
     <ClInclude Include="ClassifyGame\Task_ClassifyGameBG.h">
       <Filter>MyPG\Task\Game\ClassifyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="StageAlarmClock\Task_ControllerMark.h" />
+    <ClInclude Include="StageBrushTeeth\Task_ControllerMark02.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerStateBase.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerIdleState.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerMoveState.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerMissState.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerClearState.h">
+      <Filter>MyPG\Task\Miyagawa\TaxiGame\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

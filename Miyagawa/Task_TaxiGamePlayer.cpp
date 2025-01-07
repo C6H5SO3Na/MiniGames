@@ -4,6 +4,7 @@
 #include  "../MyPG.h"
 #include  "Task_TaxiGame.h"
 #include  "Task_TaxiGamePlayer.h"
+#include  "Task_TaxiGamePlayerIdleState.h"
 #include "../randomLib.h"
 #include "../easing.h"
 #include "../sound.h"
@@ -17,24 +18,24 @@ namespace TaxiGamePlayer
 	bool  Resource::Initialize()
 	{
 		//クリア画像
-		imgClear = DG::Image::Create("./data/image/clearImage.png");
+		imageClear = DG::Image::Create("./data/image/clearImage.png");
 
 		//ボタンの画像(アニメーション込みのため二次元配列)
-		imgBtn[0][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a.png");
-		imgBtn[1][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a_outline.png");
-		imgBtn[0][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b.png");
-		imgBtn[1][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b_outline.png");
-		imgBtn[0][2] = DG::Image::Create("./data/image/button/default/xbox_button_color_x.png");
-		imgBtn[1][2] = DG::Image::Create("./data/image/button/default/xbox_button_color_x_outline.png");
-		imgBtn[0][3] = DG::Image::Create("./data/image/button/default/xbox_button_color_y.png");
-		imgBtn[1][3] = DG::Image::Create("./data/image/button/default/xbox_button_color_y_outline.png");
+		imageButton[0][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a.png");
+		imageButton[1][0] = DG::Image::Create("./data/image/button/default/xbox_button_color_a_outline.png");
+		imageButton[0][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b.png");
+		imageButton[1][1] = DG::Image::Create("./data/image/button/default/xbox_button_color_b_outline.png");
+		imageButton[0][2] = DG::Image::Create("./data/image/button/default/xbox_button_color_x.png");
+		imageButton[1][2] = DG::Image::Create("./data/image/button/default/xbox_button_color_x_outline.png");
+		imageButton[0][3] = DG::Image::Create("./data/image/button/default/xbox_button_color_y.png");
+		imageButton[1][3] = DG::Image::Create("./data/image/button/default/xbox_button_color_y_outline.png");
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
-		imgClear.reset();
+		imageClear.reset();
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -48,7 +49,7 @@ namespace TaxiGamePlayer
 
 		//★データ初期化
 		render2D_Priority[1] = 0.5f;
-		nowBtn = GetRandom(0, 3);
+		nowButton = GetRandom(0, 3);
 
 		//SE
 		se::LoadFile("Miss", "./data/sound/se/ClassifyGame/maou_se_onepoint33.wav");
@@ -63,7 +64,7 @@ namespace TaxiGamePlayer
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		imgPlayer.reset();
+		imagePlayer.reset();
 
 		if (!ge->QuitFlag() && nextTaskCreate) {
 			//★引き継ぎタスクの生成
@@ -78,25 +79,25 @@ namespace TaxiGamePlayer
 		input = controller->GetState();
 		Think();
 		Move();
-		++animCnt;
+		++animationCount;
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
-		state->render();
+		state->render(*this);
 	}
 	//-------------------------------------------------------------------
 	//思考
 	void  Object::Think()
 	{
-		state->think();
+		state->think(*this);
 	}
 	//-------------------------------------------------------------------
 	//行動
 	void  Object::Move()
 	{
-		state->move();
+		state->move(*this);
 	}
 	//-------------------------------------------------------------------
 	//受け身
@@ -105,14 +106,15 @@ namespace TaxiGamePlayer
 	}
 	//-------------------------------------------------------------------
 	//ボタンが一致したときの処理
-	void  Object::MatchButton()
+	void  Object::MatchedButton()
 	{
-		++matchCnt;
-		if (matchCnt >= 10) {
+		//当たり判定ではなく回数で判定
+		++matchCount;
+		if (matchCount >= 10) {
 			isClear = true;
 			return;
 		}
-		nowBtn = GetRandom(0, 3);
+		nowButton = GetRandom(0, 3);
 	}
 	//-------------------------------------------------------------------
 	//ボタンの描画
@@ -122,7 +124,7 @@ namespace TaxiGamePlayer
 		ML::Box2D src(0, 0, 64, 64);
 		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
 		draw.Offset(pos + ML::Vec2(-30.f, 60.f));
-		res->imgBtn[animCnt / 10 % 2][nowBtn]->Draw(draw, src);
+		res->imageButton[animationCount / 10 % 2][nowButton]->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
 	//クリアメッセージ描画
@@ -131,138 +133,7 @@ namespace TaxiGamePlayer
 		ML::Box2D src(0, 0, 97, 25);
 		ML::Box2D draw(-src.w / 2, -src.h / 2, src.w, src.h);
 		draw.Offset(pos);
-		res->imgClear->Draw(draw, src);
-	}
-	//-------------------------------------------------------------------
-	//思考
-	void  Object::IdleState::think()
-	{
-		if (ge->gameState != MyPG::MyGameEngine::GameState::Game) {
-			return;
-		}
-		if (owner_->BUTTON(0) == 0) { return; }
-		if (owner_->BUTTON(0) == pow(2, 4 + owner_->nowBtn)) {//ビット単位のための計算
-			easing::Set("move" + to_string(owner_->controllerNum), easing::QUADINOUT, 0, -150, 60);
-			easing::Start("move" + to_string(owner_->controllerNum));
-			owner_->ChangeState(new MoveState(owner_));
-			se::Play("Walk");
-		}
-		else {
-			owner_->ChangeState(new MissState(owner_));
-			se::Play("Miss");
-		}
-	}
-	//-------------------------------------------------------------------
-	//行動
-	void  Object::IdleState::move()
-	{
-	}
-	//-------------------------------------------------------------------
-	//描画
-	void  Object::IdleState::render()
-	{
-		//プレイヤ描画
-		ML::Box2D src(0, 0, 342, 486);
-		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
-		draw *= 0.35f;
-		draw.Offset(owner_->pos);
-		owner_->imgPlayer->Draw(draw, src);
-
-		if (ge->gameState == MyPG::MyGameEngine::GameState::Game) {
-			owner_->DrawButton();
-		}
-
-	}
-
-	//-------------------------------------------------------------------
-	//思考
-	void  Object::MoveState::think()
-	{
-		if (easing::GetState("move" + to_string(owner_->controllerNum)) == easing::EQ_STATE::EQ_END) {
-			owner_->MatchButton();
-			if (owner_->isClear) {
-				owner_->AddScore(playerScore, owner_->controller);
-				owner_->ChangeState(new ClearState(owner_));
-				se::Play("Clear");
-				return;
-			}
-			owner_->ChangeState(new IdleState(owner_));
-		}
-	}
-	//-------------------------------------------------------------------
-	//行動
-	void  Object::MoveState::move()
-	{
-		owner_->pos.x = easing::GetPos("move" + to_string(owner_->controllerNum)) + owner_->prePos.x;
-	}
-	//-------------------------------------------------------------------
-	//描画
-	void  Object::MoveState::render()
-	{
-		ML::Box2D animTable[] = {
-			ML::Box2D(342, 0, 342, 486),
-			ML::Box2D(684, 0, 342, 486),
-			ML::Box2D(1026, 0, 342, 486),
-		};
-		ML::Box2D src = animTable[owner_->animCnt / 7 % size(animTable)];
-		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
-		draw *= 0.35f;
-		draw.Offset(owner_->pos);
-		owner_->imgPlayer->Draw(draw, src);
-	}
-	//-------------------------------------------------------------------
-	//思考
-	void  Object::ClearState::think()
-	{
-	}
-	//-------------------------------------------------------------------
-	//行動
-	void  Object::ClearState::move()
-	{
-	}
-	//-------------------------------------------------------------------
-	//描画
-	void  Object::ClearState::render()
-	{
-		//プレイヤー描画
-		ML::Box2D src(0, 0, 342, 486);
-		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
-		draw *= 0.35f;
-		draw.Offset(owner_->pos);
-		owner_->imgPlayer->Draw(draw, src);
-
-		//クリアメッセージ描画
-		owner_->DrawClearMessage();
-	}
-
-	//-------------------------------------------------------------------
-	//思考
-	void  Object::MissState::think()
-	{
-		if (owner_->moveCnt == 120) {
-			owner_->ChangeState(new IdleState(owner_));
-		}
-	}
-	//-------------------------------------------------------------------
-	//行動
-	void  Object::MissState::move()
-	{
-		++owner_->moveCnt;
-	}
-	//-------------------------------------------------------------------
-	//描画
-	void  Object::MissState::render()
-	{
-		//描画矩形
-		ML::Box2D src(0, 0, 342, 486);
-		ML::Box2D draw(-src.w / 2, -src.h / 2, -src.w, src.h);
-		draw *= 0.35f;
-		draw.Offset(owner_->pos);
-		//振動
-		draw.Offset(GetRandom(0, 10), GetRandom(0, 10));
-		owner_->imgPlayer->Draw(draw, src, ML::Color(1.f, 1.f, 0.5f, 0.5f));
-
-		owner_->DrawButton();
+		res->imageClear->Draw(draw, src);
 	}
 	//-------------------------------------------------------------------
 	//段階を変更
@@ -271,11 +142,11 @@ namespace TaxiGamePlayer
 		delete state;
 		state = state_;
 		moveCnt = 0;
-		prePos = pos;
+		prePosition = pos;
 	}
 	//-------------------------------------------------------------------
 	//ボタン(入力をビットで入手)
-	int  Object::BUTTON(int state)
+	int  Object::GetButtonNum(int state)
 	{
 		//それぞれのボタン判定
 		struct Input {
@@ -292,6 +163,8 @@ namespace TaxiGamePlayer
 		};
 
 		int rtv = 0;
+
+		//ビットのorで入手
 		if (inp[state].A) {
 			rtv |= A;
 		}
@@ -347,7 +220,7 @@ namespace TaxiGamePlayer
 		return  rtv;
 	}
 	//-------------------------------------------------------------------
-	Object::Object() :state(new IdleState(this)), isClear(false) {	}
+	Object::Object() :state(new IdleState()), isClear(false) {	}
 	//-------------------------------------------------------------------
 	void Object::Spawn(const ML::Vec2& pos_, XI::GamePad::SP controller_, const int& controllerNum_)
 	{
@@ -357,7 +230,7 @@ namespace TaxiGamePlayer
 		//コントローラーの番号を取得
 		player->controllerNum = controllerNum_ + 1;
 		//プレイヤー画像
-		player->imgPlayer = DG::Image::Create(player->imgPlayerPath[controllerNum_]);
+		player->imagePlayer = DG::Image::Create(player->imgPlayerPath[controllerNum_]);
 
 	}
 	//-------------------------------------------------------------------

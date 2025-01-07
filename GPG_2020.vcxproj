@@ -156,6 +156,10 @@
     <ClCompile Include="Miyagawa\Task_TaxiGame.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGameBG.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGamePlayer.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerClearState.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerIdleState.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerMissState.cpp" />
+    <ClCompile Include="Miyagawa\Task_TaxiGamePlayerMoveState.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGameTaxi.cpp" />
     <ClCompile Include="Miyagawa\Task_TaxiGameUI.cpp" />
     <ClCompile Include="Miyagawa\Task_TimeLimitBar.cpp" />
@@ -233,6 +237,11 @@
     <ClInclude Include="Miyagawa\Task_TaxiGame.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGameBG.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGamePlayer.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerClearState.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerIdleState.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerMissState.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerMoveState.h" />
+    <ClInclude Include="Miyagawa\Task_TaxiGamePlayerStateBase.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGameTaxi.h" />
     <ClInclude Include="Miyagawa\Task_TaxiGameUI.h" />
     <ClInclude Include="Miyagawa\Task_TimeLimitBar.h" />
